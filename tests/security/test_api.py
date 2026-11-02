@@ -59,3 +59,17 @@ def test_payload_cap_and_rate_limit(tmp_path):
     )
     statuses = [c.get("/api/v1/health/live", headers=headers).status_code for _ in range(121)]
     assert 429 in statuses
+
+
+def test_data_api_does_not_publish_staged_manifests(tmp_path):
+    from factory.operations.fixtures import seed
+
+    payload = seed(tmp_path, 120)
+    stage = tmp_path / "catalog" / ".pending-import"
+    stage.mkdir()
+    (stage / "manifest.json").write_text(json.dumps({"dataset_hash": "b" * 64, "rows": 999}))
+    c = client(tmp_path)
+    result = c.get("/api/v1/data/manifest", headers={"Authorization": "Bearer viewer"})
+    assert result.status_code == 200
+    assert [m["dataset_hash"] for m in result.json()] == [payload["contract"]["dataset_hash"]]
+    assert (stage / "manifest.json").exists()
