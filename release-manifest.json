@@ -1,0 +1,23 @@
+{
+  "ci_verified": false,
+  "commit": "b172a047cfdbb9494f8ebce7720b4d163fede4b8",
+  "files": {
+    "AGENTS.md": "fe43707179d1a70781a9a09d8f35733e639139d24f9c71156051b2203452b38f",
+    "BLUEPRINT.md": "9f963e640f2a198ff91455471524d92ead3df23c881af6c4b7eee94f3b431c4c",
+    "CODEX_BUILD_PROMPT.md": "e5181e397d3489c5759cb3979627693922d655d84b39d059d5d021d2694c8f98",
+    "HERMES_AGENT_INSTRUCTIONS.md": "b65e769f803a17ed3dd30d50c86adde662757499e5d5e13c58ea720dc202b740",
+    "build-report.json": "24f004f02a1b49bfb8c5a5ec81278f051f3f713b2ef7911aa3c79d2863ae1ee2",
+    "docs/source/Factory.pdf": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
+    "known-limitations.md": "36f85dae67f7cc0999933c26e774ff75a9b3c4a5b220c22b2d91f6acf82c5a26"
+  },
+  "historical_data": false,
+  "lock_hashes": {
+    "apps/dashboard/package-lock.json": "aae35647b6166efa92dfa3b53a2c1274a747b73376fd3e5f4d1d26d84ce1af27",
+    "uv.lock": "6b7bbd4a443032e112122d8bfb25763785f11961c57a472f448ca70baeadb1c9"
+  },
+  "reason": "Mandatory C0-C9 and T01-T30 gates incomplete",
+  "status": "NOT_READY",
+  "tag": null,
+  "version": "0.1.0.dev0",
+  "vps_verified": false
+}

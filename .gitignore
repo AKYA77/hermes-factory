@@ -15,3 +15,5 @@ dist/
 *.egg-info/
 reports/test-results.xml
 reports/benchmark-report.json
+
+/benchmark-report.json

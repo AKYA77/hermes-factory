@@ -1,0 +1,678 @@
+{
+  "acceptance": {
+    "T01": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T02": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T03": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T04": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T05": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T06": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T07": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T08": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T09": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T10": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T11": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T12": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T13": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T14": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T15": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T16": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T17": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T18": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T19": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T20": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T21": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T22": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T23": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T24": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T25": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T26": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T27": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T28": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T29": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    },
+    "T30": {
+      "details": "docs/acceptance-matrix.md; no full gate pass",
+      "status": "PARTIAL_OR_PENDING"
+    }
+  },
+  "benchmark": {
+    "artifact_hashes": [
+      "82d97d8a0d3d69718fb27dd54af6a51fac83a24728d4709d770d0c607a86742e",
+      "82d97d8a0d3d69718fb27dd54af6a51fac83a24728d4709d770d0c607a86742e"
+    ],
+    "code_revision": "b172a047cfdbb9494f8ebce7720b4d163fede4b8",
+    "dataset_hash": "a66e2efb10fa446a659273303b90da0b7d34a10594ac8cf09d66d0b5224218f4",
+    "hardware": {
+      "cgroup_cpu_max": "400000 100000",
+      "cgroup_memory_max": "34359738368",
+      "host_ram_bytes": 35743748096,
+      "logical_cpus": 5,
+      "machine": "x86_64",
+      "os": "Linux-6.18.57-x86_64-with-glibc2.41"
+    },
+    "limitations": [
+      "OS page cache not flushed",
+      "sampled RSS at 10ms may miss shorter peaks",
+      "two trials only; no statistical speedup claim",
+      "no real Forex/Gold corpus",
+      "no 8GB stress or Contabo benchmark",
+      "screening implementation comparison pending"
+    ],
+    "measurements": [
+      {
+        "rows": 2000,
+        "stage": "synthetic-generation-plus-parquet-commit",
+        "wall_seconds": 0.47886111200000414
+      },
+      {
+        "rows": 2000,
+        "stage": "first-read-OS-cache-uncontrolled",
+        "wall_seconds": 0.027470774999983405
+      },
+      {
+        "rows": 2000,
+        "stage": "warm-read",
+        "wall_seconds": 0.019908943000018553
+      },
+      {
+        "cpu_seconds": 0.008726060000000091,
+        "signals": 1969,
+        "stage": "signal-screen",
+        "wall_seconds": 0.008792347000053269
+      },
+      {
+        "bytes": 29583,
+        "codec": "zstd",
+        "cpu_seconds": 0.0057576249999999884,
+        "level": 1,
+        "roundtrip_equal": true,
+        "stage": "compression",
+        "wall_seconds": 0.0023329000000558153
+      },
+      {
+        "bytes": 24888,
+        "codec": "zstd",
+        "cpu_seconds": 0.005054456999999957,
+        "level": 2,
+        "roundtrip_equal": true,
+        "stage": "compression",
+        "wall_seconds": 0.002176190999989558
+      },
+      {
+        "bytes": 25703,
+        "codec": "zstd",
+        "cpu_seconds": 0.00458143100000008,
+        "level": 3,
+        "roundtrip_equal": true,
+        "stage": "compression",
+        "wall_seconds": 0.002350134999915099
+      },
+      {
+        "bytes": 38205,
+        "codec": "snappy",
+        "cpu_seconds": 0.004027659000000128,
+        "level": null,
+        "roundtrip_equal": true,
+        "stage": "compression",
+        "wall_seconds": 0.0012477610000587447
+      },
+      {
+        "completed_trades": 149,
+        "cpu_seconds": 2.7143260000000002,
+        "peak_rss_bytes_sampled": 465592320,
+        "quote_events_per_wall_second_including_startup": 733.26468792851,
+        "quotes": 2000,
+        "stage": "fresh-worker-first",
+        "wall_seconds": 2.7275280440001097
+      },
+      {
+        "completed_trades": 149,
+        "cpu_seconds": 2.522951999999999,
+        "peak_rss_bytes_sampled": 465379328,
+        "quote_events_per_wall_second_including_startup": 789.2296992489886,
+        "quotes": 2000,
+        "stage": "fresh-worker-warm-files",
+        "wall_seconds": 2.534116496000024
+      }
+    ],
+    "reproducible_exactly": true,
+    "rows": 2000,
+    "scope": "NOT VPS / NOT HISTORICAL / NOT SOAK",
+    "source": "project synthetic sine fixture/v1",
+    "status": "SYNTHETIC_DEVELOPMENT_BENCHMARK",
+    "versions": {
+      "duckdb": "1.4.2",
+      "nautilus_trader": "1.231.0",
+      "numpy": "2.3.4",
+      "optuna": "4.5.0",
+      "pyarrow": "25.0.0"
+    },
+    "worktree_dirty": false
+  },
+  "branch": "build/initial-factory",
+  "ci": "NOT_RUN_ON_GITHUB",
+  "commands": [
+    {
+      "command": "bash scripts/release-verify.sh",
+      "exit_code": 1,
+      "expected": "release gates not passed; refusal verified"
+    },
+    {
+      "command": "uv lock && uv sync --frozen",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/ruff check factory apps tests",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/ruff format --check factory apps tests",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/pytest -q --junitxml=reports/runtime/test-results.xml -o faulthandler_timeout=30",
+      "counts": {
+        "errors": 0,
+        "failures": 0,
+        "passed": 40,
+        "skipped": 0,
+        "tests": 40,
+        "time_seconds": 20.16
+      },
+      "exit_code": 0
+    },
+    {
+      "command": "npm --prefix apps/dashboard run check",
+      "errors": 0,
+      "exit_code": 0,
+      "warnings": 0
+    },
+    {
+      "command": "npm --prefix apps/dashboard run build",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.http_smoke",
+      "exit_code": 0,
+      "result": {
+        "anonymous_api_rejected": true,
+        "authenticated_overview": true,
+        "dashboard_html_served": true,
+        "scope": "real loopback HTTP; not browser E2E"
+      }
+    },
+    {
+      "command": "bash scripts/install.sh",
+      "exit_code": 0,
+      "repeat_execution": true,
+      "scope": "development only"
+    },
+    {
+      "command": "bash scripts/benchmark.sh reports/runtime/benchmark-report.json",
+      "exit_code": 0,
+      "source_commit": "b172a047cfdbb9494f8ebce7720b4d163fede4b8"
+    },
+    {
+      "command": "FACTORY_STATE=.local/cli-smoke bash scripts/seed-fixtures.sh",
+      "exit_code": 0,
+      "repeated": true,
+      "unique_jobs_after_two_calls": 1
+    },
+    {
+      "command": "FACTORY_STATE=.local/cli-smoke bash scripts/create-admin.sh",
+      "exit_code": 0,
+      "secrets_logged": false
+    },
+    {
+      "command": "FACTORY_STATE=.local/cli-smoke bash scripts/backup.sh .local/cli-backup-20261102",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/restore-test.sh .local/cli-backup-20261102",
+      "exit_code": 0,
+      "result": {
+        "files": 4,
+        "jobs": 1,
+        "restore_verified": true,
+        "scope": "isolated copy; active state unchanged"
+      }
+    },
+    {
+      "command": "bash scripts/doctor.sh",
+      "exit_code": 1,
+      "expected": "NOT_READY; readiness is not passed"
+    },
+    {
+      "command": "gh api repos/AKYA77/hermes-factory --jq '{full_name,private,permissions}'",
+      "error": "Forbidden",
+      "exit_code": 1
+    },
+    {
+      "command": "npm --prefix apps/dashboard audit --json",
+      "exit_code": 1,
+      "remaining_findings": 4,
+      "severity": "low",
+      "underlying_advisory": "GHSA-gcqx-w48m-w2h4"
+    },
+    {
+      "advisory": "PYSEC-2026-4217",
+      "command": "uvx --from pip-audit==2.9.0 pip-audit --path .venv/lib/python3.12/site-packages --format json --output reports/runtime/python-audit.json",
+      "exit_code": 1,
+      "package": "fsspec==2026.2.0; exact Nautilus pin",
+      "remaining_findings": 1
+    }
+  ],
+  "created_at_utc": "2026-11-02T19:45:59.579388+00:00",
+  "environment_draft": {
+    "applied": false,
+    "domains_added": [
+      "api.github.com",
+      "www.dukascopy.com",
+      "datafeed.dukascopy.com"
+    ],
+    "fields_saved": [
+      "install_script",
+      "start_skill",
+      "network.allowed_domains"
+    ],
+    "published": false
+  },
+  "fixture_kind": "SYNTHETIC ONLY; no real historical data",
+  "handoff": "BLOCKED",
+  "milestones": {
+    "C0": "PARTIAL_IMPLEMENTATION",
+    "C1": "PARTIAL_IMPLEMENTATION",
+    "C2": "PARTIAL_IMPLEMENTATION",
+    "C3": "PARTIAL_IMPLEMENTATION",
+    "C4": "PARTIAL_IMPLEMENTATION",
+    "C5": "PARTIAL_IMPLEMENTATION",
+    "C6": "PARTIAL_IMPLEMENTATION",
+    "C7": "PARTIAL_IMPLEMENTATION",
+    "C8": "PARTIAL_IMPLEMENTATION",
+    "C9": "BLOCKED_RELEASE"
+  },
+  "milestones_completed": [],
+  "observation_scope": "initial checkpoint command observations only",
+  "original_markdown_provided": false,
+  "outstanding": "known-limitations.md",
+  "packages": [
+    {
+      "license_metadata": "MIT",
+      "name": "alembic",
+      "version": "1.20.1"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "annotated-doc",
+      "version": "0.0.5"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "annotated-types",
+      "version": "0.8.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "anyio",
+      "version": "4.16.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "license_metadata": "MPL-2.0",
+      "name": "certifi",
+      "version": "2026.10.23"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "click",
+      "version": "8.5.0"
+    },
+    {
+      "license_metadata": "MIT License",
+      "name": "colorlog",
+      "version": "6.12.0"
+    },
+    {
+      "license_metadata": "not declared in package metadata",
+      "name": "duckdb",
+      "version": "1.4.2"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "fastapi",
+      "version": "0.162.0"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "fsspec",
+      "version": "2026.2.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "license_metadata": "not declared in package metadata",
+      "name": "hermes-factory",
+      "version": "0.1.0.dev0"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "license_metadata": "MPL-2.0",
+      "name": "hypothesis",
+      "version": "6.142.4"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "idna",
+      "version": "3.20"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "iniconfig",
+      "version": "2.3.1"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "Mako",
+      "version": "1.4.3"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "MarkupSafe",
+      "version": "3.0.4"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "msgspec",
+      "version": "0.22.0"
+    },
+    {
+      "license_metadata": "LGPL-3.0-or-later",
+      "name": "nautilus_trader",
+      "version": "1.231.0"
+    },
+    {
+      "license_metadata": "Copyright (c) 2005-2025, NumPy Developers. All rights reserved. Redistribution and use in source and binary forms, with or without modification, are permitted p",
+      "name": "numpy",
+      "version": "2.3.4"
+    },
+    {
+      "license_metadata": "Apache-2.0",
+      "name": "opentelemetry-api",
+      "version": "1.45.2"
+    },
+    {
+      "license_metadata": "not declared in package metadata",
+      "name": "optuna",
+      "version": "4.5.0"
+    },
+    {
+      "license_metadata": "Apache-2.0 OR BSD-2-Clause",
+      "name": "packaging",
+      "version": "26.3"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "pandas",
+      "version": "3.1.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "pluggy",
+      "version": "1.7.0"
+    },
+    {
+      "license_metadata": "LGPL-3.0-or-later",
+      "name": "portion",
+      "version": "2.6.3"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "psutil",
+      "version": "7.1.3"
+    },
+    {
+      "license_metadata": "Apache-2.0",
+      "name": "pyarrow",
+      "version": "25.0.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "pydantic",
+      "version": "2.12.3"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "pydantic_core",
+      "version": "2.41.4"
+    },
+    {
+      "license_metadata": "BSD-2-Clause",
+      "name": "Pygments",
+      "version": "2.21.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "pytest",
+      "version": "9.2.0"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "python-dateutil",
+      "version": "4.0.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "pytz",
+      "version": "2026.6"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "PyYAML",
+      "version": "6.0.3"
+    },
+    {
+      "license_metadata": "not declared in package metadata",
+      "name": "ruff",
+      "version": "0.14.3"
+    },
+    {
+      "license_metadata": "Copyright (c) 2001-2002 Enthought, Inc. 2003, SciPy Developers. All rights reserved. Redistribution and use in source and binary forms, with or without modifica",
+      "name": "scipy",
+      "version": "1.16.3"
+    },
+    {
+      "license_metadata": "Apache 2.0",
+      "name": "sortedcontainers",
+      "version": "2.4.0"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "SQLAlchemy",
+      "version": "2.1.6"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "starlette",
+      "version": "1.3.1"
+    },
+    {
+      "license_metadata": "MPL-2.0 AND MIT",
+      "name": "tqdm",
+      "version": "4.70.1"
+    },
+    {
+      "license_metadata": "MIT",
+      "name": "typing-inspection",
+      "version": "0.4.4"
+    },
+    {
+      "license_metadata": "PSF-2.0",
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "license_metadata": "Apache-2.0",
+      "name": "tzdata",
+      "version": "2026.6"
+    },
+    {
+      "license_metadata": "BSD-3-Clause",
+      "name": "uvicorn",
+      "version": "0.38.0"
+    },
+    {
+      "license_metadata": "MIT License",
+      "name": "uvloop",
+      "version": "0.22.1"
+    }
+  ],
+  "prior_failures": [
+    "Arrow 21 pin incompatible with Nautilus >=25; corrected",
+    "Initial lease test claimed before availability; corrected fixture clock",
+    "HTTP TestClient socket access blocked in sandbox; rerun with socket capability",
+    "npm initial pins had high advisories; updated compatible set",
+    "SvelteKit 3 requires TypeScript 6 and new Vite configuration; migrated",
+    "Initial HTTP smoke lacked static application identity; added metadata and reran",
+    "First report generation used host Python without pyarrow; corrected to project .venv"
+  ],
+  "python": "3.12.14",
+  "release_commit": null,
+  "release_tag": null,
+  "report_base_commit": "b172a047cfdbb9494f8ebce7720b4d163fede4b8",
+  "repository": {
+    "creation_status": "EXISTING_REPO_REUSED; management access blocked",
+    "existing_remote": "https://github.com/AKYA77/hermes-factory",
+    "git_read_verified": true,
+    "private_verified": false,
+    "pull_request": null,
+    "pushed": false
+  },
+  "runtime": {
+    "disk_free_bytes": 62458793984,
+    "logical_cpu": 5,
+    "operation_ready": false,
+    "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "ram_bytes": 35743748096,
+    "reason": "Development checkpoint; release gates pending"
+  },
+  "source_commit": "b172a047cfdbb9494f8ebce7720b4d163fede4b8",
+  "source_documents": {
+    "CODEX_BUILD_PROMPT.md": "e5181e397d3489c5759cb3979627693922d655d84b39d059d5d021d2694c8f98",
+    "docs/source/Factory.extracted.txt": "6d723469ea4732d8dd9eeda37438420bd29868e96f223259c3063cee097620d2",
+    "docs/source/Factory.pdf": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61"
+  },
+  "status": "NOT_READY",
+  "tests": {
+    "errors": 0,
+    "failures": 0,
+    "passed": 40,
+    "skipped": 0,
+    "tests": 40,
+    "time_seconds": 20.16
+  },
+  "version": "0.1.0.dev0",
+  "vps": "NOT_TESTED"
+}
