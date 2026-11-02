@@ -65,3 +65,12 @@ bars/ticks as verified historical evidence or silently substitute paid downloads
 No production tag is issued: remaining C0–C9/T01–T30 requirements, full historical
 source integration, other instruments, OOS/WFO, full autonomous research/dashboard,
 security advisories and target-VPS gates are still listed in known-limitations.md.
+
+## GitHub checks
+
+The published application test and dashboard jobs passed. The original
+GitHub dependency-review action failed because the private repository lacks the
+required Advanced Security/dependency-graph feature. It is replaced with free
+pip-audit and npm audit gates, preserving failure on detected vulnerabilities and
+uploading the reports. No paid GitHub feature is enabled and no advisory is ignored.
+The known fsspec/deepmerge findings still block production release.

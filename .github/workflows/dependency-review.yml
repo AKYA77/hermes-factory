@@ -3,8 +3,27 @@ on: [pull_request]
 permissions:
   contents: read
 jobs:
-  review:
+  audit:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/dependency-review-action@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.12.23'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - run: uv sync --frozen
+      - run: npm --prefix apps/dashboard ci --ignore-scripts --no-audit --no-fund
+      - name: Python vulnerability gate
+        run: |
+          mkdir -p reports/runtime
+          uvx --from pip-audit==2.9.0 pip-audit --path .venv/lib/python3.12/site-packages --format json --output reports/runtime/python-audit.json
+      - name: JavaScript vulnerability gate
+        if: always()
+        run: npm --prefix apps/dashboard audit --json > reports/runtime/npm-audit.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dependency-audit-results
+          path: reports/runtime/*audit.json

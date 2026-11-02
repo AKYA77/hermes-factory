@@ -128,7 +128,18 @@
     "campaign plan mutation on mismatch",
     "unbounded/zero batch parameter"
   ],
-  "ci": "Latest source CI pending push; earlier branch tests/dashboard passed",
+  "ci": {
+    "tests": {
+      "status": "success",
+      "url": "https://github.com/AKYA77/hermes-factory/actions/runs/41518955273"
+    },
+    "dashboard": {
+      "status": "success",
+      "url": "https://github.com/AKYA77/hermes-factory/actions/runs/41518955230"
+    },
+    "scope": "checked commit 921b6184153b7b748efb65a9cffdd5e5ab75f50b; subsequent change replaces CI audit workflow only",
+    "dependency_review": "Original action requires unavailable private-repo Advanced Security; replaced with free audits; known advisories remain release blockers"
+  },
   "remaining_security_advisories": [
     "PYSEC-2026-4217 (Nautilus exact fsspec pin)",
     "GHSA-gcqx-w48m-w2h4 (dashboard dependency chain)"
