@@ -58,12 +58,21 @@ def cycle(store, root, timeout=300):
             else:
                 contract = ExperimentContract.model_validate(payload["contract"])
                 spec = StrategySpec.model_validate(payload["strategy"])
-                run_id = store.complete_experiment(
-                    contract, spec, result["result"], result["artifact_hash"]
+                store.complete_experiment(
+                    contract,
+                    spec,
+                    result["result"],
+                    result["artifact_hash"],
+                    job_id=job["job_id"],
+                    token=job["lease_token"],
                 )
-                store.finish(job["job_id"], job["lease_token"], result={"run_id": run_id})
     except (OSError, subprocess.TimeoutExpired, ValueError) as exc:
-        store.finish(job["job_id"], job["lease_token"], error=type(exc).__name__, retryable=True)
+        if str(exc) == "STALE_LEASE":
+            store.audit("coordinator", "stale_completion_rejected", {"job_id": job["job_id"]})
+        else:
+            store.finish(
+                job["job_id"], job["lease_token"], error=type(exc).__name__, retryable=True
+            )
     return True
 
 

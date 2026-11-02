@@ -197,12 +197,20 @@ class Store:
                 (now, state, error, token),
             )
 
-    def complete_experiment(self, contract, spec, result, artifact_hash):
+    def complete_experiment(self, contract, spec, result, artifact_hash, job_id=None, token=None):
         # Internal deterministic worker interface. No public metric-write route.
         if contract.strategy_hash != spec.strategy_hash:
             raise ValueError("strategy mismatch")
         self.register_strategy(spec)
         with self.transaction() as db:
+            now = time.time()
+            if job_id is not None:
+                active = db.execute(
+                    "SELECT 1 FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",
+                    (job_id, token, now),
+                ).fetchone()
+                if active is None:
+                    raise ValueError("STALE_LEASE")
             db.execute(
                 "INSERT OR IGNORE INTO experiments VALUES(?,?,?,?,?,?,?,?,?)",
                 (
@@ -217,4 +225,13 @@ class Store:
                     time.time(),
                 ),
             )
+            if job_id is not None:
+                db.execute(
+                    "UPDATE jobs SET state='COMPLETED',result=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
+                    (serialize({"run_id": contract.experiment_hash}), now, job_id),
+                )
+                db.execute(
+                    "UPDATE attempts SET ended_at=?,outcome='COMPLETED' WHERE token=?",
+                    (now, token),
+                )
         return contract.experiment_hash

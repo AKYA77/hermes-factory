@@ -6,7 +6,7 @@ from pathlib import Path
 import shutil
 import sqlite3
 import tempfile
-from factory.contracts import fingerprint
+from factory.contracts import ExperimentContract
 from factory.experiments import Store
 from factory.operations import backup, verify_backup
 from factory.operations.fixtures import seed
@@ -22,7 +22,12 @@ def main():
         root = Path(args.path)
         store = Store(root / "factory.sqlite")
         payload = seed(root)
-        job = store.enqueue("research", payload, fingerprint(payload), actor="fixture-seeder")
+        job = store.enqueue(
+            "research",
+            payload,
+            ExperimentContract.model_validate(payload["contract"]).experiment_hash,
+            actor="fixture-seeder",
+        )
         print(json.dumps({"synthetic": True, "job_id": job, "paused": store.paused()}))
     elif args.action == "backup":
         if not args.destination:

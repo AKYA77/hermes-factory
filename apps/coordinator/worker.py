@@ -28,7 +28,11 @@ def run(payload, root):
         raise ValueError("unsupported engine/fill version")
     if any(w.role != "train_only" for w in contract.windows):
         raise ValueError("evaluation worker currently training-only; cannot fabricate OOS")
-    quotes = list(Catalog(Path(root) / "catalog").read(contract.dataset_hash))
+    catalog = Catalog(Path(root) / "catalog")
+    manifest = catalog.verify(contract.dataset_hash)
+    if not profile.synthetic or not manifest["provenance"].get("synthetic"):
+        raise ValueError("HISTORICAL_APPROVAL_REQUIRED: provider and instrument gate not complete")
+    quotes = list(catalog.read(contract.dataset_hash))
     window = contract.windows[0]
     quotes = [q for q in quotes if window.start_ns <= q.event_ts_utc_ns < window.end_ns]
     signals = compile_signals(quotes, spec)
