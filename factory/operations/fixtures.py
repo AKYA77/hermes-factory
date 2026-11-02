@@ -40,7 +40,7 @@ def seed(root, rows=2000):
         instrument="EURUSD",
         timeframe="M1",
         signal=Signal(operator="momentum", lookback=3, threshold="1"),
-        stop_ticks=40,
+        stop_ticks=60,
     )
     profile = synthetic_profile("EURUSD")
     import subprocess

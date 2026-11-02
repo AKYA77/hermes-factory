@@ -52,6 +52,7 @@ def setup(root, count):
         datasets[symbol] = m["dataset_hash"]
     revision = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
     identities = []
+    pending = []
     for i in range(count):
         symbol = SYMBOLS[i % 4]
         spec = StrategySpec(
@@ -77,8 +78,7 @@ def setup(root, count):
             "profile": profile.model_dump(mode="json"),
             "contract": contract.model_dump(mode="json"),
         }
-        store.register_strategy(spec)
-        store.enqueue("research", payload, contract.experiment_hash, actor="synthetic-campaign")
+        pending.append((spec, payload, contract.experiment_hash))
         identities.append(
             {"strategy_hash": spec.strategy_hash, "experiment_hash": contract.experiment_hash}
         )
@@ -98,6 +98,9 @@ def setup(root, count):
     if path.exists() and json.loads(path.read_text()) != plan:
         raise ValueError("campaign plan differs; use a new directory")
     atomic_bytes(path, serialize(plan).encode())
+    for spec, payload, key in pending:
+        store.register_strategy(spec)
+        store.enqueue("research", payload, key, actor="synthetic-campaign")
     return store
 
 
@@ -186,6 +189,8 @@ def verify(root):
 
 
 def campaign(root, count, batch_size):
+    if not 1 <= batch_size <= 50:
+        raise ValueError("batch size must be 1..50")
     root = Path(root).resolve()
     started = time.perf_counter()
     store = setup(root, count)
@@ -288,7 +293,9 @@ if __name__ == "__main__":
     parser.add_argument("--batch-size", type=int, default=25)
     parser.add_argument("--batch", type=int)
     args = parser.parse_args()
-    if args.batch:
+    if args.batch is not None:
+        if not 1 <= args.batch <= 50:
+            parser.error("batch must be 1..50")
         print(json.dumps({"peak_rss_bytes": batch(args.state, args.batch)}))
     else:
         result = campaign(args.state, args.count, args.batch_size)

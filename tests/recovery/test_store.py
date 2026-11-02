@@ -1,3 +1,4 @@
+import json
 import sqlite3
 import time
 import pytest
@@ -46,3 +47,28 @@ def test_T27_immutable_audit(tmp_path):
     with pytest.raises(sqlite3.IntegrityError):
         with s.transaction() as db:
             db.execute("UPDATE audit_events SET actor='forged'")
+
+
+def test_backup_verification_is_read_only(tmp_path):
+    from factory.data import sha256
+    import subprocess
+    import sys
+
+    root = tmp_path / "state"
+    root.mkdir()
+    s = Store(root / "factory.sqlite")
+    s.enqueue("test", {}, "one")
+    dest = tmp_path / "backup"
+    backup(root, dest)
+    original = {p.name: sha256(p) for p in dest.iterdir() if p.is_file()}
+    for _ in range(3):
+        verify_backup(dest)
+    assert {p.name: sha256(p) for p in dest.iterdir() if p.is_file()} == original
+    assert not list(dest.glob("*-wal")) and not list(dest.glob("*-shm"))
+    proc = subprocess.run(
+        [sys.executable, "-m", "factory.operations.tools", "restore-test", str(dest)],
+        capture_output=True,
+        text=True,
+    )
+    assert proc.returncode == 0, proc.stderr
+    assert json.loads(proc.stdout)["jobs"] == 1

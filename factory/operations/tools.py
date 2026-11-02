@@ -1,6 +1,7 @@
 """Inspect-only backup restore rehearsal and labeled development fixture setup."""
 
 import argparse
+from contextlib import closing
 import json
 from pathlib import Path
 import shutil
@@ -40,14 +41,20 @@ def main():
             dest = Path(temp) / "restored"
             shutil.copytree(args.path, dest)
             manifest = verify_backup(dest)
-            with sqlite3.connect(dest / "factory.sqlite") as db:
+            with closing(
+                sqlite3.connect(
+                    (dest / "factory.sqlite").as_uri() + "?mode=ro&immutable=1", uri=True
+                )
+            ) as db:
                 jobs = db.execute("SELECT count(*) FROM jobs").fetchone()[0]
+                experiments = db.execute("SELECT count(*) FROM experiments").fetchone()[0]
             print(
                 json.dumps(
                     {
                         "restore_verified": True,
                         "files": len(manifest["files"]),
                         "jobs": jobs,
+                        "experiments": experiments,
                         "scope": "isolated copy; active state unchanged",
                     }
                 )

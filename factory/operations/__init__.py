@@ -1,6 +1,7 @@
 """Operational helpers: consistent SQLite backups and checked artifact copies."""
 
 import json
+from contextlib import closing
 from pathlib import Path
 import shutil
 import sqlite3
@@ -15,8 +16,12 @@ def backup(state_root, destination):
         raise ValueError("backup must be outside state root")
     dest.mkdir(parents=True, exist_ok=False)
     source = root / "factory.sqlite"
-    with sqlite3.connect(source) as src, sqlite3.connect(dest / "factory.sqlite") as out:
+    with (
+        closing(sqlite3.connect(source)) as src,
+        closing(sqlite3.connect(dest / "factory.sqlite")) as out,
+    ):
         src.backup(out)
+        out.execute("PRAGMA journal_mode=DELETE")
     for folder in ("catalog", "artifacts"):
         if (root / folder).exists():
             shutil.copytree(root / folder, dest / folder)
@@ -38,7 +43,11 @@ def verify_backup(path):
         target = (path / name).resolve()
         if path.resolve() not in target.parents or sha256(target) != digest:
             raise ValueError("backup checksum mismatch")
-    with sqlite3.connect(path / "factory.sqlite") as db:
+    with closing(
+        sqlite3.connect(
+            (path / "factory.sqlite").resolve().as_uri() + "?mode=ro&immutable=1", uri=True
+        )
+    ) as db:
         if db.execute("PRAGMA integrity_check").fetchone()[0] != "ok":
             raise ValueError("corrupt backup database")
     return manifest
