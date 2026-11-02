@@ -50,3 +50,14 @@ def test_T12_measured_path(profile, spec):
     assert D(d["mfe"]) == D(".00060")
     assert "FAVORABLE_THEN_STOP" in d["tags"]
     assert D(d["mae"]) < 0
+
+
+def test_stop_inside_effective_spread_is_skipped(profile, spec):
+    q = quotes([(110000, 110010), (110000, 110010), (110350, 110360)])
+    small = spec.model_copy(update={"stop_ticks": 20})
+    for side in ("BUY", "SELL"):
+        result = replay(
+            q, profile, small, [{"available_at": q[0].event_ts_utc_ns, "side": side}], True
+        )
+        assert not result["trades"] and not result["fills"] and not result["rejections"]
+        assert result["skips"][0]["status"] == "SKIPPED_STOP_LEVEL"

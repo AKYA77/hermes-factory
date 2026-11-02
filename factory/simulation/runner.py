@@ -119,6 +119,20 @@ class ReplayStrategy(Strategy):
             sign = 1 if side == "BUY" else -1
             stop = entry - sign * distance
             target = entry + sign * distance * 3
+            # A stop already crossed at submission is infeasible, not a valid
+            # bracket: it can close the parent while siblings are still activating.
+            liquidation = (
+                tick.bid_price.as_decimal() if side == "BUY" else tick.ask_price.as_decimal()
+            )
+            if (side == "BUY" and stop >= liquidation) or (side == "SELL" and stop <= liquidation):
+                self.skips.append(
+                    {
+                        "ts": now,
+                        "status": "SKIPPED_STOP_LEVEL",
+                        "reason": "stop already triggered at submission",
+                    }
+                )
+                continue
             # USD quote acceptance profile. Other currency conversions require dated cross quotes.
             if self.profile.quote_currency != "USD":
                 self.skips.append({"ts": now, "status": "UNKNOWN_CONVERSION"})
