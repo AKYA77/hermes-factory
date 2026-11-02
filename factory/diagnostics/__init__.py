@@ -13,9 +13,16 @@ def diagnose_trade(
     side = trade["side"]
     direction = D(1) if side == "BUY" else D(-1)
     price = D(entry["price"])
-    stop_distance = abs(price - D(trade["stop"]))
+    stop_distance = D(trade.get("intended_stop_distance", abs(price - D(trade["stop"]))))
+    if stop_distance <= 0:
+        raise ValueError("INVALID_INTENDED_STOP_DISTANCE")
     moves = [
-        (p["ts"], (D(p["bid"] if side == "BUY" else p["ask"]) - price) * direction) for p in path
+        (
+            p["ts"],
+            (D(p["bid"] if side == "BUY" else p["ask"]) - D(p.get("entry_reference", price)))
+            * direction,
+        )
+        for p in path
     ]
     mfe_time, mfe = max(moves, key=lambda v: v[1])
     mae_time, mae = min(moves, key=lambda v: v[1])
@@ -25,11 +32,27 @@ def diagnose_trade(
     if exit_fill:
         duration = (exit_fill["ts"] - entry["ts"]) / 1e9
         realized = (D(exit_fill["price"]) - price) * direction
-        if realized < 0 and duration <= fast_stop_seconds and mfe < stop_distance * favorable_r:
+        stopped = trade.get("exit_reason") == "STOP_LOSS"
+        if trade.get("exit_reason") is None:
+            tags.append("EXIT_CAUSE_UNKNOWN")
+        if (
+            stopped
+            and realized < 0
+            and duration <= fast_stop_seconds
+            and mfe < stop_distance * favorable_r
+        ):
             tags.append("FAST_STOP")
-        if realized < 0 and mfe >= stop_distance * favorable_r:
+        if stopped and realized < 0 and mfe >= stop_distance * favorable_r:
             tags.append("FAVORABLE_THEN_STOP")
-        if realized < stop_distance * 3 and mfe >= stop_distance * 3 * near_target:
+        target_filled = (
+            any(f.get("role") == "TAKE_PROFIT" for f in trade.get("exit_fills", []))
+            or trade.get("exit_reason") == "TAKE_PROFIT"
+        )
+        if (
+            not target_filled
+            and realized < stop_distance * 3
+            and mfe >= stop_distance * 3 * near_target
+        ):
             tags.append("TARGET_NEAR_MISS")
     incomplete = any(
         x in tags for x in ("NO_EXECUTABLE_EXIT_QUOTE", "UNRESOLVED_PATH", "DELAYED_TIMEOUT_QUOTE")

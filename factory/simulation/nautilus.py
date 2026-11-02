@@ -1,6 +1,7 @@
 """Thin supported fill-book extension. Nautilus owns orders, fills and accounts."""
 
 from decimal import Decimal as D
+from factory.simulation.ledger import EXECUTION_VERSION
 
 from nautilus_trader.backtest.models import FillModel
 from nautilus_trader.model.book import OrderBook
@@ -37,7 +38,7 @@ class AdverseFillModel(FillModel):
                 "bid": str(best_bid),
                 "ask": str(best_ask),
                 "slippage": str(slip),
-                "model": "adverse-fill/v1",
+                "model": EXECUTION_VERSION,
             }
         )
         return book

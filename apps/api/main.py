@@ -4,15 +4,16 @@ import hashlib
 import hmac
 import json
 from pathlib import Path
-from typing import Annotated
+from typing import Annotated, Literal
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
 import psutil
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, model_validator
 from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, SYMBOLS, fingerprint
 from factory.data import Catalog
 from factory.experiments import Store
 from factory.ranking import leaderboard
+from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 
 
 class Proposal(BaseModel):
@@ -20,6 +21,11 @@ class Proposal(BaseModel):
     strategy: StrategySpec
     contract: ExperimentContract
     profile: InstrumentSpec
+
+    @model_validator(mode="after")
+    def runtime_version(self):
+        require_execution_version(self.contract)
+        return self
 
 
 def create_app(root, dashboard=None):
@@ -118,10 +124,14 @@ def create_app(root, dashboard=None):
         ]
 
     @app.get("/api/v1/leaderboards/{symbol}", dependencies=read)
-    def board(symbol: str, validated_only: bool = False):
+    def board(
+        symbol: str,
+        validated_only: bool = False,
+        execution_version: Literal["adverse-fill/v1", "adverse-fill/v2"] | None = None,
+    ):
         if symbol not in SYMBOLS:
             raise HTTPException(404, "unknown instrument")
-        return leaderboard(store, symbol, validated_only)
+        return leaderboard(store, symbol, validated_only, execution_version or EXECUTION_VERSION)
 
     @app.get("/api/v1/jobs", dependencies=read)
     def jobs(limit: int = Query(25, ge=1, le=100), offset: int = Query(0, ge=0)):

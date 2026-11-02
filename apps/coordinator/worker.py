@@ -13,6 +13,7 @@ from factory.contracts import (
 from factory.data import Catalog, atomic_bytes
 from factory.diagnostics import diagnose_trade
 from factory.simulation.runner import replay
+from factory.simulation.ledger import require_execution_version
 from factory.strategies import compile_signals
 
 
@@ -24,12 +25,13 @@ def run(payload, root):
         profile
     ):
         raise ValueError("contract mismatch")
-    if contract.engine_version != "1.231.0" or contract.fill_version != "adverse-fill/v1":
-        raise ValueError("unsupported engine/fill version")
-    if any(w.role != "train_only" for w in contract.windows):
+    require_execution_version(contract)
+    if len(contract.windows) != 1 or any(w.role != "train_only" for w in contract.windows):
         raise ValueError("evaluation worker currently training-only; cannot fabricate OOS")
     catalog = Catalog(Path(root) / "catalog")
     manifest = catalog.verify(contract.dataset_hash)
+    if spec.instrument != profile.instrument or manifest["instrument"] != spec.instrument:
+        raise ValueError("instrument identity mismatch")
     if not profile.synthetic or not manifest["provenance"].get("synthetic"):
         raise ValueError("HISTORICAL_APPROVAL_REQUIRED: provider and instrument gate not complete")
     quotes = list(catalog.read(contract.dataset_hash))
@@ -39,6 +41,8 @@ def run(payload, root):
     result = replay(
         quotes, profile, spec, signals, contract.scenario == "historical-pessimistic/v1"
     )
+    if result["integrity_errors"]:
+        raise ValueError("EXECUTION_CONTRACT_MISMATCH: " + serialize(result["integrity_errors"]))
     result["diagnostics"] = [diagnose_trade(t, profile.tick_size) for t in result["trades"]]
     result["signals_screened"] = len(signals)
     digest = fingerprint(result)

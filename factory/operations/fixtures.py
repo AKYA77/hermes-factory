@@ -6,6 +6,7 @@ from pathlib import Path
 from factory.contracts import ExperimentContract, Signal, StrategySpec, Window, fingerprint
 from factory.data import Catalog, Quote
 from factory.instruments import synthetic_profile
+from factory.simulation.ledger import EXECUTION_VERSION
 
 
 def seed(root, rows=2000):
@@ -52,7 +53,7 @@ def seed(root, rows=2000):
         instrument_hash=fingerprint(profile),
         engine_version="1.231.0",
         code_revision=revision,
-        fill_version="adverse-fill/v1",
+        fill_version=EXECUTION_VERSION,
         evaluation_policy="synthetic-training/v1",
         scenario="historical-pessimistic/v1",
         windows=(Window(start_ns=start, end_ns=quotes[-1].event_ts_utc_ns + 1, role="train_only"),),

@@ -5,11 +5,13 @@ from factory.data import Catalog
 from factory.diagnostics import diagnose_trade
 from factory.reporting import metrics
 from factory.simulation.runner import replay
+from factory.simulation.ledger import require_execution_version
 from factory.strategies import compile_signals
 
 
 def evaluate(root, payload):
     contract = ExperimentContract.model_validate(payload["contract"])
+    require_execution_version(contract)
     spec = StrategySpec.model_validate(payload["strategy"])
     profile = InstrumentSpec.model_validate(payload["profile"])
     if (
@@ -21,8 +23,12 @@ def evaluate(root, payload):
         raise ValueError("dated currency conversion unsupported")
     catalog = Catalog(root)
     manifest = catalog.verify(contract.dataset_hash)
-    if manifest["instrument"] != spec.instrument:
+    if manifest["instrument"] != spec.instrument or profile.instrument != spec.instrument:
         raise ValueError("instrument mismatch")
+    if not profile.synthetic or not manifest["provenance"].get("synthetic"):
+        raise ValueError(
+            "HISTORICAL_EVALUATION_BLOCKED: verified profiles and evaluation gates required"
+        )
     quotes = list(catalog.read(contract.dataset_hash))
     # Compile once on chronological data. All operators are past-only. Signals are
     # filtered by their available_at time; previous bars supply warm-up without labels.
@@ -45,6 +51,8 @@ def evaluate(root, payload):
             window_signals,
             contract.scenario == "historical-pessimistic/v1",
         )
+        if result["integrity_errors"]:
+            raise ValueError("EXECUTION_CONTRACT_MISMATCH")
         result["diagnostics"] = [diagnose_trade(t, profile.tick_size) for t in result["trades"]]
         results.append(
             {

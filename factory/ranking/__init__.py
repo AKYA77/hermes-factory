@@ -4,17 +4,24 @@ import json
 from decimal import Decimal
 from factory.contracts import SYMBOLS
 from factory.reporting import metrics
+from factory.simulation.ledger import EXECUTION_VERSION
 
 
-def leaderboard(store, symbol, validated_only=False):
+def leaderboard(store, symbol, validated_only=False, execution_version=EXECUTION_VERSION):
     if symbol not in SYMBOLS:
         raise ValueError("unknown instrument")
     rows = store.rows(
         "SELECT * FROM experiments WHERE instrument=? ORDER BY created_at DESC", (symbol,)
     )
     candidates = {}
+    excluded = 0
     for row in rows:
         contract = json.loads(row["contract_json"])
+        if contract["fill_version"] != execution_version:
+            excluded += 1
+            continue
+        if validated_only and execution_version != EXECUTION_VERSION:
+            continue
         if contract["scenario"] != "historical-pessimistic/v1":
             continue
         if validated_only and row["status"] != "VALIDATED":
@@ -48,5 +55,9 @@ def leaderboard(store, symbol, validated_only=False):
         "ranking_policy": "v1-development",
         "candidates": sorted(candidates.values(), key=order)[:5],
         "max_slots": 5,
+        "execution_version": execution_version,
+        "excluded_other_execution_runs": excluded,
+        "legacy_evidence": execution_version != EXECUTION_VERSION,
+        "comparison_limits": "Dataset and evaluation-window comparability remains unfinished.",
         "warning": "Independent evidence promotion is not implemented; no validated claim.",
     }

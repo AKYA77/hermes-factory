@@ -206,6 +206,26 @@
             }
           },
           {
+            "name": "execution_version",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "adverse-fill/v1",
+                    "adverse-fill/v2"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Execution Version"
+            }
+          },
+          {
             "name": "authorization",
             "in": "header",
             "required": false,

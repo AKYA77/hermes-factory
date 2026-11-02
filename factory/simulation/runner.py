@@ -4,16 +4,18 @@ from decimal import Decimal as D
 
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.config import BacktestEngineConfig
+from nautilus_trader.accounting.margin_models import StandardMarginModel
 from nautilus_trader.common.config import LoggingConfig
 from nautilus_trader.model.currencies import Currency, USD
 from nautilus_trader.model.data import QuoteTick
-from nautilus_trader.model.enums import AccountType, OmsType, OrderSide
-from nautilus_trader.model.identifiers import InstrumentId, Symbol, Venue
+from nautilus_trader.model.enums import AccountType, OmsType, OrderSide, TimeInForce
+from nautilus_trader.model.identifiers import InstrumentId, Symbol, Venue, ClientOrderId
 from nautilus_trader.model.instruments import CurrencyPair
 from nautilus_trader.model.objects import Money, Price, Quantity
 from nautilus_trader.trading.strategy import Strategy
 
 from factory.simulation.nautilus import AdverseFillModel
+from factory.simulation.ledger import Fill, TradeLedger, EXECUTION_VERSION
 from factory.simulation.pricing import effective_quotes, eligible_price, size_position
 
 
@@ -45,63 +47,208 @@ def make_instrument(p):
 class ReplayStrategy(Strategy):
     def __init__(self, instrument, profile, spec, signals, conservative):
         super().__init__()
-        self.instrument = instrument
-        self.profile = profile
-        self.spec = spec
+        self.instrument, self.profile, self.spec = instrument, profile, spec
         self.signals = iter(signals)
         self.next_signal = next(self.signals, None)
         self.conservative = conservative
-        self.fills = []
-        self.trades = []
-        self.skips = []
+        self.entry_tif = TimeInForce.GTC
+        self.fills, self.trades, self.skips, self.rejections = [], [], [], []
         self.current = None
+        self.order_ledgers = {}
+        self.completed = set()
         self.equity = D("20")
         self.last_ts = None
-        self.rejections = []
+        self.quote_count = 0
+        self.in_quote = False
+        self.deadlines = {}
+        self.expired = set()
+        self.safety_pending = set()
+        self.empty_completed = set()
+        self.cleanup_in_progress = set()
 
     def on_start(self):
         self.subscribe_quote_ticks(self.instrument.id)
 
+    def _cancel_related(self, ledger):
+        marker = id(ledger)
+        if marker in self.cleanup_in_progress:
+            return
+        self.cleanup_in_progress.add(marker)
+        try:
+            for order_id in list(ledger.orders):
+                order = self.cache.order(ClientOrderId(order_id))
+                if order is not None and not order.is_closed:
+                    self.cancel_order(order)
+        finally:
+            self.cleanup_in_progress.remove(marker)
+
+    def _settle(self, ledger):
+        if ledger.closed:
+            self._cancel_related(ledger)
+            marker = id(ledger)
+            if marker not in self.completed:
+                self.completed.add(marker)
+                ledger.metadata["equity_after"] = str(self.equity)
+                self.trades.append(ledger)
+            if all(o["terminal"] for o in ledger.orders.values()):
+                if self.current is ledger:
+                    self.current = None
+        elif ledger.entry_terminal and not ledger.entered:
+            if id(ledger) not in self.empty_completed:
+                self.empty_completed.add(id(ledger))
+                self.skips.append(
+                    {
+                        "ts": self.clock.timestamp_ns(),
+                        "status": "SKIPPED_UNFILLED_ENTRY",
+                        "signal": ledger.metadata["signal"],
+                        "order_states": ledger.snapshot()["order_states"],
+                    }
+                )
+            self._cancel_related(ledger)
+            if all(o["terminal"] for o in ledger.orders.values()):
+                if self.current is ledger:
+                    self.current = None
+
+    def _terminal(self, event, status):
+        order_id = str(event.client_order_id)
+        ledger = self.order_ledgers.get(order_id)
+        if ledger is None:
+            raise ValueError("UNKNOWN_TERMINAL_ORDER")
+        ledger.terminal(order_id, status)
+        if (
+            ledger.orders[order_id]["role"] in ("STOP_LOSS", "TAKE_PROFIT")
+            and ledger.quantity
+            and id(ledger) not in self.expired
+            and status != "FILLED"
+        ):
+            if "PROTECTION_LOST" not in ledger.metadata["flags"]:
+                ledger.metadata["flags"].append("PROTECTION_LOST")
+            self.safety_pending.add(id(ledger))
+            self._cancel_related(ledger)
+        self._settle(ledger)
+
+    def on_order_cancel_rejected(self, event):
+        order_id = str(event.client_order_id)
+        ledger = self.order_ledgers.get(order_id)
+        if ledger is None:
+            raise ValueError("UNKNOWN_CANCEL_ORDER")
+        ledger.events.append(
+            {"order_id": order_id, "status": "CANCEL_REJECTED", "reason": str(event.reason)}
+        )
+        if not ledger.orders[order_id]["terminal"] and ledger.quantity:
+            self.safety_pending.add(id(ledger))
+            if "ORDER_CANCEL_REJECTED" not in ledger.metadata["flags"]:
+                ledger.metadata["flags"].append("ORDER_CANCEL_REJECTED")
+
+    def on_order_canceled(self, event):
+        self._terminal(event, "CANCELED")
+
+    def on_order_expired(self, event):
+        self._terminal(event, "EXPIRED")
+
     def on_order_rejected(self, event):
         self.rejections.append(str(event))
+        self._terminal(event, "REJECTED")
+
+    def on_order_denied(self, event):
+        self.rejections.append(str(event))
+        self._terminal(event, "DENIED")
 
     def on_order_filled(self, event):
-        fill = {
-            "order_id": str(event.client_order_id),
-            "ts": int(event.ts_event),
-            "price": str(event.last_px),
-            "size": str(event.last_qty),
-            "side": str(event.order_side),
-            "commission": str(event.commission),
-        }
-        self.fills.append(fill)
-        if self.current is None:
+        order_id = str(event.client_order_id)
+        ledger = self.order_ledgers.get(order_id)
+        if ledger is None:
+            raise ValueError("UNKNOWN_FILL_ORDER")
+        fill = Fill(
+            order_id=order_id,
+            trade_id=str(event.trade_id),
+            ts=int(event.ts_event),
+            side="BUY" if event.order_side == OrderSide.BUY else "SELL",
+            size=event.last_qty.as_decimal(),
+            price=event.last_px.as_decimal(),
+            commission=event.commission.as_decimal(),
+            quote_index=max(0, self.quote_count - 1 if self.in_quote else self.quote_count),
+        )
+        was_empty = not ledger.entered
+        prior = len(ledger.fills)
+        self.equity += ledger.apply(fill)
+        if len(ledger.fills) == prior:
             return
-        if self.current["entry_fill"] is None:
-            self.current["entry_fill"] = fill
+        self.fills.append({**fill.json(), "role": ledger.orders[order_id]["role"]})
+        if was_empty and ledger.entered:
+            name = "deadline-" + order_id
+            self.deadlines[name] = ledger
+            self.clock.set_time_alert_ns(
+                name,
+                fill.ts + self.spec.max_hold_seconds * 10**9,
+                callback=self._deadline,
+                allow_past=False,
+            )
+        order = self.cache.order(event.client_order_id)
+        if order is not None and order.is_closed:
+            ledger.terminal(order_id, "FILLED")
+        # An exiting trade must not retain an unfilled opening remainder.
+        if ledger.orders[order_id]["role"] != "ENTRY":
+            for entry_id, state in ledger.orders.items():
+                if state["role"] == "ENTRY" and not state["terminal"]:
+                    entry_order = self.cache.order(ClientOrderId(entry_id))
+                    if entry_order is not None and not entry_order.is_closed:
+                        self.cancel_order(entry_order)
+        self._settle(ledger)
+
+    def _deadline(self, event):
+        ledger = self.deadlines.pop(event.name)
+        if not ledger.closed and ledger.quantity:
+            self.expired.add(id(ledger))
+            # Cancel protection at the deadline; submit no market fill against
+            # a stale book. Only a subsequent actual quote can execute expiry.
+            self._cancel_related(ledger)
+
+    def _time_exit(self, ledger, now, reason="TIMEOUT"):
+        if any(
+            o["role"] in ("TIMEOUT", "SAFETY_CLOSE") and not o["terminal"]
+            for o in ledger.orders.values()
+        ):
             return
-        self.current["exit_fill"] = fill
-        c = self.current
-        signed = 1 if c["side"] == "BUY" else -1
-        pnl = (D(fill["price"]) - D(c["entry_fill"]["price"])) * signed * D(fill["size"])
-        self.equity += pnl
-        c["pnl"] = str(pnl)
-        c["equity_after"] = str(self.equity)
-        self.trades.append(c)
-        self.current = None
+        entry_ts = ledger.aggregate(True)["ts"]
+        flag = (
+            "TIMEOUT"
+            if now == entry_ts + self.spec.max_hold_seconds * 10**9
+            else "DELAYED_TIMEOUT_QUOTE"
+        )
+        if reason == "SAFETY_CLOSE":
+            flag = "SAFETY_CLOSE"
+        if flag not in ledger.metadata["flags"]:
+            ledger.metadata["flags"].append(flag)
+        order = self.order_factory.market(
+            self.instrument.id,
+            OrderSide.SELL if ledger.metadata["side"] == "BUY" else OrderSide.BUY,
+            self.instrument.make_qty(ledger.quantity),
+            reduce_only=True,
+        )
+        ledger.register(str(order.client_order_id), reason)
+        self.order_ledgers[str(order.client_order_id)] = ledger
+        self.submit_order(order)
 
     def on_quote_tick(self, tick):
+        self.quote_count += 1
+        self.in_quote = True
+        try:
+            self._on_quote(tick)
+        finally:
+            self.in_quote = False
+
+    def _on_quote(self, tick):
         now = int(tick.ts_event)
         self.last_ts = now
-        if self.current and self.current["entry_fill"]:
-            c = self.current
-            c["path"].append({"ts": now, "bid": str(tick.bid_price), "ask": str(tick.ask_price)})
-            deadline = c["entry_fill"]["ts"] + self.spec.max_hold_seconds * 10**9
-            if now >= deadline and not c.get("timeout_submitted"):
-                c["flags"].append("TIMEOUT" if now == deadline else "DELAYED_TIMEOUT_QUOTE")
-                c["timeout_submitted"] = True
-                self.cancel_all_orders(self.instrument.id)
-                self.close_all_positions(self.instrument.id)
+        if self.current and self.current.quantity:
+            deadline = self.current.aggregate(True)["ts"] + self.spec.max_hold_seconds * 10**9
+            if now >= deadline:
+                self.expired.add(id(self.current))
+                self._cancel_related(self.current)
+                self._time_exit(self.current, now)
+        if self.current and self.current.quantity and id(self.current) in self.safety_pending:
+            self._time_exit(self.current, now, reason="SAFETY_CLOSE")
         while self.next_signal and self.next_signal["available_at"] < now:
             signal = self.next_signal
             self.next_signal = next(self.signals, None)
@@ -124,12 +271,12 @@ class ReplayStrategy(Strategy):
             liquidation = (
                 tick.bid_price.as_decimal() if side == "BUY" else tick.ask_price.as_decimal()
             )
-            if (side == "BUY" and stop >= liquidation) or (side == "SELL" and stop <= liquidation):
+            if (liquidation - stop) * sign < self.profile.min_stop_ticks * self.profile.tick_size:
                 self.skips.append(
                     {
                         "ts": now,
                         "status": "SKIPPED_STOP_LEVEL",
-                        "reason": "stop already triggered at submission",
+                        "reason": "stop violates current executable-side minimum distance",
                     }
                 )
                 continue
@@ -141,29 +288,41 @@ class ReplayStrategy(Strategy):
             if sizing["status"] != "ELIGIBLE":
                 self.skips.append({"ts": now, **{k: str(v) for k, v in sizing.items()}})
                 continue
-            self.current = {
+            metadata = {
                 "signal": signal,
                 "side": side,
-                "entry_fill": None,
+                "intent_entry": str(entry),
                 "stop": str(stop),
                 "target": str(target),
+                "intended_stop_distance": str(distance),
                 "risk": str(sizing["risk"]),
+                "modeled_stop_fill": str(
+                    stop - sign * (2 * self.profile.pip_size if self.conservative else 0)
+                ),
+                "risk_budget": str(sizing["risk_budget"]),
+                "projected_margin": str(sizing["margin"]),
                 "equity_before": str(self.equity),
-                "path": [],
                 "flags": [],
             }
+            self.current = TradeLedger(metadata, sizing["size"])
             bracket = self.order_factory.bracket(
                 self.instrument.id,
                 OrderSide.BUY if side == "BUY" else OrderSide.SELL,
                 self.instrument.make_qty(sizing["size"]),
+                time_in_force=self.entry_tif,
                 sl_trigger_price=self.instrument.make_price(stop),
                 tp_price=self.instrument.make_price(target),
                 tp_post_only=False,
             )
+            for order, role in zip(bracket.orders, ("ENTRY", "STOP_LOSS", "TAKE_PROFIT")):
+                self.current.register(str(order.client_order_id), role)
+                self.order_ledgers[str(order.client_order_id)] = self.current
             self.submit_order_list(bracket)
 
 
-def replay(quotes, profile, spec, signals, conservative):
+def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
+    if profile.instrument != spec.instrument:
+        raise ValueError("instrument identity mismatch")
     quotes = list(quotes)
     if not quotes:
         raise ValueError("no quotes")
@@ -178,7 +337,7 @@ def replay(quotes, profile, spec, signals, conservative):
         raise ValueError("quote units mismatch")
     instrument = make_instrument(profile)
     engine = BacktestEngine(BacktestEngineConfig(logging=LoggingConfig(bypass_logging=True)))
-    fill = AdverseFillModel(profile, conservative)
+    fill = fill_model if fill_model is not None else AdverseFillModel(profile, conservative)
     engine.add_venue(
         Venue("SIM"),
         OmsType.NETTING,
@@ -187,6 +346,7 @@ def replay(quotes, profile, spec, signals, conservative):
         base_currency=USD,
         default_leverage=D(1000),
         fill_model=fill,
+        margin_model=StandardMarginModel(),
         use_message_queue=False,
         reject_stop_orders=False,
     )
@@ -212,29 +372,115 @@ def replay(quotes, profile, spec, signals, conservative):
     try:
         engine.add_data(ticks)
         engine.run()
-        if strategy.current:
-            strategy.current["flags"].append("NO_EXECUTABLE_EXIT_QUOTE")
-        # The matching engine may fill before strategy quote callbacks. Reconstruct
-        # the complete executable-side path from the exact stream fed to the engine.
-        for trade in strategy.trades + ([strategy.current] if strategy.current else []):
+        open_trade = (
+            strategy.current.snapshot()
+            if strategy.current and not strategy.current.closed
+            else None
+        )
+        if open_trade:
+            open_trade["flags"] = list(open_trade["flags"]) + ["NO_EXECUTABLE_EXIT_QUOTE"]
+        trades = [ledger.snapshot() for ledger in strategy.trades]
+        for trade in trades + ([open_trade] if open_trade else []):
             if not trade["entry_fill"]:
                 trade["flags"].append("ENTRY_NOT_FILLED")
+                trade["path"] = []
                 continue
-            start = trade["entry_fill"]["ts"]
-            end = trade.get("exit_fill", {}).get("ts", ticks[-1].ts_event)
-            trade["path"] = [
-                {"ts": int(t.ts_event), "bid": str(t.bid_price), "ask": str(t.ask_price)}
-                for t in ticks
-                if start <= t.ts_event <= end
-            ]
-            if end > start + spec.max_hold_seconds * 10**9:
-                trade["flags"].append("DELAYED_TIMEOUT_QUOTE")
+            start = trade["entry_fill"]["quote_index"]
+            end = trade["exit_fill"]["quote_index"] if trade["exit_fill"] else len(ticks) - 1
+            # Per-quote entry basis uses fills observable at that quote only.
+            fills = sorted(
+                trade["entry_fills"] + trade["exit_fills"],
+                key=lambda f: (f["quote_index"], f["ts"]),
+            )
+            pos = 0
+            quantity = cost = D(0)
+            basis = D(trade["entry_fill"]["price"])
+            trade["path"] = []
+            for i in range(start, end + 1):
+                while pos < len(fills) and fills[pos]["quote_index"] <= i:
+                    f = fills[pos]
+                    q, price = D(f["size"]), D(f["price"])
+                    if f["role"] == "ENTRY":
+                        cost += q * price
+                        quantity += q
+                        basis = cost / quantity
+                    else:
+                        cost -= basis * q
+                        quantity -= q
+                    pos += 1
+                t = ticks[i]
+                trade["path"].append(
+                    {
+                        "ts": int(t.ts_event),
+                        "quote_index": i,
+                        "bid": str(t.bid_price),
+                        "ask": str(t.ask_price),
+                        "entry_reference": str(basis),
+                    }
+                )
+            if (
+                trade["exit_fill"]
+                and trade["exit_fill"]["ts"]
+                > trade["entry_fill"]["ts"] + spec.max_hold_seconds * 10**9
+            ):
+                if "DELAYED_TIMEOUT_QUOTE" not in trade["flags"]:
+                    trade["flags"].append("DELAYED_TIMEOUT_QUOTE")
+        integrity_errors = []
+        if strategy.rejections:
+            integrity_errors.append(
+                {
+                    "reason": "ENGINE_ORDER_REJECTION",
+                    "count": len(strategy.rejections),
+                    "sample": [r[:1000] for r in strategy.rejections[:3]],
+                }
+            )
+        for f in strategy.fills:
+            if D(f["commission"]) != 0:
+                integrity_errors.append(
+                    {"trade_id": f["trade_id"], "reason": "COMMISSION_SCENARIO_MISMATCH"}
+                )
+            tick = ticks[f["quote_index"]]
+            f["effective_bid"] = str(tick.bid_price)
+            f["effective_ask"] = str(tick.ask_price)
+            if f["role"] == "TAKE_PROFIT":
+                ledger = strategy.order_ledgers[f["order_id"]]
+                limit = D(ledger.metadata["target"])
+                if (f["side"] == "SELL" and D(f["price"]) < limit) or (
+                    f["side"] == "BUY" and D(f["price"]) > limit
+                ):
+                    integrity_errors.append(
+                        {"trade_id": f["trade_id"], "reason": "LIMIT_PRICE_VIOLATION"}
+                    )
+            else:
+                book_price = (
+                    tick.ask_price.as_decimal()
+                    if f["side"] == "BUY"
+                    else tick.bid_price.as_decimal()
+                )
+                expected = eligible_price(book_price, f["side"], "MARKET", profile, conservative)
+                f["expected_price"] = str(expected)
+                f["actual_adverse_adjustment"] = str(
+                    (D(f["price"]) - book_price) * (1 if f["side"] == "BUY" else -1)
+                )
+                if D(f["price"]) != expected:
+                    integrity_errors.append(
+                        {
+                            "trade_id": f["trade_id"],
+                            "reason": "ELIGIBLE_FILL_PRICE_MISMATCH",
+                            "expected": str(expected),
+                            "actual": f["price"],
+                        }
+                    )
         return {
             "engine": "nautilus_trader",
-            "trades": strategy.trades,
+            "trades": trades,
             "fills": strategy.fills,
             "skips": strategy.skips,
-            "open_trade": strategy.current,
+            "open_trade": open_trade,
+            "accounting_version": EXECUTION_VERSION,
+            "integrity_errors": integrity_errors,
+            "entry_time_in_force": strategy.entry_tif.name,
+            "margin_model": "standard_fixed_profile_rate",
             "rejections": strategy.rejections,
             "fill_trace": fill.trace,
             "ending_equity": str(strategy.equity),

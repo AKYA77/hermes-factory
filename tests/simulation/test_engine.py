@@ -61,3 +61,47 @@ def test_stop_inside_effective_spread_is_skipped(profile, spec):
         )
         assert not result["trades"] and not result["fills"] and not result["rejections"]
         assert result["skips"][0]["status"] == "SKIPPED_STOP_LEVEL"
+
+
+def test_deadline_gap_cancels_targets_before_late_quote(profile, spec):
+    q = quotes([(110000, 110010), (110000, 110010), (110500, 110510)], step=90000 * 10**9)
+    result = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert len(result["trades"]) == 1, result
+    t = result["trades"][0]
+    assert t["exit_reason"] == "TIMEOUT"
+    assert "DELAYED_TIMEOUT_QUOTE" in t["flags"]
+    assert t["exit_fill"]["ts"] == q[-1].event_ts_utc_ns
+    assert not result["integrity_errors"]
+
+
+def test_equal_timestamp_quote_order_does_not_add_future_path(profile, spec):
+    from dataclasses import replace
+
+    q = quotes([(110000, 110010), (110000, 110010), (110400, 110410), (112000, 112010)])
+    q[-1] = replace(q[-1], event_ts_utc_ns=q[-2].event_ts_utc_ns)
+    result = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    t = result["trades"][0]
+    assert t["path"][-1]["quote_index"] == 2
+    assert len(t["path"]) == 2
+    assert not result["integrity_errors"]
+
+
+def test_native_margin_formula_matches_profile(profile):
+    from factory.simulation.runner import make_instrument
+    from nautilus_trader.accounting.margin_models import StandardMarginModel
+
+    instrument = make_instrument(profile)
+    native = StandardMarginModel().calculate_margin_init(
+        instrument, instrument.make_qty(1000), instrument.make_price("1.1"), D(1000)
+    )
+    assert native.as_decimal() == D("1.10")
+
+
+def test_min_stop_distance_is_checked_against_executable_side(profile, spec):
+    q = quotes([(110000, 110010), (110000, 110010), (110350, 110360)])
+    constrained = profile.model_copy(update={"min_stop_ticks": 80})
+    result = replay(
+        q, constrained, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True
+    )
+    assert not result["fills"] and not result["rejections"]
+    assert result["skips"][0]["status"] == "SKIPPED_STOP_LEVEL"
