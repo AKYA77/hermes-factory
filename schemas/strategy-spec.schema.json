@@ -1,0 +1,122 @@
+{
+  "$defs": {
+    "Signal": {
+      "additionalProperties": false,
+      "properties": {
+        "operator": {
+          "enum": [
+            "mean_reversion",
+            "momentum",
+            "breakout"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "lookback": {
+          "maximum": 500,
+          "minimum": 2,
+          "title": "Lookback",
+          "type": "integer"
+        },
+        "threshold": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0.0,
+              "maximum": 20.0,
+              "type": "number"
+            },
+            {
+              "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+              "type": "string"
+            }
+          ],
+          "title": "Threshold"
+        },
+        "version": {
+          "const": "1",
+          "default": "1",
+          "title": "Version",
+          "type": "string"
+        }
+      },
+      "required": [
+        "operator",
+        "lookback",
+        "threshold"
+      ],
+      "title": "Signal",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "strategy/v1",
+      "default": "strategy/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "instrument": {
+      "title": "Instrument",
+      "type": "string"
+    },
+    "timeframe": {
+      "title": "Timeframe",
+      "type": "string"
+    },
+    "signal": {
+      "$ref": "#/$defs/Signal"
+    },
+    "confirmations": {
+      "default": [],
+      "items": {
+        "type": "string"
+      },
+      "title": "Confirmations",
+      "type": "array"
+    },
+    "stop_ticks": {
+      "exclusiveMinimum": 0,
+      "maximum": 1000000,
+      "title": "Stop Ticks",
+      "type": "integer"
+    },
+    "target_rr": {
+      "const": "3",
+      "default": "3",
+      "title": "Target Rr",
+      "type": "string"
+    },
+    "max_hold_seconds": {
+      "default": 86400,
+      "exclusiveMinimum": 0,
+      "maximum": 86400,
+      "title": "Max Hold Seconds",
+      "type": "integer"
+    },
+    "direction": {
+      "default": "both",
+      "enum": [
+        "both",
+        "long",
+        "short"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "semantic_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Semantic Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "instrument",
+    "timeframe",
+    "signal",
+    "stop_ticks"
+  ],
+  "title": "StrategySpec",
+  "type": "object"
+}

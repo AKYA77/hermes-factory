@@ -1,0 +1,91 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "config/v1",
+      "default": "config/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "scope": {
+      "const": "historical-paper",
+      "default": "historical-paper",
+      "title": "Scope",
+      "type": "string"
+    },
+    "initial_equity": {
+      "const": "20",
+      "default": "20",
+      "title": "Initial Equity",
+      "type": "string"
+    },
+    "risk_fraction": {
+      "const": "0.10",
+      "default": "0.10",
+      "title": "Risk Fraction",
+      "type": "string"
+    },
+    "target_rr": {
+      "const": "3",
+      "default": "3",
+      "title": "Target Rr",
+      "type": "string"
+    },
+    "max_hold_seconds": {
+      "const": 86400,
+      "default": 86400,
+      "title": "Max Hold Seconds",
+      "type": "integer"
+    },
+    "instruments": {
+      "default": [
+        "EURUSD",
+        "GBPUSD",
+        "USDJPY",
+        "USDCHF",
+        "USDCAD",
+        "AUDUSD",
+        "NZDUSD",
+        "XAUUSD"
+      ],
+      "items": {
+        "type": "string"
+      },
+      "title": "Instruments",
+      "type": "array"
+    },
+    "heavy_workers": {
+      "const": 1,
+      "default": 1,
+      "title": "Heavy Workers",
+      "type": "integer"
+    },
+    "research_enabled": {
+      "const": false,
+      "default": false,
+      "title": "Research Enabled",
+      "type": "boolean"
+    },
+    "historical_import_enabled": {
+      "const": false,
+      "default": false,
+      "title": "Historical Import Enabled",
+      "type": "boolean"
+    },
+    "host": {
+      "const": "127.0.0.1",
+      "default": "127.0.0.1",
+      "title": "Host",
+      "type": "string"
+    },
+    "port": {
+      "default": 8088,
+      "maximum": 65535,
+      "minimum": 1024,
+      "title": "Port",
+      "type": "integer"
+    }
+  },
+  "title": "Settings",
+  "type": "object"
+}
