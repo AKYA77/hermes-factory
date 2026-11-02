@@ -7,11 +7,12 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 
 - Named Markdown blueprint is absent. Factory.pdf is preserved verbatim; text
   extraction garbles some formulas. BLUEPRINT.md is an explicit source index.
-- GitHub Git read works; metadata API returns Forbidden. Existing remote is
-  AKYA77/hermes-factory. Privacy, write rights, branch rules, PR and CI unverified.
-  No duplicate repository created and no remote push performed before privacy check.
-- Proposed provider terms page and datafeed HEAD returned proxy 403. Network draft
-  adds api.github.com, www.dukascopy.com, datafeed.dukascopy.com; saving did not apply.
+- GitHub private visibility, push and API access are now verified; branch protection
+  and production release gates remain unverified. See campaign-report.json for latest tests.
+- Dukascopy tick endpoint returns 429 and directs access to AWS Requester Pays.
+  Owner requires free sources only; no billed requests are authorized or performed.
+  HistData access is blocked by the current network policy. A draft adds histdata.com
+  and www.histdata.com, preserving existing hosts; it is not applied or published.
 - Provider market-data usage approval, actual latest 2026 ticks, source limits and
   verified Gold conventions/contract/margin/volume profiles are missing.
 - No Contabo access or target Ubuntu/8GB installation, reboot, stress or soak test.
@@ -58,6 +59,16 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 - C9 blocked: no verified release/tag. Install script is development-only; update and
   rollback refuse production deployment explicitly. This is not a production installer.
 - Paper-forward collection/discrepancy measurement is not implemented.
+
+## Latest software campaign
+
+See campaign-report.json and docs/campaign-1000.md. Two 1,000-strategy synthetic
+campaigns exercise the implemented four USD-quoted Forex pairs, three operators,
+M1/M5, and fixed pessimistic execution. These do not establish historical or VPS
+readiness. Earlier 2,000-quote benchmark evidence predates the already-triggered
+stop correction; it is retained as historical development evidence, not current
+execution-correctness proof. Stop feasibility and read-only backup verification
+bugs were reproduced and corrected; no claim is made that all blueprint work is done.
 
 ## Evidence interpretation
 

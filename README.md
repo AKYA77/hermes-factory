@@ -1,9 +1,15 @@
 # Hermes Factory
 
-**NOT_READY — initial development checkpoint, no verified release.** Historical
+**NOT_READY — tested development branch, no production release.** Historical
 and paper research only; no brokerage execution. The complete supplied v2.0
 specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical market
 results are claimed.
+
+Latest verification: [1,000-strategy campaign](docs/campaign-1000.md) and
+[machine-readable report](campaign-report.json). The campaign uses synthetic
+quotes; it is not historical profitability evidence. The current regression
+suite has 45 passing tests. Free historical downloads remain blocked; no paid
+source or inference has been enabled.
 
 Implemented: typed immutable strategy/experiment contracts; fingerprints; exact
 integer quote Parquet storage with raw hashes and quarantine; leased durable job
