@@ -74,3 +74,10 @@ def test_current_boards_exclude_legacy_runs_but_history_remains(tmp_path):
     )
     assert board["excluded_other_execution_runs"] == 1
     assert len(store.rows("SELECT * FROM experiments")) == 2
+
+
+def test_source_claim_must_match_actual_checkout_content(tmp_path):
+    payload = seed(tmp_path, 120)
+    payload["contract"]["code_revision"] = "invented-git-commit"
+    with pytest.raises(ValueError, match="source revision mismatch"):
+        run(payload, tmp_path)

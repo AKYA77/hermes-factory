@@ -11,7 +11,7 @@ from factory.strategies import compile_signals
 
 def evaluate(root, payload):
     contract = ExperimentContract.model_validate(payload["contract"])
-    require_execution_version(contract)
+    context = require_execution_version(contract)
     spec = StrategySpec.model_validate(payload["strategy"])
     profile = InstrumentSpec.model_validate(payload["profile"])
     if (
@@ -70,6 +70,7 @@ def evaluate(root, payload):
         )
     return {
         "contract_hash": contract.experiment_hash,
+        "runtime_provenance": context,
         "windows": results,
         "synthetic": profile.synthetic,
         "status": "INSUFFICIENT_EVIDENCE",

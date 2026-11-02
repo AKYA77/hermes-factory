@@ -92,3 +92,14 @@ def test_commission_accounting_uses_every_actual_fill():
     book.terminal("e", "FILLED")
     book.apply(Fill("t", "t1", 2, "SELL", D(10), D("1.1"), D(".2")))
     assert book.closed and book.realized == D(".7") and book.fees == D(".3")
+
+
+def test_interleaved_entry_exit_fill_order_and_cash_preserved():
+    book = ledger()
+    book.apply(fill("e", "1", "BUY", "4", "1.1"))
+    book.apply(fill("t", "2", "SELL", "2", "1.2"))
+    book.apply(fill("e", "3", "BUY", "6", "1.3"))
+    book.terminal("e", "FILLED")
+    book.apply(fill("s", "4", "SELL", "8", "1.0"))
+    assert book.closed and book.realized == D("-1.8")
+    assert [f["order_id"] for f in book.snapshot()["execution_fills"]] == ["e", "t", "e", "s"]

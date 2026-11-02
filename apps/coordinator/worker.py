@@ -25,7 +25,7 @@ def run(payload, root):
         profile
     ):
         raise ValueError("contract mismatch")
-    require_execution_version(contract)
+    context = require_execution_version(contract)
     if len(contract.windows) != 1 or any(w.role != "train_only" for w in contract.windows):
         raise ValueError("evaluation worker currently training-only; cannot fabricate OOS")
     catalog = Catalog(Path(root) / "catalog")
@@ -41,10 +41,13 @@ def run(payload, root):
     result = replay(
         quotes, profile, spec, signals, contract.scenario == "historical-pessimistic/v1"
     )
+    result["runtime_provenance"] = context
     if result["integrity_errors"]:
         raise ValueError("EXECUTION_CONTRACT_MISMATCH: " + serialize(result["integrity_errors"]))
     result["diagnostics"] = [diagnose_trade(t, profile.tick_size) for t in result["trades"]]
     result["signals_screened"] = len(signals)
+    if require_execution_version(contract) != context:
+        raise ValueError("execution source changed during run")
     digest = fingerprint(result)
     artifact = Path(root) / "artifacts" / f"{contract.experiment_hash}.json"
     if artifact.exists() and artifact.read_text() != serialize(result):

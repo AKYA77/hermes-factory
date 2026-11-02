@@ -7,6 +7,7 @@ import resource
 import subprocess
 import sys
 import time
+from factory.provenance import source_identity
 
 
 def main():
@@ -17,6 +18,7 @@ def main():
     args = p.parse_args()
     prefix = Path("reports/runtime") / f"{args.instrument}-{args.year}{args.month:02}"
     prefix.parent.mkdir(parents=True, exist_ok=True)
+    context = source_identity()
     started = time.perf_counter()
     before = resource.getrusage(resource.RUSAGE_CHILDREN)
     with prefix.with_suffix(".log").open("w") as log:
@@ -38,6 +40,8 @@ def main():
     after = resource.getrusage(resource.RUSAGE_CHILDREN)
     report = {
         "scope": "real HistData source structural import; not historical strategy validation or VPS throughput",
+        "source_context": context,
+        "source_context_unchanged": source_identity() == context,
         "exit_code": child.returncode,
         "wall_seconds": time.perf_counter() - started,
         "cpu_seconds": after.ru_utime + after.ru_stime - before.ru_utime - before.ru_stime,

@@ -51,3 +51,20 @@ Default unlimited L1 quote-profile tests retain the exact floor/slippage rules;
 finite-liquidity fidelity and actual broker restrictions remain a C3 release gate.
 IOC and limited-depth fixtures are engine integration tests, not newly enabled
 strategy-spec order types or historical evidence.
+
+## Source identity and partial-fill paths
+
+The contract's code_revision now includes both Git HEAD and a content hash of the
+actual scientific Python/config/migration/lock source, including uncommitted and
+untracked source files. The worker checks it before and after execution. This
+prevents a proposal from merely claiming a different Git revision, and prevents
+queued older-source contracts being silently executed after a checkout update.
+This assumes trusted local code/OS; it is not protection against a malicious local
+writer or arbitrary code running inside the process. Installed wheel/release
+provenance still requires the separate C9 signed-release gate.
+
+Forensic paths retain original source record indices and ordered execution fills.
+At a quote with multiple entry/exit executions, each observed fill transition has
+its contemporaneous inventory basis; the earlier partial entry does not borrow a
+later fill's average price. This adds accounting observations, not invented prices
+between quote events. Unknown exit causes do not acquire stop tags by inference.

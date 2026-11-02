@@ -7,6 +7,7 @@ from factory.contracts import ExperimentContract, Signal, StrategySpec, Window, 
 from factory.data import Catalog, Quote
 from factory.instruments import synthetic_profile
 from factory.simulation.ledger import EXECUTION_VERSION
+from factory.provenance import execution_revision
 
 
 def seed(root, rows=2000):
@@ -44,9 +45,7 @@ def seed(root, rows=2000):
         stop_ticks=60,
     )
     profile = synthetic_profile("EURUSD")
-    import subprocess
-
-    revision = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+    revision = execution_revision()
     contract = ExperimentContract(
         strategy_hash=spec.strategy_hash,
         dataset_hash=manifest["dataset_hash"],

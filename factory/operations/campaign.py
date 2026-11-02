@@ -25,6 +25,7 @@ from factory.data import Catalog, atomic_bytes
 from factory.experiments import Store
 from factory.instruments import synthetic_profile
 from factory.operations.fixtures import seed
+from factory.provenance import execution_revision
 
 SYMBOLS = ("EURUSD", "GBPUSD", "AUDUSD", "NZDUSD")
 FAMILIES = ("momentum", "mean_reversion", "breakout")
@@ -69,7 +70,7 @@ def setup(root, count):
             strategy_hash=spec.strategy_hash,
             dataset_hash=datasets[symbol],
             instrument_hash=fingerprint(profile),
-            code_revision=revision,
+            code_revision=execution_revision(),
             evaluation_policy="synthetic-campaign/v1",
         )
         contract = ExperimentContract.model_validate(raw)

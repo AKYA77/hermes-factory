@@ -224,3 +224,21 @@ def test_ioc_partial_filled_risk_uses_actual_quantity(profile, spec, monkeypatch
     assert not result["integrity_errors"]
     assert D(t["modeled_stop_risk_for_filled_quantity"]) == D(t["risk"]) / 2
     assert D(t["realized_net_r"]) == D(t["pnl"]) / D(t["modeled_stop_risk_for_filled_quantity"])
+
+
+def test_partial_entry_path_does_not_use_later_fill_basis(profile, spec):
+    q = quotes([(110000, 110010), (110000, 110010), (110400, 110410)])
+    result = replay(
+        q,
+        profile,
+        spec,
+        [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}],
+        True,
+        fill_model=PartialBook(profile, OrderType.MARKET),
+    )
+    t = result["trades"][0]
+    entries = [p for p in t["path"] if p["phase"] == "after_entry_fill"]
+    assert len(entries) == 2
+    assert entries[0]["entry_reference"] == t["entry_fills"][0]["price"]
+    assert D(entries[1]["entry_reference"]) == D(t["entry_fill"]["price"])
+    assert entries[0]["source_record_order"] == entries[1]["source_record_order"] == 1

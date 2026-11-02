@@ -388,15 +388,26 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
             start = trade["entry_fill"]["quote_index"]
             end = trade["exit_fill"]["quote_index"] if trade["exit_fill"] else len(ticks) - 1
             # Per-quote entry basis uses fills observable at that quote only.
-            fills = sorted(
-                trade["entry_fills"] + trade["exit_fills"],
-                key=lambda f: (f["quote_index"], f["ts"]),
-            )
+            fills = trade["execution_fills"]
             pos = 0
             quantity = cost = D(0)
             basis = D(trade["entry_fill"]["price"])
             trade["path"] = []
             for i in range(start, end + 1):
+                t = ticks[i]
+
+                def point(fill=None, phase="quote"):
+                    return {
+                        "ts": int(t.ts_event),
+                        "quote_index": i,
+                        "source_record_order": quotes[i].original_record_order,
+                        "bid": str(t.bid_price),
+                        "ask": str(t.ask_price),
+                        "entry_reference": str(basis),
+                        "fill_trade_id": fill["trade_id"] if fill else None,
+                        "phase": phase,
+                    }
+
                 while pos < len(fills) and fills[pos]["quote_index"] <= i:
                     f = fills[pos]
                     q, price = D(f["size"]), D(f["price"])
@@ -404,20 +415,14 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
                         cost += q * price
                         quantity += q
                         basis = cost / quantity
+                        trade["path"].append(point(f, "after_entry_fill"))
                     else:
+                        trade["path"].append(point(f, "before_exit_fill"))
                         cost -= basis * q
                         quantity -= q
                     pos += 1
-                t = ticks[i]
-                trade["path"].append(
-                    {
-                        "ts": int(t.ts_event),
-                        "quote_index": i,
-                        "bid": str(t.bid_price),
-                        "ask": str(t.ask_price),
-                        "entry_reference": str(basis),
-                    }
-                )
+                if quantity and (not trade["path"] or trade["path"][-1]["quote_index"] != i):
+                    trade["path"].append(point())
             if (
                 trade["exit_fill"]
                 and trade["exit_fill"]["ts"]
@@ -440,6 +445,7 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
                     {"trade_id": f["trade_id"], "reason": "COMMISSION_SCENARIO_MISMATCH"}
                 )
             tick = ticks[f["quote_index"]]
+            f["source_record_order"] = quotes[f["quote_index"]].original_record_order
             f["effective_bid"] = str(tick.bid_price)
             f["effective_ask"] = str(tick.ask_price)
             if f["role"] == "TAKE_PROFIT":

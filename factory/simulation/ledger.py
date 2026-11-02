@@ -188,6 +188,7 @@ class TradeLedger:
             "open_quantity": str(self.quantity),
             "entry_fill": self.aggregate(True),
             "exit_fill": self.aggregate(False) if self.closed else None,
+            "execution_fills": list(self.fills),
             "entry_fills": [f for f in self.fills if f["role"] == "ENTRY"],
             "exit_fills": [f for f in self.fills if f["role"] != "ENTRY"],
             "exit_reason": reasons[0]
@@ -207,8 +208,14 @@ class TradeLedger:
 
 def require_execution_version(contract):
     from importlib.metadata import version
+    from factory.provenance import source_identity
 
     if contract.engine_version != "1.231.0" or contract.fill_version != EXECUTION_VERSION:
         raise ValueError("unsupported engine/fill version; legacy contracts are read-only")
     if version("nautilus_trader") != contract.engine_version:
         raise ValueError("installed engine does not match execution contract")
+    context = source_identity()
+    actual = context["git_commit"] + "@source-sha256:" + context["source_sha256"]
+    if contract.code_revision != actual:
+        raise ValueError("execution source revision mismatch")
+    return {**context, "engine_version": version("nautilus_trader")}
