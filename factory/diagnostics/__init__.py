@@ -54,7 +54,15 @@ def diagnose_trade(
     if exit_fill:
         duration = (exit_fill["ts"] - entry["ts"]) / 1e9
         realized = (D(exit_fill["price"]) - price) * direction
-        stopped = trade.get("exit_reason") == "STOP_LOSS"
+        stop_fills = [f for f in trade.get("exit_fills", ()) if f.get("role") == "STOP_LOSS"]
+        known_exits = trade.get("exit_fills", ())
+        stopped = bool(stop_fills) if known_exits else trade.get("exit_reason") == "STOP_LOSS"
+        if known_exits and trade.get("exit_reason") == "STOP_LOSS" and not stop_fills:
+            tags.append("EXIT_REASON_ROLE_MISMATCH")
+        if stop_fills:
+            duration = (min(f["ts"] for f in stop_fills) - entry["ts"]) / 1e9
+            if trade.get("exit_reason") == "MIXED":
+                tags.append("PARTIAL_STOP_LOSS_EXIT")
         if trade.get("exit_reason") is None:
             tags.append("EXIT_CAUSE_UNKNOWN")
         if (
@@ -77,10 +85,24 @@ def diagnose_trade(
         ):
             tags.append("TARGET_NEAR_MISS")
     incomplete = any(
-        x in tags for x in ("NO_EXECUTABLE_EXIT_QUOTE", "UNRESOLVED_PATH", "DELAYED_TIMEOUT_QUOTE")
+        x in tags
+        for x in (
+            "NO_EXECUTABLE_EXIT_QUOTE",
+            "UNRESOLVED_PATH",
+            "DELAYED_TIMEOUT_QUOTE",
+            "EXIT_REASON_ROLE_MISMATCH",
+        )
     )
     return {
         "status": "INCONCLUSIVE" if incomplete else "MEASURED",
+        "diagnostic_version": "diagnostics/v2-stop-role-cohorts",
+        "stop_fill_count": sum(f.get("role") == "STOP_LOSS" for f in trade.get("exit_fills", ())),
+        "stop_filled_quantity": str(
+            sum(
+                (D(f["size"]) for f in trade.get("exit_fills", ()) if f.get("role") == "STOP_LOSS"),
+                D(0),
+            )
+        ),
         "points": summary["points"],
         "mfe": str(mfe),
         "mae": str(mae),

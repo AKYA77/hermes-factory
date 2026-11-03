@@ -105,3 +105,21 @@ def test_min_stop_distance_is_checked_against_executable_side(profile, spec):
     )
     assert not result["fills"] and not result["rejections"]
     assert result["skips"][0]["status"] == "SKIPPED_STOP_LEVEL"
+
+
+def test_canonical_profile_geometry_has_identical_native_precision(profile, spec):
+    from decimal import Decimal as D
+    from factory.contracts import fingerprint
+    from factory.simulation.runner import make_instrument, replay
+    from conftest import quotes
+
+    padded = profile.model_copy(update={"tick_size": D("0.000010"), "volume_step": D("0.0010")})
+    assert fingerprint(padded) == fingerprint(profile)
+    left, right = make_instrument(profile), make_instrument(padded)
+    assert left.price_precision == right.price_precision
+    assert left.size_precision == right.size_precision
+    data = quotes([(110000, 110010), (110000, 110010), (110600, 110610)])
+    signals = [{"available_at": data[0].event_ts_utc_ns, "side": "BUY"}]
+    assert replay(iter(data), profile, spec, signals, True) == replay(
+        iter(data), padded, spec, signals, True
+    )

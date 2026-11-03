@@ -15,6 +15,7 @@ from factory.operations.resources import memory_headroom
 from factory.experiments import Store
 from factory.improvement.service import ImprovementPolicy
 from factory.validation.access import HoldoutSpec, Holdouts
+from factory.validation.protocol import ValidationProtocol, ValidationController
 from factory.ranking import leaderboard
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
@@ -174,6 +175,61 @@ def create_app(root, dashboard=None):
             "SELECT e.*,o.status,o.evidence_json,o.cpu_seconds FROM improvement_edges e LEFT JOIN improvement_outcomes o USING(edge_id) ORDER BY e.created_at,e.edge_id LIMIT ? OFFSET ?",
             (limit, offset),
         )
+
+    @app.post("/api/v1/validation/protocols", dependencies=write)
+    def register_validation(protocol: ValidationProtocol):
+        try:
+            identity = ValidationController(store, root).register(protocol)
+            return {"protocol_id": identity, "paused": store.paused()}
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+
+    @app.get("/api/v1/validation/protocols", dependencies=read)
+    def validation_protocols(
+        limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
+    ):
+        return store.rows(
+            "SELECT p.*,c.enabled,r.artifact_hash,json_extract(r.report_json,'$.status') status FROM validation_protocols p JOIN validation_controls c USING(protocol_id) LEFT JOIN validation_protocol_reports r USING(protocol_id) ORDER BY p.created_at DESC,p.protocol_id LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
+
+    @app.get("/api/v1/validation/protocols/{identity}", dependencies=read)
+    def validation_protocol_report(identity: str):
+        try:
+            controller = ValidationController(store, root)
+            protocol = controller.protocol(identity)
+        except ValueError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        reports = store.rows(
+            "SELECT report_json,artifact_hash FROM validation_protocol_reports WHERE protocol_id=?",
+            (identity,),
+        )
+        stages = store.rows(
+            "SELECT s.stage_id,s.stage_name,s.training_run_id,j.state,j.error FROM validation_stages s LEFT JOIN jobs j ON json_extract(j.payload,'$.validation_stage_id')=s.stage_id WHERE s.protocol_id=? ORDER BY s.created_at,s.stage_id",
+            (identity,),
+        )
+        regions = store.rows(
+            "SELECT * FROM validation_training_regions WHERE protocol_id=? ORDER BY fold_index",
+            (identity,),
+        )
+        return {
+            "protocol": protocol.model_dump(mode="json"),
+            "folds": protocol.folds(),
+            "stages": stages,
+            "training_regions": regions,
+            "report": json.loads(reports[0]["report_json"]) if reports else None,
+            "artifact_hash": reports[0]["artifact_hash"] if reports else None,
+        }
+
+    @app.post("/api/v1/validation/protocols/{identity}/disable", dependencies=write)
+    def disable_validation(identity: str):
+        with store.transaction() as db:
+            if not db.execute(
+                "UPDATE validation_controls SET enabled=0 WHERE protocol_id=?", (identity,)
+            ).rowcount:
+                raise HTTPException(404, "unknown validation protocol")
+            store._audit(db, "operator", "validation_disabled", {"protocol_id": identity})
+        return {"protocol_id": identity, "enabled": False}
 
     @app.get("/api/v1/validation/holdouts", dependencies=read)
     def holdouts(

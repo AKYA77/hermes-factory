@@ -60,3 +60,24 @@ def test_executed_target_is_not_near_miss():
     t = trade(prices=("1.1000", "1.1028", "1.1029"))
     t["exit_reason"] = "TAKE_PROFIT"
     assert "TARGET_NEAR_MISS" not in diagnose_trade(t, D(".00001"))["tags"]
+
+
+def test_mixed_partial_stop_uses_actual_fill_role_and_stop_time():
+    t = trade(prices=("1.1000", "1.0990"))
+    t["exit_reason"] = "MIXED"
+    t["exit_fill"]["ts"] = 400 * 10**9
+    t["exit_fills"] = [
+        {"role": "STOP_LOSS", "ts": 10**9, "size": "2"},
+        {"role": "TIMEOUT", "ts": 400 * 10**9, "size": "3"},
+    ]
+    value = diagnose_trade(t, D(".00001"))
+    assert "FAST_STOP" in value["tags"] and "PARTIAL_STOP_LOSS_EXIT" in value["tags"]
+    assert value["stop_fill_count"] == 1 and D(value["stop_filled_quantity"]) == 2
+
+
+def test_exit_role_overrules_contradictory_stop_label():
+    t = trade(prices=("1.1000", "1.0990"))
+    t["exit_fills"] = [{"role": "TIMEOUT", "ts": 4, "size": "2"}]
+    value = diagnose_trade(t, D(".00001"))
+    assert "FAST_STOP" not in value["tags"]
+    assert "EXIT_REASON_ROLE_MISMATCH" in value["tags"] and value["status"] == "INCONCLUSIVE"

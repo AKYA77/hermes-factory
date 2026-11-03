@@ -4,6 +4,7 @@ from decimal import Decimal as D
 from itertools import islice
 
 from factory.simulation.streaming import QuoteSpool, BoundedRecords
+from factory.contracts import InstrumentSpec, serialize
 from factory.diagnostics import summarize_path
 from factory.simulation.reconciliation import reconcile
 
@@ -27,8 +28,8 @@ from factory.simulation.pricing import effective_quotes, eligible_price, size_po
 def make_instrument(p):
     if p.contract_multiplier != 1:
         raise ValueError("UNSUPPORTED_CONTRACT_MULTIPLIER: version gate required")
-    precision = max(0, -p.tick_size.as_tuple().exponent)
-    size_precision = max(0, -p.volume_step.as_tuple().exponent)
+    precision = max(0, -p.tick_size.normalize().as_tuple().exponent)
+    size_precision = max(0, -p.volume_step.normalize().as_tuple().exponent)
     return CurrencyPair(
         instrument_id=InstrumentId.from_str(f"{p.instrument}.SIM"),
         raw_symbol=Symbol(p.instrument),
@@ -354,6 +355,9 @@ def replay(
     canonical source references plus sufficient statistics, not tick JSON. The
     materialized reference switch exists only for equivalence tests/benchmarks.
     """
+    # Profile fingerprints canonicalize Decimal representations. Use that same
+    # representation for native precision, sizing and forensic strings.
+    profile = InstrumentSpec.model_validate_json(serialize(profile))
     if profile.instrument != spec.instrument:
         raise ValueError("instrument identity mismatch")
     if not 1 <= batch_rows <= 65536:
@@ -531,7 +535,7 @@ def _replay_spool(
                     )
         reconciliation = reconcile(engine, strategy, instrument)
         integrity_errors.extend(reconciliation["issues"])
-        return {
+        result = {
             "reconciliation": reconciliation,
             "engine": "nautilus_trader",
             "trades": trades,
@@ -555,6 +559,10 @@ def _replay_spool(
             ),
             "unmodeled": ["swap", "financing", "broker-specific execution"],
         }
+        from factory.reporting.equity import equity_summary
+
+        result["equity"] = equity_summary(spool.rows(), spool.scale, profile, result, conservative)
+        return result
     finally:
         engine.dispose()
 

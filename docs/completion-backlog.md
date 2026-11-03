@@ -106,3 +106,12 @@ with actual supervised confirmation and separate immutable evaluation results.
 Baseline plus new tests: 176 passed, 170 recorded third-party warnings. This is
 intermediate evidence; continue into WFO refitting/annual reporting/robustness and
 full validation integration. Visibility remains public pending owner instruction.
+
+Chronological validation stage execution and marked equity are now implemented
+in ADR 0015/migration006. The full verification command passed 186 tests with
+174 recorded third-party warnings plus lint/frontend checks. Actual multi-quarter
+native run remained INSUFFICIENT_EVIDENCE (forward counts 28 and 1, holdout 23);
+no false promotion. This is not a full C6/product completion announcement.
+Next: dated currency conversion/native money/contract-unit reconciliation and
+verified-profile admission; then calibrated approximate screening/full discovery,
+regime/cohort robustness and complete laboratory/UI/lifecycle integration.

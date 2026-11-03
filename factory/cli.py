@@ -35,6 +35,9 @@ def main():
     disable_improvement = subs.add_parser("improvement-disable")
     disable_improvement.add_argument("policy_hash")
     subs.add_parser("improvement-status")
+    validation = subs.add_parser("validation-register")
+    validation.add_argument("protocol_file", type=Path)
+    subs.add_parser("validation-status")
     holdout = subs.add_parser("holdout-reserve")
     holdout.add_argument("spec_file", type=Path)
     freeze = subs.add_parser("holdout-freeze")
@@ -95,6 +98,27 @@ def main():
         with os.fdopen(fd, "w") as f:
             f.write(key)
         print(f"Credential written with mode 0600 to {token_file}; do not commit or log it.")
+    elif args.command == "validation-register":
+        from factory.validation.protocol import ValidationController, ValidationProtocol
+
+        identity = ValidationController(Store(root / "factory.sqlite"), root).register(
+            ValidationProtocol.model_validate_json(args.protocol_file.read_text())
+        )
+        print(
+            json.dumps(
+                {"protocol_id": identity, "scope": "controlled synthetic chronological validation"}
+            )
+        )
+    elif args.command == "validation-status":
+        store = Store(root / "factory.sqlite")
+        print(
+            json.dumps(
+                store.rows(
+                    "SELECT p.protocol_id,c.enabled,json_extract(r.report_json,'$.status') status FROM validation_protocols p JOIN validation_controls c USING(protocol_id) LEFT JOIN validation_protocol_reports r USING(protocol_id) ORDER BY p.created_at,p.protocol_id"
+                ),
+                indent=2,
+            )
+        )
     elif args.command.startswith("holdout-"):
         from factory.validation.access import HoldoutSpec, Holdouts
 

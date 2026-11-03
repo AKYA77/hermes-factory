@@ -70,3 +70,7 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T41 | Static dashboard execution | PASS scoped exact bootstrap CSP hashes, injected-script rejection and real Chromium controls; full blueprint UI acceptance pending |
 
 | T42 | Protected managed holdout | Scoped native confirmation/restart, alias-view training denial, prospective reservation/legacy influence rejection, immutable selection/consumption and forged-authorization rejection pass; not full C6 acceptance |
+
+| T43 | Chronological native protocol | Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open |
+| T44 | Exact marked equity | Scoped full-quote/fill USD cash/inventory valuation, partial-open marking, drawdown and bounded display envelope goldens pass; non-USD/contract-unit support remains explicit unknown |
+| T45 | Canonical native profile representation | Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged |

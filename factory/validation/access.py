@@ -34,7 +34,7 @@ def check_access(db, instrument, kind, start, end, authorization=None, contract=
         """SELECT * FROM protected_holdouts WHERE instrument=? AND evidence_kind=?
         AND start_ns<? AND end_ns>?""",
         (instrument, kind, end, start),
-    ).fetchall()
+    )
     for reservation in reservations:
         allowed = db.execute(
             """SELECT * FROM holdout_consumptions WHERE holdout_id=?
@@ -45,6 +45,16 @@ def check_access(db, instrument, kind, start, end, authorization=None, contract=
                 serialize(contract) if contract else "",
             ),
         ).fetchone()
+        if (
+            not allowed
+            and authorization
+            and contract
+            and all(w.role == "report_only" for w in contract.windows)
+        ):
+            allowed = db.execute(
+                "SELECT 1 FROM retrospective_report_authorizations WHERE holdout_id=? AND authorization_id=? AND contract_json=?",
+                (reservation["holdout_id"], authorization, serialize(contract)),
+            ).fetchone()
         if not allowed:
             raise ValueError("PROTECTED_HOLDOUT_ACCESS: " + reservation["holdout_id"])
 
@@ -333,7 +343,18 @@ class Holdouts:
 
 
 def evaluation_use(db, profile, contract, manifest, payload):
-    authorization = payload.get("holdout_authorization")
+    authorization = payload.get("holdout_authorization") or payload.get("report_authorization")
+    if payload.get("validation_stage_id"):
+        stage = db.execute(
+            "SELECT payload_json FROM validation_stages WHERE stage_id=?",
+            (payload["validation_stage_id"],),
+        ).fetchone()
+        if not stage or stage[0] != serialize(payload):
+            raise ValueError("frozen validation stage mismatch")
+    if any(w.role == "report_only" for w in contract.windows) and not payload.get(
+        "validation_stage_id"
+    ):
+        raise ValueError("retrospective reporting requires a frozen protocol stage")
     if any(w.role == "final_holdout_unseen" for w in contract.windows):
         if len(contract.windows) != 1 or not authorization:
             raise ValueError("final holdout requires one frozen authorized evaluation")

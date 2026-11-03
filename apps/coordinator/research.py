@@ -21,6 +21,9 @@ def maintenance(store, root, max_queued=2):
     improvement.feedback()
     if store.paused():
         return {"feedback": applied, "proposed": 0}
+    from factory.validation.protocol import ValidationController
+
+    ValidationController(store, root).advance()
     improvement.discover()
     # Recover durable proposals first. Existing experiment IDs are reused by the
     # unique queue key; retries are not new parameter trials or full replays.

@@ -29,5 +29,5 @@ def metrics(trades, initial=D(20)):
         "max_losing_streak": max_loss,
         "max_winning_streak": max_win,
         "insolvent": equity <= 0,
-        "warning": "Balance drawdown only; mark-to-market equity report pending",
+        "warning": "Balance drawdown only; executable quote mark-to-market is reported separately when available",
     }

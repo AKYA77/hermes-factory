@@ -38,3 +38,5 @@ line-length = 100
 "migrations/004_improvement.sql" = "factory/sql/004_improvement.sql"
 
 "migrations/005_validation.sql" = "factory/sql/005_validation.sql"
+
+"migrations/006_scientific_protocol.sql" = "factory/sql/006_scientific_protocol.sql"

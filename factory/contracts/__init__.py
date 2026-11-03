@@ -110,7 +110,9 @@ class InstrumentSpec(Contract):
 class Window(Contract):
     start_ns: int = Field(ge=0)
     end_ns: int = Field(gt=0)
-    role: Literal["train_only", "selection_oos", "final_holdout_unseen", "paper_forward"]
+    role: Literal[
+        "train_only", "selection_oos", "final_holdout_unseen", "paper_forward", "report_only"
+    ]
 
     @model_validator(mode="after")
     def ordered(self):
