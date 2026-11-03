@@ -83,3 +83,33 @@ def test_source_claim_must_match_actual_checkout_content(tmp_path):
     payload["contract"]["code_revision"] = "invented-git-commit"
     with pytest.raises(ValueError, match="source revision mismatch"):
         run(payload, tmp_path)
+
+
+def test_integrity_failure_preserves_quarantined_evidence(tmp_path, monkeypatch):
+    """Fault-injection fixture: injected results must never become official metrics."""
+    import json
+    import apps.coordinator.worker as module
+
+    payload = seed(tmp_path, 120)
+    from factory.contracts import ExperimentContract
+
+    identity = ExperimentContract.model_validate(payload["contract"]).experiment_hash
+    monkeypatch.setattr(
+        module,
+        "replay",
+        lambda *args, **kwargs: {
+            "integrity_errors": [{"reason": "FAULT_INJECTION"}],
+            "trades": [],
+            "fills": [],
+            "quote_count": 0,
+            "synthetic": True,
+        },
+    )
+    with pytest.raises(ValueError, match="quarantined_artifact_sha256"):
+        run(payload, tmp_path)
+    assert not (tmp_path / "artifacts" / f"{identity}.json").exists()
+    files = list((tmp_path / "artifacts" / "failed").glob("*.json"))
+    assert len(files) == 1
+    quarantine = json.loads(files[0].read_text())
+    assert quarantine["experiment_hash"] == identity
+    assert quarantine["status"] == "QUARANTINED_EXECUTION_CONTRACT_MISMATCH"

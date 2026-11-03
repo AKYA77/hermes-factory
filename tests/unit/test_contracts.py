@@ -142,3 +142,10 @@ def test_max_volume_cap_is_rounded_down_to_step(profile):
     assert result["status"] == "ELIGIBLE"
     assert result["size"] == D("1.00") and result["size"] % p.volume_step == 0
     assert result["risk"] <= 2
+
+
+def test_quarter_boundary_never_rounds_a_nanosecond_into_future():
+    cut = int(datetime(2025, 4, 1, tzinfo=timezone.utc).timestamp()) * 10**9
+    end = int(datetime(2025, 10, 1, tzinfo=timezone.utc).timestamp()) * 10**9
+    first = next(quarter_folds(cut - 1, end))
+    assert first["train_end"] == cut

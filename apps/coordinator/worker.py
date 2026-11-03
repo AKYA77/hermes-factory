@@ -60,7 +60,28 @@ def run(payload, root):
     catalog.verify(contract.dataset_hash, deep=True)
     result["runtime_provenance"] = context
     if result["integrity_errors"]:
-        raise ValueError("EXECUTION_CONTRACT_MISMATCH: " + serialize(result["integrity_errors"]))
+        quarantine = {
+            "status": "QUARANTINED_EXECUTION_CONTRACT_MISMATCH",
+            "experiment_hash": contract.experiment_hash,
+            "contract": contract.model_dump(mode="json"),
+            "strategy": spec.model_dump(mode="json"),
+            "profile": profile.model_dump(mode="json"),
+            "result": result,
+        }
+        quarantine_hash = fingerprint(quarantine)
+        failed = (
+            Path(root)
+            / "artifacts"
+            / "failed"
+            / f"{contract.experiment_hash}-{quarantine_hash}.json"
+        )
+        atomic_bytes(failed, serialize(quarantine).encode())
+        raise ValueError(
+            "EXECUTION_CONTRACT_MISMATCH: "
+            + serialize(result["integrity_errors"])
+            + "; quarantined_artifact_sha256="
+            + quarantine_hash
+        )
     result["diagnostics"] = [diagnose_trade(t, profile.tick_size) for t in result["trades"]]
     result["signals_screened"] = generated
     result["open_trade_diagnostics"] = (

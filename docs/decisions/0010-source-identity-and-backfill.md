@@ -58,3 +58,19 @@ between planning and claim prevents worker admission. The lower-level test-harne
 claim primitive remains explicit about bypassing pause; the application always
 requests the guarded path. A native gap/insolvency fixture confirms actual loss may
 exceed intended modeled risk, reconciles cash, and refuses new risk at negative equity.
+
+## Failure evidence and boundary constraints
+
+Proposed and preflight-valid strategies enter the immutable registry before
+execution; failed attempts remain discoverable. Additive migration 003 forbids
+strategy deletion. Engine-contract mismatches write content-addressed quarantined
+artifacts with the complete contract/spec/profile and actual returned engine
+trace, then fail the job. They are never official result artifacts or objective
+feedback. Exceptions before a replay result exists still retain the descriptor/job
+error; full mid-engine crash forensics remains a recovery gate.
+
+Supported currency instruments reject nonpositive protective levels before order
+submission. Quarter construction floors integer seconds instead of rounding a
+nanosecond across a quarter boundary. Feature cache identity can name its exact
+source range; stop/risk-only changes still share bars. Full scientific window
+consumption/comparison and shared-feature implementation remain unfinished.

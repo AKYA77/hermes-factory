@@ -179,3 +179,9 @@ def test_empty_array_metadata_obeys_entry_budget():
     for key in ("a", "b", "c"):
         cache.put(key, np.array([], dtype=np.int64))
     assert len(cache.entries) == 2 and cache.bytes == 0 and cache.evictions == 1
+
+
+def test_feature_range_changes_identity(spec):
+    assert feature_key("data", spec, "code", "profile", source_range=(1, 10)) != feature_key(
+        "data", spec, "code", "profile", source_range=(2, 10)
+    )

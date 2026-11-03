@@ -209,6 +209,18 @@ class Search:
             params = trial.params
             spec = protocol.strategy(params)
             contract = protocol.contract(spec)
+            # Preserve the hypothesis even if enqueue/execution later fails.
+            db.execute(
+                "INSERT OR IGNORE INTO strategy_specs VALUES(?,?,?,?,?,?)",
+                (
+                    spec.strategy_hash,
+                    serialize(spec),
+                    None,
+                    "bounded TPE proposal",
+                    serialize([]),
+                    time.time(),
+                ),
+            )
             trial_id = fingerprint({"protocol": identity, "trial_number": number})
             db.execute(
                 "INSERT INTO search_trials VALUES(?,?,?,?,?,?,?,?)",

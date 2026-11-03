@@ -74,12 +74,23 @@ def closed_bars(quotes, timeframe):
     # No final bar without a later observation proving its closure.
 
 
-def feature_key(dataset_hash, spec, code_revision, instrument_hash, time_policy="closed/v1"):
+def feature_key(
+    dataset_hash,
+    spec,
+    code_revision,
+    instrument_hash,
+    time_policy="closed/v1",
+    *,
+    source_range=None,
+):
+    if source_range is not None and (len(source_range) != 2 or source_range[0] >= source_range[1]):
+        raise ValueError("invalid feature source range")
     # Entry logic, direction, stops, targets and risk do not change midpoint bars.
     # Indicator transforms have their own parameterized key below.
     return fingerprint(
         {
             "dataset": dataset_hash,
+            "source_range": source_range,
             "timeframes": sorted({spec.timeframe, *spec.confirmations}),
             "code": code_revision,
             "instrument": instrument_hash,

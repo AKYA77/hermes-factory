@@ -64,6 +64,7 @@ def test_recurring_feedback_restart_and_no_llm(tmp_path, monkeypatch):
     assert store.rows("SELECT version FROM schema_migrations ORDER BY version") == [
         {"version": 1},
         {"version": 2},
+        {"version": 3},
     ]
 
 
@@ -168,3 +169,18 @@ def test_pause_between_planning_and_claim_prevents_worker_admission(tmp_path, mo
     assert not cycle(store, tmp_path)
     assert store.rows("SELECT state FROM jobs")[0]["state"] == "QUEUED"
     assert not store.rows("SELECT * FROM attempts")
+
+
+def test_failed_execution_preserves_strategy_registry(tmp_path):
+    payload = seed(tmp_path, 120)
+    store = Store(tmp_path / "factory.sqlite")
+    store.enqueue("research", payload, "failure-preservation")
+    store.pause(False, "test")
+    cycle(store, tmp_path, memory_limit_bytes=1)
+    assert (
+        store.rows("SELECT strategy_id FROM strategy_specs")[0]["strategy_id"]
+        == payload["contract"]["strategy_hash"]
+    )
+    with pytest.raises(sqlite3.IntegrityError, match="immutable strategy"):
+        with store.transaction() as db:
+            db.execute("DELETE FROM strategy_specs")

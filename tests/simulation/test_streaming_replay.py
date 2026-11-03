@@ -162,3 +162,12 @@ def test_gap_can_exceed_modeled_risk_and_prevents_new_risk(profile, spec):
     assert D(r["ending_equity"]) < 0 and len(r["fills"]) == 2
     assert D(r["trades"][0]["pnl"]) < -D(r["trades"][0]["risk"])
     assert any(s["status"] == "SKIPPED_MIN_VOLUME" for s in r["skips"])
+
+
+@pytest.mark.parametrize("side", ["BUY", "SELL"])
+def test_nonpositive_protective_prices_are_skipped(profile, spec, side):
+    q = quotes([(110000, 110010)] * 3)
+    s = spec.model_copy(update={"stop_ticks": 1000000})
+    r = replay(q, profile, s, [{"available_at": q[0].event_ts_utc_ns, "side": side}], True)
+    assert not r["fills"] and not r["rejections"]
+    assert r["skips"][0]["status"] == "SKIPPED_PRICE_LEVEL"

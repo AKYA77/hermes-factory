@@ -15,7 +15,7 @@ def wilson(wins, n, z=1.959963984540054):
 
 
 def quarter_folds(start_ns, end_ns):
-    dt = datetime.fromtimestamp(start_ns / 1e9, timezone.utc)
+    dt = datetime.fromtimestamp(start_ns // 10**9, timezone.utc)
     quarter = (dt.month - 1) // 3 * 3 + 1
     boundary = datetime(dt.year, quarter, 1, tzinfo=timezone.utc)
     train_start = start_ns

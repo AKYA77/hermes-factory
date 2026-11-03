@@ -63,6 +63,8 @@ def _cycle(store, root, timeout, memory_limit_bytes):
     resources = {}
     child = None
     try:
+        spec = StrategySpec.model_validate(payload["strategy"])
+        store.register_strategy(spec)
         with tempfile.TemporaryDirectory(dir=root) as temp:
             inp, out = Path(temp) / "input.json", Path(temp) / "output.json"
             inp.write_text(job["payload"])
@@ -127,7 +129,7 @@ def _cycle(store, root, timeout, memory_limit_bytes):
                     token=job["lease_token"],
                     resources=resources,
                 )
-    except (OSError, subprocess.TimeoutExpired, ValueError) as exc:
+    except (OSError, subprocess.TimeoutExpired, ValueError, KeyError, TypeError) as exc:
         if child is not None and child.poll() is None:
             child.kill()
             child.wait()

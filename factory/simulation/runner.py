@@ -271,6 +271,15 @@ class ReplayStrategy(Strategy):
             sign = 1 if side == "BUY" else -1
             stop = entry - sign * distance
             target = entry + sign * distance * 3
+            if stop <= 0 or target <= 0:
+                self.skips.append(
+                    {
+                        "ts": now,
+                        "status": "SKIPPED_PRICE_LEVEL",
+                        "reason": "nonpositive stop/target for supported currency instruments",
+                    }
+                )
+                continue
             # A stop already crossed at submission is infeasible, not a valid
             # bracket: it can close the parent while siblings are still activating.
             liquidation = (
