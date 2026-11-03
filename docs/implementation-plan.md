@@ -9,7 +9,7 @@ Use existing branch build/initial-factory and existing checkout; no worktree nee
 | C1 | contracts/config, migration 001, Store/leases, API auth, dashboard inspector, local installer | Partial; target system deployment and complete persistence/controls pending |
 | C2 | free real Forex/Gold month pilots, bounded lossless import/readback, raw provenance | Partial; calendar/source revision review, full coverage and operational ingestion remain |
 | C3 | v2 fill ledger, partial/cancel/timeout/role diagnostics, source guards and margin formula tests | Partial; finite-depth exact pricing, currency rounding, JPY/Gold monetary profiles and full reference remain |
-| C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; automatic search, full families, disk cache, screen audit pending |
+| C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; persistent training TPE/recurring admission now tested; full region discovery, families, disk cache, screen audit pending |
 | C5 | path diagnostics, controlled child variants, basic lineage | Partial; cohort analysis/paired improvement pipeline pending |
 | C6 | Wilson, quarter/purge helpers, frozen-window replays, instrument boards | Partial; full evaluation/holdout/annual/pooled reporting pending |
 | C7 | connected responsive state inspector, pause/resume and real API state | Partial; full blueprint dashboard/charts/actions/exports pending |
@@ -27,8 +27,8 @@ Next work, in order:
    coverage before enabling real-data strategy evaluation. Use only free web data.
 3. Finish C3 reference/account-currency and finite-liquidity pricing gates. Never
    certify a fallback extra tick as the declared exact two-pip execution model.
-4. Implement persistent optimizer feedback and a recurring training-only research
-   scheduler before expanding C4–C7 autonomous generation/optimization/diagnosis, durable negative
+4. Expand the now-tested persistent training optimizer/recurring admission to
+   automatic data/region discovery, full C4–C7 generation/diagnosis, durable negative
    hypothesis/lineage evidence, OOS/WFO/robustness and the full dashboard.
 5. Test C8 on the actual 4-vCPU/8-GB VPS; only then perform C9 release with all
    mandatory gates proven. No production tag is issued for this increment.

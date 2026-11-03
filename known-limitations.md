@@ -26,6 +26,7 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   real-strategy engine/security release gates remain open.
 - C1 partial: typed defaults/API/queue/UI available. Production least-privilege
   installation, complete schema evolution and service lifecycle are not implemented.
+  Additive migration 002 now preserves immutable search/outcome/attempt-resource history.
 - C2 partial: free HistData ASCII ticks now have a bounded download/parser and
   8,192-row Parquet import/readback path; original ZIP bytes/notices/checksums,
   fixed EST -> UTC, millisecond precision and exact integer prices are retained.
@@ -46,8 +47,10 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   those profiles, calendar checks and evaluation contracts are approved.
 - C4 partial: 3 initial operators, typed proposals, seeded Optuna proposal adapter,
   proposal-count coverage allocation, hash keys, bounded RAM cache. No complete
-  eight-family search, time/CPU-budget fairness, L2 disk cache, persisted optimizer,
-  screened-out false-negative audit or automatic discovery pipeline. Confirmation
+  eight-family search, full time/CPU-budget fairness or L2 disk cache. Persistent
+  training-only TPE feedback and recurring registered-region admission now exist;
+  screened-out false-negative audit and automatic new-source/region discovery
+  remain unfinished. Confirmation
   interpreter now uses bounded bars and monotonic publication alignment. Native
   delivery/compact forensic paths are bounded; actual strategy/VPS throughput remains unverified.
 - C5 partial: MFE/MAE and several measured failure tags, bounded children and basic
@@ -63,7 +66,7 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 - C8 partial: actual small synthetic benchmark, backup-copy rehearsal, lease recovery,
   auth/payload/rate-limit tests and pointer rollback harness. Real-source feed-only
   probes (no orders) now exist; no historical strategy benchmark,
-  forced-8GB soak, actual worker SIGKILL/reboot/disk-full recovery, full release
+  forced-8GB soak, full coordinator/reboot/disk-full recovery, full release
   migration rollback, signed provenance, backup retention/encryption/off-host restore
   or security release review. Prior GitHub Python/dashboard CI passed; security
   CI fails. Exact current-head CI results must be checked independently.
@@ -86,6 +89,8 @@ See milestone-report.json and docs/milestone-execution-and-data.md for the curre
 v2 increment. v1 campaign reports remain historical development evidence and are
 not automatically rerun or ranked as v2. Security findings are assessed in ADR 0007;
 both audit gates remain active/failing. No C0–C9 milestone is declared fully complete.
+The latest registered-region training probe, controls and supervision evidence are
+in docs/milestone-training-research.md; this is not complete C4/C8 autonomy.
 
 ## Earlier software campaign
 

@@ -1,24 +1,27 @@
 {
-  "status": "NOT_READY",
-  "latest_report": "milestone-report.json",
-  "source_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
-  "tests": {
-    "command": "bash scripts/verify.sh",
-    "exit_code": 0,
-    "passed": 115,
-    "failed": 0,
-    "errors": 0,
-    "skipped": 0,
-    "warnings": 146,
-    "ruff": "PASS",
-    "dashboard_typecheck_build": "PASS"
-  },
   "full_milestones_completed": [],
-  "security": "FAIL_RELEASE_BLOCKED",
   "historical_strategy_validation": false,
-  "release_tag": null,
+  "latest_increment": "persistent training optimizer and recurring research",
+  "latest_report": "milestone-report.json",
   "previous_reports": [
     "reports/checkpoints/accounting-data-2f1e505.json",
-    "campaign-report.json"
-  ]
+    "campaign-report.json",
+    "reports/checkpoints/bounded-replay-7cd3fd6.json"
+  ],
+  "release_tag": null,
+  "security": "FAIL_RELEASE_BLOCKED",
+  "source_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
+  "status": "NOT_READY",
+  "tests": {
+    "command": "bash scripts/verify.sh",
+    "dashboard_typecheck_build": "PASS",
+    "errors": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 125,
+    "ruff": "PASS",
+    "skipped": 0,
+    "source_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
+    "warnings": 146
+  }
 }

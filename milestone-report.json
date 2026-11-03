@@ -5,7 +5,9 @@
     "new_scoped_tests": [
       "T31",
       "T32",
-      "T33"
+      "T33",
+      "T34",
+      "T35"
     ],
     "original": "docs/acceptance-matrix.md"
   },
@@ -65,7 +67,10 @@
     "Gate 0 baseline reconciliation",
     "bounded causal features and native delivery",
     "compact reconstructable diagnostics",
-    "independent USD fixture cash/native inventory checks"
+    "independent USD fixture cash/native inventory checks",
+    "bounded persistent TPE feedback from verified training artifacts",
+    "recurring registered-region admission/restart recovery and CPU accounting",
+    "operator research controls, cancellation and parent-death/resource guards"
   ],
   "directive": {
     "path": "docs/source/Completion_Directive_2026-11-03.md",
@@ -304,6 +309,7 @@
     "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
     "target_contabo_verified": false
   },
+  "latest_increment": "persistent training optimizer and recurring research",
   "native_feed_comparison": {
     "exact_output_hash_equal_for_200k": true,
     "full_strategy_replays": 0,
@@ -549,7 +555,76 @@
     }
   ],
   "observed_at_utc": "2026-11-03T15:34:51.504472+00:00",
+  "previous_report": "reports/checkpoints/bounded-replay-7cd3fd6.json",
   "production_ready": false,
+  "recurring_research_probe": {
+    "budgeted_trials": 16,
+    "cgroup_cpu_max": "400000 100000",
+    "cgroup_memory_max": "34359738368",
+    "cycles": 17,
+    "dataset_hash": "a66e2efb10fa446a659273303b90da0b7d34a10594ac8cf09d66d0b5224218f4",
+    "disk_state_bytes": 12741669,
+    "engine": "nautilus_trader/1.231.0",
+    "fill_policy": "adverse-fill/v2",
+    "full_successful_native_replays": 15,
+    "independent_validations": 0,
+    "instrument": "EURUSD",
+    "operation_ready": false,
+    "parent_peak_rss_bytes": 128237568,
+    "paused_admission_verified": true,
+    "peak_system_memory_bytes": null,
+    "protocol_hash": "3af95f7d54c96c618582ccdab0540375c26d81d8fc217929d8ba888c302ef914",
+    "quote_events_replayed": 30000,
+    "rows_per_replay": 2000,
+    "scope": "synthetic training only; no independent evaluation, target VPS or multi-day soak",
+    "source_context": {
+      "git_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
+      "source_sha256": "3f40e6eae607a63650a6d1ef85421e34f9840ad193e70659f593dff942f88c75"
+    },
+    "source_context_unchanged": true,
+    "state": {
+      "distinct_referenced_simulations": 15,
+      "exact_duplicates_skipped": 1,
+      "independent_validations": 0,
+      "limitations": [
+        "not a multi-day soak",
+        "budgets checked between jobs; one job may overshoot a soft CPU budget",
+        "explicit registered regions only; no approved real monetary profiles",
+        "all families, automated improvement/selection and screen-rejection audits unfinished"
+      ],
+      "measured_generation_cpu_seconds": 0.09652644900000018,
+      "measured_replay_cpu_seconds": 21.837058,
+      "outcomes": [
+        {
+          "count": 12,
+          "outcome": "COMPLETE"
+        },
+        {
+          "count": 4,
+          "outcome": "PRUNED"
+        }
+      ],
+      "paused": false,
+      "protocols": 1,
+      "scope": "synthetic authorized training only; no independent validation",
+      "trials_considered": 16
+    },
+    "status": "PASS_BOUNDED_SYNTHETIC_RESEARCH",
+    "total_parent_plus_children_cpu_seconds": 23.733201,
+    "wall_seconds": 24.42092297900126,
+    "warnings": [
+      "CPU includes measured benchmark parent and subprocesses, excluding CLI startup before main",
+      "OS page cache uncontrolled",
+      "monetary fixtures are synthetic",
+      "budgets do not constitute an 8GB enforcement/soak proof"
+    ],
+    "window": {
+      "end_ns": 1735809540000000001,
+      "role": "train_only",
+      "start_ns": 1735689600000000000
+    },
+    "worker_peak_rss_bytes": 295387136
+  },
   "release_tag": null,
   "remaining": [
     "calendar/gap review and source revisions/full coverage",
@@ -561,9 +636,34 @@
     "actual 4-vCPU/8-GB VPS testing",
     "security and all C0-C9/T01-T30 release gates",
     "shared persistent feature cache and incremental append",
-    "optimizer feedback/recurring scheduler",
     "native vs exact account rounding contract",
-    "complete source-relative forensic API/export"
+    "complete source-relative forensic API/export",
+    "automatic new-data/region discovery and full continuous coverage",
+    "full diagnostic controlled-improvement/independent decision loops",
+    "multi-day recurring scheduler soak and hard CPU calibration"
+  ],
+  "research_restore": {
+    "experiments": 15,
+    "files": 19,
+    "jobs": 15,
+    "restore_verified": true,
+    "scope": "isolated copy; active state unchanged"
+  },
+  "resolved_failed_attempts": [
+    {
+      "cause": "benchmark harness incorrectly treated duplicate-only idle cycle as budget exhaustion",
+      "fix_commit": "6728371",
+      "probe_exit_code": 1,
+      "rerun_exit_code": 0,
+      "retained_state": ".local/directive-recurring-probe",
+      "source_commit": "018a058",
+      "trials_at_abort": 12
+    },
+    {
+      "corrected_result": "PASS in final suite",
+      "initial_result": "FAIL: missing Path import in child test script",
+      "test": "kernel parent-death harness"
+    }
   ],
   "security": {
     "disabled_checks": [],
@@ -582,8 +682,8 @@
       "vite_plugin_svelte_latest": "7.3.1"
     }
   },
-  "source_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
-  "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97",
+  "source_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
+  "source_sha256": "3f40e6eae607a63650a6d1ef85421e34f9840ad193e70659f593dff942f88c75",
   "status": "NOT_READY",
   "synthetic_campaign": {
     "batch_size": 25,
@@ -5427,9 +5527,10 @@
     "errors": 0,
     "exit_code": 0,
     "failed": 0,
-    "passed": 115,
+    "passed": 125,
     "ruff": "PASS",
     "skipped": 0,
+    "source_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
     "warnings": 146
   }
 }

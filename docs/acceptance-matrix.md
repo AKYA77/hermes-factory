@@ -23,17 +23,17 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T15 | Annual/WFO splits | Quarter/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending |
 | T16 | Eight independent boards | Empty boards + synthetic populated board tested; full ranking/diversity/archive regression pending |
 | T17 | Dedup + screen audit | Cached proposal and execution/source version guards tested; screened-out audit not implemented |
-| T18 | Search fairness | Seeded bounded proposal-count allocation tested; CPU-budget fairness/endless exploration pending |
+| T18 | Search fairness | Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending |
 | T19 | Reproducibility | Synthetic replay artifact hashes identical; tagged historical reproduction pending |
 | T20 | API/dashboard | Auth, pagination, roles and state tested; browser full C7 workflows pending |
-| T21 | Agent offline | Deterministic worker has no model dependency; offline job fixture in current suite; full 24/7 services pending |
+| T21 | Agent offline | Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending |
 | T22 | Rollback | Synthetic atomic pointer health-failure test only; migration/live process recovery pending |
 | T23 | Backup recovery | SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending |
 | T24 | 8GB performance + soak | Small synthetic wall/CPU/RSS benchmark measured; target VPS/soak unrun |
 | T25 | Scientific independence | Window identity changes tested; consumed holdout-use workflow pending |
 | T26 | Instrument units | Real Gold source grid retained at 0.001 without rounding; monetary Gold/JPY specifications remain blocked |
 | T27 | Immutable evidence | SQL triggers/no metric-write API/idempotent completion tested; full provenance/adversarial injection suite pending |
-| T28 | User actions | Pause/resume/proposal/queue/audit tested; diagnosis/cancel/retry/export actions pending |
+| T28 | User actions | Pause/resume/proposal/queue/audit, research registration/disable/history and cancellation API tested; diagnosis/retry/export/browser workflows pending |
 | T29 | Provenance | Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending |
 | T30 | Full vertical | Synthetic API→queue→Nautilus→diagnose→board tested; real Forex→validation→browser acceptance blocked/pending |
 
@@ -44,6 +44,9 @@ Additional directive gates supplement the original acceptance contract:
 | T31 | Bounded native delivery parity | PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED |
 | T32 | Independent cash/native inventory reconciliation | PASS scoped USD fixtures for fill sets, signed inventory and cash conservation; native rounding difference is explicit and monetary policy BLOCKED |
 | T33 | Shared feature identity and bounded compilation | PASS scoped oracle/hash parity and stop-independent bar keys; persistent cache/invalidation/append integration unfinished |
+
+| T34 | Persistent training optimizer | PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim |
+| T35 | Worker supervision/resources | PASS scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests; real 8-GB reboot/soak NOT_TESTED |
 
 No mandatory gate is marked OPERATION_READY. See known-limitations.md for the
 complete implementation gaps, external blockers and scope of measured evidence.

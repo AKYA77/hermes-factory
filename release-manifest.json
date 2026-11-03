@@ -1,16 +1,16 @@
 {
   "ci_verified": false,
-  "commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+  "commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
   "files": {
     "AGENTS.md": "fe43707179d1a70781a9a09d8f35733e639139d24f9c71156051b2203452b38f",
     "BLUEPRINT.md": "841bfcfff20d913ca550c48e29ae1bac9a208b7596534b5db33c856cf6c836db",
     "CODEX_BUILD_PROMPT.md": "e5181e397d3489c5759cb3979627693922d655d84b39d059d5d021d2694c8f98",
     "HERMES_AGENT_INSTRUCTIONS.md": "b65e769f803a17ed3dd30d50c86adde662757499e5d5e13c58ea720dc202b740",
-    "build-report.json": "0bf35e2aa775d11564bd7aa05ab988090c64d5467313c1c5d65886e3691e86cf",
+    "build-report.json": "5993b157b60afed2e971b50ac26fe0afb759f72bc326fda0fa488c309b87977e",
     "campaign-report.json": "cbd8b3b5234d5a2b63c3f782148f2a6aea1b05ce0baff8108c443e76c75062c2",
     "docs/source/Factory.pdf": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
-    "known-limitations.md": "ab1b357a3d41e06b7d06ae3092f3ec29ec56148282a88c2aac3ad2d42af26eb6",
-    "milestone-report.json": "61006f56b6497ca6276351dd1528014b3f5951c01cdcb52cf62420558621c87e"
+    "known-limitations.md": "0284cb293cebdf3e5169d236bcb7fbdef66d8e59112bb6a036e1ee4c3515284b",
+    "milestone-report.json": "caa4f4856bd1191ea228d15d25ac4ed734cb3bd411c9d519e290ba2bedf649fb"
   },
   "historical_data": true,
   "historical_strategy_validation": false,

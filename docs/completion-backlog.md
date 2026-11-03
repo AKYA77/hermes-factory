@@ -24,7 +24,7 @@ verified 1,016 files/1,000 jobs/1,000 experiments. Existing results were not cha
 | 0 | Latest upstream audit, code/data/backup evidence and backlog reconciliation | PASS for bounded baseline; security FAIL |
 | 1 | Position/account/P&L golden reconciliation; currencies/Gold; calendar/source integrity; security | IN_PROGRESS; upstream and profile gates BLOCKED |
 | 2 | Bounded bars/MTF alignment, feature identity/cache use, native chunked replay, columnar forensic references, measured parity/resource limits | IN_PROGRESS |
-| 3 | Durable recurring research state machine; Optuna objective feedback; CPU fairness; full diagnostics/improvement and rejection audit | NOT_TESTED / unfinished |
+| 3 | Persistent training TPE and recurring registered-region admission tested; automatic new-data/region discovery, full diagnostics/improvement, rejection audit and multi-day fairness/soak unfinished | IN_PROGRESS |
 | 4 | Independent annual/OOS/WFO/holdout; stability; ranking comparability; paper observation | NOT_TESTED / unfinished |
 | 5 | Full dashboard/API; installation, updates/rollback/recovery and Hermes handoff | NOT_TESTED / unfinished |
 | 6 | Full available 2025/2026 eight-instrument import, real validation, actual Ubuntu 4-vCPU/8-GB install/stress/multi-day soak and all original gates | BLOCKED / unfinished |
