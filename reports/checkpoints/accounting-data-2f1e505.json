@@ -1,0 +1,285 @@
+{
+  "status": "NOT_READY",
+  "observed_at_utc": "2026-11-03T00:55:08.547654+00:00",
+  "completed_increments": [
+    "C3 order-aware accounting v2",
+    "C2 free real-source bounded structural pilot",
+    "dependency security reachability/version assessment"
+  ],
+  "full_milestones_completed": [],
+  "source_commits": {
+    "unit_api_tests": "6bf3c5b3f49a2a0e69daade88fcb64cc05f5a327",
+    "native_campaign": "c30655c0836a3e1c35f89b850993834dab83f4d1",
+    "historical_imports": "c30655c0836a3e1c35f89b850993834dab83f4d1"
+  },
+  "blueprint": {
+    "authoritative_original": "docs/source/Factory.pdf",
+    "sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
+    "owner_confirmed_same_document_as_markdown_name": true,
+    "confirmed_client_date": "2026-11-03",
+    "formula_references": [
+      "8.5",
+      "9.1"
+    ],
+    "acceptance_reference": "16"
+  },
+  "execution_version": "adverse-fill/v2",
+  "tests": {
+    "tests": 84,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 84
+  },
+  "commands": [
+    {
+      "command": "bash scripts/verify.sh",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.campaign --state .local/ledger-v2-final-campaign --count 1000 --batch-size 25",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.campaign_api .local/ledger-v2-final-campaign",
+      "exit_code": 0
+    },
+    {
+      "command": "bash scripts/restore-test.sh .local/ledger-v2-final-backup",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.import_benchmark --instrument EURUSD --year 2025 --month 1",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.import_benchmark --instrument XAUUSD --year 2025 --month 1",
+      "exit_code": 0
+    },
+    {
+      "command": "uv pip check",
+      "exit_code": 0
+    },
+    {
+      "command": "pip-audit 2.9.0 (fresh scan)",
+      "exit_code": 1,
+      "finding": "PYSEC-2026-4217"
+    },
+    {
+      "command": "npm audit --json (fresh scan)",
+      "exit_code": 1,
+      "findings": 4,
+      "underlying_advisory": "GHSA-gcqx-w48m-w2h4"
+    }
+  ],
+  "historical_imports": [
+    {
+      "instrument": "EURUSD",
+      "period": "2025-01",
+      "synthetic": false,
+      "rows": 2283239,
+      "readback_exact": true,
+      "source": {
+        "provider": "HistData.com",
+        "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/1",
+        "download_url": "https://www.histdata.com/get.php",
+        "sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+        "bytes": 13954937,
+        "source_timezone": "UTC-05:00 fixed; no DST",
+        "source_precision": "millisecond",
+        "source_price_scale": 1000000,
+        "cost": "free web download",
+        "usage": "owner-authorized local research; redistribution not asserted"
+      },
+      "dataset": {
+        "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+        "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+        "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+        "quote_stream_sha256": "47db421efed0291f98f0e1afe1b8deb51ce5201be414a76f0b266f86f0148f9e",
+        "first_ns": 1735768814647000000,
+        "latest_verified_ns": 1738360797318000000,
+        "observed_price_quantum": "0.00001",
+        "price_scale": 1000000,
+        "batch_rows": 8192,
+        "parquet_row_groups": 279,
+        "gap_count_over_60s": 201,
+        "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+        "quantum_caveat": "empirical quote grid, not a verified instrument tick/pip specification"
+      },
+      "resources": {
+        "scope": "real HistData source structural import; not historical strategy validation or VPS throughput",
+        "source_context": {
+          "git_commit": "c30655c0836a3e1c35f89b850993834dab83f4d1",
+          "source_sha256": "ec3749c8e884a3ab644ea7a2c2b11a102aafb8236e09fcff5c486af21ef630c4"
+        },
+        "source_context_unchanged": true,
+        "exit_code": 0,
+        "wall_seconds": 54.904236517000754,
+        "cpu_seconds": 55.72713099999999,
+        "peak_rss_bytes": 193306624,
+        "memory_method": "Linux getrusage fresh child maxrss",
+        "source_report": ".local/historical-catalog/EURUSD-202501-import-report.json"
+      },
+      "historical_strategy_validation": false
+    },
+    {
+      "instrument": "XAUUSD",
+      "period": "2025-01",
+      "synthetic": false,
+      "rows": 5798226,
+      "readback_exact": true,
+      "source": {
+        "provider": "HistData.com",
+        "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/xauusd/2025/1",
+        "download_url": "https://www.histdata.com/get.php",
+        "sha256": "8653c8c14951e5b84315090f7e813ff38325223b59e1ad8c702e4e4fb78af51d",
+        "bytes": 40095748,
+        "source_timezone": "UTC-05:00 fixed; no DST",
+        "source_precision": "millisecond",
+        "source_price_scale": 1000000,
+        "cost": "free web download",
+        "usage": "owner-authorized local research; redistribution not asserted"
+      },
+      "dataset": {
+        "dataset_hash": "ab3f273988dcb7b2aaff21168bc9d0f6afe624d8e18856b73b37a93b975ae755",
+        "source_sha256": "8653c8c14951e5b84315090f7e813ff38325223b59e1ad8c702e4e4fb78af51d",
+        "parquet_sha256": "e0dd55dd37c7651c65c1fbd0308ebc3d090f4100b4d915ced525a2639e3c23d0",
+        "quote_stream_sha256": "885dd09fec86cc438fe894709ec884d1db8ebd2b3d14ffc738afd939049f47a0",
+        "first_ns": 1735772400455000000,
+        "latest_verified_ns": 1738360796320000000,
+        "observed_price_quantum": "0.001",
+        "price_scale": 1000000,
+        "batch_rows": 8192,
+        "parquet_row_groups": 708,
+        "gap_count_over_60s": 26,
+        "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+        "quantum_caveat": "empirical quote grid, not a verified instrument tick/pip specification"
+      },
+      "resources": {
+        "scope": "real HistData source structural import; not historical strategy validation or VPS throughput",
+        "source_context": {
+          "git_commit": "c30655c0836a3e1c35f89b850993834dab83f4d1",
+          "source_sha256": "ec3749c8e884a3ab644ea7a2c2b11a102aafb8236e09fcff5c486af21ef630c4"
+        },
+        "source_context_unchanged": true,
+        "exit_code": 0,
+        "wall_seconds": 132.54685648800023,
+        "cpu_seconds": 134.08192599999998,
+        "peak_rss_bytes": 259686400,
+        "memory_method": "Linux getrusage fresh child maxrss",
+        "source_report": ".local/historical-catalog/XAUUSD-202501-import-report.json"
+      },
+      "historical_strategy_validation": false
+    }
+  ],
+  "real_quotes_structurally_verified": 8081465,
+  "synthetic_regression_campaign": {
+    "status": "SOFTWARE_CHECKS_PASSED",
+    "source_commit": "c30655c0836a3e1c35f89b850993834dab83f4d1",
+    "unique_strategies": 1000,
+    "totals": {
+      "signals_screened": 261856,
+      "quote_events_replayed": 480000,
+      "open_at_sample_end": 568,
+      "skipped_opportunities": 246164,
+      "completed_trades": 14620
+    },
+    "zero_closed_trade_runs": 424,
+    "assertion_failures": [],
+    "wall_seconds": 175.785416789,
+    "batch_worker_cpu_seconds": 145.83002000000002,
+    "cpu_scope": "sum of batch worker CPU; parent setup/verification CPU not measured",
+    "peak_worker_rss_bytes": 299802624,
+    "limitations": [
+      "synthetic 8-hour sample, not 2025/2026 market data",
+      "no strategy profitability claim",
+      "batch test harness amortizes imports; production isolates every job",
+      "not Contabo/8GB stress or complete blueprint acceptance",
+      "open positions at sample end are censored, not fabricated closes"
+    ]
+  },
+  "small_fixture_reproducibility": {
+    "source_revision": "c30655c0836a3e1c35f89b850993834dab83f4d1@source-sha256:ec3749c8e884a3ab644ea7a2c2b11a102aafb8236e09fcff5c486af21ef630c4",
+    "matching_artifact_hashes": [
+      "d6817688f93c635e6fa9ee0f822784667b80396aca2966703e36376264ee4f30",
+      "d6817688f93c635e6fa9ee0f822784667b80396aca2966703e36376264ee4f30"
+    ],
+    "equal": true,
+    "scope": "synthetic correctness only"
+  },
+  "api": {
+    "status": "PASSED",
+    "scope": "real authenticated loopback API over synthetic campaign",
+    "unique_experiments_paginated": 1000,
+    "anonymous_rejected": true,
+    "top_five_boards": {
+      "EURUSD": [
+        "1857f03dc3c47f72b5d9898b0445ab200f86de5219c5f47c9e89ace68fa6ab29",
+        "88863ea5afbfe4fdc9f2eee831bbf8a2aa2b2dd014715cd505a2ead5ef448006",
+        "4ca4c6180f96c5caaef970e0cab7ae2402bbd2023bc000d0f0a673b5d0da4697",
+        "dbae43aba8b16dfa0e36c0cf312a062e26629f616fdb6c5853d1ed09f846cc12",
+        "f3fbb45ec420c4ed67af217ebaa68b0525d27586c4aef6e1c5036f108a2011d3"
+      ],
+      "GBPUSD": [
+        "017be60e2cc36c03e337dfb7345d07cfd76ad81064af74334a84ee99239a1f72",
+        "e4b47e630889860b3b046451948bb318f53d652f6f65d930f8fa61434d0866ad",
+        "eddffa4d287f4a4bedbdf33c31627f8ff150a3866bddf2b7d7a39cb0089e1cf2",
+        "7fa3a889efe44402883eddf25fa94b3a9f34a1bc89df9889ed951f9ffde7125d",
+        "bcad286db64ac0aa85cc0252311b35310631850046763147fb484ba20b218d47"
+      ],
+      "AUDUSD": [
+        "dc602213d6294c2a896a7fa42c6f40325203bf4f49738476495d2e4e98c6e51e",
+        "776e82e342c1e1b3f78b888e15fa02785a18cb8daa0ba536f9addb663bf3ce3b",
+        "6cffdc504f283235c1c4b2d711dddbd542d2f30f168b2e6489d81318c3eadbe4",
+        "7b5dacdd29b6a3ce90020c1757deb0bfcd87a78c69d70656c4a209106036a1ea",
+        "184b3350147e1bfab7279c6b677be3f44df7ad65588e8952f45e877b20e7e405"
+      ],
+      "NZDUSD": [
+        "ffa0ca5247ee8df05daa005f364ba1aee53429a5648ab198ea1c8edc6598a8b1",
+        "2b423990d14d344d97734606edbb8ddf3c38d379b6e5387e25e6927d7560e113",
+        "3ef437031eb2093cca6867dc9111058e2219b4a2efbb63ba77f4a9f24c432bed",
+        "e8455e66eb85589dcdfea6b50a71bddbb6aca35c3f5b55d83a6da30edf138426",
+        "39905bf833ec482515da2fe94c33171ba4f6522d00d27a04ec07e886fb8a478f"
+      ]
+    },
+    "validated_boards_empty": true,
+    "wall_seconds": 2.4191453189996537
+  },
+  "restore": {
+    "restore_verified": true,
+    "files": 1016,
+    "jobs": 1000,
+    "experiments": 1000,
+    "scope": "isolated copy; active state unchanged"
+  },
+  "security": {
+    "status": "RELEASE_BLOCKED",
+    "checks_disabled": false,
+    "advisories_ignored": [],
+    "assessment": "docs/decisions/0007-dependency-security-assessment.md",
+    "remaining": [
+      "PYSEC-2026-4217",
+      "GHSA-gcqx-w48m-w2h4"
+    ]
+  },
+  "hardware": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "cpu_quota": "400000 100000",
+    "memory_limit_bytes": 34359738368,
+    "target_contabo_verified": false
+  },
+  "remaining": [
+    "calendar/gap review and source revisions/full coverage",
+    "verified Gold and JPY monetary profiles",
+    "full finite-liquidity/reference/account-currency gates",
+    "autonomous search/optimization/improvement and durable hypothesis lane",
+    "full OOS/WFO/annual/robustness/holdout contracts",
+    "full dashboard/controls/deployment/recovery",
+    "actual 4-vCPU/8-GB VPS testing",
+    "security and all C0-C9/T01-T30 release gates"
+  ],
+  "release_tag": null,
+  "production_ready": false,
+  "raw_source_data_committed": false,
+  "ci": "Pending new push; no release acceptance is inferred from local tests"
+}

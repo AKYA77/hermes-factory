@@ -21,8 +21,9 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 
 ## Incomplete product implementation
 
-- C0 is partial: no private/branch-rule confirmation; no comparative real-data
-  engine benchmark; dependency security remediations still tracked in audit reports.
+- C0 is partial: private repository is verified. Branch-protection API returns HTTP
+  403 for the configured integration, so branch rules remain unverified. Comparative
+  real-strategy engine/security release gates remain open.
 - C1 partial: typed defaults/API/queue/UI available. Production least-privilege
   installation, complete schema evolution and service lifecycle are not implemented.
 - C2 partial: free HistData ASCII ticks now have a bounded download/parser and
@@ -39,13 +40,16 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   L1 GTC fallback can add one tick; exact-price mismatches are reported and blocked
   by the worker rather than relabeled correct. Full broker constraints, account-currency
   rounding/reference agreement, JPY conversion and verified Gold monetary profiles
-  remain release gates. Real historical strategy evaluation stays blocked until
+  remain release gates. Native position/fill/inventory/cash conservation checks
+  now run; native rounded USD vs exact Decimal residuals remain explicit
+  DIFFERENCE_REQUIRES_POLICY. Real historical strategy evaluation stays blocked until
   those profiles, calendar checks and evaluation contracts are approved.
 - C4 partial: 3 initial operators, typed proposals, seeded Optuna proposal adapter,
   proposal-count coverage allocation, hash keys, bounded RAM cache. No complete
   eight-family search, time/CPU-budget fairness, L2 disk cache, persisted optimizer,
   screened-out false-negative audit or automatic discovery pipeline. Confirmation
-  interpreter currently scans higher bars; production throughput needs profiling.
+  interpreter now uses bounded bars and monotonic publication alignment. Native
+  delivery/compact forensic paths are bounded; actual strategy/VPS throughput remains unverified.
 - C5 partial: MFE/MAE and several measured failure tags, bounded children and basic
   lineage exist. Full cohort/regime analysis, cost sensitivity, paired comparisons,
   controlled auto-improvement, and negative hypothesis decisions remain unfinished.
@@ -57,15 +61,26 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   pause/resume; no full forensic charts, improvement workshop, exports/PDF, performance
   panels, supervisor console or complete typed action surface. No browser E2E run.
 - C8 partial: actual small synthetic benchmark, backup-copy rehearsal, lease recovery,
-  auth/payload/rate-limit tests and pointer rollback harness. No real-data benchmarks,
+  auth/payload/rate-limit tests and pointer rollback harness. Real-source feed-only
+  probes (no orders) now exist; no historical strategy benchmark,
   forced-8GB soak, actual worker SIGKILL/reboot/disk-full recovery, full release
   migration rollback, signed provenance, backup retention/encryption/off-host restore
-  or security release review. CI definitions exist; GitHub CI has not run.
+  or security release review. Prior GitHub Python/dashboard CI passed; security
+  CI fails. Exact current-head CI results must be checked independently.
 - C9 blocked: no verified release/tag. Install script is development-only; update and
   rollback refuse production deployment explicitly. This is not a production installer.
 - Paper-forward collection/discrepancy measurement is not implemented.
 
-## Latest correctness and historical-import increments
+## Latest completion-directive increment
+
+The complete owner directive is preserved in docs/source/Completion_Directive_2026-11-03.md.
+See docs/completion-backlog.md and docs/decisions/0008-bounded-replay-and-causal-features.md.
+Production quote/signal reads and native delivery now stream; transient spools and
+result records fail explicitly at resource budgets. Compact path summaries retain
+canonical reconstruction references; this does not complete a forced-8GB soak,
+large-artifact API, L2 feature cache or all source/currency gates.
+
+## Earlier correctness and historical-import increments
 
 See milestone-report.json and docs/milestone-execution-and-data.md for the current
 v2 increment. v1 campaign reports remain historical development evidence and are

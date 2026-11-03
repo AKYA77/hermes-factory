@@ -5,10 +5,10 @@ and paper research only; no brokerage execution. The complete supplied v2.0
 specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical market
 results are claimed.
 
-Latest progress: [order-aware execution and real-source pilot](docs/milestone-execution-and-data.md)
+Latest progress: [bounded replay and directive reconciliation](docs/milestone-bounded-replay.md)
 and [machine-readable evidence](milestone-report.json). Free January 2025 EURUSD
 and Gold ticks have lossless, memory-bounded structural imports. This is not
-historical strategy validation. The current suite has 84 passing tests; security
+historical strategy validation. The current suite has 115 passing tests; security
 findings and the full release gates remain unresolved. Previous v1 synthetic
 campaign reports are retained in history, not treated as current v2 evidence.
 
@@ -20,7 +20,7 @@ bounded child proposals; frozen-window replay helper; basic metrics and separate
 instrument boards; authenticated API and connected dashboard state inspector;
 backup/restore rehearsal and release-pointer test harness.
 
-Not yet complete: real source importer/terms approval, Gold profiles and cross-
+Not yet complete: full real-source coverage/calendar acceptance, Gold profiles and cross-
 currency conversion, autonomous discovery/improvement/data-update scheduling,
 full OOS/WFO/annual/independent evidence, all metrics/charts/exports, complete
 security/recovery/installer/update/rollback gates, Contabo benchmarks and release.

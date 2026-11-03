@@ -1,24 +1,24 @@
 {
   "status": "NOT_READY",
   "latest_report": "milestone-report.json",
-  "source_commit": "6bf3c5b3f49a2a0e69daade88fcb64cc05f5a327",
-  "execution_version": "adverse-fill/v2",
+  "source_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
   "tests": {
-    "tests": 84,
-    "failures": 0,
+    "command": "bash scripts/verify.sh",
+    "exit_code": 0,
+    "passed": 115,
+    "failed": 0,
     "errors": 0,
     "skipped": 0,
-    "passed": 84
+    "warnings": 146,
+    "ruff": "PASS",
+    "dashboard_typecheck_build": "PASS"
   },
-  "historical_data": {
-    "downloaded": true,
-    "source": "free HistData web ticks",
-    "real_quotes_structurally_verified": 8081465,
-    "strategy_validation": false
-  },
-  "blueprint_owner_confirmed": true,
-  "security": "failing gates; assessment complete, fixes not available in supported pins",
   "full_milestones_completed": [],
+  "security": "FAIL_RELEASE_BLOCKED",
+  "historical_strategy_validation": false,
   "release_tag": null,
-  "previous_reports": "Git history; old v1 results remain read-only"
+  "previous_reports": [
+    "reports/checkpoints/accounting-data-2f1e505.json",
+    "campaign-report.json"
+  ]
 }

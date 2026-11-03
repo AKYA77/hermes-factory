@@ -16,6 +16,10 @@ Use existing branch build/initial-factory and existing checkout; no worktree nee
 | C8 | real local tests/benchmarks, backup rehearsal, auth/limits, CI definitions | Partial; actual VPS/fault/soak/CI/security release gates pending |
 | C9 | docs, blocked handoff/manifest | Blocked; no approved release/tag |
 
+The owner completion directive is reconciled in completion-backlog.md. Existing
+functioning components are retained. The bounded replay/feature increment is
+recorded in ADR 0008; this is partial C3/C4/C8 evidence.
+
 Next work, in order:
 1. Use the owner-confirmed original Factory.pdf. Keep dependency security gates failing
    until a compatible supported fix or explicitly reviewed disposition exists.
@@ -23,7 +27,8 @@ Next work, in order:
    coverage before enabling real-data strategy evaluation. Use only free web data.
 3. Finish C3 reference/account-currency and finite-liquidity pricing gates. Never
    certify a fallback extra tick as the declared exact two-pip execution model.
-4. Continue C4–C7 autonomous generation/optimization/diagnosis, durable negative
+4. Implement persistent optimizer feedback and a recurring training-only research
+   scheduler before expanding C4–C7 autonomous generation/optimization/diagnosis, durable negative
    hypothesis/lineage evidence, OOS/WFO/robustness and the full dashboard.
 5. Test C8 on the actual 4-vCPU/8-GB VPS; only then perform C9 release with all
    mandatory gates proven. No production tag is issued for this increment.
