@@ -39,3 +39,16 @@ Optional Numba/VectorBT/genetic packages are not installed. Only independently
 implemented, measured improvements belong in production. New tests supplement,
 not replace, original C0–C9 and T01–T30. See acceptance-matrix.md and
 implementation-plan.md for original milestones.
+
+## Latest checkpoint
+
+Final code e75c0ba: 144 tests pass; eight January real-source partitions contain
+21,345,746 structurally verified quotes. Persistent training TPE and registered-
+region recurrence are tested; full autonomous discovery/improvement remains active
+work. Byte-bound proof reuse and failed-evidence retention are implemented.
+
+Do not rebuild these increments. Next: monetary/reference/calendar gates; remaining
+176 source partitions and corrections; multi-month dataset views/large artifacts/
+shared features; full autonomous diagnostics/improvement; independent validation;
+full dashboard/deployment/target-host gates. See milestone-source-integrity.md and
+milestone-report.json. Unresolved security is still a release blocker.

@@ -1,27 +1,23 @@
 {
-  "full_milestones_completed": [],
-  "historical_strategy_validation": false,
-  "latest_increment": "persistent training optimizer and recurring research",
-  "latest_report": "milestone-report.json",
-  "previous_reports": [
-    "reports/checkpoints/accounting-data-2f1e505.json",
-    "campaign-report.json",
-    "reports/checkpoints/bounded-replay-7cd3fd6.json"
-  ],
-  "release_tag": null,
-  "security": "FAIL_RELEASE_BLOCKED",
-  "source_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
   "status": "NOT_READY",
+  "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
+  "latest_report": "milestone-report.json",
   "tests": {
     "command": "bash scripts/verify.sh",
-    "dashboard_typecheck_build": "PASS",
-    "errors": 0,
+    "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
     "exit_code": 0,
+    "passed": 144,
     "failed": 0,
-    "passed": 125,
-    "ruff": "PASS",
+    "errors": 0,
     "skipped": 0,
-    "source_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
-    "warnings": 146
-  }
+    "warnings": 152,
+    "ruff": "PASS",
+    "dashboard_typecheck_build": "PASS"
+  },
+  "real_quotes_structurally_verified": 21345746,
+  "historical_strategy_validation": false,
+  "security": "FAIL_RELEASE_BLOCKED",
+  "full_milestones_completed": [],
+  "release_tag": null,
+  "previous_reports": "reports/checkpoints and Git history"
 }

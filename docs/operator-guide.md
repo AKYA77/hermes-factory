@@ -91,3 +91,26 @@ POST research/protocols, research/protocols/{hash}/disable and jobs/{id}/cancel.
 Viewer tokens cannot execute writes. Cancelled job completion is fenced; an
 already running process stops at the next control check. Official objectives come
 from worker artifacts, never from a supplied win-rate/objective field.
+
+## Free historical structural backfill
+
+Plan coverage without fetching data:
+
+```
+.venv/bin/python -m factory.operations.backfill_history --through 2026-11
+```
+
+Run at most four missing provider-month imports, preserving checkpoints and raw
+source/receipts (state-changing, free web source only):
+
+```
+.venv/bin/python -m factory.operations.backfill_history --through 2026-11 --execute --max-partitions 4
+```
+
+Repeat only within disk/provider budgets; the program skips verified partitions,
+paces requests and cools down failures. Its source, Parquet and raw archive hashes
+must remain intact. A successful structural import does not approve a calendar,
+broker profile, monetary evaluation or source completeness. Current-month recapture,
+correction reconciliation and complete annual dataset views remain unfinished.
+Defaults use .local/historical-catalog, deliberately separate from active synthetic
+research. Do not relabel these imports as independently validated strategy results.

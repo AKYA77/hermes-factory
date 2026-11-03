@@ -7,7 +7,7 @@ Use existing branch build/initial-factory and existing checkout; no worktree nee
 |---|---|---|
 | C0 | source archive, locked tools, private GitHub/PR, fresh security assessment | Partial; branch rules and unresolved dependency findings remain |
 | C1 | contracts/config, migration 001, Store/leases, API auth, dashboard inspector, local installer | Partial; target system deployment and complete persistence/controls pending |
-| C2 | free real Forex/Gold month pilots, bounded lossless import/readback, raw provenance | Partial; calendar/source revision review, full coverage and operational ingestion remain |
+| C2 | eight-instrument free January pilots, bounded lossless import/readback, canonical proofs/raw provenance | Partial; 176 planned partitions pending, calendars/revisions, composite views and full operational ingestion remain |
 | C3 | v2 fill ledger, partial/cancel/timeout/role diagnostics, source guards and margin formula tests | Partial; finite-depth exact pricing, currency rounding, JPY/Gold monetary profiles and full reference remain |
 | C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; persistent training TPE/recurring admission now tested; full region discovery, families, disk cache, screen audit pending |
 | C5 | path diagnostics, controlled child variants, basic lineage | Partial; cohort analysis/paired improvement pipeline pending |
@@ -25,7 +25,8 @@ Next work, in order:
    until a compatible supported fix or explicitly reviewed disposition exists.
 2. Complete source-calendar gap review, instrument/profile registry and full C2
    coverage before enabling real-data strategy evaluation. Use only free web data.
-3. Finish C3 reference/account-currency and finite-liquidity pricing gates. Never
+3. Finish C3 reference/account-currency and finite-liquidity pricing gates, then
+   composite dataset views/large artifacts and persistent shared features. Never
    certify a fallback extra tick as the declared exact two-pip execution model.
 4. Expand the now-tested persistent training optimizer/recurring admission to
    automatic data/region discovery, full C4–C7 generation/diagnosis, durable negative

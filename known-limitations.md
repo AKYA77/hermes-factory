@@ -10,8 +10,8 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 - GitHub private visibility, push and API access are now verified; branch protection
   and production release gates remain unverified. See campaign-report.json for latest tests.
 - Dukascopy's offered route requires AWS Requester Pays; owner requires free sources.
-  Free HistData web tick downloads now work. January 2025 EURUSD and XAUUSD
-  archives have exact bounded structural imports. No billed access is used.
+  Free HistData web tick downloads now work. January 2025 archives for all eight
+  instruments have exact bounded structural imports (21,345,746 quotes). No billed access is used.
 - Whole-source empirical price grids are verified, but Gold monetary pip/tick/
   contract/margin/volume conventions remain UNKNOWN_SPEC. Provider calendar gaps,
   all-eight-instrument and 2025/2026 coverage and independent evidence are unfinished.
@@ -30,7 +30,8 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 - C2 partial: free HistData ASCII ticks now have a bounded download/parser and
   8,192-row Parquet import/readback path; original ZIP bytes/notices/checksums,
   fixed EST -> UTC, millisecond precision and exact integer prices are retained.
-  Real EURUSD/Gold month pilots passed structural checks. Calendar gap classification,
+  All-eight January 2025 imports pass structural checks; 176 planned 2025/2026
+  provider-month partitions remain pending. Calendar gap classification,
   source correction reconciliation, operational quotas, compaction/backfill,
   independent-source comparison and full period coverage remain pending.
 - C3 partial: order-aware v2 accounting tracks partial fills, order/trade IDs,
@@ -50,16 +51,22 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   eight-family search, full time/CPU-budget fairness or L2 disk cache. Persistent
   training-only TPE feedback and recurring registered-region admission now exist;
   screened-out false-negative audit and automatic new-source/region discovery
-  remain unfinished. Confirmation
-  interpreter now uses bounded bars and monotonic publication alignment. Native
-  delivery/compact forensic paths are bounded; actual strategy/VPS throughput remains unverified.
+  remain unfinished. Confirmation interpreter now uses bounded bars and monotonic publication alignment. Native
+  delivery/compact forensic paths are bounded; full-period strategy/VPS throughput
+  remains unverified. Replay currently accepts one source partition, not an annual
+  composite; multi-month views and source-mapped large artifacts remain required.
+  Result/spool limits fail explicitly instead of truncating research.
 - C5 partial: MFE/MAE and several measured failure tags, bounded children and basic
   lineage exist. Full cohort/regime analysis, cost sensitivity, paired comparisons,
-  controlled auto-improvement, and negative hypothesis decisions remain unfinished.
+  controlled auto-improvement, and paired negative hypothesis decisions remain unfinished.
+  Failed strategies and returned engine-contract traces are now preserved in the
+  registry/quarantine; full mid-engine crash forensics still need implementation.
 - C6 partial: Wilson intervals, quarter split helper, purge helper, frozen train/OOS
   replay exist. No full annual reset/pooled/marked-equity/regime reports, deflated
   Sharpe/multiple-testing evaluation, final holdout-use workflow, WFO refitting,
   sensitivity gates or automated validation promotion. All validated boards empty.
+  The first 200,000 January EURUSD quotes were used for a feature-compilation
+  benchmark; do not retrospectively claim that interval wholly untouched.
 - C7 partial: responsive authenticated API inspector reads real state and executes
   pause/resume; no full forensic charts, improvement workshop, exports/PDF, performance
   panels, supervisor console or complete typed action surface. No browser E2E run.

@@ -2,16 +2,16 @@
 
 **NOT_READY — tested development branch, no production release.** Historical
 and paper research only; no brokerage execution. The complete supplied v2.0
-specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical market
-results are claimed.
+specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical strategy
+performance is claimed.
 
-Latest progress: [persistent training research](docs/milestone-training-research.md)
-and [bounded replay](docs/milestone-bounded-replay.md)
-and [machine-readable evidence](milestone-report.json). Free January 2025 EURUSD
-and Gold ticks have lossless, memory-bounded structural imports. This is not
-historical strategy validation. The current suite has 125 passing tests; security
-findings and the full release gates remain unresolved. Previous v1 synthetic
-campaign reports are retained in history, not treated as current v2 evidence.
+Latest progress: [eight-instrument source integrity](docs/milestone-source-integrity.md),
+[persistent training research](docs/milestone-training-research.md) and
+[machine-readable evidence](milestone-report.json). Free January 2025 imports now
+structurally verify 21,345,746 real quotes across all eight instruments. Historical
+strategy validation remains blocked. The current suite has 144 passing tests;
+security findings and full release requirements remain unresolved. Prior reports
+and immutable experiment histories are retained.
 
 Implemented: typed immutable strategy/experiment contracts; fingerprints; exact
 integer quote Parquet storage with raw hashes and quarantine; leased durable job
