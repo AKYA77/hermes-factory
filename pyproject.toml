@@ -34,3 +34,5 @@ line-length = 100
 
 "migrations/002_search.sql" = "factory/sql/002_search.sql"
 "migrations/003_evidence.sql" = "factory/sql/003_evidence.sql"
+
+"migrations/004_improvement.sql" = "factory/sql/004_improvement.sql"

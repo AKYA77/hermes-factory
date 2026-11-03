@@ -15,8 +15,13 @@ from factory.screening import SCREEN_POLICY
 def maintenance(store, root, max_queued=2):
     search = Search(store, root)
     applied = search.feedback()
+    from factory.improvement.service import Improvement
+
+    improvement = Improvement(store, root)
+    improvement.feedback()
     if store.paused():
         return {"feedback": applied, "proposed": 0}
+    improvement.discover()
     # Recover durable proposals first. Existing experiment IDs are reused by the
     # unique queue key; retries are not new parameter trials or full replays.
     active = store.rows(
@@ -38,6 +43,7 @@ def maintenance(store, root, max_queued=2):
                 "contract": json.loads(row["contract_json"]),
                 "profile": protocol.profile.model_dump(mode="json"),
                 "screening": SCREEN_POLICY,
+                "search_trial_id": row["trial_id"],
             },
             contract.experiment_hash,
             actor="research-recovery",
@@ -45,6 +51,10 @@ def maintenance(store, root, max_queued=2):
         active += 1
     if active >= max_queued:
         return {"feedback": applied, "proposed": 0}
+    admitted = improvement.admit()
+    active += admitted
+    if active >= max_queued:
+        return {"feedback": applied, "proposed": 0, "improvement_admitted": admitted}
     # Charge actual measured CPU to instruments/cells, with proposal CPU included.
     # A stable trial-count tie-break reserves breadth before objective exploitation.
     cells = store.rows("""SELECT p.*,coalesce(sum(coalesce(o.cpu_seconds,0)+t.generation_cpu_seconds),0) cpu,
@@ -93,6 +103,7 @@ def maintenance(store, root, max_queued=2):
                         "contract": trial["contract"].model_dump(mode="json"),
                         "profile": protocol.profile.model_dump(mode="json"),
                         "screening": SCREEN_POLICY,
+                        "search_trial_id": trial["trial_id"],
                     },
                     trial["contract"].experiment_hash,
                     actor="research",

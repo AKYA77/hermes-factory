@@ -65,6 +65,7 @@ def test_recurring_feedback_restart_and_no_llm(tmp_path, monkeypatch):
         {"version": 1},
         {"version": 2},
         {"version": 3},
+        {"version": 4},
     ]
 
 
@@ -184,3 +185,62 @@ def test_failed_execution_preserves_strategy_registry(tmp_path):
     with pytest.raises(sqlite3.IntegrityError, match="immutable strategy"):
         with store.transaction() as db:
             db.execute("DELETE FROM strategy_specs")
+
+
+def test_protocol_hash_survives_json_defaults_and_preserves_legacy_ids(tmp_path):
+    from factory.contracts import fingerprint
+
+    payload = seed(tmp_path, 60)
+    store = Store(tmp_path / "factory.sqlite")
+    search = Search(store, tmp_path)
+    modern = protocol(payload)
+    roundtrip = SearchProtocol.model_validate_json(serialize(modern))
+    assert modern.protocol_hash == roundtrip.protocol_hash == fingerprint(modern)
+    assert modern.schema_version == "search/v2"
+    legacy = protocol(payload, schema_version="search/v1").model_copy(
+        update={"cpu_budget_seconds": 600}
+    )
+    assert type(legacy.cpu_budget_seconds) is int  # original v1 default representation
+    identity = search.register(legacy)
+    restored = search.protocol(identity)
+    assert restored.protocol_hash == identity == fingerprint(legacy)
+    assert serialize(restored) == serialize(legacy)
+    assert (
+        search.ask(identity)["contract"].windows
+        == legacy.contract(
+            legacy.strategy(
+                {"lookback": 2, "threshold_tenths": 5, "stop_ticks": 60, "confirmation": "none"}
+            )
+        ).windows
+    )
+
+
+def test_reused_native_job_cpu_is_attributed_once_across_protocols(tmp_path):
+    payload = seed(tmp_path, 240)
+    store = Store(tmp_path / "factory.sqlite")
+    search = Search(store, tmp_path)
+    a = search.register(protocol(payload, max_trials=1))
+    b = search.register(protocol(payload, max_trials=2))
+    left, right = search.ask(a), search.ask(b)
+    assert left["contract"].experiment_hash == right["contract"].experiment_hash
+    search.enqueue_pending()
+    shared = store.rows(
+        "SELECT * FROM jobs WHERE idempotency_key=?", (left["contract"].experiment_hash,)
+    )
+    assert len(shared) == 1
+    store.pause(False, "test")
+    assert cycle(store, tmp_path)
+    search.feedback()
+    outcomes = store.rows(
+        "SELECT * FROM search_outcomes WHERE trial_id IN (?,?)",
+        (left["trial_id"], right["trial_id"]),
+    )
+    assert len(outcomes) == 2
+    assert sorted(o["cpu_seconds"] > 0 for o in outcomes) == [False, True]
+    measured = store.rows(
+        "SELECT resources_json FROM attempt_resources r JOIN attempts a USING(token) WHERE a.job_id=?",
+        (shared[0]["job_id"],),
+    )
+    assert sum(o["cpu_seconds"] for o in outcomes) == sum(
+        json.loads(r["resources_json"])["cpu_seconds"] for r in measured
+    )

@@ -23,11 +23,11 @@ verified 1,016 files/1,000 jobs/1,000 experiments. Existing results were not cha
 |---|---|---|
 | 0 | Latest upstream audit, code/data/backup evidence and backlog reconciliation | PASS for bounded baseline; security FAIL |
 | 1 | Position/account/P&L golden reconciliation; currencies/Gold; calendar/source integrity; security | IN_PROGRESS; upstream and profile gates BLOCKED |
-| 2 | Bounded bars/MTF alignment, feature identity/cache use, native chunked replay, columnar forensic references, measured parity/resource limits | IN_PROGRESS |
-| 3 | Persistent training TPE and recurring registered-region admission tested; automatic new-data/region discovery, full diagnostics/improvement, rejection audit and multi-day fairness/soak unfinished | IN_PROGRESS |
+| 2 | Shared indicator transforms, append/revision cache acceptance, large artifact APIs and actual target resource gates; bounded bars/disk reuse/native streaming are implemented | IN_PROGRESS |
+| 3 | Persistent training TPE and recurring registered-region admission tested; automatic new-data/region discovery, full regime/recursive improvement, richer reject auditing and multi-day fairness/soak unfinished | IN_PROGRESS |
 | 4 | Independent annual/OOS/WFO/holdout; stability; ranking comparability; paper observation | NOT_TESTED / unfinished |
 | 5 | Full dashboard/API; installation, updates/rollback/recovery and Hermes handoff | NOT_TESTED / unfinished |
-| 6 | Full available 2025/2026 eight-instrument import, real validation, actual Ubuntu 4-vCPU/8-GB install/stress/multi-day soak and all original gates | BLOCKED / unfinished |
+| 6 | Post-handoff DATA_READY acquisition; real validation and actual Ubuntu 4-vCPU/8-GB install/stress/multi-day soak; all original gates retained | BLOCKED / unfinished |
 
 Fresh PyPI/npm metadata still reports Nautilus 1.231.0 with exact fsspec2026.2.0
 pin; latest fsspec2026.9.0; deepmerge4.3.1 and vite-plugin-svelte7.3.1 unchanged.
@@ -69,5 +69,10 @@ and independent readiness receipt evaluation. Do not rebuild these components.
 Their scoped tests do not complete C0–C9/T01–T30. Exact-zero Tier 0/rejection-audit integration is now implemented (ADR 0012).
 Next: richer screening/audit cohorts,
 shared indicator transforms/optimizer measurement, autonomous discovery and
-controlled improvement, full independent scientific validation, dashboard and
+full regime/recursive improvement, full independent scientific validation, dashboard and
 installation/handoff. Security/profile/reference blockers remain active.
+
+Bounded diagnosis-driven training improvement is now implemented (ADR 0013),
+including persistent negative decisions and paired evidence. New search/v2 hashes
+fix CPU-default round-trip drift; legacy IDs remain unchanged. Browser rehearsal
+found/fixed CSP bootstrap blocking. Full C5/C7 completion is still not claimed.

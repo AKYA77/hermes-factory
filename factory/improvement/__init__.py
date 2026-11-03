@@ -5,7 +5,7 @@ from factory.contracts import StrategySpec
 
 def children(parent, max_children=4):
     candidates = []
-    for ticks in sorted({max(1, parent.stop_ticks // 2), parent.stop_ticks * 2}):
+    for ticks in sorted({max(1, parent.stop_ticks // 2), min(1000000, parent.stop_ticks * 2)}):
         candidates.append(({"stop_ticks": ticks}, "test stop distance with fixed 3R target"))
     candidates.append(
         (

@@ -26,7 +26,8 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   real-strategy engine/security release gates remain open.
 - C1 partial: typed defaults/API/queue/UI available. Production least-privilege
   installation, complete schema evolution and service lifecycle are not implemented.
-  Additive migration 002 now preserves immutable search/outcome/attempt-resource history.
+  Additive migrations 002–004 preserve immutable search/resources and improvement
+  policy/plan/edge/outcome history.
 - C2 partial: free HistData ASCII ticks now have a bounded download/parser and
   8,192-row Parquet import/readback path; original ZIP bytes/notices/checksums,
   fixed EST -> UTC, millisecond precision and exact integer prices are retained.
@@ -46,30 +47,30 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   now run; native rounded USD vs exact Decimal residuals remain explicit
   DIFFERENCE_REQUIRES_POLICY. Real historical strategy evaluation stays blocked until
   those profiles, calendar checks and evaluation contracts are approved.
-- C4 partial: 3 initial operators, typed proposals, seeded Optuna proposal adapter,
-  proposal-count coverage allocation, hash keys, bounded RAM cache. No complete
-  eight-family search, full time/CPU-budget fairness or L2 disk cache. Persistent
-  training-only TPE feedback and recurring registered-region admission now exist;
-  screened-out false-negative audit and automatic new-source/region discovery
-  remain unfinished. Confirmation interpreter now uses bounded bars and monotonic publication alignment. Native
-  delivery/compact forensic paths are bounded; full-period strategy/VPS throughput
-  remains unverified. Replay currently accepts one source partition, not an annual
-  composite; multi-month views and source-mapped large artifacts remain required.
-  Result/spool limits fail explicitly instead of truncating research.
-- C5 partial: MFE/MAE and several measured failure tags, bounded children and basic
-  lineage exist. Full cohort/regime analysis, cost sensitivity, paired comparisons,
-  controlled auto-improvement, and paired negative hypothesis decisions remain unfinished.
-  Failed strategies and returned engine-contract traces are now preserved in the
-  registry/quarantine; full mid-engine crash forensics still need implementation.
+- C4 partial: three initial operators, exact bounded RAM/disk bar caches,
+  persistent training TPE, recurring registered regions and exact-zero Tier 0
+  rejection/native audits are implemented. Flat immutable multi-partition inputs
+  preserve leaf/source row references. Full blueprint families, automatic new-data/
+  region discovery, shared indicator transforms, richer screening and full-space
+  fairness remain unfinished. Spool/result caps fail explicitly; large-artifact
+  APIs and actual target-host throughput are unverified.
+- C5 partial: MFE/MAE, stop-role failure tags and bounded registered-region training
+  improvement now run with durable plans, multiple-parent edges, paired complete-
+  trade-set reports, CPU reservations and retained negative/inconclusive decisions.
+  Full cohort/session/regime analysis, cost sensitivity, recursive/diversity-aware
+  improvement and independent confirmation remain unfinished. Mid-engine crash
+  forensics are incomplete; failed execution traces remain quarantined.
 - C6 partial: Wilson intervals, quarter split helper, purge helper, frozen train/OOS
   replay exist. No full annual reset/pooled/marked-equity/regime reports, deflated
   Sharpe/multiple-testing evaluation, final holdout-use workflow, WFO refitting,
   sensitivity gates or automated validation promotion. All validated boards empty.
   The first 200,000 January EURUSD quotes were used for a feature-compilation
   benchmark; do not retrospectively claim that interval wholly untouched.
-- C7 partial: responsive authenticated API inspector reads real state and executes
-  pause/resume; no full forensic charts, improvement workshop, exports/PDF, performance
-  panels, supervisor console or complete typed action surface. No browser E2E run.
+- C7 partial: connected research/audit counts, bounded improvement controls,
+  paired child evidence, cancellation and pause/resume are implemented. A real
+  Chromium loopback rehearsal passed these controls and mobile overflow checks;
+  it exposed and fixed a CSP bootstrap failure. Full forensic charts, exports/PDF,
+  supervisor console and all blueprint browser workflows remain unfinished.
 - C8 partial: actual small synthetic benchmark, backup-copy rehearsal, lease recovery,
   auth/payload/rate-limit tests and pointer rollback harness. Real-source feed-only
   probes (no orders) now exist; no historical strategy benchmark,
@@ -88,7 +89,8 @@ See docs/completion-backlog.md and docs/decisions/0008-bounded-replay-and-causal
 Production quote/signal reads and native delivery now stream; transient spools and
 result records fail explicitly at resource budgets. Compact path summaries retain
 canonical reconstruction references; this does not complete a forced-8GB soak,
-large-artifact API, L2 feature cache or all source/currency gates.
+large-artifact API or all source/currency gates. Exact disk bars and immutable
+partition views were added afterward in ADR 0011.
 
 ## Earlier correctness and historical-import increments
 
@@ -124,7 +126,7 @@ Full acquisition is now a post-software-handoff DATA_READY task, not a software
 implementation blocker. Software, data and operation readiness remain false.
 Flat immutable multi-partition views and exact disk closed-bar reuse are now
 implemented; shared indicator transforms, richer screening/audit cohorts, automatic region
-expansion/improvement, full independent validation, full dashboard and deployment
+expansion and recursive/regime-aware improvement, full independent validation, full dashboard and deployment
 still require work. Existing unresolved security/monetary-profile/target gates
 are unchanged. See ADR 0011 and docs/completion-backlog.md.
 

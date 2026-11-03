@@ -31,7 +31,7 @@ from factory.simulation.ledger import EXECUTION_VERSION, require_execution_versi
 
 
 class SearchProtocol(Contract):
-    schema_version: Literal["search/v1"] = "search/v1"
+    schema_version: Literal["search/v1", "search/v2"] = "search/v2"
     dataset_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     profile: InstrumentSpec
     window: Window
@@ -41,7 +41,7 @@ class SearchProtocol(Contract):
     code_revision: str
     seed: int = Field(ge=0, le=2**32 - 1)
     max_trials: int = Field(default=64, ge=1, le=256)
-    cpu_budget_seconds: float = Field(default=600, gt=0, le=86400, allow_inf_nan=False)
+    cpu_budget_seconds: float = Field(default=600.0, gt=0, le=86400, allow_inf_nan=False)
     scenario: Literal["historical-reference/v1", "historical-pessimistic/v1"] = (
         "historical-pessimistic/v1"
     )
@@ -68,6 +68,10 @@ class SearchProtocol(Contract):
 
     @property
     def protocol_hash(self):
+        if self.schema_version == "search/v2":
+            raw = self.model_dump()
+            raw["cpu_budget_seconds"] = float(self.cpu_budget_seconds)
+            return fingerprint(raw)
         return fingerprint(self)
 
     def contract(self, spec):
@@ -173,7 +177,15 @@ class Search:
         )
         if not rows:
             raise ValueError("unknown search protocol")
-        return SearchProtocol.model_validate_json(rows[0]["protocol_json"])
+        raw = json.loads(rows[0]["protocol_json"])
+        protocol = SearchProtocol.model_validate(raw)
+        if protocol.schema_version == "search/v1":
+            # v1 defaulted this float field to the integer 600. Preserve the
+            # original serialized numeric representation and historical ID.
+            protocol = protocol.model_copy(update={"cpu_budget_seconds": raw["cpu_budget_seconds"]})
+        if protocol.protocol_hash != identity:
+            raise ValueError("search protocol identity mismatch")
+        return protocol
 
     def ask(self, identity):
         protocol = self.protocol(identity)
@@ -329,6 +341,7 @@ class Search:
                 "contract": json.loads(row["contract_json"]),
                 "profile": protocol.profile.model_dump(mode="json"),
                 "screening": "exact-zero-signals-audit/16/v1",
+                "search_trial_id": row["trial_id"],
             }
             self.store.enqueue("research", payload, contract.experiment_hash, actor="research")
             count += 1
@@ -357,7 +370,15 @@ class Search:
             outcome, objective, run_id, reason = "FAIL", None, None, "WORKER_FAILED"
             cpu = 0.0
             if jobs:
-                if jobs[0]["created_at"] >= row["created_at"]:
+                job_payload = json.loads(jobs[0]["payload"])
+                owner = job_payload.get("search_trial_id")
+                if owner is None and "improvement_edge_id" not in job_payload:
+                    legacy = self.store.rows(
+                        "SELECT trial_id FROM search_trials WHERE contract_json=? ORDER BY created_at,trial_id LIMIT 1",
+                        (serialize(contract),),
+                    )
+                    owner = legacy[0]["trial_id"] if legacy else None
+                if owner == row["trial_id"] and jobs[0]["created_at"] >= row["created_at"]:
                     attempts = self.store.rows(
                         "SELECT r.resources_json FROM attempt_resources r JOIN attempts a USING(token) WHERE a.job_id=?",
                         (jobs[0]["job_id"],),

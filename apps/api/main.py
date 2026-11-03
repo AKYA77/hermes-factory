@@ -13,6 +13,7 @@ from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, 
 from factory.data import Catalog
 from factory.operations.resources import memory_headroom
 from factory.experiments import Store
+from factory.improvement.service import ImprovementPolicy
 from factory.ranking import leaderboard
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
@@ -40,6 +41,9 @@ def create_app(root, dashboard=None):
         redoc_url=None,
         openapi_url=None,
     )
+    from apps.api.security import dashboard_csp
+
+    content_security_policy = dashboard_csp(dashboard)
     app.state.store = store
     from apps.api.limits import Limits
 
@@ -55,9 +59,7 @@ def create_app(root, dashboard=None):
         response = await call_next(request)
         response.headers["X-Content-Type-Options"] = "nosniff"
         response.headers["Cache-Control"] = "no-store"
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self'; frame-ancestors 'none'"
-        )
+        response.headers["Content-Security-Policy"] = content_security_policy
         return response
 
     def auth(authorization: Annotated[str | None, Header()] = None):
@@ -122,6 +124,50 @@ def create_app(root, dashboard=None):
     @app.get("/api/v1/research/status", dependencies=read)
     def search_status():
         return research_status(store)
+
+    @app.get("/api/v1/improvement/status", dependencies=read)
+    def improvement_status():
+        from factory.improvement.service import Improvement
+
+        return Improvement(store, root).status()
+
+    @app.post("/api/v1/improvement/policies", dependencies=write)
+    def register_improvement(policy: ImprovementPolicy):
+        from factory.improvement.service import Improvement
+
+        try:
+            identity = Improvement(store, root).register(policy)
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+        return {"policy_hash": identity, "paused": store.paused()}
+
+    @app.post("/api/v1/improvement/policies/{identity}/disable", dependencies=write)
+    def disable_improvement(identity: str):
+        from factory.improvement.service import Improvement
+
+        try:
+            Improvement(store, root).disable(identity)
+        except ValueError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        return {"policy_hash": identity, "enabled": False}
+
+    @app.get("/api/v1/improvement/plans", dependencies=read)
+    def improvement_plans(
+        limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
+    ):
+        return store.rows(
+            "SELECT * FROM improvement_plans ORDER BY created_at,plan_hash LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
+
+    @app.get("/api/v1/improvement/children", dependencies=read)
+    def improvement_children(
+        limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
+    ):
+        return store.rows(
+            "SELECT e.*,o.status,o.evidence_json,o.cpu_seconds FROM improvement_edges e LEFT JOIN improvement_outcomes o USING(edge_id) ORDER BY e.created_at,e.edge_id LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
 
     @app.get("/api/v1/research/protocols", dependencies=read)
     def search_protocols(

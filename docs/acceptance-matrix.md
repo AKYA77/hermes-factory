@@ -18,14 +18,14 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T10 | Hypothetical risk | Budget/min-volume/max-cap grid and negative-equity refusal tested; dated cross-currency/broker profiles pending |
 | T11 | 24h deadline | Exact quote timeout and missing-exit flag tested; delayed-gap policy further review |
 | T12 | MFE/MAE paths | Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending |
-| T13 | Parent-child | Changes and parent preservation tested; paired cohort evidence pending |
-| T14 | Reject vs remember | OOS failure status helper tested; complete persisted hypothesis decision workflow pending |
+| T13 | Parent-child | Changes, parent preservation, immutable multiple-parent edges and complete-trade-set paired training reports tested; full independent cohort confirmation pending |
+| T14 | Reject vs remember | OOS failure status helper tested; bounded persistent training hypothesis decisions now tested; independent failure/holdout workflow pending |
 | T15 | Annual/WFO splits | Exact nanosecond quarter boundary/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending |
 | T16 | Eight independent boards | Empty boards + synthetic populated board tested; full ranking/diversity/archive regression pending |
 | T17 | Dedup + screen audit | Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending |
 | T18 | Search fairness | Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending |
 | T19 | Reproducibility | Synthetic replay artifact hashes identical; tagged historical reproduction pending |
-| T20 | API/dashboard | Auth, pagination, roles and state tested; browser full C7 workflows pending |
+| T20 | API/dashboard | Auth, pagination, roles and state tested; scoped actual Chromium policy/cancellation/auth/mobile rehearsal passes; full C7 workflows pending |
 | T21 | Agent offline | Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending |
 | T22 | Rollback | Synthetic atomic pointer health-failure test only; migration/live process recovery pending |
 | T23 | Backup recovery | SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending |
@@ -64,3 +64,7 @@ Owner amendment gates (no original requirement is removed):
 Full bulk acquisition is a post-handoff DATA_READY task under the owner's final
 amendment. Software gates still require representative real-source integration,
 all implementation requirements, full scientific workflows and tested handoff.
+
+| T39 | Controlled training improvement | PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending |
+| T40 | Restart identity and CPU conservation | PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained |
+| T41 | Static dashboard execution | PASS scoped exact bootstrap CSP hashes, injected-script rejection and real Chromium controls; full blueprint UI acceptance pending |

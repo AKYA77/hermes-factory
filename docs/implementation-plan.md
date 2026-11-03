@@ -7,12 +7,12 @@ Use existing branch build/initial-factory and existing checkout; no worktree nee
 |---|---|---|
 | C0 | source archive, locked tools, private GitHub/PR, fresh security assessment | Partial; branch rules and unresolved dependency findings remain |
 | C1 | contracts/config, migration 001, Store/leases, API auth, dashboard inspector, local installer | Partial; target system deployment and complete persistence/controls pending |
-| C2 | eight-instrument free January pilots, bounded lossless import/readback, canonical proofs/raw provenance | Partial; 176 planned partitions pending, calendars/revisions, composite views and full operational ingestion remain |
+| C2 | eight-instrument free January pilots, bounded lossless import/readback, canonical proofs/raw provenance | Partial; 176 planned partitions pending, calendars/revisions and full operational ingestion remain; immutable views now exist |
 | C3 | v2 fill ledger, partial/cancel/timeout/role diagnostics, source guards and margin formula tests | Partial; finite-depth exact pricing, currency rounding, JPY/Gold monetary profiles and full reference remain |
-| C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; persistent training TPE/recurring admission now tested; full region discovery, families, disk cache, screen audit pending |
-| C5 | path diagnostics, controlled child variants, basic lineage | Partial; cohort analysis/paired improvement pipeline pending |
+| C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; persistent training TPE/recurring admission now tested; exact disk bars/Tier 0 native audits now tested; full region discovery, families and indicator transforms pending |
+| C5 | path diagnostics, controlled child variants, basic lineage | Partial; bounded training plans/paired feedback now implemented; full cohort/regime/independent confirmation pending |
 | C6 | Wilson, quarter/purge helpers, frozen-window replays, instrument boards | Partial; full evaluation/holdout/annual/pooled reporting pending |
-| C7 | connected responsive state inspector, pause/resume and real API state | Partial; full blueprint dashboard/charts/actions/exports pending |
+| C7 | connected research/improvement controls, cancellation and scoped real browser rehearsal | Partial; full blueprint dashboard/charts/actions/exports pending |
 | C8 | real local tests/benchmarks, backup rehearsal, auth/limits, CI definitions | Partial; actual VPS/fault/soak/CI/security release gates pending |
 | C9 | docs, blocked handoff/manifest | Blocked; no approved release/tag |
 
@@ -30,7 +30,7 @@ Next work, in order:
    on downloading the other 176 partitions. Real monetary evaluations still need
    approved profiles and data-quality/scientific rules.
 3. Finish C3 reference/account-currency and finite-liquidity pricing gates, then
-   composite dataset views/large artifacts and persistent shared features. Never
+   large artifacts, shared indicator transforms and full append/revision acceptance. Never
    certify a fallback extra tick as the declared exact two-pip execution model.
 4. Expand the now-tested persistent training optimizer/recurring admission to
    automatic data/region discovery, full C4–C7 generation/diagnosis, durable negative

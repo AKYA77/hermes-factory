@@ -30,6 +30,11 @@ def main():
     subs.add_parser("research-status")
     disable = subs.add_parser("research-disable")
     disable.add_argument("protocol_hash")
+    improve = subs.add_parser("improvement-register")
+    improve.add_argument("policy_file", type=Path)
+    disable_improvement = subs.add_parser("improvement-disable")
+    disable_improvement.add_argument("policy_hash")
+    subs.add_parser("improvement-status")
     subs.add_parser("pause")
     subs.add_parser("resume")
     args = parser.parse_args()
@@ -82,6 +87,22 @@ def main():
         with os.fdopen(fd, "w") as f:
             f.write(key)
         print(f"Credential written with mode 0600 to {token_file}; do not commit or log it.")
+    elif args.command.startswith("improvement-"):
+        from factory.improvement.service import Improvement, ImprovementPolicy
+
+        improvement = Improvement(Store(root / "factory.sqlite"), root)
+        if args.command == "improvement-register":
+            identity = improvement.register(
+                ImprovementPolicy.model_validate_json(args.policy_file.read_text())
+            )
+            print(
+                json.dumps({"policy_hash": identity, "scope": "bounded training improvement only"})
+            )
+        elif args.command == "improvement-disable":
+            improvement.disable(args.policy_hash)
+            print(json.dumps({"policy_hash": args.policy_hash, "enabled": False}))
+        else:
+            print(json.dumps(improvement.status(), indent=2))
     elif args.command.startswith("research-"):
         from factory.exploration.persistent import Search, SearchProtocol, status
 
