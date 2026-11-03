@@ -231,9 +231,21 @@ def create_app(root, dashboard=None):
 
     @app.get("/api/v1/data/manifest", dependencies=read)
     def manifests():
-        return [
-            json.loads(p.read_text()) for p in sorted((root / "catalog").glob("*/manifest.json"))
-        ]
+        manifests = []
+        for path in sorted((root / "catalog").glob("*/manifest.json")):
+            name = path.parent.name
+            # A verified staging manifest is not committed until directory rename.
+            if (
+                len(name) != 64
+                or any(c not in "0123456789abcdef" for c in name)
+                or path.parent.is_symlink()
+            ):
+                continue
+            value = json.loads(path.read_text())
+            if value.get("dataset_hash") != name:
+                raise HTTPException(409, "manifest namespace mismatch")
+            manifests.append(value)
+        return manifests
 
     @app.get("/api/v1/audit", dependencies=read)
     def audit(limit: int = Query(25, ge=1, le=100), offset: int = Query(0, ge=0)):
