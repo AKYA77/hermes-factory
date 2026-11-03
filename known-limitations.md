@@ -123,7 +123,11 @@ in the checkpoint report. Third-party deprecation warnings are retained.
 Full acquisition is now a post-software-handoff DATA_READY task, not a software
 implementation blocker. Software, data and operation readiness remain false.
 Flat immutable multi-partition views and exact disk closed-bar reuse are now
-implemented; shared indicator transforms, Tier 0/reject audits, automatic region
+implemented; shared indicator transforms, richer screening/audit cohorts, automatic region
 expansion/improvement, full independent validation, full dashboard and deployment
 still require work. Existing unresolved security/monetary-profile/target gates
 are unchanged. See ADR 0011 and docs/completion-backlog.md.
+
+Exact-zero-signal Tier 0 now runs in persistent research and recovery, with
+immutable receipts, PRUNED feedback and native rejection audits. It does not
+perform approximate profitability screening or confer scientific validation.

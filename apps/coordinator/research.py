@@ -9,6 +9,7 @@ import json
 import time
 from factory.contracts import ExperimentContract
 from factory.exploration.persistent import Search
+from factory.screening import SCREEN_POLICY
 
 
 def maintenance(store, root, max_queued=2):
@@ -36,6 +37,7 @@ def maintenance(store, root, max_queued=2):
                 "strategy": json.loads(row["spec_json"]),
                 "contract": json.loads(row["contract_json"]),
                 "profile": protocol.profile.model_dump(mode="json"),
+                "screening": SCREEN_POLICY,
             },
             contract.experiment_hash,
             actor="research-recovery",
@@ -90,6 +92,7 @@ def maintenance(store, root, max_queued=2):
                         "strategy": trial["spec"].model_dump(mode="json"),
                         "contract": trial["contract"].model_dump(mode="json"),
                         "profile": protocol.profile.model_dump(mode="json"),
+                        "screening": SCREEN_POLICY,
                     },
                     trial["contract"].experiment_hash,
                     actor="research",

@@ -22,7 +22,7 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T14 | Reject vs remember | OOS failure status helper tested; complete persisted hypothesis decision workflow pending |
 | T15 | Annual/WFO splits | Exact nanosecond quarter boundary/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending |
 | T16 | Eight independent boards | Empty boards + synthetic populated board tested; full ranking/diversity/archive regression pending |
-| T17 | Dedup + screen audit | Cached proposal and execution/source version guards tested; screened-out audit not implemented |
+| T17 | Dedup + screen audit | Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending |
 | T18 | Search fairness | Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending |
 | T19 | Reproducibility | Synthetic replay artifact hashes identical; tagged historical reproduction pending |
 | T20 | API/dashboard | Auth, pagination, roles and state tested; browser full C7 workflows pending |

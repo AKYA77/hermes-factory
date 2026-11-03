@@ -134,7 +134,11 @@ class BarCache:
             if missing:
                 self._build(catalog, dataset, inputs, keys, missing, start_ns, end_ns)
             self._reserve(set(keys.values()))
-            yield self._merge(keys)
+            stream = self._merge(keys)
+            try:
+                yield stream
+            finally:
+                stream.close()
 
     def _build(self, catalog, dataset, inputs, keys, missing, start_ns, end_ns):
         self.stats["quote_passes"] += 1

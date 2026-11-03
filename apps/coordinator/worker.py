@@ -16,6 +16,7 @@ from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
 from factory.strategies import iter_bar_signals
 from factory.features.disk import BarCache
+from factory.screening import SCREEN_POLICY, screen, persist
 
 
 def run(payload, root):
@@ -49,6 +50,31 @@ def run(payload, root):
             yield signal
 
     cache = BarCache(Path(root) / "cache" / "bars")
+    screening = payload.get("screening")
+    receipt = None
+    if screening is not None:
+        if screening != SCREEN_POLICY:
+            raise ValueError("unsupported screening policy")
+        with cache.events(
+            catalog,
+            contract.dataset_hash,
+            contract.instrument_hash,
+            contract.code_revision,
+            (spec.timeframe, *spec.confirmations),
+            start_ns=window.start_ns,
+            end_ns=window.end_ns,
+        ) as events:
+            receipt = screen(iter_bar_signals(events, spec), contract)
+        catalog.verify(contract.dataset_hash, deep=True)
+        if require_execution_version(contract) != context:
+            raise ValueError("execution source changed during screen")
+        screen_hash = persist(root, receipt)
+        if receipt.decision == "PRUNE_NO_SIGNALS":
+            return {
+                "result_kind": "SCREENED_OUT",
+                "screen": receipt.model_dump(mode="json"),
+                "screen_artifact_hash": screen_hash,
+            }
     with cache.events(
         catalog,
         contract.dataset_hash,
@@ -70,6 +96,15 @@ def run(payload, root):
         )
     catalog.verify(contract.dataset_hash, deep=True)
     result["runtime_provenance"] = context
+    if receipt is not None:
+        result["tier0_screen"] = receipt.model_dump(mode="json")
+        if receipt.decision == "AUDIT_NO_SIGNALS":
+            audit_passed = not (
+                result["fills"] or result["trades"] or result["open_trade"] or generated
+            )
+            result["tier0_audit"] = {"passed": audit_passed, "false_negative": not audit_passed}
+            if not audit_passed:
+                result["integrity_errors"].append({"reason": "TIER0_FALSE_NEGATIVE"})
     if result["integrity_errors"]:
         quarantine = {
             "status": "QUARANTINED_EXECUTION_CONTRACT_MISMATCH",

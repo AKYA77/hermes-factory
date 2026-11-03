@@ -66,7 +66,8 @@ gate. This is sequencing authorization, not acceptance of unfinished software.
 Implemented increments: immutable multi-period view composition/source-row
 references, bounded exact disk bar cache wired to training/fixed-window workers,
 and independent readiness receipt evaluation. Do not rebuild these components.
-Their scoped tests do not complete C0–C9/T01–T30. Next: Tier 0 and rejection audits,
+Their scoped tests do not complete C0–C9/T01–T30. Exact-zero Tier 0/rejection-audit integration is now implemented (ADR 0012).
+Next: richer screening/audit cohorts,
 shared indicator transforms/optimizer measurement, autonomous discovery and
 controlled improvement, full independent scientific validation, dashboard and
 installation/handoff. Security/profile/reference blockers remain active.

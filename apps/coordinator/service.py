@@ -119,6 +119,27 @@ def _cycle(store, root, timeout, memory_limit_bytes):
                     result={"resources": resources},
                     error=result.get("error", "worker failed"),
                 )
+            elif result.get("result_kind") == "SCREENED_OUT":
+                from factory.screening import verify_pruned
+
+                receipt = verify_pruned(root, payload["contract"], result)
+                store.finish(
+                    job["job_id"],
+                    job["lease_token"],
+                    result={
+                        "screen": receipt.model_dump(mode="json"),
+                        "screen_artifact_hash": result["screen_artifact_hash"],
+                        "resources": resources,
+                    },
+                )
+                store.audit(
+                    "research",
+                    "tier0_rejected",
+                    {
+                        "experiment_hash": receipt.experiment_hash,
+                        "screen_artifact_hash": result["screen_artifact_hash"],
+                    },
+                )
             else:
                 store.complete_experiment(
                     ExperimentContract.model_validate(payload["contract"]),

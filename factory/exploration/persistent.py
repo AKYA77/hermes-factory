@@ -328,6 +328,7 @@ class Search:
                 "strategy": json.loads(row["spec_json"]),
                 "contract": json.loads(row["contract_json"]),
                 "profile": protocol.profile.model_dump(mode="json"),
+                "screening": "exact-zero-signals-audit/16/v1",
             }
             self.store.enqueue("research", payload, contract.experiment_hash, actor="research")
             count += 1
@@ -395,6 +396,11 @@ class Search:
                     outcome, reason = "COMPLETE", "AUTHORIZED_TRAINING_ONLY"
                 else:
                     outcome, reason = "PRUNED", "NO_CLOSED_TRADES_IN_TRAINING"
+            elif jobs and jobs[0]["state"] == "COMPLETED":
+                from factory.screening import verify_pruned
+
+                verify_pruned(self.root, contract, json.loads(jobs[0]["result"]))
+                outcome, reason = "PRUNED", "EXACT_NO_SIGNALS_TIER0"
             elif jobs and jobs[0]["state"] == "CANCELLED":
                 reason = "CANCELLED"
             elif jobs:
@@ -432,6 +438,12 @@ def status(store):
     generation = store.rows(
         "SELECT coalesce(sum(generation_cpu_seconds),0) cpu FROM search_trials"
     )[0]["cpu"]
+    pruned = store.rows("""SELECT count(*) n FROM jobs WHERE state='COMPLETED'
+        AND json_extract(result,'$.screen.decision')='PRUNE_NO_SIGNALS'""")[0]["n"]
+    audits = store.rows("""SELECT count(*) n FROM experiments
+        WHERE json_extract(result_json,'$.tier0_audit.passed')=1""")[0]["n"]
+    audit_failures = store.rows("""SELECT count(*) n FROM jobs WHERE state='FAILED_FINAL'
+        AND error LIKE '%TIER0_FALSE_NEGATIVE%'""")[0]["n"]
     return {
         "scope": "synthetic authorized training only; no independent validation",
         "paused": store.paused(),
@@ -447,12 +459,25 @@ def status(store):
             "SELECT count(DISTINCT run_id) count FROM search_outcomes WHERE run_id IS NOT NULL"
         )[0]["count"],
         "measured_replay_cpu_seconds": cpu,
+        "measured_worker_cpu_seconds": cpu,
+        "cpu_scope": "worker CPU includes screening; replay_cpu field retained for API compatibility",
         "measured_generation_cpu_seconds": generation,
+        "screening": {
+            "policy": "exact-zero-signals-audit/16/v1",
+            "pruned_completed_jobs": pruned,
+            "native_rejection_audits_passed": audits,
+            "false_negative_failed_jobs": audit_failures,
+            "observed_false_negative_fraction": audit_failures / (audits + audit_failures)
+            if audits + audit_failures
+            else None,
+            "scope": "persisted jobs only; hash-selected audit is not a profitability estimate",
+        },
         "independent_validations": 0,
         "limitations": [
             "not a multi-day soak",
             "budgets checked between jobs; one job may overshoot a soft CPU budget",
             "explicit registered regions only; no approved real monetary profiles",
-            "all families, automated improvement/selection and screen-rejection audits unfinished",
+            "all blueprint families and automated improvement/selection unfinished",
+            "Tier 0 only prunes exact zero signals; approximate/staged reject auditing unfinished",
         ],
     }
