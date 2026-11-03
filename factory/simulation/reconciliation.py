@@ -5,20 +5,27 @@ Native floating-point currency rounding is not declared equivalent to exact cash
 """
 
 from decimal import Decimal as D
+from fractions import Fraction
 from nautilus_trader.model.currencies import USD
 from nautilus_trader.model.identifiers import Venue
 from factory.simulation.native_money import VERSION, FIXED_SCALAR, position_reference
+from factory.simulation.conversion import native_rate_reference
+from factory.monetary import decimal_amount
 
 
 def reconcile(engine, strategy, instrument):
     ledgers = list({id(v): v for v in strategy.order_ledgers.values()}.values())
     issues = []
     cash = fees = inventory_cost = quantity = realized = D(0)
+    realized_quote = D(0)
+    realized_account_exact = Fraction(0)
     for ledger in ledgers:
         sign = 1 if ledger.metadata["side"] == "BUY" else -1
         inventory_cost += sign * ledger.cost
         quantity += sign * ledger.quantity
         realized += ledger.realized
+        realized_quote += ledger.realized_quote
+        realized_account_exact += ledger.account_realized_exact
         trade_cash = trade_fees = D(0)
         for fill in ledger.fills:
             value = D(fill["size"]) * D(fill["price"])
@@ -26,19 +33,21 @@ def reconcile(engine, strategy, instrument):
             trade_fees += D(fill["commission"])
         cash += trade_cash
         fees += trade_fees
-        if ledger.closed and trade_cash - trade_fees != ledger.realized:
+        if ledger.closed and trade_cash - trade_fees != ledger.realized_quote:
             issues.append(
                 {
                     "reason": "TRADE_CASH_CONSERVATION",
                     "entry_order_id": ledger.aggregate(True)["order_id"],
                     "cash_net": str(trade_cash - trade_fees),
-                    "ledger_net": str(ledger.realized),
+                    "ledger_net": str(ledger.realized_quote),
                 }
             )
-    if cash - fees + inventory_cost != realized:
+    if cash - fees + inventory_cost != realized_quote:
         issues.append({"reason": "AGGREGATE_CASH_CONSERVATION"})
-    if strategy.equity != D(20) + realized:
+    expected_balance = Fraction(20) + realized_account_exact
+    if strategy.equity != decimal_amount(expected_balance):
         issues.append({"reason": "FACTORY_EQUITY_CONSERVATION"})
+    realized = decimal_amount(realized_account_exact)
     positions = (
         engine.cache.positions(instrument_id=instrument.id) + engine.cache.position_snapshots()
     )
@@ -81,17 +90,24 @@ def reconcile(engine, strategy, instrument):
     reference_status = "UNSUPPORTED_CURRENCY_OR_BUILD"
     expected_account_pnl = expected_position_pnl = D(0)
     reference_verified = False
-    if instrument.quote_currency == USD and instrument.make_price(1).raw == FIXED_SCALAR:
+    if instrument.make_price(1).raw == FIXED_SCALAR:
         reference_status = "VERIFIED"
         for ledger in ledgers:
             if not ledger.fills:
                 continue
             reference = position_reference(
                 ledger.fills,
-                currency_precision=USD.precision,
+                currency_precision=instrument.quote_currency.precision,
                 size_precision=instrument.size_precision,
+                account_precision=USD.precision,
+                conversion_rate=lambda f: native_rate_reference(
+                    strategy.profile,
+                    f["conversion_bid"] or "1",
+                    f["conversion_ask"] or "1",
+                    f["side"],
+                ),
             )
-            expected_account_pnl += D(reference["account_quote_pnl"])
+            expected_account_pnl += D(reference["account_converted_pnl"])
             expected_position_pnl += D(reference["position_quote_pnl"])
             first = ledger.fills[0]
             position = native_lifetimes.get((first["order_id"], first["trade_id"]))
@@ -134,6 +150,9 @@ def reconcile(engine, strategy, instrument):
         "signed_inventory": str(quantity),
         "signed_inventory_cost": str(inventory_cost),
         "factory_realized_pnl": str(realized),
+        "factory_quote_currency_pnl": str(realized_quote),
+        "quote_currency": strategy.profile.quote_currency,
+        "account_currency": "USD",
         "factory_exact_equity": str(strategy.equity),
         "native_realized_pnl": str(native_realized),
         "native_balance": str(balance),
@@ -145,11 +164,13 @@ def reconcile(engine, strategy, instrument):
         "native_reference_status": reference_status,
         "reference_account_pnl": str(expected_account_pnl) if reference_verified else None,
         "reference_position_pnl": str(expected_position_pnl) if reference_verified else None,
-        "native_position_minus_account_pnl": str(native_realized - (balance - D(20))),
+        "native_position_minus_account_pnl": str(native_realized - (balance - D(20)))
+        if instrument.quote_currency == USD
+        else None,
         "currency_rounding_status": "REFERENCE_MISMATCH"
         if not reference_verified
         else "EXACT_MATCH"
         if balance == strategy.equity
         else "EXPLAINED_NATIVE_MONEY_POLICY",
-        "scope": "Zero-commission USD-quote linear base units; cross-currency and Gold broker units remain unsupported",
+        "scope": "Zero-commission linear base units; dated executable FX when quote currency differs from USD; broker profile verification remains external",
     }

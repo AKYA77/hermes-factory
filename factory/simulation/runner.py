@@ -1,10 +1,12 @@
 """Bounded quote replay with engine-managed brackets and one open position."""
 
-from decimal import Decimal as D
+from decimal import Decimal as D, ROUND_FLOOR, ROUND_CEILING
+from fractions import Fraction
 from itertools import islice
 
 from factory.simulation.streaming import QuoteSpool, BoundedRecords
 from factory.contracts import InstrumentSpec, serialize
+from factory.monetary import decimal_amount, VERSION as MONEY_VERSION
 from factory.diagnostics import summarize_path
 from factory.simulation.reconciliation import reconcile
 
@@ -14,7 +16,7 @@ from nautilus_trader.accounting.margin_models import StandardMarginModel
 from nautilus_trader.common.config import LoggingConfig
 from nautilus_trader.model.currencies import Currency, USD
 from nautilus_trader.model.data import QuoteTick
-from nautilus_trader.model.enums import AccountType, OmsType, OrderSide, TimeInForce
+from nautilus_trader.model.enums import AccountType, OmsType, OrderSide, TimeInForce, PriceType
 from nautilus_trader.model.identifiers import InstrumentId, Symbol, Venue, ClientOrderId
 from nautilus_trader.model.instruments import CurrencyPair
 from nautilus_trader.model.objects import Money, Price, Quantity
@@ -23,24 +25,36 @@ from nautilus_trader.trading.strategy import Strategy
 from factory.simulation.nautilus import AdverseFillModel
 from factory.simulation.ledger import Fill, TradeLedger, EXECUTION_VERSION
 from factory.simulation.pricing import effective_quotes, eligible_price, size_position
+from factory.simulation.conversion import VERSION as FX_VERSION, quote_to_usd, native_rate_reference
 
 
-def make_instrument(p):
-    if p.contract_multiplier != 1:
-        raise ValueError("UNSUPPORTED_CONTRACT_MULTIPLIER: version gate required")
+def make_instrument(p, *, conversion_context=False):
     precision = max(0, -p.tick_size.normalize().as_tuple().exponent)
-    size_precision = max(0, -p.volume_step.normalize().as_tuple().exponent)
+    native_step = p.volume_step * p.contract_multiplier
+    size_precision = max(0, -native_step.normalize().as_tuple().exponent)
+    if size_precision > 16:
+        raise ValueError("UNREPRESENTABLE_NATIVE_SIZE_INCREMENT")
+    native_min = (p.min_volume / p.volume_step).to_integral_value(
+        rounding=ROUND_CEILING
+    ) * native_step
+    native_max = (p.max_volume / p.volume_step).to_integral_value(
+        rounding=ROUND_FLOOR
+    ) * native_step
+    if native_min > native_max:
+        raise ValueError("NO_LEGAL_NATIVE_VOLUME")
     return CurrencyPair(
-        instrument_id=InstrumentId.from_str(f"{p.instrument}.SIM"),
-        raw_symbol=Symbol(p.instrument),
+        instrument_id=InstrumentId.from_str(
+            f"{p.instrument}{'-FX' if conversion_context else ''}.SIM"
+        ),
+        raw_symbol=Symbol(p.instrument + ("-FX" if conversion_context else "")),
         base_currency=Currency.from_str(p.base_currency),
         quote_currency=Currency.from_str(p.quote_currency),
         price_precision=precision,
         size_precision=size_precision,
         price_increment=Price(p.tick_size, precision),
-        size_increment=Quantity(p.volume_step, size_precision),
-        min_quantity=Quantity(p.min_volume, size_precision),
-        max_quantity=Quantity(p.max_volume, size_precision),
+        size_increment=Quantity(native_step, size_precision),
+        min_quantity=Quantity(native_min, size_precision),
+        max_quantity=Quantity(native_max, size_precision),
         margin_init=p.margin_rate,
         margin_maint=p.margin_rate,
         maker_fee=D(0),
@@ -65,6 +79,7 @@ class ReplayStrategy(Strategy):
         self.order_ledgers = {}
         self.completed = set()
         self.equity = D("20")
+        self.account_cash_exact = Fraction(20)
         self.last_ts = None
         self.quote_count = 0
         self.in_quote = False
@@ -73,6 +88,7 @@ class ReplayStrategy(Strategy):
         self.safety_pending = set()
         self.empty_completed = set()
         self.cleanup_in_progress = set()
+        self.conversion_context_id = None
 
     def on_start(self):
         self.subscribe_quote_ticks(self.instrument.id)
@@ -167,21 +183,51 @@ class ReplayStrategy(Strategy):
         ledger = self.order_ledgers.get(order_id)
         if ledger is None:
             raise ValueError("UNKNOWN_FILL_ORDER")
+        side = "BUY" if event.order_side == OrderSide.BUY else "SELL"
+        conversion, conversion_ts, conversion_source = D(1), None, "USD_IDENTITY"
+        conversion_bid = conversion_ask = None
+        if self.profile.quote_currency != "USD":
+            quote = self.cache.quote_tick(self.conversion_context_id)
+            if quote is None or quote.ts_event != event.ts_event:
+                raise ValueError("MISSING_DATED_CONVERSION_QUOTE")
+            conversion_bid, conversion_ask = (
+                quote.bid_price.as_decimal(),
+                quote.ask_price.as_decimal(),
+            )
+            conversion = quote_to_usd(self.profile, conversion_bid, conversion_ask, side)
+            conversion_ts, conversion_source = int(quote.ts_event), str(quote.instrument_id)
+            native_rate = self.cache.get_xrate(
+                Venue("SIM"),
+                self.instrument.quote_currency,
+                USD,
+                PriceType.BID if side == "SELL" else PriceType.ASK,
+            )
+            if native_rate != native_rate_reference(
+                self.profile, conversion_bid, conversion_ask, side
+            ):
+                raise ValueError("NATIVE_DATED_CONVERSION_MISMATCH")
         fill = Fill(
             order_id=order_id,
             trade_id=str(event.trade_id),
             ts=int(event.ts_event),
-            side="BUY" if event.order_side == OrderSide.BUY else "SELL",
+            side=side,
             size=event.last_qty.as_decimal(),
             price=event.last_px.as_decimal(),
             commission=event.commission.as_decimal(),
             quote_index=max(0, self.quote_count - 1 if self.in_quote else self.quote_count),
+            quote_to_account=conversion,
+            conversion_ts=conversion_ts,
+            conversion_source=conversion_source,
+            conversion_bid=conversion_bid,
+            conversion_ask=conversion_ask,
         )
         was_empty = not ledger.entered
         prior = len(ledger.fills)
-        self.equity += ledger.apply(fill)
+        ledger.apply(fill)
         if len(ledger.fills) == prior:
             return
+        self.account_cash_exact += ledger.last_account_delta_exact
+        self.equity = decimal_amount(self.account_cash_exact)
         self.fills.append({**fill.json(), "role": ledger.orders[order_id]["role"]})
         if was_empty and ledger.entered:
             name = "deadline-" + order_id
@@ -298,11 +344,17 @@ class ReplayStrategy(Strategy):
                     }
                 )
                 continue
-            # USD quote acceptance profile. Other currency conversions require dated cross quotes.
-            if self.profile.quote_currency != "USD":
-                self.skips.append({"ts": now, "status": "UNKNOWN_CONVERSION"})
-                continue
-            sizing = size_position(self.equity, entry, stop, self.profile, D(1), self.conservative)
+            # Project risk/margin at the currently dated closing-side rate. A
+            # future gap or FX change can exceed intended loss and remains visible.
+            risk_conversion = quote_to_usd(
+                self.profile,
+                tick.bid_price.as_decimal(),
+                tick.ask_price.as_decimal(),
+                "SELL" if side == "BUY" else "BUY",
+            )
+            sizing = size_position(
+                self.equity, entry, stop, self.profile, risk_conversion, self.conservative
+            )
             if sizing["status"] != "ELIGIBLE":
                 self.skips.append({"ts": now, **{k: str(v) for k, v in sizing.items()}})
                 continue
@@ -314,19 +366,28 @@ class ReplayStrategy(Strategy):
                 "target": str(target),
                 "intended_stop_distance": str(distance),
                 "risk": str(sizing["risk"]),
+                "risk_exact": sizing["risk_exact"],
                 "modeled_stop_fill": str(
                     stop - sign * (2 * self.profile.pip_size if self.conservative else 0)
                 ),
                 "risk_budget": str(sizing["risk_budget"]),
                 "projected_margin": str(sizing["margin"]),
+                "projected_margin_exact": sizing["margin_exact"],
                 "equity_before": str(self.equity),
+                "risk_conversion_rate": str(risk_conversion),
+                "risk_conversion_ts": now,
+                "quote_currency": self.profile.quote_currency,
+                "requested_profile_volume": str(sizing["size"]),
+                "contract_multiplier": str(self.profile.contract_multiplier),
+                "execution_quantity_unit": "base_currency_units",
                 "flags": [],
             }
-            self.current = TradeLedger(metadata, sizing["size"])
+            native_size = sizing["size"] * self.profile.contract_multiplier
+            self.current = TradeLedger(metadata, native_size)
             bracket = self.order_factory.bracket(
                 self.instrument.id,
                 OrderSide.BUY if side == "BUY" else OrderSide.SELL,
-                self.instrument.make_qty(sizing["size"]),
+                self.instrument.make_qty(native_size),
                 time_in_force=self.entry_tif,
                 sl_time_in_force=self.stop_tif,
                 sl_trigger_price=self.instrument.make_price(stop),
@@ -419,7 +480,14 @@ def _replay_spool(
         reject_stop_orders=False,
     )
     engine.add_instrument(instrument)
+    conversion_instrument = None
+    if profile.quote_currency != "USD":
+        conversion_instrument = make_instrument(profile, conversion_context=True)
+        # Register last so the cache's pair table uses this fresh context feed.
+        # It receives no orders, signals or tradable strategy subscriptions.
+        engine.add_instrument(conversion_instrument)
     strategy = ReplayStrategy(instrument, profile, spec, signals, conservative)
+    strategy.conversion_context_id = conversion_instrument.id if conversion_instrument else None
     if legacy_gtc_reference:
         strategy.entry_tif = strategy.stop_tif = strategy.market_exit_tif = TimeInForce.GTC
     engine.add_strategy(strategy)
@@ -427,15 +495,31 @@ def _replay_spool(
     def tick_from_row(row):
         return make_quote_tick(row, spool.scale, instrument, profile, conservative)
 
+    def native_events(row):
+        tick = tick_from_row(row)
+        if conversion_instrument is not None:
+            # Same source quote/time, stable context-before-execution ordering.
+            # Never pre-populate the cache from a future batched source record.
+            yield QuoteTick(
+                conversion_instrument.id,
+                tick.bid_price,
+                tick.ask_price,
+                tick.bid_size,
+                tick.ask_size,
+                tick.ts_event,
+                tick.ts_init,
+            )
+        yield tick
+
     def batches():
         source = iter(spool.rows())
         while rows := list(islice(source, batch_rows)):
-            yield [tick_from_row(row) for row in rows]
+            yield [tick for row in rows for tick in native_events(row)]
 
     try:
         if materialized_reference:
             # Deliberately bounded by tests/benchmark caller, never worker input.
-            engine.add_data([tick_from_row(row) for row in spool.rows()])
+            engine.add_data([tick for row in spool.rows() for tick in native_events(row)])
             engine.run()
         else:
             engine.add_data_iterator("canonical-quotes", batches())
@@ -444,6 +528,8 @@ def _replay_spool(
             engine.end()
         if strategy.quote_count != spool.count:
             raise ValueError("INCOMPLETE_NATIVE_REPLAY")
+        if engine.iteration != spool.count * (2 if conversion_instrument else 1):
+            raise ValueError("INCOMPLETE_NATIVE_CONTEXT_REPLAY")
         open_trade = (
             strategy.current.snapshot()
             if strategy.current and not strategy.current.closed
@@ -513,6 +599,20 @@ def _replay_spool(
                 f["source_ref"] = spool.source_ref(row)
             f["effective_bid"] = str(tick.bid_price)
             f["effective_ask"] = str(tick.ask_price)
+            expected_conversion = quote_to_usd(
+                profile, tick.bid_price.as_decimal(), tick.ask_price.as_decimal(), f["side"]
+            )
+            if D(f["quote_to_account"]) != expected_conversion or (
+                profile.quote_currency != "USD"
+                and (
+                    f["conversion_ts"] != f["ts"]
+                    or D(f["conversion_bid"]) != tick.bid_price.as_decimal()
+                    or D(f["conversion_ask"]) != tick.ask_price.as_decimal()
+                )
+            ):
+                integrity_errors.append(
+                    {"trade_id": f["trade_id"], "reason": "DATED_CONVERSION_SOURCE_MISMATCH"}
+                )
             if f["role"] == "TAKE_PROFIT":
                 ledger = strategy.order_ledgers[f["order_id"]]
                 limit = D(ledger.metadata["target"])
@@ -557,11 +657,17 @@ def _replay_spool(
             "stop_time_in_force": strategy.stop_tif.name,
             "market_exit_time_in_force": strategy.market_exit_tif.name,
             "legacy_gtc_reference": bool(legacy_gtc_reference),
+            "conversion_policy": FX_VERSION,
+            "account_sum_policy": MONEY_VERSION,
+            "conversion_context": str(conversion_instrument.id) if conversion_instrument else None,
+            "execution_quantity_unit": "base_currency_units",
+            "profile_contract_multiplier": str(profile.contract_multiplier),
             "margin_model": "standard_fixed_profile_rate",
             "rejections": strategy.rejections,
             "fill_trace": fill.trace,
             "ending_equity": str(strategy.equity),
             "quote_count": spool.count,
+            "native_quote_event_count": engine.iteration,
             "synthetic": profile.synthetic,
             "commission_assumption": 0,
             "liquidity_assumption": (

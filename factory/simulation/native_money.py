@@ -8,7 +8,7 @@ documented boundaries as Nautilus 1.231.0, including its high precision build.
 from decimal import Decimal as D
 from math import copysign, isfinite, modf
 
-VERSION = "nautilus-money-reference/1.231.0-v1"
+VERSION = "nautilus-money-reference/1.231.0-v2"
 FIXED_SCALAR = 10**16
 
 
@@ -36,7 +36,9 @@ def money_round(value, precision):
     return D(units).scaleb(-precision)
 
 
-def position_reference(fills, *, currency_precision, size_precision):
+def position_reference(
+    fills, *, currency_precision, size_precision, account_precision=None, conversion_rate=None
+):
     """Zero-commission linear native-base-unit inventory, in quote currency.
 
     Account P&L rounds each closing fill. Position P&L rounds its prior rounded
@@ -48,6 +50,7 @@ def position_reference(fills, *, currency_precision, size_precision):
     average = 0.0
     entry_side = None
     position_pnl = account_pnl = D(0)
+    account_converted_pnl = D(0)
     closing_fills = 0
     for fill in fills:
         if D(fill["commission"]) != 0:
@@ -71,7 +74,17 @@ def position_reference(fills, *, currency_precision, size_precision):
             points = price - average if entry_side == "BUY" else average - price
             # Native linear Position._calculate_pnl multiplication order.
             delta = min(size, quantity) * 1.0 * points
-            account_pnl += money_round(delta, currency_precision)
+            quote_delta = money_round(delta, currency_precision)
+            account_pnl += quote_delta
+            if conversion_rate is not None:
+                if account_precision is None:
+                    raise ValueError("MISSING_ACCOUNT_PRECISION")
+                rate = conversion_rate(fill)
+                if not isfinite(rate) or rate <= 0:
+                    raise ValueError("INVALID_NATIVE_REFERENCE_CONVERSION")
+                account_converted_pnl += money_round(
+                    fixed_float(quote_delta) * rate, account_precision
+                )
             position_pnl = money_round(fixed_float(position_pnl) + delta, currency_precision)
             quantity = round(quantity - size, size_precision)
             closing_fills += 1
@@ -79,6 +92,9 @@ def position_reference(fills, *, currency_precision, size_precision):
         "version": VERSION,
         "position_quote_pnl": str(position_pnl),
         "account_quote_pnl": str(account_pnl),
+        "account_converted_pnl": str(account_converted_pnl)
+        if conversion_rate is not None
+        else None,
         "open_quantity": str(D(str(quantity))),
         "closing_fills": closing_fills,
     }

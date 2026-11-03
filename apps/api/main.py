@@ -335,7 +335,9 @@ def create_app(root, dashboard=None):
     def board(
         symbol: str,
         validated_only: bool = False,
-        execution_version: Literal["adverse-fill/v1", "adverse-fill/v2", "adverse-fill/v3"]
+        execution_version: Literal[
+            "adverse-fill/v1", "adverse-fill/v2", "adverse-fill/v3", "adverse-fill/v4"
+        ]
         | None = None,
     ):
         if symbol not in SYMBOLS:

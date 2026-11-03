@@ -58,7 +58,7 @@ class ValidationProtocol(Contract):
 
     @model_validator(mode="after")
     def coherent(self):
-        if not self.holdout.profile.synthetic or self.holdout.profile.quote_currency != "USD":
+        if not self.holdout.profile.synthetic:
             raise ValueError(
                 "REAL_MONETARY_PROFILE_GATE: verified profile/conversion support required"
             )

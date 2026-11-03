@@ -2,10 +2,12 @@
 
 from dataclasses import dataclass, asdict
 from decimal import Decimal as D
+from fractions import Fraction
 
 from factory.contracts import fingerprint
+from factory.monetary import decimal_amount, receipt
 
-EXECUTION_VERSION = "adverse-fill/v3"
+EXECUTION_VERSION = "adverse-fill/v4"
 EXIT_ROLES = frozenset({"STOP_LOSS", "TAKE_PROFIT", "TIMEOUT", "SAFETY_CLOSE"})
 TERMINAL = frozenset({"FILLED", "CANCELED", "EXPIRED", "REJECTED", "DENIED"})
 
@@ -20,6 +22,11 @@ class Fill:
     price: D
     commission: D = D(0)
     quote_index: int = 0
+    quote_to_account: D = D(1)
+    conversion_ts: int | None = None
+    conversion_source: str = "USD_IDENTITY"
+    conversion_bid: D | None = None
+    conversion_ask: D | None = None
 
     def __post_init__(self):
         if (
@@ -33,13 +40,29 @@ class Fill:
             or not self.commission.is_finite()
             or self.ts < 0
             or self.quote_index < 0
+            or not self.quote_to_account.is_finite()
+            or self.quote_to_account <= 0
+            or (self.conversion_ts is not None and self.conversion_ts != self.ts)
+            or not self.conversion_source
+            or ((self.conversion_bid is None) != (self.conversion_ask is None))
+            or (
+                self.conversion_bid is not None
+                and (
+                    not self.conversion_bid.is_finite()
+                    or not self.conversion_ask.is_finite()
+                    or self.conversion_bid <= 0
+                    or self.conversion_ask < self.conversion_bid
+                )
+            )
         ):
             raise ValueError("INVALID_FILL")
 
     def json(self):
         value = asdict(self)
-        for key in ("size", "price", "commission"):
+        for key in ("size", "price", "commission", "quote_to_account"):
             value[key] = str(value[key])
+        for key in ("conversion_bid", "conversion_ask"):
+            value[key] = str(value[key]) if value[key] is not None else None
         return value
 
 
@@ -53,6 +76,9 @@ class TradeLedger:
         self.fills = []
         self._seen = {}
         self.entered = self.exited = self.cost = self.realized = self.fees = D(0)
+        self.realized_quote = D(0)
+        self.account_realized_exact = Fraction(0)
+        self.last_account_delta_exact = Fraction(0)
         self.events = []
 
     def register(self, order_id, role):
@@ -135,11 +161,17 @@ class TradeLedger:
             else:
                 self.cost -= basis * fill.size
             self.exited += fill.size
-        self.realized += delta
+        self.realized_quote += delta
+        # Sum finite Decimal inputs as rational numbers so associativity cannot
+        # create unexplained currency residuals. Decimal is a reporting boundary.
+        self.last_account_delta_exact = Fraction(delta) * Fraction(fill.quote_to_account)
+        self.account_realized_exact += self.last_account_delta_exact
+        account_delta = decimal_amount(self.last_account_delta_exact)
+        self.realized = decimal_amount(self.account_realized_exact)
         self.fees += fill.commission
         self._seen[key] = digest
         self.fills.append({**fill.json(), "role": order["role"]})
-        return delta
+        return account_delta
 
     def aggregate(self, entry):
         fills = [f for f in self.fills if (f["role"] == "ENTRY") == entry]
@@ -164,23 +196,30 @@ class TradeLedger:
     def snapshot(self):
         reasons = sorted({f["role"] for f in self.fills if f["role"] != "ENTRY"})
         modeled_risk = None
+        modeled_risk_exact = None
         if self.entered and "modeled_stop_fill" in self.metadata:
             sign = 1 if self.metadata["side"] == "BUY" else -1
-            modeled_risk = sum(
+            modeled_risk_exact = Fraction(D(self.metadata.get("risk_conversion_rate", "1"))) * sum(
                 (
-                    (D(f["price"]) - D(self.metadata["modeled_stop_fill"])) * sign * D(f["size"])
+                    Fraction(D(f["price"]) - D(self.metadata["modeled_stop_fill"]))
+                    * sign
+                    * Fraction(D(f["size"]))
                     for f in self.fills
                     if f["role"] == "ENTRY"
                 ),
-                D(0),
+                Fraction(0),
             )
+            modeled_risk = decimal_amount(modeled_risk_exact)
         return {
             **self.metadata,
             "requested_quantity": str(self.requested),
             "modeled_stop_risk_for_filled_quantity": str(modeled_risk)
             if modeled_risk is not None
             else None,
-            "realized_net_r": str(self.realized / modeled_risk)
+            "modeled_stop_risk_exact": receipt(modeled_risk_exact)
+            if modeled_risk_exact is not None
+            else None,
+            "realized_net_r": str(decimal_amount(self.account_realized_exact / modeled_risk_exact))
             if modeled_risk and self.closed
             else None,
             "entered_quantity": str(self.entered),
@@ -201,6 +240,8 @@ class TradeLedger:
             "order_states": {k: dict(v) for k, v in self.orders.items()},
             "order_events": list(self.events),
             "pnl": str(self.realized),
+            "pnl_exact": receipt(self.account_realized_exact),
+            "quote_currency_pnl": str(self.realized_quote),
             "commission": str(self.fees),
             "accounting_version": EXECUTION_VERSION,
         }

@@ -12,10 +12,10 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T04 | Data round-trip | All-eight January 2025 structural round trips (21,345,746 rows), provenance/deep identity and bounded fixtures passed; calendar/source/instrument acceptance remains |
 | T05 | Gaps and updates | Quarantine/corruption/checkpoint/retry/capture recovery tested; sessions/current-month recapture/revisions pending |
 | T06 | Closed MTF availability | Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending |
-| T07 | Spread floor | Property fixtures and Nautilus USD-profile quotes tested; JPY/Gold engine corpus pending |
-| T08 | Adverse eligible fills | Arithmetic sides and Nautilus market/stop fixtures tested; all production units pending |
-| T09 | Order semantics | Native partial entries/exits, cancellation races, safety closes and deadlines tested; v3 IOC cancels exhausted market remainders without extra-tick fills in BUY/SELL native fixtures; full constraints pending |
-| T10 | Hypothetical risk | Budget/min-volume/max-cap grid and negative-equity refusal tested; dated cross-currency/broker profiles pending |
+| T07 | Spread floor | Property fixtures and native all-eight synthetic long/short corpus pass; verified real profile/source gates remain |
+| T08 | Adverse eligible fills | Native all-eight synthetic market/stop/limit and 0.001 Gold grid goldens pass; verified production units remain pending |
+| T09 | Order semantics | Native partial entries/exits, cancellation races, safety closes and deadlines tested; v4 retains v3 IOC policy and cancels exhausted market remainders without extra-tick fills in BUY/SELL native fixtures; full constraints pending |
+| T10 | Hypothetical risk | Budget/min-volume/max-cap and exact-rational repeating-FX boundary regression pass; dated synthetic cross-currency sizing tested; verified broker profiles pending |
 | T11 | 24h deadline | Exact quote timeout and missing-exit flag tested; delayed-gap policy further review |
 | T12 | MFE/MAE paths | Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending |
 | T13 | Parent-child | Changes, parent preservation, immutable multiple-parent edges and complete-trade-set paired training reports tested; full independent cohort confirmation pending |
@@ -31,7 +31,7 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T23 | Backup recovery | SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending |
 | T24 | 8GB performance + soak | Small synthetic wall/CPU/RSS benchmark measured; target VPS/soak unrun |
 | T25 | Scientific independence | Persistent alias-safe holdout reservation, input-use enforcement, candidate freeze, consumption-before-execution and supervised native confirmation/restart tested; full WFO/validation decision workflow in progress |
-| T26 | Instrument units | Real Gold source grid retained at 0.001 without rounding; monetary Gold/JPY specifications remain blocked |
+| T26 | Instrument units | Real Gold source grid retained at 0.001; synthetic 0.001 native fills, lot/base-unit equivalence and JPY conversion pass; real dated metadata remain blocked |
 | T27 | Immutable evidence | SQL triggers/failed registry/quarantined execution evidence/no metric-write API/idempotent completion tested; worker checksum/integrity and conflicting-completion rejection now pass; full provenance/adversarial suite pending |
 | T28 | User actions | Pause/resume/proposal/queue/audit, research registration/disable/history and cancellation API tested; diagnosis/retry/export/browser workflows pending |
 | T29 | Provenance | Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending |
@@ -42,7 +42,7 @@ Additional directive gates supplement the original acceptance contract:
 | ID | Requirement | Current evidence / remaining work |
 |---|---|---|
 | T31 | Bounded native delivery parity | PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED |
-| T32 | Independent cash/native inventory reconciliation | PASS scoped USD fixtures for fill sets, signed inventory and cash conservation; USD native account/per-position independent Money references now pass; cross-currency/Gold broker-unit policy remains unfinished |
+| T32 | Independent cash/native inventory reconciliation | PASS scoped USD fixtures for fill sets, signed inventory and cash conservation; USD/native quote-account references and all-eight synthetic dated FX/Gold lot-base-unit goldens pass; real metadata validation remains open |
 | T33 | Shared feature identity and bounded compilation | PASS scoped oracle/hash parity and stop-independent bar keys; exact disk cache, code/range invalidation, three-operator parity, recovery and budget checks pass; indicator transforms/append acceptance unfinished |
 
 | T34 | Persistent training optimizer | PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim |
@@ -72,7 +72,9 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T42 | Protected managed holdout | Scoped native confirmation/restart, alias-view training denial, prospective reservation/legacy influence rejection, immutable selection/consumption and forged-authorization rejection pass; not full C6 acceptance |
 
 | T43 | Chronological native protocol | Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open |
-| T44 | Exact marked equity | Scoped full-quote/fill USD cash/inventory valuation, partial-open marking, drawdown and bounded display envelope goldens pass; non-USD/contract-unit support remains explicit unknown |
+| T44 | Exact marked equity | Scoped full-quote/fill USD cash/inventory valuation, partial-open marking, drawdown and bounded display envelope goldens pass; v2 also marks synthetic dated cross-currency/base-unit lot positions; real profile admission remains blocked |
 | T45 | Canonical native profile representation | Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged |
 
 | T46 | Pinned native Money policy | Actual USD/JPY/CHF constructor boundary checks and all-eight synthetic quote-P&L partial-entry/exit lifetimes pass; USD replay checks both native account and position references. Dated FX and verified broker units remain open |
+
+| T47 | Dated native conversion and base units | Scoped all-eight long/short stop/target native goldens, FX tie/chunk/materialized parity, synthetic Gold lot equivalence/third-decimal grid, gap insolvency, exact-risk boundary and actual JPY training/confirmation pass. Real metadata/calendar gates remain open |

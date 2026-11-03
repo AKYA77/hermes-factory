@@ -62,8 +62,8 @@ class SearchProtocol(Contract):
                 tf not in TIMEFRAMES or TIMEFRAMES[tf] <= TIMEFRAMES[self.timeframe]
             ):
                 raise ValueError("confirmation must be higher than entry timeframe")
-        if not self.profile.synthetic or self.profile.quote_currency != "USD":
-            raise ValueError("real monetary/cross-currency research approval remains blocked")
+        if not self.profile.synthetic:
+            raise ValueError("real monetary profile approval remains blocked")
         return self
 
     @property

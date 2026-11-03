@@ -23,8 +23,6 @@ def evaluate(root, payload):
         or fingerprint(profile) != contract.instrument_hash
     ):
         raise ValueError("contract mismatch")
-    if profile.quote_currency != "USD":
-        raise ValueError("dated currency conversion unsupported")
     catalog = Catalog(root)
     manifest = catalog.verify(contract.dataset_hash, deep=True)
     if manifest["instrument"] != spec.instrument or profile.instrument != spec.instrument:

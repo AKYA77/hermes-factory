@@ -125,3 +125,11 @@ Independent pinned native Money/account/position reference is implemented (ADR
 0017). Full suite: 212 passed, 182 warnings, 71.12 seconds; lint/frontend passed.
 Dated cross-currency conversion-context timing and native broker-unit conversion
 remain active monetary work. All readiness states remain false.
+
+ADR 0018 execution v4 now fixes dated native FX cache timing, profile volume to
+base units, account sum receipts and exact-risk volume flooring. All-eight
+synthetic long/short native cost/order goldens, tied-source/chunk parity, Gold
+lot equivalence/0.001 grid and actual JPY training/protected confirmation pass.
+Full verification: 259 tests, zero failures/skips, 322 third-party warnings,
+71.96 seconds; lint/frontend passed. Benchmark next. Verified real profiles,
+calendar integrity and full C0–C9/product gates remain active; NOT_READY.

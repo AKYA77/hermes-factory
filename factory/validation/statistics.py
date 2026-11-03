@@ -2,9 +2,11 @@
 
 from datetime import datetime, timezone
 from decimal import Decimal as D
+from fractions import Fraction
 from statistics import median
 
 from scipy.stats import binomtest
+from factory.monetary import trade_pnl, decimal_amount
 
 
 def holm(p_values, alpha):
@@ -22,23 +24,23 @@ def outcome_summary(trades, initial=D(20)):
     from factory.reporting import metrics
 
     summary = metrics(trades, initial)
-    pnl = [D(t["pnl"]) for t in trades]
-    gains = sum((p for p in pnl if p > 0), D(0))
-    losses = -sum((p for p in pnl if p < 0), D(0))
+    pnl = [trade_pnl(t) for t in trades]
+    gains = sum((p for p in pnl if p > 0), Fraction(0))
+    losses = -sum((p for p in pnl if p < 0), Fraction(0))
     recovery = 0
     longest_recovery = 0
-    equity = peak = initial
+    equity = peak = Fraction(initial)
     for value in pnl:
         equity += value
         recovery = recovery + 1 if equity < peak else 0
         peak = max(peak, equity)
         longest_recovery = max(longest_recovery, recovery)
     summary.update(
-        gross_profit=str(gains),
-        gross_loss=str(losses),
-        profit_factor=str(gains / losses) if losses else None,
+        gross_profit=str(decimal_amount(gains)),
+        gross_loss=str(decimal_amount(losses)),
+        profit_factor=str(decimal_amount(gains / losses)) if losses else None,
         profit_factor_status="FINITE" if losses else "NO_LOSSES" if gains else "NO_TRADES",
-        expectancy=str(sum(pnl, D(0)) / len(pnl)) if pnl else None,
+        expectancy=str(decimal_amount(sum(pnl, Fraction(0)) / len(pnl))) if pnl else None,
         longest_balance_recovery_trades=longest_recovery,
         unrecovered_at_end=bool(recovery),
         one_sided_win_fraction_pvalue=float(

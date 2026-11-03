@@ -1,6 +1,8 @@
 """Exact scenario arithmetic; matching remains entirely in Nautilus."""
 
 from decimal import Decimal as D, ROUND_FLOOR, ROUND_CEILING
+from fractions import Fraction
+from factory.monetary import decimal_amount, receipt
 
 
 def round_tick(value, tick, up):
@@ -43,22 +45,32 @@ def size_position(equity, entry, stop, profile, quote_to_account, conservative=T
         return {"status": "SKIPPED_STOP_LEVEL"}
     # Include adverse stop execution in projected loss. Entry already includes its fill cost.
     loss_per_unit = (
-        (distance + (2 * profile.pip_size if conservative else 0))
-        * profile.contract_multiplier
-        * quote_to_account
+        Fraction(distance + (2 * profile.pip_size if conservative else 0))
+        * Fraction(profile.contract_multiplier)
+        * Fraction(quote_to_account)
     )
     risk_budget = max(D(0), equity) * D(".1")
-    raw = min(risk_budget / loss_per_unit, profile.max_volume)
-    size = (raw / profile.volume_step).to_integral_value(rounding=ROUND_FLOOR) * profile.volume_step
+    raw = min(Fraction(risk_budget) / loss_per_unit, Fraction(profile.max_volume))
+    steps = raw // Fraction(profile.volume_step)
+    size = D(steps) * profile.volume_step
     if size < profile.min_volume:
         return {"status": "SKIPPED_MIN_VOLUME"}
-    margin = size * entry * profile.contract_multiplier * quote_to_account * profile.margin_rate
-    if margin > equity:
+    risk = Fraction(size) * loss_per_unit
+    margin = (
+        Fraction(size)
+        * Fraction(entry)
+        * Fraction(profile.contract_multiplier)
+        * Fraction(quote_to_account)
+        * Fraction(profile.margin_rate)
+    )
+    if margin > Fraction(equity):
         return {"status": "SKIPPED_MARGIN"}
     return {
         "status": "ELIGIBLE",
         "size": size,
-        "risk": size * loss_per_unit,
+        "risk": decimal_amount(risk),
+        "risk_exact": receipt(risk),
         "risk_budget": risk_budget,
-        "margin": margin,
+        "margin": decimal_amount(margin),
+        "margin_exact": receipt(margin),
     }
