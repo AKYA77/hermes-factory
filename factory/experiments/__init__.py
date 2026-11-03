@@ -2,6 +2,7 @@
 
 from contextlib import contextmanager, closing
 import json
+import math
 from pathlib import Path
 import sqlite3
 import time
@@ -15,7 +16,8 @@ class Store:
         self.path = Path(path)
         self.path.parent.mkdir(parents=True, exist_ok=True)
         with closing(self.connect()) as db:
-            db.executescript(self._migration().read_text())
+            for migration in sorted(self._migration().parent.glob("[0-9][0-9][0-9]_*.sql")):
+                db.executescript(migration.read_text())
             db.executemany(
                 "INSERT OR IGNORE INTO research_coverage(instrument,family,timeframe) VALUES(?,?,?)",
                 [
@@ -172,6 +174,19 @@ class Store:
             if not n:
                 raise ValueError("STALE_LEASE")
 
+    @staticmethod
+    def _resources(db, token, value):
+        if value is None:
+            return
+        if not all(
+            isinstance(value.get(k), (int, float)) and math.isfinite(value[k]) and value[k] >= 0
+            for k in ("cpu_seconds", "wall_seconds")
+        ):
+            raise ValueError("invalid measured resources")
+        db.execute(
+            "INSERT INTO attempt_resources VALUES(?,?,?)", (token, serialize(value), time.time())
+        )
+
     def finish(self, job_id, token, result=None, error=None, retryable=False):
         now = time.time()
         with self.transaction() as db:
@@ -181,6 +196,7 @@ class Store:
             ).fetchone()
             if j is None:
                 raise ValueError("STALE_LEASE")
+            self._resources(db, token, (result or {}).get("resources"))
             state = (
                 "COMPLETED"
                 if error is None
@@ -197,7 +213,27 @@ class Store:
                 (now, state, error, token),
             )
 
-    def complete_experiment(self, contract, spec, result, artifact_hash, job_id=None, token=None):
+    def cancel(self, job_id, actor):
+        now = time.time()
+        with self.transaction() as db:
+            row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+            if row is None:
+                raise ValueError("unknown job")
+            if row["state"] in ("COMPLETED", "FAILED_FINAL", "CANCELLED"):
+                raise ValueError("job already terminal")
+            db.execute(
+                "UPDATE attempts SET ended_at=?,outcome='CANCELLED' WHERE token=? AND ended_at IS NULL",
+                (now, row["lease_token"]),
+            )
+            db.execute(
+                "UPDATE jobs SET state='CANCELLED',lease_token=NULL,lease_until=NULL,error='OPERATOR_CANCELLED',updated_at=? WHERE job_id=?",
+                (now, job_id),
+            )
+            self._audit(db, actor, "cancel_job", {"job_id": job_id})
+
+    def complete_experiment(
+        self, contract, spec, result, artifact_hash, job_id=None, token=None, resources=None
+    ):
         # Internal deterministic worker interface. No public metric-write route.
         if contract.strategy_hash != spec.strategy_hash:
             raise ValueError("strategy mismatch")
@@ -226,9 +262,14 @@ class Store:
                 ),
             )
             if job_id is not None:
+                self._resources(db, token, resources)
                 db.execute(
                     "UPDATE jobs SET state='COMPLETED',result=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
-                    (serialize({"run_id": contract.experiment_hash}), now, job_id),
+                    (
+                        serialize({"run_id": contract.experiment_hash, "resources": resources}),
+                        now,
+                        job_id,
+                    ),
                 )
                 db.execute(
                     "UPDATE attempts SET ended_at=?,outcome='COMPLETED' WHERE token=?",

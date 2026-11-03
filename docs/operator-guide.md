@@ -49,3 +49,45 @@ unfinished. A missing Gold profile or source data must remain visible.
 
 VPS installation: pending C8/C9. Required target is Ubuntu LTS 4 vCPU/8GB; no target
 access has been supplied. Do not run unfinished update/rollback scripts on a VPS.
+
+## Bounded recurring synthetic training laboratory
+
+The coordinator can now generate and evaluate candidates repeatedly inside an
+explicit registered training protocol, without an AI or network connection. It
+starts paused. This is development research, not the finished autonomous Factory.
+Real monetary profiles and historical evaluation remain blocked.
+
+Create a separate synthetic laboratory and protocol from the current source:
+
+```bash
+.venv/bin/python - <<'PY'
+from pathlib import Path
+from factory.operations.fixtures import seed
+from factory.exploration.persistent import SearchProtocol
+from factory.contracts import serialize
+root = Path('.local/training-lab')
+payload = seed(root, 2000)
+protocol = SearchProtocol(
+    dataset_hash=payload['contract']['dataset_hash'], profile=payload['profile'],
+    window=payload['contract']['windows'][0], family='momentum', timeframe='M1',
+    code_revision=payload['contract']['code_revision'], seed=42, max_trials=16,
+)
+(root / 'protocol.json').write_text(serialize(protocol))
+PY
+.venv/bin/python -m factory.cli --state .local/training-lab research-register .local/training-lab/protocol.json
+.venv/bin/python -m factory.cli --state .local/training-lab resume
+.venv/bin/python -m factory.cli --state .local/training-lab coordinator
+```
+
+In another terminal, `research-status` reads counters; `pause` stops admission;
+`research-disable <protocol_hash>` disables a region. These commands all use the
+same `--state .local/training-lab` prefix. The coordinator idles when a finite
+protocol budget is exhausted. No claim of endless family expansion is made.
+Source changes invalidate old protocols; register a new version instead of editing
+old experiments. Keep the original training/selection/holdout boundaries.
+
+Authenticated API routes: GET research/status, research/protocols and research/trials;
+POST research/protocols, research/protocols/{hash}/disable and jobs/{id}/cancel.
+Viewer tokens cannot execute writes. Cancelled job completion is fenced; an
+already running process stops at the next control check. Official objectives come
+from worker artifacts, never from a supplied win-rate/objective field.

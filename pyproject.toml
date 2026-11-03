@@ -31,3 +31,5 @@ line-length = 100
 
 [tool.hatch.build.targets.wheel.force-include]
 "migrations/001_initial.sql" = "factory/sql/001_initial.sql"
+
+"migrations/002_search.sql" = "factory/sql/002_search.sql"

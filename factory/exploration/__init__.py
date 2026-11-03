@@ -1,13 +1,13 @@
-"""Serialized Optuna proposals restricted to training; CPU coverage ledger."""
+"""Unmeasured template proposals only; persistent TPE lives in .persistent."""
 
-import optuna
+from random import Random
 from factory.contracts import Signal, StrategySpec
 
 
 def propose(store, seed, budget=8):
     if not 1 <= budget <= 64:
         raise ValueError("bounded proposal budget is 1..64")
-    study = optuna.create_study(sampler=optuna.samplers.RandomSampler(seed=seed))
+    sampler = Random(seed)
     for _ in range(budget):
         with store.transaction() as db:
             row = db.execute(
@@ -20,24 +20,23 @@ def propose(store, seed, budget=8):
                 "UPDATE research_coverage SET proposals=proposals+1 WHERE instrument=? AND family=? AND timeframe=?",
                 (row["instrument"], row["family"], row["timeframe"]),
             )
-        trial = study.ask()
+
         spec = StrategySpec(
             instrument=row["instrument"],
             timeframe=row["timeframe"],
             signal=Signal(
                 operator=row["family"],
-                lookback=trial.suggest_int("lookback", 2, 48),
-                threshold=str(trial.suggest_int("threshold_tenths", 5, 30) / 10),
+                lookback=sampler.randint(2, 48),
+                threshold=str(sampler.randint(5, 30) / 10),
             ),
-            stop_ticks=trial.suggest_int("stop_ticks", 20, 200, step=10),
+            stop_ticks=sampler.randrange(20, 201, 10),
         )
-        study.tell(trial, state=optuna.trial.TrialState.PRUNED)
         yield (
             spec,
             {
                 "seed": seed,
-                "trial": trial.number,
-                "sampler": "RandomSampler",
+                "proposal_index": _,
+                "sampler": "seeded-template/v2; no measured objective",
                 "outcome": "PROPOSED_NOT_EVALUATED",
             },
         )

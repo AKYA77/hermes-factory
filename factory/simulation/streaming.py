@@ -46,7 +46,10 @@ class QuoteSpool:
                     or q.bid_int > q.ask_int
                     or q.quality_flags
                     or q.original_record_order < 0
-                    or (previous is not None and key <= previous)
+                    or (
+                        previous is not None
+                        and (key <= previous or q.original_record_order <= previous[1])
+                    )
                 ):
                     raise ValueError("invalid quote stream")
                 if D(q.bid_int) % tick_int or D(q.ask_int) % tick_int:

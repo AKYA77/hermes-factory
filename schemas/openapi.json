@@ -1,18 +1,635 @@
 {
-  "openapi": "3.1.0",
+  "components": {
+    "schemas": {
+      "ExperimentContract": {
+        "additionalProperties": false,
+        "properties": {
+          "code_revision": {
+            "title": "Code Revision",
+            "type": "string"
+          },
+          "dataset_hash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Dataset Hash",
+            "type": "string"
+          },
+          "engine_version": {
+            "title": "Engine Version",
+            "type": "string"
+          },
+          "evaluation_policy": {
+            "title": "Evaluation Policy",
+            "type": "string"
+          },
+          "fill_version": {
+            "title": "Fill Version",
+            "type": "string"
+          },
+          "initial_equity": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "default": "20",
+            "title": "Initial Equity"
+          },
+          "instrument_hash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Instrument Hash",
+            "type": "string"
+          },
+          "overlap_policy": {
+            "const": "one-position",
+            "default": "one-position",
+            "title": "Overlap Policy",
+            "type": "string"
+          },
+          "risk_fraction": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "default": "0.10",
+            "title": "Risk Fraction"
+          },
+          "scenario": {
+            "enum": [
+              "historical-reference/v1",
+              "historical-pessimistic/v1"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "experiment/v1",
+            "default": "experiment/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seed": {
+            "minimum": 0.0,
+            "title": "Seed",
+            "type": "integer"
+          },
+          "strategy_hash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Strategy Hash",
+            "type": "string"
+          },
+          "windows": {
+            "items": {
+              "$ref": "#/components/schemas/Window"
+            },
+            "title": "Windows",
+            "type": "array"
+          }
+        },
+        "required": [
+          "strategy_hash",
+          "dataset_hash",
+          "instrument_hash",
+          "engine_version",
+          "code_revision",
+          "fill_version",
+          "evaluation_policy",
+          "scenario",
+          "windows",
+          "seed"
+        ],
+        "title": "ExperimentContract",
+        "type": "object"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "title": "Detail",
+            "type": "array"
+          }
+        },
+        "title": "HTTPValidationError",
+        "type": "object"
+      },
+      "InstrumentSpec": {
+        "additionalProperties": false,
+        "properties": {
+          "base_currency": {
+            "title": "Base Currency",
+            "type": "string"
+          },
+          "contract_multiplier": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Contract Multiplier"
+          },
+          "instrument": {
+            "title": "Instrument",
+            "type": "string"
+          },
+          "margin_rate": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 1.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Margin Rate"
+          },
+          "max_volume": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Max Volume"
+          },
+          "min_stop_ticks": {
+            "minimum": 1.0,
+            "title": "Min Stop Ticks",
+            "type": "integer"
+          },
+          "min_volume": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Min Volume"
+          },
+          "pip_size": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Pip Size"
+          },
+          "price_scale": {
+            "exclusiveMinimum": 0.0,
+            "title": "Price Scale",
+            "type": "integer"
+          },
+          "quote_currency": {
+            "title": "Quote Currency",
+            "type": "string"
+          },
+          "source": {
+            "title": "Source",
+            "type": "string"
+          },
+          "synthetic": {
+            "title": "Synthetic",
+            "type": "boolean"
+          },
+          "tick_size": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Tick Size"
+          },
+          "version": {
+            "title": "Version",
+            "type": "string"
+          },
+          "volume_step": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Volume Step"
+          }
+        },
+        "required": [
+          "instrument",
+          "version",
+          "tick_size",
+          "pip_size",
+          "price_scale",
+          "base_currency",
+          "quote_currency",
+          "contract_multiplier",
+          "volume_step",
+          "min_volume",
+          "max_volume",
+          "margin_rate",
+          "min_stop_ticks",
+          "source",
+          "synthetic"
+        ],
+        "title": "InstrumentSpec",
+        "type": "object"
+      },
+      "Proposal": {
+        "additionalProperties": false,
+        "properties": {
+          "contract": {
+            "$ref": "#/components/schemas/ExperimentContract"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/InstrumentSpec"
+          },
+          "strategy": {
+            "$ref": "#/components/schemas/StrategySpec"
+          }
+        },
+        "required": [
+          "strategy",
+          "contract",
+          "profile"
+        ],
+        "title": "Proposal",
+        "type": "object"
+      },
+      "SearchProtocol": {
+        "additionalProperties": false,
+        "properties": {
+          "code_revision": {
+            "title": "Code Revision",
+            "type": "string"
+          },
+          "confirmation_options": {
+            "default": [
+              "none"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Confirmation Options",
+            "type": "array"
+          },
+          "cpu_budget_seconds": {
+            "default": 600,
+            "exclusiveMinimum": 0.0,
+            "maximum": 86400.0,
+            "title": "Cpu Budget Seconds",
+            "type": "number"
+          },
+          "dataset_hash": {
+            "pattern": "^[a-f0-9]{64}$",
+            "title": "Dataset Hash",
+            "type": "string"
+          },
+          "family": {
+            "enum": [
+              "mean_reversion",
+              "momentum",
+              "breakout"
+            ],
+            "title": "Family",
+            "type": "string"
+          },
+          "max_trials": {
+            "default": 64,
+            "maximum": 256.0,
+            "minimum": 1.0,
+            "title": "Max Trials",
+            "type": "integer"
+          },
+          "objective": {
+            "const": "training-net-return/v1",
+            "default": "training-net-return/v1",
+            "title": "Objective",
+            "type": "string"
+          },
+          "optimizer": {
+            "const": "optuna-tpe/4.5.0-reseed/v1",
+            "default": "optuna-tpe/4.5.0-reseed/v1",
+            "title": "Optimizer",
+            "type": "string"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/InstrumentSpec"
+          },
+          "research_kind": {
+            "const": "synthetic-training/v1",
+            "default": "synthetic-training/v1",
+            "title": "Research Kind",
+            "type": "string"
+          },
+          "scenario": {
+            "default": "historical-pessimistic/v1",
+            "enum": [
+              "historical-reference/v1",
+              "historical-pessimistic/v1"
+            ],
+            "title": "Scenario",
+            "type": "string"
+          },
+          "schema_version": {
+            "const": "search/v1",
+            "default": "search/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seed": {
+            "maximum": 4294967295.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "type": "integer"
+          },
+          "timeframe": {
+            "title": "Timeframe",
+            "type": "string"
+          },
+          "window": {
+            "$ref": "#/components/schemas/Window"
+          }
+        },
+        "required": [
+          "dataset_hash",
+          "profile",
+          "window",
+          "family",
+          "timeframe",
+          "code_revision",
+          "seed"
+        ],
+        "title": "SearchProtocol",
+        "type": "object"
+      },
+      "Signal": {
+        "additionalProperties": false,
+        "properties": {
+          "lookback": {
+            "maximum": 500.0,
+            "minimum": 2.0,
+            "title": "Lookback",
+            "type": "integer"
+          },
+          "operator": {
+            "enum": [
+              "mean_reversion",
+              "momentum",
+              "breakout"
+            ],
+            "title": "Operator",
+            "type": "string"
+          },
+          "threshold": {
+            "anyOf": [
+              {
+                "exclusiveMinimum": 0.0,
+                "maximum": 20.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "title": "Threshold"
+          },
+          "version": {
+            "const": "1",
+            "default": "1",
+            "title": "Version",
+            "type": "string"
+          }
+        },
+        "required": [
+          "operator",
+          "lookback",
+          "threshold"
+        ],
+        "title": "Signal",
+        "type": "object"
+      },
+      "StrategySpec": {
+        "additionalProperties": false,
+        "properties": {
+          "confirmations": {
+            "default": [],
+            "items": {
+              "type": "string"
+            },
+            "title": "Confirmations",
+            "type": "array"
+          },
+          "direction": {
+            "default": "both",
+            "enum": [
+              "both",
+              "long",
+              "short"
+            ],
+            "title": "Direction",
+            "type": "string"
+          },
+          "instrument": {
+            "title": "Instrument",
+            "type": "string"
+          },
+          "max_hold_seconds": {
+            "default": 86400,
+            "exclusiveMinimum": 0.0,
+            "maximum": 86400.0,
+            "title": "Max Hold Seconds",
+            "type": "integer"
+          },
+          "schema_version": {
+            "const": "strategy/v1",
+            "default": "strategy/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "semantic_version": {
+            "const": "1",
+            "default": "1",
+            "title": "Semantic Version",
+            "type": "string"
+          },
+          "signal": {
+            "$ref": "#/components/schemas/Signal"
+          },
+          "stop_ticks": {
+            "exclusiveMinimum": 0.0,
+            "maximum": 1000000.0,
+            "title": "Stop Ticks",
+            "type": "integer"
+          },
+          "target_rr": {
+            "const": "3",
+            "default": "3",
+            "title": "Target Rr",
+            "type": "string"
+          },
+          "timeframe": {
+            "title": "Timeframe",
+            "type": "string"
+          }
+        },
+        "required": [
+          "instrument",
+          "timeframe",
+          "signal",
+          "stop_ticks"
+        ],
+        "title": "StrategySpec",
+        "type": "object"
+      },
+      "ValidationError": {
+        "properties": {
+          "ctx": {
+            "title": "Context",
+            "type": "object"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "title": "Location",
+            "type": "array"
+          },
+          "msg": {
+            "title": "Message",
+            "type": "string"
+          },
+          "type": {
+            "title": "Error Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError",
+        "type": "object"
+      },
+      "Window": {
+        "additionalProperties": false,
+        "properties": {
+          "end_ns": {
+            "exclusiveMinimum": 0.0,
+            "title": "End Ns",
+            "type": "integer"
+          },
+          "role": {
+            "enum": [
+              "train_only",
+              "selection_oos",
+              "final_holdout_unseen",
+              "paper_forward"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "start_ns": {
+            "minimum": 0.0,
+            "title": "Start Ns",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "start_ns",
+          "end_ns",
+          "role"
+        ],
+        "title": "Window",
+        "type": "object"
+      }
+    }
+  },
   "info": {
     "title": "Hermes Factory",
     "version": "0.1.0.dev0"
   },
+  "openapi": "3.1.0",
   "paths": {
-    "/api/v1/health/live": {
+    "/api/v1/audit": {
       "get": {
-        "summary": "Live",
-        "operationId": "live_api_v1_health_live_get",
+        "operationId": "audit_api_v1_audit_get",
         "parameters": [
           {
-            "name": "authorization",
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -29,34 +646,415 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Audit"
+      }
+    },
+    "/api/v1/coverage": {
+      "get": {
+        "operationId": "coverage_api_v1_coverage_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
             }
           }
-        }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Coverage"
+      }
+    },
+    "/api/v1/data/manifest": {
+      "get": {
+        "operationId": "manifests_api_v1_data_manifest_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Manifests"
+      }
+    },
+    "/api/v1/experiments": {
+      "get": {
+        "operationId": "experiments_api_v1_experiments_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Experiments"
+      }
+    },
+    "/api/v1/experiments/{run_id}": {
+      "get": {
+        "operationId": "experiment_api_v1_experiments__run_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Experiment"
+      }
+    },
+    "/api/v1/experiments/{run_id}/diagnostics": {
+      "get": {
+        "operationId": "diagnostics_api_v1_experiments__run_id__diagnostics_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Diagnostics"
+      }
+    },
+    "/api/v1/experiments/{run_id}/trades": {
+      "get": {
+        "operationId": "trades_api_v1_experiments__run_id__trades_get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "run_id",
+            "required": true,
+            "schema": {
+              "title": "Run Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Trades"
+      }
+    },
+    "/api/v1/health/live": {
+      "get": {
+        "operationId": "live_api_v1_health_live_get",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Live"
       }
     },
     "/api/v1/health/ready": {
       "get": {
-        "summary": "Ready",
         "operationId": "ready_api_v1_health_ready_get",
         "parameters": [
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -73,78 +1071,34 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
-      }
-    },
-    "/api/v1/overview": {
-      "get": {
-        "summary": "Overview",
-        "operationId": "overview_api_v1_overview_get",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        },
+        "summary": "Ready"
       }
     },
     "/api/v1/instruments": {
       "get": {
-        "summary": "Instruments",
         "operationId": "instruments_api_v1_instruments_get",
         "parameters": [
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -161,53 +1115,226 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Instruments"
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "operationId": "jobs_api_v1_jobs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 25,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
             }
           }
-        }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Jobs"
+      }
+    },
+    "/api/v1/jobs/{job_id}": {
+      "get": {
+        "operationId": "job_api_v1_jobs__job_id__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Job"
+      }
+    },
+    "/api/v1/jobs/{job_id}/cancel": {
+      "post": {
+        "operationId": "cancel_job_api_v1_jobs__job_id__cancel_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "job_id",
+            "required": true,
+            "schema": {
+              "title": "Job Id",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Cancel Job"
       }
     },
     "/api/v1/leaderboards/{symbol}": {
       "get": {
-        "summary": "Board",
         "operationId": "board_api_v1_leaderboards__symbol__get",
         "parameters": [
           {
-            "name": "symbol",
             "in": "path",
+            "name": "symbol",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "Symbol"
+              "title": "Symbol",
+              "type": "string"
             }
           },
           {
-            "name": "validated_only",
             "in": "query",
+            "name": "validated_only",
             "required": false,
             "schema": {
-              "type": "boolean",
               "default": false,
-              "title": "Validated Only"
+              "title": "Validated Only",
+              "type": "boolean"
             }
           },
           {
-            "name": "execution_version",
             "in": "query",
+            "name": "execution_version",
             "required": false,
             "schema": {
               "anyOf": [
@@ -226,8 +1353,8 @@
             }
           },
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -244,57 +1371,34 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
+        },
+        "summary": "Board"
       }
     },
-    "/api/v1/jobs": {
+    "/api/v1/overview": {
       "get": {
-        "summary": "Jobs",
-        "operationId": "jobs_api_v1_jobs_get",
+        "operationId": "overview_api_v1_overview_get",
         "parameters": [
           {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "default": 25,
-              "title": "Limit"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0,
-              "title": "Offset"
-            }
-          },
-          {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -311,87 +1415,34 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
-      }
-    },
-    "/api/v1/jobs/{job_id}": {
-      "get": {
-        "summary": "Job",
-        "operationId": "job_api_v1_jobs__job_id__get",
-        "parameters": [
-          {
-            "name": "job_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Job Id"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        },
+        "summary": "Overview"
       }
     },
     "/api/v1/research/pause": {
       "post": {
-        "summary": "Pause",
         "operationId": "pause_api_v1_research_pause_post",
         "parameters": [
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -408,78 +1459,34 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
-      }
-    },
-    "/api/v1/research/resume": {
-      "post": {
-        "summary": "Resume",
-        "operationId": "resume_api_v1_research_resume_post",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        },
+        "summary": "Pause"
       }
     },
     "/api/v1/research/propose": {
       "post": {
-        "summary": "Proposal",
         "operationId": "proposal_api_v1_research_propose_post",
         "parameters": [
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -495,68 +1502,68 @@
           }
         ],
         "requestBody": {
-          "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/Proposal"
               }
             }
-          }
+          },
+          "required": true
         },
         "responses": {
           "202": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
+        },
+        "summary": "Proposal"
       }
     },
-    "/api/v1/experiments": {
+    "/api/v1/research/protocols": {
       "get": {
-        "summary": "Experiments",
-        "operationId": "experiments_api_v1_experiments_get",
+        "operationId": "search_protocols_api_v1_research_protocols_get",
         "parameters": [
           {
+            "in": "query",
             "name": "limit",
-            "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 100,
+              "default": 50,
+              "maximum": 200,
               "minimum": 1,
-              "default": 25,
-              "title": "Limit"
+              "title": "Limit",
+              "type": "integer"
             }
           },
           {
-            "name": "offset",
             "in": "query",
+            "name": "offset",
             "required": false,
             "schema": {
-              "type": "integer",
-              "minimum": 0,
               "default": 0,
-              "title": "Offset"
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
             }
           },
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -573,43 +1580,95 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
-      }
-    },
-    "/api/v1/experiments/{run_id}": {
-      "get": {
-        "summary": "Experiment",
-        "operationId": "experiment_api_v1_experiments__run_id__get",
+        },
+        "summary": "Search Protocols"
+      },
+      "post": {
+        "operationId": "register_search_api_v1_research_protocols_post",
         "parameters": [
           {
-            "name": "run_id",
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchProtocol"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Register Search"
+      }
+    },
+    "/api/v1/research/protocols/{identity}/disable": {
+      "post": {
+        "operationId": "disable_search_api_v1_research_protocols__identity__disable_post",
+        "parameters": [
+          {
             "in": "path",
+            "name": "identity",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "Run Id"
+              "title": "Identity",
+              "type": "string"
             }
           },
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -626,66 +1685,145 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
+        },
+        "summary": "Disable Search"
       }
     },
-    "/api/v1/experiments/{run_id}/trades": {
-      "get": {
-        "summary": "Trades",
-        "operationId": "trades_api_v1_experiments__run_id__trades_get",
+    "/api/v1/research/resume": {
+      "post": {
+        "operationId": "resume_api_v1_research_resume_post",
         "parameters": [
           {
-            "name": "run_id",
-            "in": "path",
-            "required": true,
+            "in": "header",
+            "name": "authorization",
+            "required": false,
             "schema": {
-              "type": "string",
-              "title": "Run Id"
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
           },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Resume"
+      }
+    },
+    "/api/v1/research/status": {
+      "get": {
+        "operationId": "search_status_api_v1_research_status_get",
+        "parameters": [
           {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Search Status"
+      }
+    },
+    "/api/v1/research/trials": {
+      "get": {
+        "operationId": "search_trials_api_v1_research_trials_get",
+        "parameters": [
+          {
+            "in": "query",
             "name": "limit",
-            "in": "query",
             "required": false,
             "schema": {
-              "type": "integer",
-              "maximum": 100,
+              "default": 50,
+              "maximum": 200,
               "minimum": 1,
-              "default": 25,
-              "title": "Limit"
+              "title": "Limit",
+              "type": "integer"
             }
           },
           {
-            "name": "offset",
             "in": "query",
+            "name": "offset",
             "required": false,
             "schema": {
-              "type": "integer",
-              "minimum": 0,
               "default": 0,
-              "title": "Offset"
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
             }
           },
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -702,96 +1840,43 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
-      }
-    },
-    "/api/v1/experiments/{run_id}/diagnostics": {
-      "get": {
-        "summary": "Diagnostics",
-        "operationId": "diagnostics_api_v1_experiments__run_id__diagnostics_get",
-        "parameters": [
-          {
-            "name": "run_id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Run Id"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
+        },
+        "summary": "Search Trials"
       }
     },
     "/api/v1/strategies/{strategy_id}": {
       "get": {
-        "summary": "Strategy",
         "operationId": "strategy_api_v1_strategies__strategy_id__get",
         "parameters": [
           {
-            "name": "strategy_id",
             "in": "path",
+            "name": "strategy_id",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "Strategy Id"
+              "title": "Strategy Id",
+              "type": "string"
             }
           },
           {
-            "name": "authorization",
             "in": "header",
+            "name": "authorization",
             "required": false,
             "schema": {
               "anyOf": [
@@ -808,720 +1893,78 @@
         ],
         "responses": {
           "200": {
-            "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {}
               }
-            }
+            },
+            "description": "Successful Response"
           },
           "422": {
-            "description": "Validation Error",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/HTTPValidationError"
                 }
               }
-            }
+            },
+            "description": "Validation Error"
           }
-        }
+        },
+        "summary": "Strategy"
       }
     },
     "/api/v1/strategies/{strategy_id}/lineage": {
       "get": {
-        "summary": "Lineage",
         "operationId": "lineage_api_v1_strategies__strategy_id__lineage_get",
         "parameters": [
           {
-            "name": "strategy_id",
             "in": "path",
+            "name": "strategy_id",
             "required": true,
             "schema": {
-              "type": "string",
-              "title": "Strategy Id"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/coverage": {
-      "get": {
-        "summary": "Coverage",
-        "operationId": "coverage_api_v1_coverage_get",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/data/manifest": {
-      "get": {
-        "summary": "Manifests",
-        "operationId": "manifests_api_v1_data_manifest_get",
-        "parameters": [
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/audit": {
-      "get": {
-        "summary": "Audit",
-        "operationId": "audit_api_v1_audit_get",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "maximum": 100,
-              "minimum": 1,
-              "default": 25,
-              "title": "Limit"
-            }
-          },
-          {
-            "name": "offset",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "minimum": 0,
-              "default": 0,
-              "title": "Offset"
-            }
-          },
-          {
-            "name": "authorization",
-            "in": "header",
-            "required": false,
-            "schema": {
-              "anyOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "title": "Authorization"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "ExperimentContract": {
-        "properties": {
-          "schema_version": {
-            "type": "string",
-            "const": "experiment/v1",
-            "title": "Schema Version",
-            "default": "experiment/v1"
-          },
-          "strategy_hash": {
-            "type": "string",
-            "pattern": "^[a-f0-9]{64}$",
-            "title": "Strategy Hash"
-          },
-          "dataset_hash": {
-            "type": "string",
-            "pattern": "^[a-f0-9]{64}$",
-            "title": "Dataset Hash"
-          },
-          "instrument_hash": {
-            "type": "string",
-            "pattern": "^[a-f0-9]{64}$",
-            "title": "Instrument Hash"
-          },
-          "engine_version": {
-            "type": "string",
-            "title": "Engine Version"
-          },
-          "code_revision": {
-            "type": "string",
-            "title": "Code Revision"
-          },
-          "fill_version": {
-            "type": "string",
-            "title": "Fill Version"
-          },
-          "evaluation_policy": {
-            "type": "string",
-            "title": "Evaluation Policy"
-          },
-          "scenario": {
-            "type": "string",
-            "enum": [
-              "historical-reference/v1",
-              "historical-pessimistic/v1"
-            ],
-            "title": "Scenario"
-          },
-          "windows": {
-            "items": {
-              "$ref": "#/components/schemas/Window"
-            },
-            "type": "array",
-            "title": "Windows"
-          },
-          "seed": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Seed"
-          },
-          "initial_equity": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Initial Equity",
-            "default": "20"
-          },
-          "risk_fraction": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Risk Fraction",
-            "default": "0.10"
-          },
-          "overlap_policy": {
-            "type": "string",
-            "const": "one-position",
-            "title": "Overlap Policy",
-            "default": "one-position"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "strategy_hash",
-          "dataset_hash",
-          "instrument_hash",
-          "engine_version",
-          "code_revision",
-          "fill_version",
-          "evaluation_policy",
-          "scenario",
-          "windows",
-          "seed"
-        ],
-        "title": "ExperimentContract"
-      },
-      "HTTPValidationError": {
-        "properties": {
-          "detail": {
-            "items": {
-              "$ref": "#/components/schemas/ValidationError"
-            },
-            "type": "array",
-            "title": "Detail"
-          }
-        },
-        "type": "object",
-        "title": "HTTPValidationError"
-      },
-      "InstrumentSpec": {
-        "properties": {
-          "instrument": {
-            "type": "string",
-            "title": "Instrument"
-          },
-          "version": {
-            "type": "string",
-            "title": "Version"
-          },
-          "tick_size": {
-            "anyOf": [
-              {
-                "type": "number",
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Tick Size"
-          },
-          "pip_size": {
-            "anyOf": [
-              {
-                "type": "number",
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Pip Size"
-          },
-          "price_scale": {
-            "type": "integer",
-            "exclusiveMinimum": 0.0,
-            "title": "Price Scale"
-          },
-          "base_currency": {
-            "type": "string",
-            "title": "Base Currency"
-          },
-          "quote_currency": {
-            "type": "string",
-            "title": "Quote Currency"
-          },
-          "contract_multiplier": {
-            "anyOf": [
-              {
-                "type": "number",
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Contract Multiplier"
-          },
-          "volume_step": {
-            "anyOf": [
-              {
-                "type": "number",
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Volume Step"
-          },
-          "min_volume": {
-            "anyOf": [
-              {
-                "type": "number",
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Min Volume"
-          },
-          "max_volume": {
-            "anyOf": [
-              {
-                "type": "number",
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Max Volume"
-          },
-          "margin_rate": {
-            "anyOf": [
-              {
-                "type": "number",
-                "maximum": 1.0,
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Margin Rate"
-          },
-          "min_stop_ticks": {
-            "type": "integer",
-            "minimum": 1.0,
-            "title": "Min Stop Ticks"
-          },
-          "source": {
-            "type": "string",
-            "title": "Source"
-          },
-          "synthetic": {
-            "type": "boolean",
-            "title": "Synthetic"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "instrument",
-          "version",
-          "tick_size",
-          "pip_size",
-          "price_scale",
-          "base_currency",
-          "quote_currency",
-          "contract_multiplier",
-          "volume_step",
-          "min_volume",
-          "max_volume",
-          "margin_rate",
-          "min_stop_ticks",
-          "source",
-          "synthetic"
-        ],
-        "title": "InstrumentSpec"
-      },
-      "Proposal": {
-        "properties": {
-          "strategy": {
-            "$ref": "#/components/schemas/StrategySpec"
-          },
-          "contract": {
-            "$ref": "#/components/schemas/ExperimentContract"
-          },
-          "profile": {
-            "$ref": "#/components/schemas/InstrumentSpec"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "strategy",
-          "contract",
-          "profile"
-        ],
-        "title": "Proposal"
-      },
-      "Signal": {
-        "properties": {
-          "operator": {
-            "type": "string",
-            "enum": [
-              "mean_reversion",
-              "momentum",
-              "breakout"
-            ],
-            "title": "Operator"
-          },
-          "lookback": {
-            "type": "integer",
-            "maximum": 500.0,
-            "minimum": 2.0,
-            "title": "Lookback"
-          },
-          "threshold": {
-            "anyOf": [
-              {
-                "type": "number",
-                "maximum": 20.0,
-                "exclusiveMinimum": 0.0
-              },
-              {
-                "type": "string",
-                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
-              }
-            ],
-            "title": "Threshold"
-          },
-          "version": {
-            "type": "string",
-            "const": "1",
-            "title": "Version",
-            "default": "1"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "operator",
-          "lookback",
-          "threshold"
-        ],
-        "title": "Signal"
-      },
-      "StrategySpec": {
-        "properties": {
-          "schema_version": {
-            "type": "string",
-            "const": "strategy/v1",
-            "title": "Schema Version",
-            "default": "strategy/v1"
-          },
-          "instrument": {
-            "type": "string",
-            "title": "Instrument"
-          },
-          "timeframe": {
-            "type": "string",
-            "title": "Timeframe"
-          },
-          "signal": {
-            "$ref": "#/components/schemas/Signal"
-          },
-          "confirmations": {
-            "items": {
+              "title": "Strategy Id",
               "type": "string"
-            },
-            "type": "array",
-            "title": "Confirmations",
-            "default": []
+            }
           },
-          "stop_ticks": {
-            "type": "integer",
-            "maximum": 1000000.0,
-            "exclusiveMinimum": 0.0,
-            "title": "Stop Ticks"
-          },
-          "target_rr": {
-            "type": "string",
-            "const": "3",
-            "title": "Target Rr",
-            "default": "3"
-          },
-          "max_hold_seconds": {
-            "type": "integer",
-            "maximum": 86400.0,
-            "exclusiveMinimum": 0.0,
-            "title": "Max Hold Seconds",
-            "default": 86400
-          },
-          "direction": {
-            "type": "string",
-            "enum": [
-              "both",
-              "long",
-              "short"
-            ],
-            "title": "Direction",
-            "default": "both"
-          },
-          "semantic_version": {
-            "type": "string",
-            "const": "1",
-            "title": "Semantic Version",
-            "default": "1"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "instrument",
-          "timeframe",
-          "signal",
-          "stop_ticks"
-        ],
-        "title": "StrategySpec"
-      },
-      "ValidationError": {
-        "properties": {
-          "loc": {
-            "items": {
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
               "anyOf": [
                 {
                   "type": "string"
                 },
                 {
-                  "type": "integer"
+                  "type": "null"
                 }
-              ]
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
             },
-            "type": "array",
-            "title": "Location"
+            "description": "Successful Response"
           },
-          "msg": {
-            "type": "string",
-            "title": "Message"
-          },
-          "type": {
-            "type": "string",
-            "title": "Error Type"
-          },
-          "input": {
-            "title": "Input"
-          },
-          "ctx": {
-            "type": "object",
-            "title": "Context"
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
-        "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
-        "title": "ValidationError"
-      },
-      "Window": {
-        "properties": {
-          "start_ns": {
-            "type": "integer",
-            "minimum": 0.0,
-            "title": "Start Ns"
-          },
-          "end_ns": {
-            "type": "integer",
-            "exclusiveMinimum": 0.0,
-            "title": "End Ns"
-          },
-          "role": {
-            "type": "string",
-            "enum": [
-              "train_only",
-              "selection_oos",
-              "final_holdout_unseen",
-              "paper_forward"
-            ],
-            "title": "Role"
-          }
-        },
-        "additionalProperties": false,
-        "type": "object",
-        "required": [
-          "start_ns",
-          "end_ns",
-          "role"
-        ],
-        "title": "Window"
+        "summary": "Lineage"
       }
     }
   }

@@ -21,6 +21,13 @@ def main():
     api = subs.add_parser("serve")
     api.add_argument("--port", type=int, default=8088)
     subs.add_parser("doctor")
+    research = subs.add_parser("research-register")
+    research.add_argument("protocol_file", type=Path)
+    subs.add_parser("research-status")
+    disable = subs.add_parser("research-disable")
+    disable.add_argument("protocol_hash")
+    subs.add_parser("pause")
+    subs.add_parser("resume")
     args = parser.parse_args()
     root = Path(args.state).resolve()
     if args.command == "doctor":
@@ -59,6 +66,33 @@ def main():
         with os.fdopen(fd, "w") as f:
             f.write(key)
         print(f"Credential written with mode 0600 to {token_file}; do not commit or log it.")
+    elif args.command.startswith("research-"):
+        from factory.exploration.persistent import Search, SearchProtocol, status
+
+        store = Store(root / "factory.sqlite")
+        search = Search(store, root)
+        if args.command == "research-register":
+            identity = search.register(
+                SearchProtocol.model_validate_json(args.protocol_file.read_text())
+            )
+            print(
+                json.dumps(
+                    {
+                        "protocol_hash": identity,
+                        "paused": store.paused(),
+                        "scope": "synthetic training only",
+                    }
+                )
+            )
+        elif args.command == "research-disable":
+            search.set_enabled(args.protocol_hash, False, actor="local-owner")
+            print(json.dumps({"protocol_hash": args.protocol_hash, "enabled": False}))
+        else:
+            print(json.dumps(status(store), indent=2))
+    elif args.command in ("pause", "resume"):
+        store = Store(root / "factory.sqlite")
+        store.pause(args.command == "pause", "local-owner")
+        print(json.dumps({"paused": store.paused()}))
     elif args.command == "serve":
         import uvicorn
         from apps.api.main import create_app

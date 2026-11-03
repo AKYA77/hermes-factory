@@ -77,11 +77,27 @@ def run(payload, root):
 
 
 if __name__ == "__main__":
+    import os
+    import resource
+
+    # Linux target: an abruptly killed coordinator must not leave an orphan
+    # engine consuming resources after its fenced lease has been reclaimed.
+    parent = os.environ.get("FACTORY_SUPERVISED_PARENT_PID")
+    if parent:
+        from apps.coordinator.supervision import bind_parent
+
+        bind_parent(int(parent))
+
+    def measured(value):
+        usage = resource.getrusage(resource.RUSAGE_SELF)
+        return {**value, "resources": {"peak_rss_bytes": usage.ru_maxrss * 1024}}
+
     try:
         value = run(json.loads(Path(sys.argv[1]).read_text()), sys.argv[2])
-        atomic_bytes(sys.argv[3], serialize(value).encode())
+        atomic_bytes(sys.argv[3], serialize(measured(value)).encode())
     except Exception as exc:
         atomic_bytes(
-            sys.argv[3], serialize({"error": type(exc).__name__ + ": " + str(exc)}).encode()
+            sys.argv[3],
+            serialize(measured({"error": type(exc).__name__ + ": " + str(exc)})).encode(),
         )
         raise

@@ -11,9 +11,11 @@ import psutil
 from pydantic import BaseModel, ConfigDict, model_validator
 from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, SYMBOLS, fingerprint
 from factory.data import Catalog
+from factory.operations.resources import memory_headroom
 from factory.experiments import Store
 from factory.ranking import leaderboard
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
+from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
 class Proposal(BaseModel):
@@ -110,11 +112,58 @@ def create_app(root, dashboard=None):
             "resources": {
                 "cpu_percent": psutil.cpu_percent(),
                 "ram_used_bytes": psutil.virtual_memory().used,
-                "ram_available_bytes": psutil.virtual_memory().available,
+                "ram_available_bytes": memory_headroom()["available_bytes"],
+                "memory_headroom": memory_headroom(),
                 "disk_free_bytes": psutil.disk_usage(root).free,
             },
             "hermes": {"configured": False, "required_for_research": False},
         }
+
+    @app.get("/api/v1/research/status", dependencies=read)
+    def search_status():
+        return research_status(store)
+
+    @app.get("/api/v1/research/protocols", dependencies=read)
+    def search_protocols(
+        limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
+    ):
+        return store.rows(
+            "SELECT p.*,c.enabled,c.reason FROM search_protocols p JOIN search_controls c USING(protocol_hash) ORDER BY p.created_at,p.protocol_hash LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
+
+    @app.post("/api/v1/research/protocols", dependencies=write)
+    def register_search(protocol: SearchProtocol):
+        try:
+            identity = Search(store, root).register(protocol)
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+        return {"protocol_hash": identity, "paused": store.paused()}
+
+    @app.post("/api/v1/research/protocols/{identity}/disable", dependencies=write)
+    def disable_search(identity: str):
+        try:
+            Search(store, root).set_enabled(identity, False)
+        except ValueError as exc:
+            raise HTTPException(404, str(exc)) from exc
+        return {"protocol_hash": identity, "enabled": False}
+
+    @app.get("/api/v1/research/trials", dependencies=read)
+    def search_trials(
+        limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
+    ):
+        return store.rows(
+            "SELECT t.*,o.outcome,o.objective,o.run_id,o.cpu_seconds,o.reason FROM search_trials t LEFT JOIN search_outcomes o USING(trial_id) ORDER BY t.created_at,t.trial_id LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
+
+    @app.post("/api/v1/jobs/{job_id}/cancel", dependencies=write)
+    def cancel_job(job_id: str):
+        try:
+            store.cancel(job_id, "operator")
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
+        return {"job_id": job_id, "state": "CANCELLED"}
 
     @app.get("/api/v1/instruments", dependencies=read)
     def instruments():
