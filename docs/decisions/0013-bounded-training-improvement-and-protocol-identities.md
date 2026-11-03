@@ -62,3 +62,11 @@ separate enable controls. The wheel includes the migration. Authenticated APIs,
 CLI policy registration/status/disable, dashboard counts, policy controls, paired
 child evidence and cancellation all use those components. Full browser/target-host
 acceptance is separate from the scoped tests and local UI rehearsal.
+
+Completion-boundary follow-up: the registry now verifies the worker result's
+canonical checksum and rejects execution integrity errors before completing an
+experiment. A repeated experiment identity must match the previously stored
+contract/result/checksum exactly; conflicting completions fail explicitly.
+Failed attempts retain their strategy and normal fenced job error/resource path.
+Tests inject modified worker output, integrity failures and an idempotency conflict
+and verify that the original stored experiment survives unchanged.

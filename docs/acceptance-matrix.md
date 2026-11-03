@@ -32,7 +32,7 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T24 | 8GB performance + soak | Small synthetic wall/CPU/RSS benchmark measured; target VPS/soak unrun |
 | T25 | Scientific independence | Window identity changes tested; consumed holdout-use workflow pending |
 | T26 | Instrument units | Real Gold source grid retained at 0.001 without rounding; monetary Gold/JPY specifications remain blocked |
-| T27 | Immutable evidence | SQL triggers/failed registry/quarantined execution evidence/no metric-write API/idempotent completion tested; full provenance/adversarial suite pending |
+| T27 | Immutable evidence | SQL triggers/failed registry/quarantined execution evidence/no metric-write API/idempotent completion tested; worker checksum/integrity and conflicting-completion rejection now pass; full provenance/adversarial suite pending |
 | T28 | User actions | Pause/resume/proposal/queue/audit, research registration/disable/history and cancellation API tested; diagnosis/retry/export/browser workflows pending |
 | T29 | Provenance | Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending |
 | T30 | Full vertical | Synthetic API→queue→Nautilus→diagnose→board tested; real Forex→validation→browser acceptance blocked/pending |

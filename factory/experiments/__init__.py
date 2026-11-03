@@ -8,7 +8,7 @@ import sqlite3
 import time
 import uuid
 
-from factory.contracts import SYMBOLS, TIMEFRAMES, serialize
+from factory.contracts import SYMBOLS, TIMEFRAMES, serialize, fingerprint
 
 
 class Store:
@@ -244,6 +244,10 @@ class Store:
         if contract.strategy_hash != spec.strategy_hash:
             raise ValueError("strategy mismatch")
         self.register_strategy(spec)
+        if fingerprint(result) != artifact_hash:
+            raise ValueError("worker result checksum mismatch")
+        if result.get("integrity_errors"):
+            raise ValueError("execution integrity errors cannot complete an experiment")
         with self.transaction() as db:
             now = time.time()
             if job_id is not None:
@@ -253,6 +257,16 @@ class Store:
                 ).fetchone()
                 if active is None:
                     raise ValueError("STALE_LEASE")
+            existing = db.execute(
+                "SELECT contract_json,result_json,artifact_hash FROM experiments WHERE experiment_hash=?",
+                (contract.experiment_hash,),
+            ).fetchone()
+            if existing and tuple(existing) != (
+                serialize(contract),
+                serialize(result),
+                artifact_hash,
+            ):
+                raise ValueError("immutable experiment completion conflict")
             db.execute(
                 "INSERT OR IGNORE INTO experiments VALUES(?,?,?,?,?,?,?,?,?)",
                 (
