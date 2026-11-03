@@ -1,15 +1,16 @@
 {
   "ci_verified": false,
-  "commit": "f0a4c353f67d87d99b0a6e5a9f2bf462ed242646",
+  "commit": "6bf3c5b3f49a2a0e69daade88fcb64cc05f5a327",
   "files": {
     "AGENTS.md": "fe43707179d1a70781a9a09d8f35733e639139d24f9c71156051b2203452b38f",
-    "BLUEPRINT.md": "9f963e640f2a198ff91455471524d92ead3df23c881af6c4b7eee94f3b431c4c",
+    "BLUEPRINT.md": "841bfcfff20d913ca550c48e29ae1bac9a208b7596534b5db33c856cf6c836db",
     "CODEX_BUILD_PROMPT.md": "e5181e397d3489c5759cb3979627693922d655d84b39d059d5d021d2694c8f98",
     "HERMES_AGENT_INSTRUCTIONS.md": "b65e769f803a17ed3dd30d50c86adde662757499e5d5e13c58ea720dc202b740",
-    "build-report.json": "8edda89aa66d1feb9b2be19d6a8a0aeab1e7f73a2bc7a5aa42f43eb1677af40b",
+    "build-report.json": "a809a55b63feef1b891d44e2cf2d35bc9ae50a5bfc24d01b979450731f0ab68f",
     "docs/source/Factory.pdf": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
-    "known-limitations.md": "3873c74a9fe6b5e21800b9f9a366875e1b4e2b47e6ad7b4c9eff54111475c73f",
-    "campaign-report.json": "cbd8b3b5234d5a2b63c3f782148f2a6aea1b05ce0baff8108c443e76c75062c2"
+    "known-limitations.md": "134794255925d630d5d11eb13d6f61c354bf0fb057db266fa64c93293a6f66b8",
+    "campaign-report.json": "cbd8b3b5234d5a2b63c3f782148f2a6aea1b05ce0baff8108c443e76c75062c2",
+    "milestone-report.json": "66d152d60787a5f1839435c9bdc65ebe8d4a4f33f7648af4fd2032ad614d5f1f"
   },
   "historical_data": false,
   "lock_hashes": {

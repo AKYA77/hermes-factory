@@ -5,16 +5,16 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 
 ## External prerequisites
 
-- Named Markdown blueprint is absent. Factory.pdf is preserved verbatim; text
-  extraction garbles some formulas. BLUEPRINT.md is an explicit source index.
+- Owner confirmed Factory.pdf is the original v2.0 blueprint referred to by the
+  Markdown filename. It is preserved verbatim; consult it for extracted typography.
 - GitHub private visibility, push and API access are now verified; branch protection
   and production release gates remain unverified. See campaign-report.json for latest tests.
-- Dukascopy tick endpoint returns 429 and directs access to AWS Requester Pays.
-  Owner requires free sources only; no billed requests are authorized or performed.
-  HistData access is blocked by the current network policy. A draft adds histdata.com
-  and www.histdata.com, preserving existing hosts; it is not applied or published.
-- Provider market-data usage approval, actual latest 2026 ticks, source limits and
-  verified Gold conventions/contract/margin/volume profiles are missing.
+- Dukascopy's offered route requires AWS Requester Pays; owner requires free sources.
+  Free HistData web tick downloads now work. January 2025 EURUSD and XAUUSD
+  archives have exact bounded structural imports. No billed access is used.
+- Whole-source empirical price grids are verified, but Gold monetary pip/tick/
+  contract/margin/volume conventions remain UNKNOWN_SPEC. Provider calendar gaps,
+  all-eight-instrument and 2025/2026 coverage and independent evidence are unfinished.
 - No Contabo access or target Ubuntu/8GB installation, reboot, stress or soak test.
 - Hosted Nous/Hermes credentials/model catalog/quotas unavailable and integration
   not installed. No model calls are required by the current deterministic queue.
@@ -25,17 +25,22 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   engine benchmark; dependency security remediations still tracked in audit reports.
 - C1 partial: typed defaults/API/queue/UI available. Production least-privilege
   installation, complete schema evolution and service lifecycle are not implemented.
-- C2 partial: synthetic canonical storage only. No permanent provider importer,
-  incremental reconciliation, calendars/gap detection, tick-grid/session/DST checks,
-  lossless full-year streaming, atomic compaction, storage quotas or backfill.
-  Current commit/replay loads one test partition into memory; do not use it on full
-  year ticks. Manifests are filesystem artifacts, not the full required SQL registry.
-- C3 partial: market/bracket/stop/limit/timeout fixtures run in Nautilus. Production
-  instrument conversion, partial fills/liquidity restrictions, ambiguous OHLC paths,
-  full event traces and complete engine/reference agreement remain unverified.
-  Only unit and synthetic USD-quoted integration profiles are supported. A missing
-  deadline quote can produce a later engine fill flagged DELAYED_TIMEOUT_QUOTE;
-  such results cannot count as validated precise-24h evidence.
+- C2 partial: free HistData ASCII ticks now have a bounded download/parser and
+  8,192-row Parquet import/readback path; original ZIP bytes/notices/checksums,
+  fixed EST -> UTC, millisecond precision and exact integer prices are retained.
+  Real EURUSD/Gold month pilots passed structural checks. Calendar gap classification,
+  source correction reconciliation, operational quotas, compaction/backfill,
+  independent-source comparison and full period coverage remain pending.
+- C3 partial: order-aware v2 accounting tracks partial fills, order/trade IDs,
+  cancellation races, protection-loss safety closes and deadline quote availability.
+  Diagnostics use actual stop order identity and per-fill/quote entry bases.
+  Source/version guards reject stale execution contexts; default boards separate v1/v2.
+  Nautilus StandardMarginModel now matches profile-rate arithmetic. Finite-liquidity
+  L1 GTC fallback can add one tick; exact-price mismatches are reported and blocked
+  by the worker rather than relabeled correct. Full broker constraints, account-currency
+  rounding/reference agreement, JPY conversion and verified Gold monetary profiles
+  remain release gates. Real historical strategy evaluation stays blocked until
+  those profiles, calendar checks and evaluation contracts are approved.
 - C4 partial: 3 initial operators, typed proposals, seeded Optuna proposal adapter,
   proposal-count coverage allocation, hash keys, bounded RAM cache. No complete
   eight-family search, time/CPU-budget fairness, L2 disk cache, persisted optimizer,
@@ -60,7 +65,14 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   rollback refuse production deployment explicitly. This is not a production installer.
 - Paper-forward collection/discrepancy measurement is not implemented.
 
-## Latest software campaign
+## Latest correctness and historical-import increments
+
+See milestone-report.json and docs/milestone-execution-and-data.md for the current
+v2 increment. v1 campaign reports remain historical development evidence and are
+not automatically rerun or ranked as v2. Security findings are assessed in ADR 0007;
+both audit gates remain active/failing. No C0–C9 milestone is declared fully complete.
+
+## Earlier software campaign
 
 See campaign-report.json and docs/campaign-1000.md. Two 1,000-strategy synthetic
 campaigns exercise the implemented four USD-quoted Forex pairs, three operators,

@@ -9,20 +9,20 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T01 | Canonical strategy identity | Unit normalization/differences tested; broader operator semantic coverage pending |
 | T02 | Full experiment hash/cache | Hash inputs and exact API cache reuse tested; full L2/invalidation graph pending |
 | T03 | Unique restart completion | Fenced lease expiry/idempotent completion tested; process-kill recovery pending |
-| T04 | Data round-trip | Synthetic exact values/checksums tested; real Forex/Gold day/week blocked |
+| T04 | Data round-trip | Real Forex/Gold month structural round trips and bounded synthetic fixtures passed; calendar/source/instrument acceptance remains |
 | T05 | Gaps and updates | Quarantine/corruption tested; session gaps/incremental updates pending |
 | T06 | Closed MTF availability | Closed-hour availability tested; DST/session/late-event full cases pending |
 | T07 | Spread floor | Property fixtures and Nautilus USD-profile quotes tested; JPY/Gold engine corpus pending |
 | T08 | Adverse eligible fills | Arithmetic sides and Nautilus market/stop fixtures tested; all production units pending |
-| T09 | Order semantics | Limit and stop-gap fixtures tested; ambiguity/partial fill/source gap cases pending |
+| T09 | Order semantics | Native partial entries/exits, cancellation races, safety closes and deadlines tested; finite-L1 exact-pricing mismatch blocked, full constraints pending |
 | T10 | Hypothetical risk | Budget and min-volume tested; dated cross-currency/broker profiles pending |
 | T11 | 24h deadline | Exact quote timeout and missing-exit flag tested; delayed-gap policy further review |
-| T12 | MFE/MAE paths | Long/short/fast/favorable/near-target/missing tested; independent full diagnostic golden suite pending |
+| T12 | MFE/MAE paths | Order-identified stop tags, losing timeout/safety exclusions, partial-fill basis and tied-quote path tests pass; full cohort/golden suite pending |
 | T13 | Parent-child | Changes and parent preservation tested; paired cohort evidence pending |
 | T14 | Reject vs remember | OOS failure status helper tested; complete persisted hypothesis decision workflow pending |
 | T15 | Annual/WFO splits | Quarter/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending |
 | T16 | Eight independent boards | Empty boards + synthetic populated board tested; full ranking/diversity/archive regression pending |
-| T17 | Dedup + screen audit | Exact cached proposal reused; screened-out audit not implemented |
+| T17 | Dedup + screen audit | Cached proposal and execution/source version guards tested; screened-out audit not implemented |
 | T18 | Search fairness | Seeded bounded proposal-count allocation tested; CPU-budget fairness/endless exploration pending |
 | T19 | Reproducibility | Synthetic replay artifact hashes identical; tagged historical reproduction pending |
 | T20 | API/dashboard | Auth, pagination, roles and state tested; browser full C7 workflows pending |
@@ -31,7 +31,7 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T23 | Backup recovery | SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending |
 | T24 | 8GB performance + soak | Small synthetic wall/CPU/RSS benchmark measured; target VPS/soak unrun |
 | T25 | Scientific independence | Window identity changes tested; consumed holdout-use workflow pending |
-| T26 | Instrument units | Invalid pip/tick rejected; real JPY/Gold metadata blocked |
+| T26 | Instrument units | Real Gold source grid retained at 0.001 without rounding; monetary Gold/JPY specifications remain blocked |
 | T27 | Immutable evidence | SQL triggers/no metric-write API/idempotent completion tested; full provenance/adversarial injection suite pending |
 | T28 | User actions | Pause/resume/proposal/queue/audit tested; diagnosis/cancel/retry/export actions pending |
 | T29 | Provenance | Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending |

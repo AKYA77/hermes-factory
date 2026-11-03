@@ -5,10 +5,10 @@ Use existing branch build/initial-factory and existing checkout; no worktree nee
 
 | Milestone | Implemented files/components | Status / next exit proof |
 |---|---|---|
-| C0 | source archive, AGENTS, uv/npm locks, ADRs, license/audit inventory | Partial; private GitHub/PR/branch rules and source/engine pilot blocked |
+| C0 | source archive, locked tools, private GitHub/PR, fresh security assessment | Partial; branch rules and unresolved dependency findings remain |
 | C1 | contracts/config, migration 001, Store/leases, API auth, dashboard inspector, local installer | Partial; target system deployment and complete persistence/controls pending |
-| C2 | exact synthetic quotes, raw/hash/Parquet manifest, quarantine | Partial; real source terms/access/profiles and incremental bounded importer pending |
-| C3 | Nautilus supported fill-book adapter, brackets, risk/timeout/long-short fixtures | Partial; full reference agreement, currencies/Gold/source realism pending |
+| C2 | free real Forex/Gold month pilots, bounded lossless import/readback, raw provenance | Partial; calendar/source revision review, full coverage and operational ingestion remain |
+| C3 | v2 fill ledger, partial/cancel/timeout/role diagnostics, source guards and margin formula tests | Partial; finite-depth exact pricing, currency rounding, JPY/Gold monetary profiles and full reference remain |
 | C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; automatic search, full families, disk cache, screen audit pending |
 | C5 | path diagnostics, controlled child variants, basic lineage | Partial; cohort analysis/paired improvement pipeline pending |
 | C6 | Wilson, quarter/purge helpers, frozen-window replays, instrument boards | Partial; full evaluation/holdout/annual/pooled reporting pending |
@@ -17,18 +17,17 @@ Use existing branch build/initial-factory and existing checkout; no worktree nee
 | C9 | docs, blocked handoff/manifest | Blocked; no approved release/tag |
 
 Next work, in order:
-1. Apply saved network domains in environment settings; verify existing repository
-   is private and management/push access before publishing branch/source docs.
-2. Obtain original Markdown blueprint, provider terms decision and verified Forex/
-   Gold profiles. Perform actual one-day/week source pilot and resource estimation.
-3. Resolve fsspec exact-pin security conflict and low-severity dashboard chain
-   advisory with reviewed supported upstream changes, preserving golden outputs.
-4. Finish C1/C2 production persistence/import/migration/fault contracts, then extend
-   C3 through cross-currency/profile/ambiguous/deadline correctness gates.
-5. Complete C4–C7 deterministic autonomous discovery/improvement/evidence pipeline
-   and dashboard using the preserved full contract, without reducing requirements.
-6. Only after actual target C8 gates and all T01–T30 proof, perform C9 release.
+1. Use the owner-confirmed original Factory.pdf. Keep dependency security gates failing
+   until a compatible supported fix or explicitly reviewed disposition exists.
+2. Complete source-calendar gap review, instrument/profile registry and full C2
+   coverage before enabling real-data strategy evaluation. Use only free web data.
+3. Finish C3 reference/account-currency and finite-liquidity pricing gates. Never
+   certify a fallback extra tick as the declared exact two-pip execution model.
+4. Continue C4–C7 autonomous generation/optimization/diagnosis, durable negative
+   hypothesis/lineage evidence, OOS/WFO/robustness and the full dashboard.
+5. Test C8 on the actual 4-vCPU/8-GB VPS; only then perform C9 release with all
+   mandatory gates proven. No production tag is issued for this increment.
 
-Exact commands, counts, failures and measured values are in the current build
-report and local reports/runtime evidence. Previous failures are retained as
-history; do not describe an earlier version's passing run as a later version's proof.
+Actual evidence and measured source-import resources are in milestone-report.json.
+Prior failed attempts/reports remain in Git history and ignored local state. Do
+not replace the preserved PDF with a fabricated original Markdown document.

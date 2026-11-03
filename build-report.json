@@ -1,152 +1,24 @@
 {
   "status": "NOT_READY",
-  "version": "0.1.0.dev0",
-  "tested_source_commit": "f0a4c353f67d87d99b0a6e5a9f2bf462ed242646",
-  "observed_at_utc": "2026-11-02T20:24:39.894297+00:00",
-  "release_tag": null,
-  "repository": {
-    "url": "https://github.com/AKYA77/hermes-factory",
-    "private_verified": true,
-    "branch": "build/initial-factory"
-  },
+  "latest_report": "milestone-report.json",
+  "source_commit": "6bf3c5b3f49a2a0e69daade88fcb64cc05f5a327",
+  "execution_version": "adverse-fill/v2",
   "tests": {
-    "tests": 45,
+    "tests": 84,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "passed": 45
+    "passed": 84
   },
-  "campaign": {
-    "report": "campaign-report.json",
-    "completed_unique_strategies": 1000,
-    "synthetic": true,
-    "repeat_hash_agreement": 1000,
-    "wall_seconds": 136.025363148,
-    "cpu_seconds": 119.95730000000002,
-    "peak_worker_rss_bytes": 301531136
-  },
-  "api": {
-    "status": "PASSED",
-    "scope": "real authenticated loopback API over synthetic campaign",
-    "unique_experiments_paginated": 1000,
-    "anonymous_rejected": true,
-    "top_five_boards": {
-      "EURUSD": [
-        "1dbf5ae1516c9e636e8104b678810406ef1dc35847704c3a18dcf3eb11e3a754",
-        "af91292795ff6f44efb499afa573e2e447acdbd3a8e70e421e816e979341426f",
-        "53a7e9c5925ffd1bc17f6c174aed67a8154e61c1a37ace4c3b31fa28b1d7af91",
-        "591c8c32da6cabd17ce37bdb333abc7b4a85492e16b3d704af705dca15ae0af4",
-        "d095f30f3b0c04e7e1bb3b31db4f7ac71264231e4f8945a5e89199804e897ead"
-      ],
-      "GBPUSD": [
-        "026c7589e82c5158329af642bdfdd8782d54e4a1257f96060261ea931403f891",
-        "2921d9efeef02f38090de40df9573843126d31059e51592741a777e11cacd011",
-        "b6893edea1f7b0d9d4e291057142560cde9a68857bf059b7189fa2b198af133d",
-        "6074839f7014d3c09bafb2ef29ceae44719a0199ef41a36ffdced200e9842978",
-        "9bb1662eb27c35925b73181eac018bd81752bb4411b243d5d0e9fa2673f8a971"
-      ],
-      "AUDUSD": [
-        "659bfcdc67c6e73d1af4ec45d200025cc617e67ee47c0a0a548be4c5860d8537",
-        "8da391f494fe64d63015cc8c0aec9781a6bcdcd0d48d62c76583cd478ffb253e",
-        "9c8451c34538e661887443994636762ef7e604b702be2f2861a7fa89537c6c8a",
-        "4375778806555963c974ae0c3ec9849434064456f3259c500869f92fd12b8725",
-        "fe15ee1845cbb801dcedc6930b5b3331ceabc03a08d666235f619a0b37837cbd"
-      ],
-      "NZDUSD": [
-        "64c125cca1dd6c8149b3dd8611648fe8a09dbb1dda96ec96c072d9492a3603d1",
-        "96cb6368dd4695a7f4be9e17c81189ba4aa9b0cdc2b3c954f4949f9d1bc6b5f8",
-        "fa41f37d3a784623d4abc02f30c25dd83d815172633f79bec96a66c9021ba3ea",
-        "466e0486202a3f8d24d5a584ff04e698fc68ef6ac7e6b19e1afae2a698526338",
-        "8ec6fe7baa6fe052a3d8a9e84bdbd0efbb8464bed1868abe72372fa8f4558e69"
-      ]
-    },
-    "validated_boards_empty": true,
-    "wall_seconds": 1.3457631250000759
-  },
-  "backup": {
-    "verified_files": 1016,
-    "backup": ".local/campaign-final-1000-backup"
-  },
-  "restore": {
-    "restore_verified": true,
-    "files": 1016,
-    "jobs": 1000,
-    "experiments": 1000,
-    "scope": "isolated copy; active state unchanged"
-  },
-  "commands": [
-    {
-      "command": ".venv/bin/pytest -q --junitxml=reports/runtime/campaign-regression.xml",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/ruff check factory apps tests",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/ruff format --check factory apps tests",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/python -m factory.operations.campaign --state .local/campaign-final-1000 --count 1000 --batch-size 25",
-      "exit_code": 0
-    },
-    {
-      "command": ".venv/bin/python -m factory.operations.campaign_api .local/campaign-final-1000",
-      "exit_code": 0
-    },
-    {
-      "command": "bash scripts/restore-test.sh .local/campaign-final-1000-backup",
-      "exit_code": 0
-    },
-    {
-      "command": "npm --prefix apps/dashboard run check",
-      "exit_code": 0,
-      "errors": 0,
-      "warnings": 0
-    },
-    {
-      "command": "npm --prefix apps/dashboard run build",
-      "exit_code": 0
-    }
-  ],
   "historical_data": {
-    "downloaded": false,
-    "cost_policy": "FREE_ONLY",
-    "dukascopy_status": 429,
-    "dukascopy_instructions": "AWS Requester Pays requires billing; not used",
-    "histdata_status": "proxy tunnel 403; network draft saved but not applied",
-    "urls": [
-      "https://www.dukascopy.com/wiki/en/development/data-export/",
-      "https://www.histdata.com/download-free-forex-data/"
-    ]
+    "downloaded": true,
+    "source": "free HistData web ticks",
+    "real_quotes_structurally_verified": 8081465,
+    "strategy_validation": false
   },
-  "fixed_bugs": [
-    "already-triggered stop/contingent-order rejection",
-    "backup verifier connection/WAL copy race",
-    "infeasible synthetic smoke fixture stop",
-    "campaign plan mutation on mismatch",
-    "unbounded/zero batch parameter"
-  ],
-  "ci": {
-    "tests": {
-      "status": "success",
-      "url": "https://github.com/AKYA77/hermes-factory/actions/runs/41518955273"
-    },
-    "dashboard": {
-      "status": "success",
-      "url": "https://github.com/AKYA77/hermes-factory/actions/runs/41518955230"
-    },
-    "scope": "checked commit 921b6184153b7b748efb65a9cffdd5e5ab75f50b; subsequent change replaces CI audit workflow only",
-    "dependency_review": "Original action requires unavailable private-repo Advanced Security; replaced with free audits; known advisories remain release blockers"
-  },
-  "remaining_security_advisories": [
-    "PYSEC-2026-4217 (Nautilus exact fsspec pin)",
-    "GHSA-gcqx-w48m-w2h4 (dashboard dependency chain)"
-  ],
-  "outstanding": "known-limitations.md",
-  "acceptance_matrix": "docs/acceptance-matrix.md",
-  "vps_verified": false,
-  "production_ready": false,
-  "prior_checkpoint_report": "Git history at f8b8935"
+  "blueprint_owner_confirmed": true,
+  "security": "failing gates; assessment complete, fixes not available in supported pins",
+  "full_milestones_completed": [],
+  "release_tag": null,
+  "previous_reports": "Git history; old v1 results remain read-only"
 }

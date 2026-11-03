@@ -5,11 +5,12 @@ and paper research only; no brokerage execution. The complete supplied v2.0
 specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical market
 results are claimed.
 
-Latest verification: [1,000-strategy campaign](docs/campaign-1000.md) and
-[machine-readable report](campaign-report.json). The campaign uses synthetic
-quotes; it is not historical profitability evidence. The current regression
-suite has 45 passing tests. Free historical downloads remain blocked; no paid
-source or inference has been enabled.
+Latest progress: [order-aware execution and real-source pilot](docs/milestone-execution-and-data.md)
+and [machine-readable evidence](milestone-report.json). Free January 2025 EURUSD
+and Gold ticks have lossless, memory-bounded structural imports. This is not
+historical strategy validation. The current suite has 84 passing tests; security
+findings and the full release gates remain unresolved. Previous v1 synthetic
+campaign reports are retained in history, not treated as current v2 evidence.
 
 Implemented: typed immutable strategy/experiment contracts; fingerprints; exact
 integer quote Parquet storage with raw hashes and quarantine; leased durable job
@@ -57,6 +58,5 @@ bash scripts/doctor.sh  # nonzero while NOT_READY
 
 See [operator guide](docs/operator-guide.md), [implementation plan](docs/implementation-plan.md),
 [known limitations](known-limitations.md), and [Hermes instructions](HERMES_AGENT_INSTRUCTIONS.md).
-No approved tag or production handoff exists. Remaining owner inputs: original
-Markdown blueprint, approved provider terms and verified instrument specifications,
+No approved tag or production handoff exists. Remaining owner inputs: owner-reviewed instrument specifications,
 GitHub management access/private visibility verification, and authorized VPS test access.
