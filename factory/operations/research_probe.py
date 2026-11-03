@@ -91,7 +91,7 @@ def main():
         "instrument": protocol.profile.instrument,
         "window": protocol.window.model_dump(mode="json"),
         "engine": "nautilus_trader/1.231.0",
-        "fill_policy": "adverse-fill/v2",
+        "fill_policy": payload["contract"]["fill_version"],
         "budgeted_trials": args.trials,
         "cycles": cycles,
         "paused_admission_verified": paused,

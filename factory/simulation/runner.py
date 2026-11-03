@@ -57,7 +57,9 @@ class ReplayStrategy(Strategy):
         self.signals = iter(signals)
         self.next_signal = next(self.signals, None)
         self.conservative = conservative
-        self.entry_tif = TimeInForce.GTC
+        self.entry_tif = TimeInForce.IOC
+        self.stop_tif = TimeInForce.IOC
+        self.market_exit_tif = TimeInForce.IOC
         self.fills, self.trades, self.skips, self.rejections = (BoundedRecords() for _ in range(4))
         self.current = None
         self.order_ledgers = {}
@@ -231,6 +233,7 @@ class ReplayStrategy(Strategy):
             OrderSide.SELL if ledger.metadata["side"] == "BUY" else OrderSide.BUY,
             self.instrument.make_qty(ledger.quantity),
             reduce_only=True,
+            time_in_force=self.market_exit_tif,
         )
         ledger.register(str(order.client_order_id), reason)
         self.order_ledgers[str(order.client_order_id)] = ledger
@@ -325,6 +328,7 @@ class ReplayStrategy(Strategy):
                 OrderSide.BUY if side == "BUY" else OrderSide.SELL,
                 self.instrument.make_qty(sizing["size"]),
                 time_in_force=self.entry_tif,
+                sl_time_in_force=self.stop_tif,
                 sl_trigger_price=self.instrument.make_price(stop),
                 tp_price=self.instrument.make_price(target),
                 tp_post_only=False,
@@ -348,6 +352,7 @@ def replay(
     dataset_hash=None,
     spool_directory=None,
     _materialized_reference=False,
+    _legacy_gtc_reference=False,
 ):
     """Stream into Nautilus and reconstruct paths from bounded disk ranges.
 
@@ -380,6 +385,7 @@ def replay(
             inline_paths=inline_paths,
             dataset_hash=dataset_hash,
             materialized_reference=_materialized_reference,
+            legacy_gtc_reference=_legacy_gtc_reference,
         )
 
 
@@ -395,6 +401,7 @@ def _replay_spool(
     inline_paths,
     dataset_hash,
     materialized_reference,
+    legacy_gtc_reference,
 ):
     instrument = make_instrument(profile)
     engine = BacktestEngine(BacktestEngineConfig(logging=LoggingConfig(bypass_logging=True)))
@@ -413,6 +420,8 @@ def _replay_spool(
     )
     engine.add_instrument(instrument)
     strategy = ReplayStrategy(instrument, profile, spec, signals, conservative)
+    if legacy_gtc_reference:
+        strategy.entry_tif = strategy.stop_tif = strategy.market_exit_tif = TimeInForce.GTC
     engine.add_strategy(strategy)
 
     def tick_from_row(row):
@@ -545,6 +554,9 @@ def _replay_spool(
             "accounting_version": EXECUTION_VERSION,
             "integrity_errors": integrity_errors,
             "entry_time_in_force": strategy.entry_tif.name,
+            "stop_time_in_force": strategy.stop_tif.name,
+            "market_exit_time_in_force": strategy.market_exit_tif.name,
+            "legacy_gtc_reference": bool(legacy_gtc_reference),
             "margin_model": "standard_fixed_profile_rate",
             "rejections": strategy.rejections,
             "fill_trace": fill.trace,

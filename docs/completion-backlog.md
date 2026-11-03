@@ -115,3 +115,8 @@ no false promotion. This is not a full C6/product completion announcement.
 Next: dated currency conversion/native money/contract-unit reconciliation and
 verified-profile admission; then calibrated approximate screening/full discovery,
 regime/cohort robustness and complete laboratory/UI/lifecycle integration.
+
+Execution v3 IOC remainder correction now has native BUY/SELL partial-entry
+and partial-stop regression goldens (ADR 0016). Full suite: 190 passed, 182
+third-party warnings, 66.77 seconds; Ruff/frontend passed. Currency, contract
+units and native money reconciliation remain next; no readiness promotion.

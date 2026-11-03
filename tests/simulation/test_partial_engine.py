@@ -41,6 +41,7 @@ def test_native_partial_entry_uses_actual_quantity(profile, spec):
         [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}],
         True,
         fill_model=PartialBook(profile, OrderType.MARKET),
+        _legacy_gtc_reference=True,
     )
     assert not result["rejections"], result
     assert len(result["trades"]) == 1, result
@@ -105,6 +106,7 @@ def test_native_cancel_racing_with_entry_keeps_all_fills_accounted(profile, spec
         [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}],
         True,
         fill_model=PartialBook(profile, OrderType.MARKET),
+        _legacy_gtc_reference=True,
     )
     assert not result["rejections"], result
     assert len(result["trades"]) == 1, result
@@ -156,6 +158,7 @@ def test_l1_remainder_extra_tick_is_reported_not_hidden(profile, spec):
         [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}],
         True,
         fill_model=PartialBook(profile, OrderType.MARKET),
+        _legacy_gtc_reference=True,
     )
     # Nautilus L1 GTC replenishes exhausted market liquidity one tick away.
     # Account for the actual fill, but never certify it as exact 2-pip pricing.
@@ -235,6 +238,7 @@ def test_partial_entry_path_does_not_use_later_fill_basis(profile, spec):
         [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}],
         True,
         fill_model=PartialBook(profile, OrderType.MARKET),
+        _legacy_gtc_reference=True,
     )
     t = result["trades"][0]
     entries = [p for p in t["path"] if p["phase"] == "after_entry_fill"]

@@ -3,7 +3,8 @@
     "migration005 protected input/holdout ledgers and supervised fixed-window native evaluation",
     "migration006 chronological refitting/neighborhood/confirmation/annual/pooled/reference-cost stage machine",
     "exact USD marked valuation and bounded display curves",
-    "canonical profile representation and actual mixed-stop-role diagnostics"
+    "canonical profile representation and actual mixed-stop-role diagnostics",
+    "execution v3 IOC remainder policy with native long/short partial-entry and stop cancellation goldens"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
@@ -12,13 +13,14 @@
     "failures": 0,
     "frontend": "PASS",
     "lint": "PASS",
-    "log": "/tmp/hermes-mandate-validation-verify.log",
-    "passed": 186,
+    "log": "/tmp/hermes-mandate-ioc-v3-verify.log",
+    "passed": 190,
+    "seconds": 66.77,
     "skipped": 0,
-    "warnings": 174
+    "warnings": 182
   },
   "next_unfinished": "Inspect native currency/conversion/rounding APIs, implement verified profile admission and all-instrument monetary software/goldens without invented real metadata.",
-  "observed_at_utc": "2026-11-03T22:18:08.754503+00:00",
+  "observed_at_utc": "2026-11-03T22:38:31.940928+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -59,7 +61,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "02aa2a7f82c02f721dd4de83903325eff854dadc",
+    "git_commit": "b4d9e6c",
+    "note": "v3 source tested before this documentation commit",
     "source_sha256": "82aa8ac0b22e617219d4e8ac57a182810ccc0dadfb50403e38d79f214c87386c"
   },
   "visibility": {

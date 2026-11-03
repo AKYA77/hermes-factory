@@ -5,7 +5,7 @@ from decimal import Decimal as D
 
 from factory.contracts import fingerprint
 
-EXECUTION_VERSION = "adverse-fill/v2"
+EXECUTION_VERSION = "adverse-fill/v3"
 EXIT_ROLES = frozenset({"STOP_LOSS", "TAKE_PROFIT", "TIMEOUT", "SAFETY_CLOSE"})
 TERMINAL = frozenset({"FILLED", "CANCELED", "EXPIRED", "REJECTED", "DENIED"})
 

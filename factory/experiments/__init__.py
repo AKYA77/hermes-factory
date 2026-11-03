@@ -257,6 +257,8 @@ class Store:
         if contract.strategy_hash != spec.strategy_hash:
             raise ValueError("strategy mismatch")
         self.register_strategy(spec)
+        if result.get("legacy_gtc_reference"):
+            raise ValueError("legacy GTC reference is not an official execution result")
         if fingerprint(result) != artifact_hash:
             raise ValueError("worker result checksum mismatch")
         if result.get("integrity_errors"):

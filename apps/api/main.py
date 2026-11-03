@@ -335,7 +335,8 @@ def create_app(root, dashboard=None):
     def board(
         symbol: str,
         validated_only: bool = False,
-        execution_version: Literal["adverse-fill/v1", "adverse-fill/v2"] | None = None,
+        execution_version: Literal["adverse-fill/v1", "adverse-fill/v2", "adverse-fill/v3"]
+        | None = None,
     ):
         if symbol not in SYMBOLS:
             raise HTTPException(404, "unknown instrument")
