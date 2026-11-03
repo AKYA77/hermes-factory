@@ -110,6 +110,10 @@ class SearchProtocol(Contract):
 
 def rebuild_study(protocol, history, number):
     """Deterministic for ordered history; no ephemeral RNG state must survive."""
+    from importlib.metadata import version
+
+    if version("optuna") != "4.5.0":
+        raise ValueError("unsupported optimizer runtime version")
     seed = int(fingerprint({"seed": protocol.seed, "trial": number})[:8], 16)
     study = optuna.create_study(
         direction="maximize", sampler=optuna.samplers.TPESampler(seed=seed, n_startup_trials=8)

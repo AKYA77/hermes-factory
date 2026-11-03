@@ -52,7 +52,11 @@ def main():
         store = Store(args.state / "factory.sqlite")
         worked = cycle(store, args.state)
         cycles += 1
-        if not worked:
+        if (
+            not worked
+            and len(store.rows("SELECT trial_id FROM search_trials")) >= args.trials
+            and not Search(store, args.state).pending()
+        ):
             break
     Search(store, args.state).feedback()
     state = status(store)
