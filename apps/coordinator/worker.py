@@ -57,7 +57,7 @@ def run(payload, root):
         dataset_hash=contract.dataset_hash,
         spool_directory=Path(root),
     )
-    catalog.verify(contract.dataset_hash)
+    catalog.verify(contract.dataset_hash, deep=True)
     result["runtime_provenance"] = context
     if result["integrity_errors"]:
         raise ValueError("EXECUTION_CONTRACT_MISMATCH: " + serialize(result["integrity_errors"]))

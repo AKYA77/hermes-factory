@@ -150,3 +150,32 @@ def test_bar_rejects_regressing_source_order():
     data[2] = replace(data[2], event_ts_utc_ns=data[0].event_ts_utc_ns)
     with pytest.raises(ValueError, match="ordering"):
         list(closed_bars(data, "M1"))
+
+
+def test_ram_cache_rejects_mutation_collision_and_object_arrays():
+    import numpy as np
+    from factory.features import BoundedCache
+
+    cache = BoundedCache(32)
+    original = np.array([1, 2], dtype=np.int64)
+    cache.put("a", original)
+    original[0] = 99
+    assert cache.get("a").tolist() == [1, 2]
+    with pytest.raises(ValueError):
+        cache.get("a").setflags(write=True)
+    with pytest.raises(ValueError, match="collision"):
+        cache.put("a", original)
+    with pytest.raises(ValueError, match="fixed-width"):
+        cache.put("object", np.array([{}], dtype=object))
+    cache.put("too-large", np.arange(1000))
+    assert cache.bytes == 16 and cache.get("too-large") is None
+
+
+def test_empty_array_metadata_obeys_entry_budget():
+    import numpy as np
+    from factory.features import BoundedCache
+
+    cache = BoundedCache(0, max_entries=2)
+    for key in ("a", "b", "c"):
+        cache.put(key, np.array([], dtype=np.int64))
+    assert len(cache.entries) == 2 and cache.bytes == 0 and cache.evictions == 1

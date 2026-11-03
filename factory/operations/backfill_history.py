@@ -43,6 +43,14 @@ def plan(through, instruments=SYMBOLS):
                 }
 
 
+def verify_partition(cat, identity, item):
+    m = cat.verify(identity)
+    expected = f"https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/{item['instrument'].lower()}/{item['year']}/{item['month']}"
+    if m["instrument"] != item["instrument"] or m["provenance"]["source"] != expected:
+        raise ValueError("backfill partition/source identity mismatch")
+    return m
+
+
 def import_partition(partition, archives, catalog, log):
     command = [
         sys.executable,
@@ -101,7 +109,7 @@ def run(
         for item in requested:
             known = state["partitions"].get(item["key"])
             if known and known["state"] == "STRUCTURAL_IMPORT_PASS":
-                cat.verify(known["dataset_hash"])
+                verify_partition(cat, known["dataset_hash"], item)
                 continue
             receipt = (
                 catalog
@@ -109,7 +117,7 @@ def run(
             )
             if receipt.exists():
                 imported = json.loads(receipt.read_text())
-                m = cat.verify(imported["dataset"]["dataset_hash"])
+                m = verify_partition(cat, imported["dataset"]["dataset_hash"], item)
                 source = imported["source"]
                 if (
                     source["instrument"] != item["instrument"]
@@ -147,7 +155,7 @@ def run(
             atomic_bytes(checkpoint, json.dumps(state, indent=2, sort_keys=True).encode())
             try:
                 imported = import_partition(item, archives, catalog, log)
-                m = cat.verify(imported["dataset"]["dataset_hash"])
+                m = verify_partition(cat, imported["dataset"]["dataset_hash"], item)
                 current = {
                     "state": "STRUCTURAL_IMPORT_PASS",
                     "dataset_hash": m["dataset_hash"],

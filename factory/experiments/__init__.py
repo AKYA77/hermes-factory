@@ -127,9 +127,15 @@ class Store:
             self._audit(db, actor, "enqueue", {"job_id": row[0], "kind": kind})
             return row[0]
 
-    def claim(self, lease_seconds=120, now=None):
+    def claim(self, lease_seconds=120, now=None, *, respect_pause=False):
         now = time.time() if now is None else now
         with self.transaction() as db:
+            if (
+                respect_pause
+                and db.execute("SELECT value FROM controls WHERE key='paused'").fetchone()[0]
+                == "true"
+            ):
+                return None
             expired = db.execute(
                 "SELECT job_id,lease_token,attempts,max_attempts FROM jobs WHERE state='RUNNING' AND lease_until<=?",
                 (now,),

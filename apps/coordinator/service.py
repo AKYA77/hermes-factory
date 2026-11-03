@@ -41,7 +41,7 @@ def _cycle(store, root, timeout, memory_limit_bytes):
         maintenance(store, root)
     except ValueError as exc:
         store.audit("research", "maintenance_blocked", {"error": str(exc)[:1000]})
-    job = store.claim(lease_seconds=timeout + 30)
+    job = store.claim(lease_seconds=timeout + 30, respect_pause=True)
     if not job:
         return False
     if job["kind"] != "research":

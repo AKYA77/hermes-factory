@@ -1,6 +1,7 @@
 """Lossless canonical quote storage. Immutable source bytes and exact integers."""
 
 from dataclasses import dataclass, asdict
+from collections import OrderedDict
 from pathlib import Path
 import hashlib
 import json
@@ -93,7 +94,12 @@ def quality(quotes):
 
 
 class Catalog:
-    def __init__(self, root):
+    def __init__(self, root, *, proof_cache_size=32):
+        if not 0 <= proof_cache_size <= 128:
+            raise ValueError("invalid verification proof cache budget")
+        self.proof_cache_size = proof_cache_size
+        self._verification_proofs = OrderedDict()
+        self.verification_cache_hits = self.verification_scans = 0
         self.root = Path(root)
         self.root.mkdir(parents=True, exist_ok=True)
 
@@ -162,17 +168,27 @@ class Catalog:
             (dest / name).is_symlink() for name in ("manifest.json", "source.bin", "quotes.parquet")
         ):
             raise ValueError("canonical source symlink forbidden")
-        m = json.loads((dest / "manifest.json").read_text())
+        manifest_bytes = (dest / "manifest.json").read_bytes()
+        m = json.loads(manifest_bytes)
         if m.get("dataset_hash") != identity or m.get("schema_version") not in (
             "data/v1",
             "data/v2",
         ):
             raise ValueError("dataset manifest identity mismatch")
-        if (
-            sha256(dest / "source.bin") != m["source_sha256"]
-            or sha256(dest / "quotes.parquet") != m["parquet_sha256"]
-        ):
+        raw_hash, parquet_hash = sha256(dest / "source.bin"), sha256(dest / "quotes.parquet")
+        if raw_hash != m["source_sha256"] or parquet_hash != m["parquet_sha256"]:
             raise ValueError("CORRUPT_PARTITION")
+        # Every lookup rehashes ALL input bytes. A prior semantic proof applies
+        # only to the identical namespace + manifest + raw + Parquet byte tuple.
+        # Do not replace this with an mtime-only fast path or persisted trust flag.
+        proof_key = (identity, hashlib.sha256(manifest_bytes).hexdigest(), raw_hash, parquet_hash)
+        needs_semantics = deep or m["schema_version"] == "data/v1"
+        cached = self._verification_proofs.get(proof_key)
+        if cached is not None and (cached or not needs_semantics):
+            self.verification_cache_hits += 1
+            self._verification_proofs.move_to_end(proof_key)
+            return m
+        self.verification_scans += 1
         source = pq.ParquetFile(dest / "quotes.parquet")
         if source.metadata.num_rows != m["rows"] or not m["rows"]:
             raise ValueError("row count mismatch")
@@ -223,6 +239,11 @@ class Catalog:
             )
             if digest.hexdigest() != identity:
                 raise ValueError("legacy dataset content/provenance identity mismatch")
+        if self.proof_cache_size:
+            self._verification_proofs[proof_key] = needs_semantics
+            self._verification_proofs.move_to_end(proof_key)
+            while len(self._verification_proofs) > self.proof_cache_size:
+                self._verification_proofs.popitem(last=False)
         return m
 
     def read(self, identity, *, start_ns=None, end_ns=None, batch_rows=8192):

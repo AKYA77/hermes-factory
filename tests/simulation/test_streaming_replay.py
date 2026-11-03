@@ -149,3 +149,16 @@ def test_reconstruct_compact_forensic_reference(tmp_path, profile, spec):
         dataset_hash=manifest["dataset_hash"],
     )
     assert list(reconstruct_path(cat, b["trades"][0], profile, True)) == a["trades"][0]["path"]
+
+
+def test_gap_can_exceed_modeled_risk_and_prevents_new_risk(profile, spec):
+    q = quotes([(110000, 110010), (110000, 110010), (100000, 100010), (100000, 100010)])
+    signals = [
+        {"available_at": q[0].event_ts_utc_ns, "side": "BUY"},
+        {"available_at": q[2].event_ts_utc_ns, "side": "BUY"},
+    ]
+    r = replay(iter(q), profile, spec, signals, True, batch_rows=1)
+    assert not r["integrity_errors"]
+    assert D(r["ending_equity"]) < 0 and len(r["fills"]) == 2
+    assert D(r["trades"][0]["pnl"]) < -D(r["trades"][0]["risk"])
+    assert any(s["status"] == "SKIPPED_MIN_VOLUME" for s in r["skips"])

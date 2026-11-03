@@ -51,3 +51,21 @@ def test_legacy_manifest_provenance_is_bound(tmp_path):
     path.write_text(json.dumps(m))
     with pytest.raises(ValueError, match="identity"):
         cat.verify(m["dataset_hash"])
+
+
+def test_proof_cache_checks_all_bytes_and_is_bounded(tmp_path):
+    q = quotes([(110000, 110010)] * 4)
+    cat = Catalog(tmp_path, proof_cache_size=1)
+    m = cat.commit(
+        q, b"original source", {"source": "synthetic", "license": "test", "synthetic": True}
+    )
+    scans = cat.verification_scans
+    assert cat.verify(m["dataset_hash"], deep=True) == m
+    assert cat.verification_cache_hits == 1 and cat.verification_scans == scans
+    # A return value is never the mutable cached manifest object.
+    returned = cat.verify(m["dataset_hash"])
+    returned["provenance"]["synthetic"] = False
+    assert cat.verify(m["dataset_hash"])["provenance"]["synthetic"] is True
+    (tmp_path / m["dataset_hash"] / "source.bin").write_bytes(b"changed source")
+    with pytest.raises(ValueError, match="CORRUPT"):
+        cat.verify(m["dataset_hash"])

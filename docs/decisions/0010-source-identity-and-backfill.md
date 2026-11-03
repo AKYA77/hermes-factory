@@ -36,3 +36,25 @@ remain mandatory. The present replay interface supports a single immutable sourc
 partition; a multi-month dataset-view/forensic mapping contract is still required
 for complete annual/multi-year research. Record/spool capacity failures are explicit,
 not silent truncation. These limits prevent a false full-period completion claim.
+
+## Reusing verified content proofs
+
+Catalog now keeps at most 32 in-process verification proofs (configurable down to
+zero for the comparator). Every call still hashes the complete source, Parquet and
+manifest bytes; no mtime-only shortcut. A semantic proof is reused only for the
+same dataset namespace and all three SHA256 identities. A shallow data/v2 check
+cannot satisfy a requested deep check. Changed bytes invalidate the proof before
+any cached success. Worker intake and final checks request deep proof. Returned
+manifests are fresh objects; the cache holds proof keys/booleans, not mutable data.
+The cache does not persist across workers or replace source authenticity review.
+
+RAM array caches now bound entry count and key size as well as data bytes, reject
+object arrays and conflicting immutable keys, and use immutable bytes backing.
+An oversized value is checked before copying. Full shared-feature/L2 integration
+remains unfinished. Tests cover zero-length metadata entries and attempted writes.
+
+Coordinator claim checks pause inside its write transaction. A pause arriving
+between planning and claim prevents worker admission. The lower-level test-harness
+claim primitive remains explicit about bypassing pause; the application always
+requests the guarded path. A native gap/insolvency fixture confirms actual loss may
+exceed intended modeled risk, reconciles cash, and refuses new risk at negative equity.

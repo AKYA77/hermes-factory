@@ -67,3 +67,41 @@ def test_failed_pending_bytes_preserved_and_retried(tmp_path, monkeypatch):
     preserved = [p for p in (tmp_path / "failed-captures").iterdir() if p.suffix != ".json"]
     assert len(preserved) == 1 and preserved[0].read_bytes() == b"incomplete synthetic bytes"
     assert not (tmp_path / "EURUSD-202501-ticks.manifest.json").exists()
+
+
+def test_checkpoint_cannot_relabel_a_verified_partition(tmp_path):
+    from conftest import quotes
+    from factory.data import Catalog
+
+    cat = Catalog(tmp_path / "catalog")
+    m = cat.commit(
+        quotes([(110000, 110010)]),
+        b"synthetic",
+        {
+            "source": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/1",
+            "license": "synthetic test only",
+            "synthetic": True,
+        },
+    )
+    checkpoint = tmp_path / "checkpoint.json"
+    checkpoint.write_text(
+        json.dumps(
+            {
+                "schema": "history-backfill/v1",
+                "partitions": {
+                    "USDJPY:2025-01": {
+                        "state": "STRUCTURAL_IMPORT_PASS",
+                        "dataset_hash": m["dataset_hash"],
+                    }
+                },
+            }
+        )
+    )
+    with pytest.raises(ValueError, match="source identity"):
+        run(
+            "2025-01",
+            tmp_path / "archives",
+            tmp_path / "catalog",
+            checkpoint,
+            instruments=("USDJPY",),
+        )

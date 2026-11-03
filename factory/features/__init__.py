@@ -101,7 +101,12 @@ def indicator_key(bar_key, operator, parameters, implementation_version):
 
 
 class BoundedCache:
-    def __init__(self, max_bytes):
+    def __init__(self, max_bytes, max_entries=256):
+        if type(max_bytes) is not int or max_bytes < 0:
+            raise ValueError("invalid cache byte budget")
+        if type(max_entries) is not int or not 1 <= max_entries <= 65536:
+            raise ValueError("invalid cache entry budget")
+        self.max_entries = max_entries
         self.max_bytes = max_bytes
         self.bytes = 0
         self.entries = OrderedDict()
@@ -116,15 +121,29 @@ class BoundedCache:
         return self.entries[key]
 
     def put(self, key, value):
-        value = np.asarray(value).copy()
-        value.flags.writeable = False
+        if type(key) is not str or len(key) > 128:
+            raise ValueError("invalid bounded cache key")
+        value = np.asarray(value)
+        if value.dtype.kind not in "biufcmM":
+            raise ValueError("cache requires fixed-width numeric/time arrays")
         if key in self.entries:
-            self.bytes -= self.entries.pop(key).nbytes
+            old = self.entries[key]
+            if (
+                old.dtype != value.dtype
+                or old.shape != value.shape
+                or old.tobytes(order="C") != value.tobytes(order="C")
+            ):
+                raise ValueError("immutable cache key collision")
+            self.entries.move_to_end(key)
+            return
+        # Check size before the immutable copy; never allocate an oversized copy.
         if value.nbytes > self.max_bytes:
             return
-        while self.bytes + value.nbytes > self.max_bytes:
+        while self.bytes + value.nbytes > self.max_bytes or len(self.entries) >= self.max_entries:
             _, old = self.entries.popitem(last=False)
             self.bytes -= old.nbytes
             self.evictions += 1
-        self.entries[key] = value
-        self.bytes += value.nbytes
+        # Immutable bytes backing prevents callers from re-enabling writes.
+        frozen = np.frombuffer(value.tobytes(order="C"), dtype=value.dtype).reshape(value.shape)
+        self.entries[key] = frozen
+        self.bytes += frozen.nbytes

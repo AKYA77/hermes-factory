@@ -153,3 +153,18 @@ def test_obsolete_source_never_enqueues_pending(tmp_path, monkeypatch):
     assert search.enqueue_pending() == 0
     assert not store.rows("SELECT * FROM jobs")
     assert store.rows("SELECT reason FROM search_outcomes")[0]["reason"] == "STALE_SOURCE"
+
+
+def test_pause_between_planning_and_claim_prevents_worker_admission(tmp_path, monkeypatch):
+    import apps.coordinator.research as module
+
+    payload = seed(tmp_path, 120)
+    store = Store(tmp_path / "factory.sqlite")
+    store.pause(False, "test")
+    store.enqueue("research", payload, "pause-race")
+    monkeypatch.setattr(
+        module, "maintenance", lambda store, root: store.pause(True, "pause-during-plan")
+    )
+    assert not cycle(store, tmp_path)
+    assert store.rows("SELECT state FROM jobs")[0]["state"] == "QUEUED"
+    assert not store.rows("SELECT * FROM attempts")
