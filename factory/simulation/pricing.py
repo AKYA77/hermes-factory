@@ -48,11 +48,8 @@ def size_position(equity, entry, stop, profile, quote_to_account, conservative=T
         * quote_to_account
     )
     risk_budget = max(D(0), equity) * D(".1")
-    raw = risk_budget / loss_per_unit
-    size = min(
-        profile.max_volume,
-        (raw / profile.volume_step).to_integral_value(rounding=ROUND_FLOOR) * profile.volume_step,
-    )
+    raw = min(risk_budget / loss_per_unit, profile.max_volume)
+    size = (raw / profile.volume_step).to_integral_value(rounding=ROUND_FLOOR) * profile.volume_step
     if size < profile.min_volume:
         return {"status": "SKIPPED_MIN_VOLUME"}
     margin = size * entry * profile.contract_multiplier * quote_to_account * profile.margin_rate

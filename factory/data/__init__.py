@@ -10,7 +10,7 @@ import tempfile
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from factory.contracts import fingerprint
+from factory.contracts import fingerprint, serialize
 
 
 @dataclass(frozen=True)
@@ -154,18 +154,75 @@ class Catalog:
         atomic_bytes(manifest_path, json.dumps(manifest, sort_keys=True).encode())
         return self.verify(identity)
 
-    def verify(self, identity):
+    def verify(self, identity, *, deep=False):
         if len(identity) != 64 or any(c not in "0123456789abcdef" for c in identity):
             raise ValueError("invalid dataset hash")
         dest = self.root / identity
+        if dest.is_symlink() or any(
+            (dest / name).is_symlink() for name in ("manifest.json", "source.bin", "quotes.parquet")
+        ):
+            raise ValueError("canonical source symlink forbidden")
         m = json.loads((dest / "manifest.json").read_text())
+        if m.get("dataset_hash") != identity or m.get("schema_version") not in (
+            "data/v1",
+            "data/v2",
+        ):
+            raise ValueError("dataset manifest identity mismatch")
         if (
             sha256(dest / "source.bin") != m["source_sha256"]
             or sha256(dest / "quotes.parquet") != m["parquet_sha256"]
         ):
             raise ValueError("CORRUPT_PARTITION")
-        if pq.read_metadata(dest / "quotes.parquet").num_rows != m["rows"]:
+        source = pq.ParquetFile(dest / "quotes.parquet")
+        if source.metadata.num_rows != m["rows"] or not m["rows"]:
             raise ValueError("row count mismatch")
+        if not source.schema_arrow.equals(SCHEMA):
+            raise ValueError("canonical quote schema mismatch")
+        if m["schema_version"] == "data/v2":
+            expected = fingerprint(
+                {
+                    "schema": "data/v2",
+                    "source": m["source_sha256"],
+                    "quotes": m["quote_stream_sha256"],
+                    "provenance": m["provenance"],
+                }
+            )
+            if expected != identity:
+                raise ValueError("dataset content/provenance identity mismatch")
+            if deep:
+                from factory.data.streaming import row_bytes, row_metadata
+
+                metadata = None
+                digest = None
+                for batch in source.iter_batches(batch_size=8192):
+                    for row in batch.to_pylist():
+                        q = Quote(**row)
+                        if metadata is None:
+                            metadata = row_metadata(q)
+                            digest = hashlib.sha256(serialize(metadata).encode())
+                        if row_metadata(q) != metadata or q.quality_flags:
+                            raise ValueError("canonical quote metadata mismatch")
+                        digest.update(row_bytes(q))
+                if digest.hexdigest() != m["quote_stream_sha256"]:
+                    raise ValueError("canonical quote stream identity mismatch")
+        else:
+            # Reproduce quotes/v1's canonical object without materializing its
+            # quotes array. This also binds legacy provenance to the dataset ID.
+            digest = hashlib.sha256(
+                b'{"provenance":' + serialize(m["provenance"]).encode() + b',"quotes":['
+            )
+            first = True
+            for batch in source.iter_batches(batch_size=8192):
+                for row in batch.to_pylist():
+                    if not first:
+                        digest.update(b",")
+                    digest.update(serialize(row).encode())
+                    first = False
+            digest.update(
+                b'],"raw":' + serialize(m["source_sha256"]).encode() + b',"schema":"quotes/v1"}'
+            )
+            if digest.hexdigest() != identity:
+                raise ValueError("legacy dataset content/provenance identity mismatch")
         return m
 
     def read(self, identity, *, start_ns=None, end_ns=None, batch_rows=8192):

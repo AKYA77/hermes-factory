@@ -35,3 +35,19 @@ def test_T06_closed_availability():
     assert len(bars) == 1
     assert bars[0].available_at == q[2].event_ts_utc_ns
     assert not [b for b in bars if b.available_at <= q[1].event_ts_utc_ns]
+
+
+def test_legacy_manifest_provenance_is_bound(tmp_path):
+    import json
+
+    cat = Catalog(tmp_path)
+    m = cat.commit(
+        quotes([(110000, 110010)]),
+        b"fixture",
+        {"source": "synthetic", "license": "test", "synthetic": True},
+    )
+    path = tmp_path / m["dataset_hash"] / "manifest.json"
+    m["provenance"]["synthetic"] = False
+    path.write_text(json.dumps(m))
+    with pytest.raises(ValueError, match="identity"):
+        cat.verify(m["dataset_hash"])

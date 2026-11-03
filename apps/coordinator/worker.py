@@ -29,7 +29,7 @@ def run(payload, root):
     if len(contract.windows) != 1 or any(w.role != "train_only" for w in contract.windows):
         raise ValueError("evaluation worker currently training-only; cannot fabricate OOS")
     catalog = Catalog(Path(root) / "catalog")
-    manifest = catalog.verify(contract.dataset_hash)
+    manifest = catalog.verify(contract.dataset_hash, deep=True)
     if spec.instrument != profile.instrument or manifest["instrument"] != spec.instrument:
         raise ValueError("instrument identity mismatch")
     if not profile.synthetic or not manifest["provenance"].get("synthetic"):

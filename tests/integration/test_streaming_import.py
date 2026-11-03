@@ -74,3 +74,39 @@ def test_archive_instrument_and_paths_are_checked(tmp_path):
         z.writestr("../DAT_ASCII_EURUSD_T_202501.csv", "bad")
     with pytest.raises(ValueError):
         inspect_archive(path, "EURUSD", 2025, 1)
+
+
+def test_manifest_provenance_and_deep_stream_hash_are_bound(tmp_path):
+    import json
+    import pyarrow.parquet as pq
+    from factory.data import sha256
+
+    raw = tmp_path / "source"
+    raw.write_bytes(b"synthetic preserved bytes")
+    q = parse_line("20250102 010000001,1.123450,1.123460,0", "EURUSD", 0, "raw")
+    catalog = StreamingCatalog(tmp_path / "catalog")
+    m = catalog.commit(
+        iter([q]), raw, {"source": "synthetic", "license": "test", "synthetic": True}
+    )
+    cat = Catalog(tmp_path / "catalog")
+    identity = m["dataset_hash"]
+    assert cat.verify(identity, deep=True) == m
+    path = tmp_path / "catalog" / identity / "manifest.json"
+    changed = dict(m)
+    changed["provenance"] = {**m["provenance"], "synthetic": False}
+    path.write_text(json.dumps(changed))
+    with pytest.raises(ValueError, match="identity"):
+        cat.verify(identity)
+    path.write_text(json.dumps(m))
+    parquet = path.with_name("quotes.parquet")
+    table = pq.read_table(parquet)
+    rows = table.to_pylist()
+    rows[0]["bid_int"] -= 1
+    import pyarrow as pa
+
+    pq.write_table(pa.Table.from_pylist(rows, schema=table.schema), parquet)
+    changed = dict(m)
+    changed["parquet_sha256"] = sha256(parquet)
+    path.write_text(json.dumps(changed))
+    with pytest.raises(ValueError, match="stream identity"):
+        cat.verify(identity, deep=True)

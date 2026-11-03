@@ -9,6 +9,9 @@ import csv
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal as D
 import hashlib
+import fcntl
+import time
+import urllib.error
 from html.parser import HTMLParser
 import http.cookiejar
 import json
@@ -54,7 +57,49 @@ class HTTPSOnly(urllib.request.HTTPRedirectHandler):
         return super().redirect_request(req, fp, code, msg, headers, newurl)
 
 
+def preserve_interrupted(path, reason):
+    """Keep unreceipted bytes, explicitly without inventing retrieval provenance."""
+    if not path.exists():
+        return
+    failed = path.parent / "failed-captures"
+    failed.mkdir(exist_ok=True)
+    dest = failed / (path.name + f".{time.time_ns()}")
+    os.replace(path, dest)
+    atomic_bytes(
+        dest.with_name(dest.name + ".json"),
+        json.dumps(
+            {
+                "state": "UNVERIFIED_FAILED_CAPTURE",
+                "reason": reason,
+                "bytes_sha256": sha256(dest),
+                "capture_provenance_verified": False,
+                "recovered_at_utc": datetime.now(timezone.utc).isoformat(),
+            }
+        ).encode(),
+    )
+
+
 def download(root, instrument, year, month):
+    if instrument not in SYMBOLS or year not in (2025, 2026) or not 1 <= month <= 12:
+        raise ValueError("unsupported requested instrument/period")
+    root = Path(root)
+    root.mkdir(parents=True, exist_ok=True)
+    with (root / f"{instrument}-{year}{month:02}.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        for attempt in range(3):
+            try:
+                return _download(root, instrument, year, month)
+            except urllib.error.HTTPError as exc:
+                if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
+                    raise
+            except (urllib.error.URLError, TimeoutError):
+                if attempt == 2:
+                    raise
+            time.sleep(2 ** (attempt + 1))
+    raise RuntimeError("download retry accounting failed")
+
+
+def _download(root, instrument, year, month):
     if instrument not in SYMBOLS or year not in (2025, 2026) or not 1 <= month <= 12:
         raise ValueError("unsupported requested instrument/period")
     root = Path(root)
@@ -76,7 +121,13 @@ def download(root, instrument, year, month):
             raise ValueError("source archive checksum mismatch")
         return manifest
     if path.exists():
-        raise ValueError("unmanifested archive exists; preserve it and use a new destination")
+        preserve_interrupted(
+            path,
+            "source bytes present without a success receipt; reacquire rather than forge provenance",
+        )
+    preserve_interrupted(
+        path.with_suffix(".pending"), "interrupted download; no verified retrieval receipt"
+    )
     page_url = f"https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/{instrument.lower()}/{year}/{month}"
     opener = urllib.request.build_opener(
         HTTPSOnly(), urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar())
@@ -151,7 +202,7 @@ def download(root, instrument, year, month):
         )
         return manifest
     except BaseException:
-        # Keep failed source bytes for investigation; no success manifest exists.
+        preserve_interrupted(temporary, "failed download; no success receipt")
         raise
 
 

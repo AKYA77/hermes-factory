@@ -530,6 +530,11 @@ def _replay_spool(
             "quote_count": spool.count,
             "synthetic": profile.synthetic,
             "commission_assumption": 0,
+            "liquidity_assumption": (
+                "test-injected fill book; no observed source volume"
+                if fill_model is not None
+                else "modeled unlimited L1 quote depth; source volume not supplied"
+            ),
             "unmodeled": ["swap", "financing", "broker-specific execution"],
         }
     finally:

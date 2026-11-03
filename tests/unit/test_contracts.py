@@ -125,3 +125,20 @@ def test_bounded_cache():
     cache.put("b", np.array([3, 4], dtype="int64"))
     assert cache.get("a") is None
     assert cache.evictions == 1
+
+
+def test_currency_identity_cannot_disguise_jpy_as_usd(profile):
+    raw = profile.model_dump()
+    raw["instrument"] = "USDJPY"
+    with pytest.raises(ValidationError, match="currency identity"):
+        InstrumentSpec.model_validate(raw)
+
+
+def test_max_volume_cap_is_rounded_down_to_step(profile):
+    p = profile.model_copy(
+        update={"max_volume": D("1.005"), "volume_step": D(".01"), "min_volume": D(".01")}
+    )
+    result = size_position(D(20), D("1.1"), D("1.099"), p, D(1))
+    assert result["status"] == "ELIGIBLE"
+    assert result["size"] == D("1.00") and result["size"] % p.volume_step == 0
+    assert result["risk"] <= 2

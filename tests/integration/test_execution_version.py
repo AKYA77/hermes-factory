@@ -37,7 +37,9 @@ def test_mislabeled_instrument_does_not_get_official_result(tmp_path):
     from factory.contracts import InstrumentSpec, fingerprint
 
     payload = seed(tmp_path, 120)
-    payload["profile"]["instrument"] = "GBPUSD"
+    from factory.instruments import synthetic_profile
+
+    payload["profile"] = synthetic_profile("GBPUSD").model_dump(mode="json")
     payload["contract"]["instrument_hash"] = fingerprint(
         InstrumentSpec.model_validate(payload["profile"])
     )

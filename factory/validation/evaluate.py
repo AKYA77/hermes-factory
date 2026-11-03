@@ -24,7 +24,7 @@ def evaluate(root, payload):
     if profile.quote_currency != "USD":
         raise ValueError("dated currency conversion unsupported")
     catalog = Catalog(root)
-    manifest = catalog.verify(contract.dataset_hash)
+    manifest = catalog.verify(contract.dataset_hash, deep=True)
     if manifest["instrument"] != spec.instrument or profile.instrument != spec.instrument:
         raise ValueError("instrument mismatch")
     if not profile.synthetic or not manifest["provenance"].get("synthetic"):

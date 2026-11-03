@@ -7,12 +7,21 @@ import argparse
 import json
 from pathlib import Path
 import time
+import resource
+import os
 
 from factory.data.histdata import download, quotes_from_archive, PARSER_VERSION
 from factory.data.streaming import StreamingCatalog
+from factory.data import atomic_bytes, sha256
+from factory.provenance import source_identity
 
 
 def main():
+    parent = os.environ.get("FACTORY_SUPERVISED_PARENT_PID")
+    if parent:
+        from apps.coordinator.supervision import bind_parent
+
+        bind_parent(int(parent))
     parser = argparse.ArgumentParser()
     parser.add_argument("--instrument", required=True)
     parser.add_argument("--year", type=int, choices=[2025, 2026], required=True)
@@ -21,6 +30,7 @@ def main():
     parser.add_argument("--catalog", default=".local/historical-catalog")
     parser.add_argument("--batch-rows", type=int, default=8192)
     args = parser.parse_args()
+    context = source_identity()
     started, cpu = time.perf_counter(), time.process_time()
     source = download(args.archives, args.instrument, args.year, args.month)
     provenance = {
@@ -50,9 +60,20 @@ def main():
         "wall_seconds": time.perf_counter() - started,
         "cpu_seconds": time.process_time() - cpu,
         "batch_rows": args.batch_rows,
+        "peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024,
+        "source_context": context,
+        "source_context_unchanged": source_identity() == context,
     }
     path = Path(args.catalog) / f"{args.instrument}-{args.year}{args.month:02}-import-report.json"
-    path.write_text(json.dumps(report, indent=2) + "\n")
+    receipts = Path(args.catalog) / "import-receipts"
+    if path.exists():
+        prior = path.read_bytes()
+        atomic_bytes(receipts / (sha256(path) + ".json"), prior)
+    encoded = (json.dumps(report, indent=2) + "\n").encode()
+    import hashlib
+
+    atomic_bytes(receipts / (hashlib.sha256(encoded).hexdigest() + ".json"), encoded)
+    atomic_bytes(path, encoded)
     print(json.dumps(report))
 
 

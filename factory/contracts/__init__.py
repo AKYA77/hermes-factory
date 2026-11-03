@@ -98,6 +98,8 @@ class InstrumentSpec(Contract):
     def units(self):
         if self.instrument not in SYMBOLS or self.min_volume > self.max_volume:
             raise ValueError("invalid instrument specification")
+        if self.base_currency != self.instrument[:3] or self.quote_currency != self.instrument[3:]:
+            raise ValueError("instrument currency identity mismatch")
         if (self.tick_size * self.price_scale) % 1 or self.pip_size % self.tick_size:
             raise ValueError("ambiguous tick/pip units")
         if not self.source.strip():
