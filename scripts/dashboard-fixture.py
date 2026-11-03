@@ -10,6 +10,7 @@ from factory.data import atomic_bytes
 from factory.experiments import Store
 from factory.exploration.persistent import Search, SearchProtocol
 from factory.operations.fixtures import seed
+from factory.provenance import source_identity
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument("--state", type=Path, required=True)
@@ -30,7 +31,10 @@ p = SearchProtocol(
 )
 identity = Search(store, args.state).register(p)
 job = store.enqueue("research", payload, payload["contract"]["strategy_hash"], actor="browser-qa")
-atomic_bytes(args.state / "qa.json", serialize({"protocol_hash": identity, "job_id": job}).encode())
+atomic_bytes(
+    args.state / "qa.json",
+    serialize({"protocol_hash": identity, "job_id": job, "source": source_identity()}).encode(),
+)
 subprocess.run(
     [sys.executable, "-m", "factory.cli", "--state", str(args.state), "create-admin"], check=True
 )

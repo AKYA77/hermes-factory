@@ -1,23 +1,30 @@
 {
-  "status": "NOT_READY",
-  "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
+  "full_milestones_completed": [],
+  "historical_strategy_validation": false,
   "latest_report": "milestone-report.json",
-  "tests": {
-    "command": "bash scripts/verify.sh",
-    "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
-    "exit_code": 0,
-    "passed": 144,
-    "failed": 0,
-    "errors": 0,
-    "skipped": 0,
-    "warnings": 152,
-    "ruff": "PASS",
-    "dashboard_typecheck_build": "PASS"
+  "previous_reports": "reports/checkpoints and Git history",
+  "readiness": {
+    "DATA_READY": false,
+    "OPERATION_READY": false,
+    "SOFTWARE_VERIFIED": false
   },
   "real_quotes_structurally_verified": 21345746,
-  "historical_strategy_validation": false,
-  "security": "FAIL_RELEASE_BLOCKED",
-  "full_milestones_completed": [],
   "release_tag": null,
-  "previous_reports": "reports/checkpoints and Git history"
+  "security": "FAIL_RELEASE_BLOCKED",
+  "source_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+  "status": "NOT_READY",
+  "tests": {
+    "command": "bash scripts/verify.sh",
+    "dashboard_typecheck_build": "PASS",
+    "errors": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "junit": "reports/checkpoints/amendment-857ece4-tests.xml",
+    "junit_sha256": "d52dfdb60cf7e35270fb255f2b5d15b8d7aa583343051e837fbb1e3c7f421a48",
+    "passed": 172,
+    "ruff": "PASS",
+    "skipped": 0,
+    "source_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+    "warnings": 162
+  }
 }

@@ -1,0 +1,23 @@
+{
+  "status": "NOT_READY",
+  "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
+  "latest_report": "milestone-report.json",
+  "tests": {
+    "command": "bash scripts/verify.sh",
+    "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
+    "exit_code": 0,
+    "passed": 144,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "warnings": 152,
+    "ruff": "PASS",
+    "dashboard_typecheck_build": "PASS"
+  },
+  "real_quotes_structurally_verified": 21345746,
+  "historical_strategy_validation": false,
+  "security": "FAIL_RELEASE_BLOCKED",
+  "full_milestones_completed": [],
+  "release_tag": null,
+  "previous_reports": "reports/checkpoints and Git history"
+}

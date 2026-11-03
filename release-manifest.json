@@ -1,16 +1,22 @@
 {
+  "DATA_READY": false,
+  "OPERATION_READY": false,
+  "SOFTWARE_VERIFIED": false,
   "ci_verified": false,
-  "commit": "e75c0bafdac3d7815645437710895592464a7325",
+  "commit": "857ece435e757c1482709a241a0e56f18555a1c4",
   "files": {
     "AGENTS.md": "fe43707179d1a70781a9a09d8f35733e639139d24f9c71156051b2203452b38f",
     "BLUEPRINT.md": "841bfcfff20d913ca550c48e29ae1bac9a208b7596534b5db33c856cf6c836db",
     "CODEX_BUILD_PROMPT.md": "e5181e397d3489c5759cb3979627693922d655d84b39d059d5d021d2694c8f98",
-    "HERMES_AGENT_INSTRUCTIONS.md": "b65e769f803a17ed3dd30d50c86adde662757499e5d5e13c58ea720dc202b740",
-    "build-report.json": "2c402b770457919219005f4fcd05da38699ec5d29419696631c6183b67cc45c0",
+    "HERMES_AGENT_INSTRUCTIONS.md": "3580c500d0b918edda08eaf367dd5489f6b9bda66558621d3d58b94fb74ce549",
+    "build-report.json": "1615bba4c8988b40546f8251b1bfd41ef6ab033be54c24df0a8b75203b93a795",
     "campaign-report.json": "cbd8b3b5234d5a2b63c3f782148f2a6aea1b05ce0baff8108c443e76c75062c2",
+    "docs/acceptance-matrix.md": "69bff4de7ecbde873a0844b8254df327a554dfed309b4463dbda90669c64aaa7",
+    "docs/research-interfaces.md": "84ded6dde8b0dc4db19745422c6184cde584f7ae143f649149f90281388f2f4c",
     "docs/source/Factory.pdf": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
-    "known-limitations.md": "ddeceb1cfb78f20ee7a75c5dac6a53a4b99cd4c921c30f4654de898f194282dc",
-    "milestone-report.json": "4984bf0b08f4ea055d6adf7c99c34cff26538c65742ddfef3b77a4bdf06139c4"
+    "docs/source/Optimization_Handoff_Amendment_2026-11-03.md": "52829cec1eeb01071085463b304a2f94212ad2ee679d713bcdfe6bedef5d5207",
+    "known-limitations.md": "e43a050b1a3c5cac95084c49294dd858c1b42bcf630aa09e1a5587037775014e",
+    "milestone-report.json": "c618dcd05799f6c61d63bbc7aca17ebf5f6ff58720e1864287040c972d2e0dbc"
   },
   "historical_data": true,
   "historical_strategy_validation": false,
@@ -18,7 +24,7 @@
     "apps/dashboard/package-lock.json": "aae35647b6166efa92dfa3b53a2c1274a747b73376fd3e5f4d1d26d84ce1af27",
     "uv.lock": "6b7bbd4a443032e112122d8bfb25763785f11961c57a472f448ca70baeadb1c9"
   },
-  "reason": "Mandatory C0-C9 and T01-T30 gates incomplete",
+  "reason": "Mandatory software and original acceptance gates incomplete; bulk acquisition is a separate post-software-handoff DATA_READY gate",
   "status": "NOT_READY",
   "tag": null,
   "version": "0.1.0.dev0",

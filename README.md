@@ -68,3 +68,7 @@ separates software verification, full data readiness and target operation
 readiness. Bulk historical acquisition follows the tested software handoff;
 this development branch has not passed that handoff gate. Immutable partition
 views and bounded exact feature reuse are described in [ADR 0011](docs/decisions/0011-software-handoff-and-exact-feature-reuse.md).
+
+Latest tested development increment: [amendment checkpoint](docs/milestone-amendment-optimization.md),
+with 172 tests and actual 1,000-strategy regression/resource evidence. All three
+readiness states remain false; this is not a release or completed handoff.

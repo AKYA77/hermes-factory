@@ -44,3 +44,10 @@ not replace the preserved PDF with a fabricated original Markdown document.
 
 Owner amendment: source/Optimization_Handoff_Amendment_2026-11-03.md. Separate
 SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY; all remain false today.
+
+Latest actual checkpoint: docs/milestone-amendment-optimization.md and
+milestone-report.json. Do not rebuild the now-tested views, disk bars, exact Tier 0,
+bounded training-improvement round, protocol/CPU fixes or dashboard controls.
+Next implement full scientific independence/WFO/annual/robustness workflows and
+source/profile/reference gates; expand families/automatic discovery/cohorts and
+finish deployment/UI/handoff. Full bulk data import remains post-handoff.

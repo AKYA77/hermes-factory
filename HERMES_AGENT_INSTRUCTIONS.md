@@ -31,3 +31,9 @@ same-instrument multi-period views without copying or rewriting canonical quotes
 `hermes-factory --state /path/to/evidence readiness --evidence gates.json` checks
 explicit gate receipt hashes; it does not run tests or authorize operations.
 See ADR 0011 and the source amendment before preparing the final handoff.
+
+For the latest code and actual evidence, start with
+`docs/milestone-amendment-optimization.md`, `milestone-report.json` and
+`docs/research-interfaces.md`. Preserve the new training plans/edges/outcomes,
+screen receipts and pending CPU-limited children. Never promote a
+TRAIN_IMPROVED_ONLY or INCONCLUSIVE child without the independent evaluation gates.
