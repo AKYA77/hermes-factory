@@ -1,12 +1,14 @@
 """Frozen-window replay evaluation. No tuning or holdout reuse permitted here."""
 
+from itertools import chain
+
 from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, fingerprint
 from factory.data import Catalog
 from factory.diagnostics import diagnose_trade
 from factory.reporting import metrics
 from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
-from factory.strategies import compile_signals
+from factory.strategies import iter_signals
 
 
 def evaluate(root, payload):
@@ -29,27 +31,32 @@ def evaluate(root, payload):
         raise ValueError(
             "HISTORICAL_EVALUATION_BLOCKED: verified profiles and evaluation gates required"
         )
-    quotes = list(catalog.read(contract.dataset_hash))
-    # Compile once on chronological data. All operators are past-only. Signals are
-    # filtered by their available_at time; previous bars supply warm-up without labels.
-    signals = compile_signals(quotes, spec)
     results = []
     for window in contract.windows:
-        window_quotes = [q for q in quotes if window.start_ns <= q.event_ts_utc_ns < window.end_ns]
-        window_signals = [
-            s for s in signals if window.start_ns <= s["available_at"] < window.end_ns
-        ]
-        if not window_quotes:
+        # Past-only warm-up, with bounded re-reads. Neither labels nor future bars
+        # enter signal construction. Each simulation retains separate $20 equity.
+        window_quotes = catalog.read(
+            contract.dataset_hash, start_ns=window.start_ns, end_ns=window.end_ns
+        )
+        window_signals = (
+            s
+            for s in iter_signals(catalog.read(contract.dataset_hash, end_ns=window.end_ns), spec)
+            if window.start_ns <= s["available_at"] < window.end_ns
+        )
+        first = next(window_quotes, None)
+        if first is None:
             results.append(
                 {"window": window.model_dump(), "status": "DATA_UNAVAILABLE", "metrics": None}
             )
             continue
         result = replay(
-            window_quotes,
+            chain((first,), window_quotes),
             profile,
             spec,
             window_signals,
             contract.scenario == "historical-pessimistic/v1",
+            inline_paths=False,
+            dataset_hash=contract.dataset_hash,
         )
         if result["integrity_errors"]:
             raise ValueError("EXECUTION_CONTRACT_MISMATCH")

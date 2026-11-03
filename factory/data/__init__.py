@@ -168,9 +168,26 @@ class Catalog:
             raise ValueError("row count mismatch")
         return m
 
-    def read(self, identity):
+    def read(self, identity, *, start_ns=None, end_ns=None, batch_rows=8192):
+        """Verified bounded reads with row-group pruning and exact half-open bounds."""
+        if not 1 <= batch_rows <= 65536:
+            raise ValueError("invalid read batch size")
+        if start_ns is not None and end_ns is not None and start_ns >= end_ns:
+            raise ValueError("empty/reversed read range")
         self.verify(identity)
-        for batch in pq.ParquetFile(self.root / identity / "quotes.parquet").iter_batches(
-            batch_size=65536
-        ):
-            yield from (Quote(**row) for row in batch.to_pylist())
+        source = pq.ParquetFile(self.root / identity / "quotes.parquet")
+        column = SCHEMA.get_field_index("event_ts_utc_ns")
+        groups = []
+        for index in range(source.metadata.num_row_groups):
+            statistics = source.metadata.row_group(index).column(column).statistics
+            if statistics and statistics.has_min_max:
+                if start_ns is not None and statistics.max < start_ns:
+                    continue
+                if end_ns is not None and statistics.min >= end_ns:
+                    continue
+            groups.append(index)
+        for batch in source.iter_batches(batch_size=batch_rows, row_groups=groups):
+            for row in batch.to_pylist():
+                ts = row["event_ts_utc_ns"]
+                if (start_ns is None or ts >= start_ns) and (end_ns is None or ts < end_ns):
+                    yield Quote(**row)

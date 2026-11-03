@@ -3,30 +3,52 @@
 from decimal import Decimal as D
 
 
+def summarize_path(path, side, entry_price):
+    """One-pass sufficient statistics; exact values/tie policy match inline paths."""
+    direction = D(1) if side == "BUY" else D(-1)
+    points = 0
+    mfe = mae = None
+    mfe_time = mae_time = None
+    peak = retracement = D(0)
+    for point in path:
+        move = (
+            D(point["bid"] if side == "BUY" else point["ask"])
+            - D(point.get("entry_reference", entry_price))
+        ) * direction
+        if mfe is None or move > mfe:
+            mfe, mfe_time = move, point["ts"]
+        if mae is None or move < mae:
+            mae, mae_time = move, point["ts"]
+        peak = max(peak, move)
+        retracement = max(retracement, peak - move)
+        points += 1
+    return {
+        "points": points,
+        "mfe": str(max(D(0), mfe)) if mfe is not None else None,
+        "mae": str(min(D(0), mae)) if mae is not None else None,
+        "mfe_ts": mfe_time,
+        "mae_ts": mae_time,
+        "max_retracement": str(retracement),
+    }
+
+
 def diagnose_trade(
     trade, tick_size, fast_stop_seconds=60, favorable_r=D(".25"), near_target=D(".9")
 ):
     entry = trade["entry_fill"]
-    path = trade["path"]
-    if not path:
-        return {"status": "INCONCLUSIVE", "tags": ["UNRESOLVED_PATH"], "points": 0}
     side = trade["side"]
     direction = D(1) if side == "BUY" else D(-1)
-    price = D(entry["price"])
+    price = D(entry["price"]) if entry else D(0)
+    summary = trade.get("path_summary")
+    if summary is None:
+        summary = summarize_path(trade.get("path", ()), side, price)
+    if not summary["points"]:
+        return {"status": "INCONCLUSIVE", "tags": ["UNRESOLVED_PATH"], "points": 0}
     stop_distance = D(trade.get("intended_stop_distance", abs(price - D(trade["stop"]))))
     if stop_distance <= 0:
         raise ValueError("INVALID_INTENDED_STOP_DISTANCE")
-    moves = [
-        (
-            p["ts"],
-            (D(p["bid"] if side == "BUY" else p["ask"]) - D(p.get("entry_reference", price)))
-            * direction,
-        )
-        for p in path
-    ]
-    mfe_time, mfe = max(moves, key=lambda v: v[1])
-    mae_time, mae = min(moves, key=lambda v: v[1])
-    mfe, mae = max(D(0), mfe), min(D(0), mae)
+    mfe, mae = D(summary["mfe"]), D(summary["mae"])
+    mfe_time, mae_time = summary["mfe_ts"], summary["mae_ts"]
     tags = list(trade["flags"])
     exit_fill = trade.get("exit_fill")
     if exit_fill:
@@ -57,14 +79,9 @@ def diagnose_trade(
     incomplete = any(
         x in tags for x in ("NO_EXECUTABLE_EXIT_QUOTE", "UNRESOLVED_PATH", "DELAYED_TIMEOUT_QUOTE")
     )
-    peak = D(0)
-    retracement = D(0)
-    for _, move in moves:
-        peak = max(peak, move)
-        retracement = max(retracement, peak - move)
     return {
         "status": "INCONCLUSIVE" if incomplete else "MEASURED",
-        "points": len(path),
+        "points": summary["points"],
         "mfe": str(mfe),
         "mae": str(mae),
         "mfe_ts": mfe_time,
@@ -74,6 +91,6 @@ def diagnose_trade(
         "mfe_r": str(mfe / stop_distance),
         "mae_r": str(mae / stop_distance),
         "target_fraction": str(mfe / (3 * stop_distance)),
-        "max_retracement": str(retracement),
+        "max_retracement": summary["max_retracement"],
         "tags": sorted(set(tags)),
     }

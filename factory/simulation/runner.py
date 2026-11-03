@@ -1,6 +1,11 @@
 """Bounded quote replay with engine-managed brackets and one open position."""
 
 from decimal import Decimal as D
+from itertools import islice
+
+from factory.simulation.streaming import QuoteSpool, BoundedRecords
+from factory.diagnostics import summarize_path
+from factory.simulation.reconciliation import reconcile
 
 from nautilus_trader.backtest.engine import BacktestEngine
 from nautilus_trader.backtest.config import BacktestEngineConfig
@@ -52,7 +57,7 @@ class ReplayStrategy(Strategy):
         self.next_signal = next(self.signals, None)
         self.conservative = conservative
         self.entry_tif = TimeInForce.GTC
-        self.fills, self.trades, self.skips, self.rejections = [], [], [], []
+        self.fills, self.trades, self.skips, self.rejections = (BoundedRecords() for _ in range(4))
         self.current = None
         self.order_ledgers = {}
         self.completed = set()
@@ -320,21 +325,64 @@ class ReplayStrategy(Strategy):
             self.submit_order_list(bracket)
 
 
-def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
+def replay(
+    quotes,
+    profile,
+    spec,
+    signals,
+    conservative,
+    *,
+    fill_model=None,
+    batch_rows=8192,
+    inline_paths=True,
+    dataset_hash=None,
+    spool_directory=None,
+    _materialized_reference=False,
+):
+    """Stream into Nautilus and reconstruct paths from bounded disk ranges.
+
+    inline_paths is for small fixture/inspection callers. Production stores exact
+    canonical source references plus sufficient statistics, not tick JSON. The
+    materialized reference switch exists only for equivalence tests/benchmarks.
+    """
     if profile.instrument != spec.instrument:
         raise ValueError("instrument identity mismatch")
-    quotes = list(quotes)
-    if not quotes:
-        raise ValueError("no quotes")
-    from factory.data import quality
-
-    if quality(quotes):
-        raise ValueError("invalid quote stream")
-    if any(
-        q.instrument_id != profile.instrument or q.price_scale != profile.price_scale
-        for q in quotes
+    if not 1 <= batch_rows <= 65536:
+        raise ValueError("invalid replay batch size")
+    if not inline_paths and (
+        not dataset_hash
+        or len(dataset_hash) != 64
+        or any(c not in "0123456789abcdef" for c in dataset_hash)
     ):
-        raise ValueError("quote units mismatch")
+        raise ValueError("canonical dataset identity required for path references")
+    with QuoteSpool(quotes, profile, directory=spool_directory) as spool:
+        return _replay_spool(
+            spool,
+            profile,
+            spec,
+            signals,
+            conservative,
+            fill_model=fill_model,
+            batch_rows=batch_rows,
+            inline_paths=inline_paths,
+            dataset_hash=dataset_hash,
+            materialized_reference=_materialized_reference,
+        )
+
+
+def _replay_spool(
+    spool,
+    profile,
+    spec,
+    signals,
+    conservative,
+    *,
+    fill_model,
+    batch_rows,
+    inline_paths,
+    dataset_hash,
+    materialized_reference,
+):
     instrument = make_instrument(profile)
     engine = BacktestEngine(BacktestEngineConfig(logging=LoggingConfig(bypass_logging=True)))
     fill = fill_model if fill_model is not None else AdverseFillModel(profile, conservative)
@@ -353,25 +401,27 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
     engine.add_instrument(instrument)
     strategy = ReplayStrategy(instrument, profile, spec, signals, conservative)
     engine.add_strategy(strategy)
-    ticks = []
-    for q in quotes:
-        bid, ask = effective_quotes(
-            D(q.bid_int) / q.price_scale, D(q.ask_int) / q.price_scale, profile, conservative
-        )
-        ticks.append(
-            QuoteTick(
-                instrument.id,
-                instrument.make_price(bid),
-                instrument.make_price(ask),
-                instrument.make_qty(1000000),
-                instrument.make_qty(1000000),
-                q.event_ts_utc_ns,
-                q.event_ts_utc_ns,
-            )
-        )
+
+    def tick_from_row(row):
+        return make_quote_tick(row, spool.scale, instrument, profile, conservative)
+
+    def batches():
+        source = iter(spool.rows())
+        while rows := list(islice(source, batch_rows)):
+            yield [tick_from_row(row) for row in rows]
+
     try:
-        engine.add_data(ticks)
-        engine.run()
+        if materialized_reference:
+            # Deliberately bounded by tests/benchmark caller, never worker input.
+            engine.add_data([tick_from_row(row) for row in spool.rows()])
+            engine.run()
+        else:
+            engine.add_data_iterator("canonical-quotes", batches())
+            # One native event loop, including ties across chunk boundaries.
+            engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+            engine.end()
+        if strategy.quote_count != spool.count:
+            raise ValueError("INCOMPLETE_NATIVE_REPLAY")
         open_trade = (
             strategy.current.snapshot()
             if strategy.current and not strategy.current.closed
@@ -386,43 +436,26 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
                 trade["path"] = []
                 continue
             start = trade["entry_fill"]["quote_index"]
-            end = trade["exit_fill"]["quote_index"] if trade["exit_fill"] else len(ticks) - 1
-            # Per-quote entry basis uses fills observable at that quote only.
-            fills = trade["execution_fills"]
-            pos = 0
-            quantity = cost = D(0)
-            basis = D(trade["entry_fill"]["price"])
-            trade["path"] = []
-            for i in range(start, end + 1):
-                t = ticks[i]
-
-                def point(fill=None, phase="quote"):
-                    return {
-                        "ts": int(t.ts_event),
-                        "quote_index": i,
-                        "source_record_order": quotes[i].original_record_order,
-                        "bid": str(t.bid_price),
-                        "ask": str(t.ask_price),
-                        "entry_reference": str(basis),
-                        "fill_trade_id": fill["trade_id"] if fill else None,
-                        "phase": phase,
-                    }
-
-                while pos < len(fills) and fills[pos]["quote_index"] <= i:
-                    f = fills[pos]
-                    q, price = D(f["size"]), D(f["price"])
-                    if f["role"] == "ENTRY":
-                        cost += q * price
-                        quantity += q
-                        basis = cost / quantity
-                        trade["path"].append(point(f, "after_entry_fill"))
-                    else:
-                        trade["path"].append(point(f, "before_exit_fill"))
-                        cost -= basis * q
-                        quantity -= q
-                    pos += 1
-                if quantity and (not trade["path"] or trade["path"][-1]["quote_index"] != i):
-                    trade["path"].append(point())
+            end = trade["exit_fill"]["quote_index"] if trade["exit_fill"] else spool.count - 1
+            path = iter_trade_path(spool, trade, tick_from_row)
+            if inline_paths:
+                trade["path"] = list(islice(path, 100001))
+                if len(trade["path"]) > 100000:
+                    raise ValueError("INLINE_PATH_LIMIT: use canonical path references")
+            else:
+                trade["path_summary"] = summarize_path(
+                    path, trade["side"], trade["entry_fill"]["price"]
+                )
+                trade["path_ref"] = {
+                    "version": "canonical-path/v1",
+                    "dataset_hash": dataset_hash,
+                    "first_source_record_order": spool.row(start)[3],
+                    "last_source_record_order": spool.row(end)[3],
+                    "start_quote_index": start,
+                    "end_quote_index": end,
+                    "basis": "ordered execution fills",
+                    "quote_policy": "effective-quotes/v1",
+                }
             if (
                 trade["exit_fill"]
                 and trade["exit_fill"]["ts"]
@@ -444,8 +477,9 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
                 integrity_errors.append(
                     {"trade_id": f["trade_id"], "reason": "COMMISSION_SCENARIO_MISMATCH"}
                 )
-            tick = ticks[f["quote_index"]]
-            f["source_record_order"] = quotes[f["quote_index"]].original_record_order
+            row = spool.row(f["quote_index"])
+            tick = tick_from_row(row)
+            f["source_record_order"] = row[3]
             f["effective_bid"] = str(tick.bid_price)
             f["effective_ask"] = str(tick.ask_price)
             if f["role"] == "TAKE_PROFIT":
@@ -477,7 +511,10 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
                             "actual": f["price"],
                         }
                     )
+        reconciliation = reconcile(engine, strategy, instrument)
+        integrity_errors.extend(reconciliation["issues"])
         return {
+            "reconciliation": reconciliation,
             "engine": "nautilus_trader",
             "trades": trades,
             "fills": strategy.fills,
@@ -490,10 +527,100 @@ def replay(quotes, profile, spec, signals, conservative, *, fill_model=None):
             "rejections": strategy.rejections,
             "fill_trace": fill.trace,
             "ending_equity": str(strategy.equity),
-            "quote_count": len(quotes),
+            "quote_count": spool.count,
             "synthetic": profile.synthetic,
             "commission_assumption": 0,
             "unmodeled": ["swap", "financing", "broker-specific execution"],
         }
     finally:
         engine.dispose()
+
+
+def iter_trade_path(spool, trade, tick_from_row, index_offset=0):
+    start = trade["entry_fill"]["quote_index"] - index_offset
+    end = (
+        trade["exit_fill"]["quote_index"] - index_offset if trade["exit_fill"] else spool.count - 1
+    )
+    fills = trade["execution_fills"]
+    pos = 0
+    quantity = cost = D(0)
+    basis = D(trade["entry_fill"]["price"])
+    for i, row in enumerate(spool.rows(start, end + 1), start + index_offset):
+        t = tick_from_row(row)
+        last_point_index = None
+
+        def point(fill=None, phase="quote"):
+            return {
+                "ts": int(t.ts_event),
+                "quote_index": i,
+                "source_record_order": row[3],
+                "bid": str(t.bid_price),
+                "ask": str(t.ask_price),
+                "entry_reference": str(basis),
+                "fill_trade_id": fill["trade_id"] if fill else None,
+                "phase": phase,
+            }
+
+        while pos < len(fills) and fills[pos]["quote_index"] <= i:
+            f = fills[pos]
+            q, price = D(f["size"]), D(f["price"])
+            if f["role"] == "ENTRY":
+                cost += q * price
+                quantity += q
+                basis = cost / quantity
+                yield point(f, "after_entry_fill")
+            else:
+                yield point(f, "before_exit_fill")
+                cost -= basis * q
+                quantity -= q
+            last_point_index = i
+            pos += 1
+        if quantity and last_point_index != i:
+            yield point()
+
+
+def make_quote_tick(row, scale, instrument, profile, conservative):
+    ts, bid_int, ask_int, _ = row
+    bid, ask = effective_quotes(D(bid_int) / scale, D(ask_int) / scale, profile, conservative)
+    return QuoteTick(
+        instrument.id,
+        instrument.make_price(bid),
+        instrument.make_price(ask),
+        instrument.make_qty(1000000),
+        instrument.make_qty(1000000),
+        ts,
+        ts,
+    )
+
+
+def reconstruct_path(catalog, trade, profile, conservative):
+    """Re-read immutable canonical offsets; never interpolate a forensic path.
+
+    This returns a generator. Callers paginate/export it rather than serializing
+    a complete multi-million-quote path into a metadata record.
+    """
+    ref = trade["path_ref"]
+    if ref["version"] != "canonical-path/v1" or ref["quote_policy"] != "effective-quotes/v1":
+        raise ValueError("unsupported path reference policy")
+    manifest = catalog.verify(ref["dataset_hash"])
+    if manifest["instrument"] != profile.instrument:
+        raise ValueError("path instrument mismatch")
+    first, last = ref["first_source_record_order"], ref["last_source_record_order"]
+    # takewhile bounds source I/O even for an entry early in a long partition.
+    from itertools import takewhile
+
+    source = takewhile(
+        lambda q: q.original_record_order <= last,
+        catalog.read(ref["dataset_hash"], start_ns=trade["entry_fill"]["ts"]),
+    )
+    source = (q for q in source if q.original_record_order >= first)
+    with QuoteSpool(source, profile) as spool:
+        if spool.count != ref["end_quote_index"] - ref["start_quote_index"] + 1:
+            raise ValueError("forensic source range mismatch")
+        instrument = make_instrument(profile)
+        yield from iter_trade_path(
+            spool,
+            trade,
+            lambda row: make_quote_tick(row, spool.scale, instrument, profile, conservative),
+            index_offset=ref["start_quote_index"],
+        )

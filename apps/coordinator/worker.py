@@ -14,7 +14,7 @@ from factory.data import Catalog, atomic_bytes
 from factory.diagnostics import diagnose_trade
 from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
-from factory.strategies import compile_signals
+from factory.strategies import iter_signals
 
 
 def run(payload, root):
@@ -34,18 +34,38 @@ def run(payload, root):
         raise ValueError("instrument identity mismatch")
     if not profile.synthetic or not manifest["provenance"].get("synthetic"):
         raise ValueError("HISTORICAL_APPROVAL_REQUIRED: provider and instrument gate not complete")
-    quotes = list(catalog.read(contract.dataset_hash))
     window = contract.windows[0]
-    quotes = [q for q in quotes if window.start_ns <= q.event_ts_utc_ns < window.end_ns]
-    signals = compile_signals(quotes, spec)
+
+    def read_window():
+        return catalog.read(contract.dataset_hash, start_ns=window.start_ns, end_ns=window.end_ns)
+
+    generated = 0
+
+    def signals():
+        nonlocal generated
+        for signal in iter_signals(read_window(), spec):
+            generated += 1
+            yield signal
+
     result = replay(
-        quotes, profile, spec, signals, contract.scenario == "historical-pessimistic/v1"
+        read_window(),
+        profile,
+        spec,
+        signals(),
+        contract.scenario == "historical-pessimistic/v1",
+        inline_paths=False,
+        dataset_hash=contract.dataset_hash,
+        spool_directory=Path(root),
     )
+    catalog.verify(contract.dataset_hash)
     result["runtime_provenance"] = context
     if result["integrity_errors"]:
         raise ValueError("EXECUTION_CONTRACT_MISMATCH: " + serialize(result["integrity_errors"]))
     result["diagnostics"] = [diagnose_trade(t, profile.tick_size) for t in result["trades"]]
-    result["signals_screened"] = len(signals)
+    result["signals_screened"] = generated
+    result["open_trade_diagnostics"] = (
+        diagnose_trade(result["open_trade"], profile.tick_size) if result["open_trade"] else None
+    )
     if require_execution_version(contract) != context:
         raise ValueError("execution source changed during run")
     digest = fingerprint(result)
