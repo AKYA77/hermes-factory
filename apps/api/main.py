@@ -8,15 +8,21 @@ from typing import Annotated, Literal
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
 import psutil
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, SYMBOLS, fingerprint
 from factory.data import Catalog
 from factory.operations.resources import memory_headroom
 from factory.experiments import Store
 from factory.improvement.service import ImprovementPolicy
+from factory.validation.access import HoldoutSpec, Holdouts
 from factory.ranking import leaderboard
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
+
+
+class HoldoutSelection(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    training_run_id: str = Field(pattern=r"^[a-f0-9]{64}$")
 
 
 class Proposal(BaseModel):
@@ -169,6 +175,57 @@ def create_app(root, dashboard=None):
             (limit, offset),
         )
 
+    @app.get("/api/v1/validation/holdouts", dependencies=read)
+    def holdouts(
+        limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
+    ):
+        return Holdouts(root).status(limit, offset)
+
+    @app.post("/api/v1/validation/holdouts", dependencies=write)
+    def reserve_holdout(spec: HoldoutSpec):
+        try:
+            return {"holdout_id": Holdouts(root).register(spec)}
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+
+    @app.post("/api/v1/validation/holdouts/{identity}/freeze", dependencies=write)
+    def freeze_holdout(identity: str, selection: HoldoutSelection):
+        try:
+            payload = Holdouts(root).freeze(identity, selection.training_run_id)
+            return {
+                "holdout_id": identity,
+                "contract": payload["contract"],
+                "status": "CANDIDATE_FROZEN",
+            }
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+
+    @app.post("/api/v1/validation/holdouts/{identity}/evaluate", dependencies=write)
+    def evaluate_holdout(identity: str):
+        try:
+            return Holdouts(root).enqueue(identity)
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+
+    @app.get("/api/v1/validation/evaluations", dependencies=read)
+    def evaluation_list(
+        limit: int = Query(default=25, ge=1, le=100), offset: int = Query(default=0, ge=0)
+    ):
+        return store.rows(
+            "SELECT evaluation_id,contract_json,artifact_hash,holdout_id,created_at FROM evaluation_results ORDER BY created_at DESC,evaluation_id LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
+
+    @app.get("/api/v1/validation/evaluations/{identity}", dependencies=read)
+    def evaluation_detail(identity: str):
+        rows = store.rows("SELECT * FROM evaluation_results WHERE evaluation_id=?", (identity,))
+        if not rows:
+            raise HTTPException(404, "evaluation not found")
+        row = rows[0]
+        row["contract"] = json.loads(row.pop("contract_json"))
+        row["result"] = json.loads(row.pop("result_json"))
+        return row
+
     @app.get("/api/v1/research/protocols", dependencies=read)
     def search_protocols(
         limit: int = Query(default=50, ge=1, le=200), offset: int = Query(default=0, ge=0)
@@ -273,9 +330,15 @@ def create_app(root, dashboard=None):
         )
         if run:
             return {"status": "CACHE_REUSED", "run_id": run[0]["run_id"]}
-        job_id = store.enqueue(
-            "research", p.model_dump(mode="json"), p.contract.experiment_hash, actor="api-operator"
-        )
+        try:
+            job_id = store.enqueue(
+                "research",
+                p.model_dump(mode="json"),
+                p.contract.experiment_hash,
+                actor="api-operator",
+            )
+        except ValueError as exc:
+            raise HTTPException(409, str(exc)) from exc
         return {"status": "QUEUED", "job_id": job_id}
 
     @app.get("/api/v1/experiments", dependencies=read)

@@ -76,3 +76,33 @@ Bounded diagnosis-driven training improvement is now implemented (ADR 0013),
 including persistent negative decisions and paired evidence. New search/v2 hashes
 fix CPU-default round-trip drift; legacy IDs remain unchanged. Browser rehearsal
 found/fixed CSP bootstrap blocking. Full C5/C7 completion is still not claimed.
+
+
+## End-to-end completion mandate (latest owner request)
+
+Source: source/End_to_End_Completion_Mandate_2026-11-03.md, read completely.
+Compared with current HEAD 9034cbc. Existing tested components in ADRs 0011–0013
+remain retained; the active backlog excludes rebuilding them. The goal is a full
+SOFTWARE_VERIFIED candidate, not another component completion announcement.
+
+Current implementation gaps: dated conversion/monetary/reference and calendar
+software; genuine approximate cost-aware screening/shortlist and calibrated
+reject cohorts; shared indicators/projection/append/revision optimization; full
+families/automatic region expansion/repeated diagnostic improvement; scientific
+OOS/WFO refitting/annual/holdout/stability/robustness/comparable boards; full
+non-JSON dashboard and exports; installed provenance, installer/lifecycle/recovery
+and complete integrated rehearsal. Security and repository visibility need real
+resolution; target-host tests need executable procedures and separate evidence.
+
+Current GitHub API observation: repository PUBLIC. Prior private-visibility claims
+are not current evidence. Await owner visibility instruction; do independent
+implementation locally meanwhile. First implementation: persistent global holdout
+reservation/use enforcement across training, evaluation and alias dataset views;
+then chronological evaluation/refitting and validation reporting/UI integration.
+No readiness state has passed.
+
+Protected managed holdout enforcement is now implemented (ADR 0014/migration005),
+with actual supervised confirmation and separate immutable evaluation results.
+Baseline plus new tests: 176 passed, 170 recorded third-party warnings. This is
+intermediate evidence; continue into WFO refitting/annual reporting/robustness and
+full validation integration. Visibility remains public pending owner instruction.

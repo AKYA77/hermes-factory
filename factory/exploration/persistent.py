@@ -158,6 +158,15 @@ class Search:
         ):
             raise ValueError("training window exceeds verified source bounds")
         with self.store.transaction() as db:
+            from factory.validation.access import training_use
+
+            training_use(
+                db,
+                protocol.profile,
+                protocol.contract(probe),
+                protocol.protocol_hash,
+                "optimizer-registration",
+            )
             db.execute(
                 "INSERT OR IGNORE INTO search_protocols VALUES(?,?,?)",
                 (protocol.protocol_hash, serialize(protocol), time.time()),

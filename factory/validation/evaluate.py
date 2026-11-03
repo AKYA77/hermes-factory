@@ -33,6 +33,12 @@ def evaluate(root, payload):
         raise ValueError(
             "HISTORICAL_EVALUATION_BLOCKED: verified profiles and evaluation gates required"
         )
+    from factory.experiments import Store
+    from factory.validation.access import evaluation_use
+
+    store = Store(Path(root).parent / "factory.sqlite")
+    with store.transaction() as db:
+        evaluation_use(db, profile, contract, manifest, payload)
     results = []
     cache = BarCache(Path(root).parent / "cache" / "evaluation-bars")
     for window in contract.windows:
@@ -86,7 +92,18 @@ def evaluate(root, payload):
                 ],
             }
         )
+    catalog.verify(contract.dataset_hash, deep=True)
+    if require_execution_version(contract) != context:
+        raise ValueError("execution source changed during evaluation")
     return {
+        "managed_holdout": {
+            "holdout_id": payload.get("holdout_id"),
+            "independent_observation_id": payload.get("holdout_authorization"),
+            "state": "HOLDOUT_CONSUMED"
+            if payload.get("holdout_authorization")
+            else "UNCONTROLLED_EXPLORATORY_EVALUATION",
+            "repeat_does_not_add_independent_evidence": True,
+        },
         "contract_hash": contract.experiment_hash,
         "runtime_provenance": context,
         "windows": results,

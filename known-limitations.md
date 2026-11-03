@@ -7,7 +7,8 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 
 - Owner confirmed Factory.pdf is the original v2.0 blueprint referred to by the
   Markdown filename. It is preserved verbatim; consult it for extracted typography.
-- GitHub private visibility, push and API access are now verified; branch protection
+- GitHub currently reports PUBLIC visibility (owner decision pending); push and API
+  access are verified. Earlier private-visibility reports are superseded. Branch protection
   and production release gates remain unverified. See campaign-report.json for latest tests.
 - Dukascopy's offered route requires AWS Requester Pays; owner requires free sources.
   Free HistData web tick downloads now work. January 2025 archives for all eight
@@ -21,7 +22,8 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 
 ## Incomplete product implementation
 
-- C0 is partial: private repository is verified. Branch-protection API returns HTTP
+- C0 is partial: repository is currently public, contrary to the blueprint; owner
+  visibility decision is pending. Branch-protection API previously returned HTTP
   403 for the configured integration, so branch rules remain unverified. Comparative
   real-strategy engine/security release gates remain open.
 - C1 partial: typed defaults/API/queue/UI available. Production least-privilege

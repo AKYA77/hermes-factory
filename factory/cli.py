@@ -35,6 +35,14 @@ def main():
     disable_improvement = subs.add_parser("improvement-disable")
     disable_improvement.add_argument("policy_hash")
     subs.add_parser("improvement-status")
+    holdout = subs.add_parser("holdout-reserve")
+    holdout.add_argument("spec_file", type=Path)
+    freeze = subs.add_parser("holdout-freeze")
+    freeze.add_argument("holdout_id")
+    freeze.add_argument("training_run_id")
+    consume = subs.add_parser("holdout-evaluate")
+    consume.add_argument("holdout_id")
+    subs.add_parser("holdout-status")
     subs.add_parser("pause")
     subs.add_parser("resume")
     args = parser.parse_args()
@@ -87,6 +95,23 @@ def main():
         with os.fdopen(fd, "w") as f:
             f.write(key)
         print(f"Credential written with mode 0600 to {token_file}; do not commit or log it.")
+    elif args.command.startswith("holdout-"):
+        from factory.validation.access import HoldoutSpec, Holdouts
+
+        holdouts = Holdouts(root)
+        if args.command == "holdout-reserve":
+            value = {
+                "holdout_id": holdouts.register(
+                    HoldoutSpec.model_validate_json(args.spec_file.read_text())
+                )
+            }
+        elif args.command == "holdout-freeze":
+            value = holdouts.freeze(args.holdout_id, args.training_run_id)
+        elif args.command == "holdout-evaluate":
+            value = holdouts.enqueue(args.holdout_id)
+        else:
+            value = holdouts.status()
+        print(json.dumps(value, indent=2))
     elif args.command.startswith("improvement-"):
         from factory.improvement.service import Improvement, ImprovementPolicy
 

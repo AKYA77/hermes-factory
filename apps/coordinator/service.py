@@ -44,7 +44,7 @@ def _cycle(store, root, timeout, memory_limit_bytes):
     job = store.claim(lease_seconds=timeout + 30, respect_pause=True)
     if not job:
         return False
-    if job["kind"] != "research":
+    if job["kind"] not in ("research", "validation"):
         store.finish(job["job_id"], job["lease_token"], error="unsupported job kind")
         return True
     payload = json.loads(job["payload"])
@@ -69,7 +69,16 @@ def _cycle(store, root, timeout, memory_limit_bytes):
             inp, out = Path(temp) / "input.json", Path(temp) / "output.json"
             inp.write_text(job["payload"])
             child = subprocess.Popen(
-                [sys.executable, "-m", "apps.coordinator.worker", str(inp), str(root), str(out)],
+                [
+                    sys.executable,
+                    "-m",
+                    "apps.coordinator.worker"
+                    if job["kind"] == "research"
+                    else "apps.coordinator.evaluation_worker",
+                    str(inp),
+                    str(root),
+                    str(out),
+                ],
                 env=env,
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL,
@@ -118,6 +127,17 @@ def _cycle(store, root, timeout, memory_limit_bytes):
                     job["lease_token"],
                     result={"resources": resources},
                     error=result.get("error", "worker failed"),
+                )
+            elif job["kind"] == "validation":
+                if result.get("result_kind") != "EVALUATION":
+                    raise ValueError("validation worker result kind mismatch")
+                store.complete_evaluation(
+                    ExperimentContract.model_validate(payload["contract"]),
+                    result["result"],
+                    result["artifact_hash"],
+                    job["job_id"],
+                    job["lease_token"],
+                    resources,
                 )
             elif result.get("result_kind") == "SCREENED_OUT":
                 from factory.screening import verify_pruned

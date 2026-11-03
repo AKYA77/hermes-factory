@@ -37,6 +37,11 @@ def run(payload, root):
     if not profile.synthetic or not manifest["provenance"].get("synthetic"):
         raise ValueError("HISTORICAL_APPROVAL_REQUIRED: provider and instrument gate not complete")
     window = contract.windows[0]
+    from factory.experiments import Store
+    from factory.validation.access import training_use
+
+    with Store(Path(root) / "factory.sqlite").transaction() as db:
+        training_use(db, profile, contract, contract.experiment_hash, "training-execution")
 
     def read_window():
         return catalog.read(contract.dataset_hash, start_ns=window.start_ns, end_ns=window.end_ns)

@@ -109,6 +109,19 @@ class Store:
     def enqueue(self, kind, payload, key, actor="coordinator", priority=50, max_attempts=3):
         now = time.time()
         with self.transaction() as db:
+            if kind == "research":
+                from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec
+                from factory.validation.access import training_use
+
+                contract = ExperimentContract.model_validate(payload["contract"])
+                profile = InstrumentSpec.model_validate(payload["profile"])
+                spec = StrategySpec.model_validate(payload["strategy"])
+                if (
+                    contract.strategy_hash != spec.strategy_hash
+                    or contract.instrument_hash != fingerprint(profile)
+                ):
+                    raise ValueError("research descriptor identity mismatch")
+                training_use(db, profile, contract, contract.experiment_hash, "training-enqueue")
             db.execute(
                 "INSERT OR IGNORE INTO jobs(job_id,idempotency_key,kind,payload,priority,max_attempts,available_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",
                 (
@@ -257,6 +270,23 @@ class Store:
                 ).fetchone()
                 if active is None:
                     raise ValueError("STALE_LEASE")
+            from factory.validation.access import record_use
+
+            if type(result.get("synthetic")) is not bool:
+                raise ValueError("explicit evidence source kind required")
+            for window in contract.windows:
+                if window.role != "train_only":
+                    raise ValueError("evaluation evidence cannot enter training registry")
+                record_use(
+                    db,
+                    spec.instrument,
+                    "synthetic" if result["synthetic"] else "historical",
+                    contract.dataset_hash,
+                    window.start_ns,
+                    window.end_ns,
+                    "training-completion",
+                    contract.experiment_hash,
+                )
             existing = db.execute(
                 "SELECT contract_json,result_json,artifact_hash FROM experiments WHERE experiment_hash=?",
                 (contract.experiment_hash,),
@@ -295,4 +325,66 @@ class Store:
                     "UPDATE attempts SET ended_at=?,outcome='COMPLETED' WHERE token=?",
                     (now, token),
                 )
+        return contract.experiment_hash
+
+    def complete_evaluation(self, contract, result, artifact_hash, job_id, token, resources):
+        from factory.data import sha256
+
+        if (
+            fingerprint(result) != artifact_hash
+            or result.get("contract_hash") != contract.experiment_hash
+        ):
+            raise ValueError("evaluation checksum/contract mismatch")
+        if any(w.get("replay", {}).get("integrity_errors") for w in result.get("windows", ())):
+            raise ValueError("invalid execution cannot complete evaluation")
+        artifact = (
+            self.path.parent / "artifacts" / "evaluations" / (contract.experiment_hash + ".json")
+        )
+        if sha256(artifact) != artifact_hash:
+            raise ValueError("evaluation artifact checksum mismatch")
+        holdout = result.get("managed_holdout", {}).get("holdout_id")
+        with self.transaction() as db:
+            now = time.time()
+            active = db.execute(
+                "SELECT 1 FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",
+                (job_id, token, now),
+            ).fetchone()
+            if not active:
+                raise ValueError("STALE_LEASE")
+            if holdout:
+                authorization = result["managed_holdout"].get("independent_observation_id")
+                if not db.execute(
+                    "SELECT 1 FROM holdout_consumptions WHERE holdout_id=? AND authorization_id=? AND contract_json=?",
+                    (holdout, authorization, serialize(contract)),
+                ).fetchone():
+                    raise ValueError("evaluation lacks frozen consumption receipt")
+            existing = db.execute(
+                "SELECT contract_json,result_json,artifact_hash,holdout_id FROM evaluation_results WHERE evaluation_id=?",
+                (contract.experiment_hash,),
+            ).fetchone()
+            expected = (serialize(contract), serialize(result), artifact_hash, holdout)
+            if existing and tuple(existing) != expected:
+                raise ValueError("immutable evaluation completion conflict")
+            db.execute(
+                "INSERT OR IGNORE INTO evaluation_results VALUES(?,?,?,?,?,?)",
+                (contract.experiment_hash, *expected, now),
+            )
+            self._resources(db, token, resources)
+            db.execute(
+                "UPDATE jobs SET state='COMPLETED',result=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
+                (
+                    serialize({"evaluation_id": contract.experiment_hash, "resources": resources}),
+                    now,
+                    job_id,
+                ),
+            )
+            db.execute(
+                "UPDATE attempts SET ended_at=?,outcome='COMPLETED' WHERE token=?", (now, token)
+            )
+            self._audit(
+                db,
+                "validation",
+                "evaluation_completed",
+                {"evaluation_id": contract.experiment_hash, "holdout_id": holdout},
+            )
         return contract.experiment_hash

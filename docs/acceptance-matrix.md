@@ -30,7 +30,7 @@ substituted for VPS_SMOKE_PASS, VPS_SOAK_PASS or OPERATION_READY.
 | T22 | Rollback | Synthetic atomic pointer health-failure test only; migration/live process recovery pending |
 | T23 | Backup recovery | SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending |
 | T24 | 8GB performance + soak | Small synthetic wall/CPU/RSS benchmark measured; target VPS/soak unrun |
-| T25 | Scientific independence | Window identity changes tested; consumed holdout-use workflow pending |
+| T25 | Scientific independence | Persistent alias-safe holdout reservation, input-use enforcement, candidate freeze, consumption-before-execution and supervised native confirmation/restart tested; full WFO/validation decision workflow in progress |
 | T26 | Instrument units | Real Gold source grid retained at 0.001 without rounding; monetary Gold/JPY specifications remain blocked |
 | T27 | Immutable evidence | SQL triggers/failed registry/quarantined execution evidence/no metric-write API/idempotent completion tested; worker checksum/integrity and conflicting-completion rejection now pass; full provenance/adversarial suite pending |
 | T28 | User actions | Pause/resume/proposal/queue/audit, research registration/disable/history and cancellation API tested; diagnosis/retry/export/browser workflows pending |
@@ -68,3 +68,5 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T39 | Controlled training improvement | PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending |
 | T40 | Restart identity and CPU conservation | PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained |
 | T41 | Static dashboard execution | PASS scoped exact bootstrap CSP hashes, injected-script rejection and real Chromium controls; full blueprint UI acceptance pending |
+
+| T42 | Protected managed holdout | Scoped native confirmation/restart, alias-view training denial, prospective reservation/legacy influence rejection, immutable selection/consumption and forged-authorization rejection pass; not full C6 acceptance |

@@ -8,8 +8,8 @@ from factory.operations import backup, verify_backup
 
 def test_T03_fenced_restart(tmp_path):
     s = Store(tmp_path / "factory.sqlite")
-    job = s.enqueue("research", {}, "one")
-    assert job == s.enqueue("research", {}, "one")
+    job = s.enqueue("test", {}, "one")
+    assert job == s.enqueue("test", {}, "one")
     a = s.claim(lease_seconds=1)
     with s.transaction() as db:
         db.execute("UPDATE jobs SET lease_until=? WHERE job_id=?", (time.time() - 5, job))
