@@ -14,7 +14,8 @@ from factory.data import Catalog, atomic_bytes
 from factory.diagnostics import diagnose_trade
 from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
-from factory.strategies import iter_signals
+from factory.strategies import iter_bar_signals
+from factory.features.disk import BarCache
 
 
 def run(payload, root):
@@ -43,20 +44,30 @@ def run(payload, root):
 
     def signals():
         nonlocal generated
-        for signal in iter_signals(read_window(), spec):
+        for signal in iter_bar_signals(events, spec):
             generated += 1
             yield signal
 
-    result = replay(
-        read_window(),
-        profile,
-        spec,
-        signals(),
-        contract.scenario == "historical-pessimistic/v1",
-        inline_paths=False,
-        dataset_hash=contract.dataset_hash,
-        spool_directory=Path(root),
-    )
+    cache = BarCache(Path(root) / "cache" / "bars")
+    with cache.events(
+        catalog,
+        contract.dataset_hash,
+        contract.instrument_hash,
+        contract.code_revision,
+        (spec.timeframe, *spec.confirmations),
+        start_ns=window.start_ns,
+        end_ns=window.end_ns,
+    ) as events:
+        result = replay(
+            read_window(),
+            profile,
+            spec,
+            signals(),
+            contract.scenario == "historical-pessimistic/v1",
+            inline_paths=False,
+            dataset_hash=contract.dataset_hash,
+            spool_directory=Path(root),
+        )
     catalog.verify(contract.dataset_hash, deep=True)
     result["runtime_provenance"] = context
     if result["integrity_errors"]:

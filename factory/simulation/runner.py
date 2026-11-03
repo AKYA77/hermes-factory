@@ -456,7 +456,7 @@ def _replay_spool(
                     path, trade["side"], trade["entry_fill"]["price"]
                 )
                 trade["path_ref"] = {
-                    "version": "canonical-path/v1",
+                    "version": "canonical-view-path/v1" if spool.view else "canonical-path/v1",
                     "dataset_hash": dataset_hash,
                     "first_source_record_order": spool.row(start)[3],
                     "last_source_record_order": spool.row(end)[3],
@@ -465,6 +465,13 @@ def _replay_spool(
                     "basis": "ordered execution fills",
                     "quote_policy": "effective-quotes/v1",
                 }
+                if spool.view:
+                    trade["path_ref"].update(
+                        first_sequence=spool.row(start)[4],
+                        last_sequence=spool.row(end)[4],
+                        first_source_ref=spool.source_ref(spool.row(start)),
+                        last_source_ref=spool.source_ref(spool.row(end)),
+                    )
             if (
                 trade["exit_fill"]
                 and trade["exit_fill"]["ts"]
@@ -489,6 +496,8 @@ def _replay_spool(
             row = spool.row(f["quote_index"])
             tick = tick_from_row(row)
             f["source_record_order"] = row[3]
+            if spool.view:
+                f["source_ref"] = spool.source_ref(row)
             f["effective_bid"] = str(tick.bid_price)
             f["effective_ask"] = str(tick.ask_price)
             if f["role"] == "TAKE_PROFIT":
@@ -573,6 +582,7 @@ def iter_trade_path(spool, trade, tick_from_row, index_offset=0):
                 "entry_reference": str(basis),
                 "fill_trade_id": fill["trade_id"] if fill else None,
                 "phase": phase,
+                **({"source_ref": spool.source_ref(row)} if spool.view else {}),
             }
 
         while pos < len(fills) and fills[pos]["quote_index"] <= i:
@@ -594,7 +604,7 @@ def iter_trade_path(spool, trade, tick_from_row, index_offset=0):
 
 
 def make_quote_tick(row, scale, instrument, profile, conservative):
-    ts, bid_int, ask_int, _ = row
+    ts, bid_int, ask_int = row[:3]
     bid, ask = effective_quotes(D(bid_int) / scale, D(ask_int) / scale, profile, conservative)
     return QuoteTick(
         instrument.id,
@@ -614,20 +624,30 @@ def reconstruct_path(catalog, trade, profile, conservative):
     a complete multi-million-quote path into a metadata record.
     """
     ref = trade["path_ref"]
-    if ref["version"] != "canonical-path/v1" or ref["quote_policy"] != "effective-quotes/v1":
+    if (
+        ref["version"] not in ("canonical-path/v1", "canonical-view-path/v1")
+        or ref["quote_policy"] != "effective-quotes/v1"
+    ):
         raise ValueError("unsupported path reference policy")
     manifest = catalog.verify(ref["dataset_hash"])
     if manifest["instrument"] != profile.instrument:
         raise ValueError("path instrument mismatch")
-    first, last = ref["first_source_record_order"], ref["last_source_record_order"]
-    # takewhile bounds source I/O even for an entry early in a long partition.
+    view = ref["version"] == "canonical-view-path/v1"
+    first, last = (
+        (ref["first_sequence"], ref["last_sequence"])
+        if view
+        else (ref["first_source_record_order"], ref["last_source_record_order"])
+    )
     from itertools import takewhile
 
+    def position(q):
+        return q.sequence if view else q.original_record_order
+
     source = takewhile(
-        lambda q: q.original_record_order <= last,
+        lambda q: position(q) <= last,
         catalog.read(ref["dataset_hash"], start_ns=trade["entry_fill"]["ts"]),
     )
-    source = (q for q in source if q.original_record_order >= first)
+    source = (q for q in source if position(q) >= first)
     with QuoteSpool(source, profile) as spool:
         if spool.count != ref["end_quote_index"] - ref["start_quote_index"] + 1:
             raise ValueError("forensic source range mismatch")

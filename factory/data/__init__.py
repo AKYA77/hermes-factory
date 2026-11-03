@@ -170,6 +170,10 @@ class Catalog:
             raise ValueError("canonical source symlink forbidden")
         manifest_bytes = (dest / "manifest.json").read_bytes()
         m = json.loads(manifest_bytes)
+        if m.get("schema_version") == "data/view-v1":
+            from factory.data.views import verify_view
+
+            return verify_view(self, identity, m, deep)
         if m.get("dataset_hash") != identity or m.get("schema_version") not in (
             "data/v1",
             "data/v2",
@@ -194,6 +198,23 @@ class Catalog:
             raise ValueError("row count mismatch")
         if not source.schema_arrow.equals(SCHEMA):
             raise ValueError("canonical quote schema mismatch")
+        first_row = next(source.iter_batches(batch_size=1)).to_pylist()[0]
+        if first_row["instrument_id"] != m["instrument"]:
+            raise ValueError("canonical instrument metadata mismatch")
+        # Bounds control partition pruning, but are not themselves part of v1/v2
+        # dataset IDs. Bind them to immutable Parquet statistics on every proof.
+        column = SCHEMA.get_field_index("event_ts_utc_ns")
+        statistics = [
+            source.metadata.row_group(i).column(column).statistics
+            for i in range(source.metadata.num_row_groups)
+        ]
+        if not all(s is not None and s.has_min_max for s in statistics):
+            raise ValueError("canonical timestamp statistics required")
+        if (
+            min(s.min for s in statistics) != m["first_ns"]
+            or max(s.max for s in statistics) != m["latest_verified_ns"]
+        ):
+            raise ValueError("canonical timestamp bounds mismatch")
         if m["schema_version"] == "data/v2":
             expected = fingerprint(
                 {
@@ -210,15 +231,21 @@ class Catalog:
 
                 metadata = None
                 digest = None
+                first_ts = last_ts = None
                 for batch in source.iter_batches(batch_size=8192):
                     for row in batch.to_pylist():
                         q = Quote(**row)
+                        if first_ts is None:
+                            first_ts = q.event_ts_utc_ns
+                        last_ts = q.event_ts_utc_ns
                         if metadata is None:
                             metadata = row_metadata(q)
                             digest = hashlib.sha256(serialize(metadata).encode())
                         if row_metadata(q) != metadata or q.quality_flags:
                             raise ValueError("canonical quote metadata mismatch")
                         digest.update(row_bytes(q))
+                if first_ts != m["first_ns"] or last_ts != m["latest_verified_ns"]:
+                    raise ValueError("canonical timestamp bounds mismatch")
                 if digest.hexdigest() != m["quote_stream_sha256"]:
                     raise ValueError("canonical quote stream identity mismatch")
         else:
@@ -228,8 +255,12 @@ class Catalog:
                 b'{"provenance":' + serialize(m["provenance"]).encode() + b',"quotes":['
             )
             first = True
+            first_ts = last_ts = None
             for batch in source.iter_batches(batch_size=8192):
                 for row in batch.to_pylist():
+                    if first_ts is None:
+                        first_ts = row["event_ts_utc_ns"]
+                    last_ts = row["event_ts_utc_ns"]
                     if not first:
                         digest.update(b",")
                     digest.update(serialize(row).encode())
@@ -237,6 +268,8 @@ class Catalog:
             digest.update(
                 b'],"raw":' + serialize(m["source_sha256"]).encode() + b',"schema":"quotes/v1"}'
             )
+            if first_ts != m["first_ns"] or last_ts != m["latest_verified_ns"]:
+                raise ValueError("canonical timestamp bounds mismatch")
             if digest.hexdigest() != identity:
                 raise ValueError("legacy dataset content/provenance identity mismatch")
         if self.proof_cache_size:
@@ -246,26 +279,59 @@ class Catalog:
                 self._verification_proofs.popitem(last=False)
         return m
 
+    def compose(self, partitions):
+        from factory.data.views import compose
+
+        return compose(self, partitions)
+
     def read(self, identity, *, start_ns=None, end_ns=None, batch_rows=8192):
-        """Verified bounded reads with row-group pruning and exact half-open bounds."""
         if not 1 <= batch_rows <= 65536:
             raise ValueError("invalid read batch size")
         if start_ns is not None and end_ns is not None and start_ns >= end_ns:
             raise ValueError("empty/reversed read range")
-        self.verify(identity)
+        manifest = self.verify(identity)
+        if manifest["schema_version"] == "data/view-v1":
+            from factory.data.views import read_view
+
+            yield from read_view(
+                self, manifest, start_ns=start_ns, end_ns=end_ns, batch_rows=batch_rows
+            )
+        else:
+            for _, quote in self.read_indexed(
+                identity, start_ns=start_ns, end_ns=end_ns, batch_rows=batch_rows
+            ):
+                yield quote
+
+    def read_indexed(self, identity, *, start_ns=None, end_ns=None, batch_rows=8192):
+        """Leaf row index is preserved under range filtering and row-group pruning."""
+        if not 1 <= batch_rows <= 65536:
+            raise ValueError("invalid read batch size")
+        if start_ns is not None and end_ns is not None and start_ns >= end_ns:
+            raise ValueError("empty/reversed read range")
+        manifest = self.verify(identity)
+        if manifest["schema_version"] == "data/view-v1":
+            raise ValueError("indexed read requires a leaf")
         source = pq.ParquetFile(self.root / identity / "quotes.parquet")
         column = SCHEMA.get_field_index("event_ts_utc_ns")
-        groups = []
+        offset = 0
         for index in range(source.metadata.num_row_groups):
-            statistics = source.metadata.row_group(index).column(column).statistics
-            if statistics and statistics.has_min_max:
-                if start_ns is not None and statistics.max < start_ns:
-                    continue
-                if end_ns is not None and statistics.min >= end_ns:
-                    continue
-            groups.append(index)
-        for batch in source.iter_batches(batch_size=batch_rows, row_groups=groups):
-            for row in batch.to_pylist():
-                ts = row["event_ts_utc_ns"]
-                if (start_ns is None or ts >= start_ns) and (end_ns is None or ts < end_ns):
-                    yield Quote(**row)
+            group = source.metadata.row_group(index)
+            statistics = group.column(column).statistics
+            skip = (
+                statistics
+                and statistics.has_min_max
+                and (
+                    (start_ns is not None and statistics.max < start_ns)
+                    or (end_ns is not None and statistics.min >= end_ns)
+                )
+            )
+            if skip:
+                offset += group.num_rows
+                continue
+            for batch in source.iter_batches(batch_size=batch_rows, row_groups=[index]):
+                for row in batch.to_pylist():
+                    seq = offset
+                    offset += 1
+                    ts = row["event_ts_utc_ns"]
+                    if (start_ns is None or ts >= start_ns) and (end_ns is None or ts < end_ns):
+                        yield seq, Quote(**row)

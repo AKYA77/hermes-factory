@@ -116,3 +116,14 @@ historical ticks. OS page cache was not flushed. Worker RSS was sampled every 10
 shorter peaks may be missed. Two trials do not establish a speedup or steady-state
 throughput. Raw reports are local ignored artifacts, with sanitized summaries kept
 in the checkpoint report. Third-party deprecation warnings are retained.
+
+
+## Final amendment checkpoint
+
+Full acquisition is now a post-software-handoff DATA_READY task, not a software
+implementation blocker. Software, data and operation readiness remain false.
+Flat immutable multi-partition views and exact disk closed-bar reuse are now
+implemented; shared indicator transforms, Tier 0/reject audits, automatic region
+expansion/improvement, full independent validation, full dashboard and deployment
+still require work. Existing unresolved security/monetary-profile/target gates
+are unchanged. See ADR 0011 and docs/completion-backlog.md.

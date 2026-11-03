@@ -55,7 +55,7 @@ def closed_bar_events(quotes, timeframes):
     builders = {tf: BarBuilder(tf) for tf in timeframes}
     previous = None
     for q in quotes:
-        key = (q.event_ts_utc_ns, q.original_record_order)
+        key = (q.event_ts_utc_ns, getattr(q, "sequence", q.original_record_order))
         if previous is not None and key <= previous:
             raise ValueError("invalid quote event ordering")
         previous = key

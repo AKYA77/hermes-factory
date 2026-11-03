@@ -21,6 +21,10 @@ def main():
     api = subs.add_parser("serve")
     api.add_argument("--port", type=int, default=8088)
     subs.add_parser("doctor")
+    compose = subs.add_parser("catalog-compose")
+    compose.add_argument("partitions", nargs="+")
+    gates = subs.add_parser("readiness")
+    gates.add_argument("--evidence", type=Path)
     research = subs.add_parser("research-register")
     research.add_argument("protocol_file", type=Path)
     subs.add_parser("research-status")
@@ -30,6 +34,18 @@ def main():
     subs.add_parser("resume")
     args = parser.parse_args()
     root = Path(args.state).resolve()
+    if args.command == "catalog-compose":
+        from factory.data import Catalog
+
+        print(json.dumps(Catalog(root / "catalog").compose(args.partitions), indent=2))
+        return
+    if args.command == "readiness":
+        from factory.operations.readiness import readiness
+
+        evidence = json.loads(args.evidence.read_text()) if args.evidence else {}
+        report = readiness(root, evidence)
+        print(json.dumps(report, indent=2))
+        raise SystemExit(0 if report["OPERATION_READY"] else 1)
     if args.command == "doctor":
         import platform
         import psutil

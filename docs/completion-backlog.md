@@ -47,8 +47,26 @@ Final code e75c0ba: 144 tests pass; eight January real-source partitions contain
 region recurrence are tested; full autonomous discovery/improvement remains active
 work. Byte-bound proof reuse and failed-evidence retention are implemented.
 
-Do not rebuild these increments. Next: monetary/reference/calendar gates; remaining
-176 source partitions and corrections; multi-month dataset views/large artifacts/
-shared features; full autonomous diagnostics/improvement; independent validation;
+Do not rebuild these increments. Next: monetary/reference/calendar gates; source calendar/monetary corrections; large artifacts/
+shared indicator transforms; full autonomous diagnostics/improvement; independent validation;
 full dashboard/deployment/target-host gates. See milestone-source-integrity.md and
 milestone-report.json. Unresolved security is still a release blocker.
+
+
+## Owner amendment reconciliation
+
+The [final optimization/handoff amendment](source/Optimization_Handoff_Amendment_2026-11-03.md)
+supersedes the earlier gate-6 acquisition ordering: the remaining 176 monthly
+partitions are a post-software-handoff DATA_READY task. Preserve the eight real
+January imports. Representative real periods and explicitly labeled synthetic
+multi-quarter fixtures are sufficient inputs for software verification, subject
+to all other software gates. Target 8-GB installation/soak remains an operation
+gate. This is sequencing authorization, not acceptance of unfinished software.
+
+Implemented increments: immutable multi-period view composition/source-row
+references, bounded exact disk bar cache wired to training/fixed-window workers,
+and independent readiness receipt evaluation. Do not rebuild these components.
+Their scoped tests do not complete C0–C9/T01–T30. Next: Tier 0 and rejection audits,
+shared indicator transforms/optimizer measurement, autonomous discovery and
+controlled improvement, full independent scientific validation, dashboard and
+installation/handoff. Security/profile/reference blockers remain active.

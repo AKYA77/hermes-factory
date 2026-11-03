@@ -8,7 +8,9 @@ from factory.diagnostics import diagnose_trade
 from factory.reporting import metrics
 from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
-from factory.strategies import iter_signals
+from factory.strategies import iter_bar_signals
+from factory.features.disk import BarCache
+from pathlib import Path
 
 
 def evaluate(root, payload):
@@ -32,16 +34,12 @@ def evaluate(root, payload):
             "HISTORICAL_EVALUATION_BLOCKED: verified profiles and evaluation gates required"
         )
     results = []
+    cache = BarCache(Path(root).parent / "cache" / "evaluation-bars")
     for window in contract.windows:
         # Past-only warm-up, with bounded re-reads. Neither labels nor future bars
         # enter signal construction. Each simulation retains separate $20 equity.
         window_quotes = catalog.read(
             contract.dataset_hash, start_ns=window.start_ns, end_ns=window.end_ns
-        )
-        window_signals = (
-            s
-            for s in iter_signals(catalog.read(contract.dataset_hash, end_ns=window.end_ns), spec)
-            if window.start_ns <= s["available_at"] < window.end_ns
         )
         first = next(window_quotes, None)
         if first is None:
@@ -49,15 +47,28 @@ def evaluate(root, payload):
                 {"window": window.model_dump(), "status": "DATA_UNAVAILABLE", "metrics": None}
             )
             continue
-        result = replay(
-            chain((first,), window_quotes),
-            profile,
-            spec,
-            window_signals,
-            contract.scenario == "historical-pessimistic/v1",
-            inline_paths=False,
-            dataset_hash=contract.dataset_hash,
-        )
+        with cache.events(
+            catalog,
+            contract.dataset_hash,
+            contract.instrument_hash,
+            contract.code_revision,
+            (spec.timeframe, *spec.confirmations),
+            end_ns=window.end_ns,
+        ) as events:
+            window_signals = (
+                s
+                for s in iter_bar_signals(events, spec)
+                if window.start_ns <= s["available_at"] < window.end_ns
+            )
+            result = replay(
+                chain((first,), window_quotes),
+                profile,
+                spec,
+                window_signals,
+                contract.scenario == "historical-pessimistic/v1",
+                inline_paths=False,
+                dataset_hash=contract.dataset_hash,
+            )
         if result["integrity_errors"]:
             raise ValueError("EXECUTION_CONTRACT_MISMATCH")
         result["diagnostics"] = [diagnose_trade(t, profile.tick_size) for t in result["trades"]]

@@ -6,6 +6,12 @@ from factory.features import closed_bar_events
 
 
 def iter_signals(quotes, spec):
+    yield from iter_bar_signals(
+        closed_bar_events(quotes, (spec.timeframe, *spec.confirmations)), spec
+    )
+
+
+def iter_bar_signals(events, spec):
     """Single-pass past-only compiler, bounded by lookback and confirmation count.
 
     Higher bars are aligned monotonically by both end and publication time. A
@@ -17,7 +23,7 @@ def iter_signals(quotes, spec):
     eligible = {tf: deque(maxlen=2) for tf in spec.confirmations}
     n = spec.signal.lookback
     threshold = spec.signal.threshold
-    for event in closed_bar_events(quotes, (spec.timeframe, *spec.confirmations)):
+    for event in events:
         for tf in spec.confirmations:
             if tf in event:
                 pending[tf].append(event[tf])

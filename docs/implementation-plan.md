@@ -23,8 +23,12 @@ recorded in ADR 0008; this is partial C3/C4/C8 evidence.
 Next work, in order:
 1. Use the owner-confirmed original Factory.pdf. Keep dependency security gates failing
    until a compatible supported fix or explicitly reviewed disposition exists.
-2. Complete source-calendar gap review, instrument/profile registry and full C2
-   coverage before enabling real-data strategy evaluation. Use only free web data.
+2. Complete the software for source-calendar review, instrument/profile registry,
+   resumable updates and composite catalogs using representative periods and
+   synthetic multi-quarter fixtures. Bulk 2025–2026 acquisition is now a separate
+   post-handoff DATA_READY gate owned by Hermes; do not block software completion
+   on downloading the other 176 partitions. Real monetary evaluations still need
+   approved profiles and data-quality/scientific rules.
 3. Finish C3 reference/account-currency and finite-liquidity pricing gates, then
    composite dataset views/large artifacts and persistent shared features. Never
    certify a fallback extra tick as the declared exact two-pip execution model.
@@ -37,3 +41,6 @@ Next work, in order:
 Actual evidence and measured source-import resources are in milestone-report.json.
 Prior failed attempts/reports remain in Git history and ignored local state. Do
 not replace the preserved PDF with a fabricated original Markdown document.
+
+Owner amendment: source/Optimization_Handoff_Amendment_2026-11-03.md. Separate
+SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY; all remain false today.

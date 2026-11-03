@@ -61,3 +61,10 @@ See [operator guide](docs/operator-guide.md), [implementation plan](docs/impleme
 [known limitations](known-limitations.md), and [Hermes instructions](HERMES_AGENT_INSTRUCTIONS.md).
 No approved tag or production handoff exists. Remaining owner inputs: owner-reviewed instrument specifications,
 GitHub management access/private visibility verification, and authorized VPS test access.
+
+
+The [owner's final amendment](docs/source/Optimization_Handoff_Amendment_2026-11-03.md)
+separates software verification, full data readiness and target operation
+readiness. Bulk historical acquisition follows the tested software handoff;
+this development branch has not passed that handoff gate. Immutable partition
+views and bounded exact feature reuse are described in [ADR 0011](docs/decisions/0011-software-handoff-and-exact-feature-reuse.md).

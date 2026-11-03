@@ -43,7 +43,7 @@ Additional directive gates supplement the original acceptance contract:
 |---|---|---|
 | T31 | Bounded native delivery parity | PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED |
 | T32 | Independent cash/native inventory reconciliation | PASS scoped USD fixtures for fill sets, signed inventory and cash conservation; native rounding difference is explicit and monetary policy BLOCKED |
-| T33 | Shared feature identity and bounded compilation | PASS scoped oracle/hash parity and stop-independent bar keys; persistent cache/invalidation/append integration unfinished |
+| T33 | Shared feature identity and bounded compilation | PASS scoped oracle/hash parity and stop-independent bar keys; exact disk cache, code/range invalidation, three-operator parity, recovery and budget checks pass; indicator transforms/append acceptance unfinished |
 
 | T34 | Persistent training optimizer | PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim |
 | T35 | Worker supervision/resources | PASS scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests; real 8-GB reboot/soak NOT_TESTED |
@@ -52,3 +52,15 @@ Additional directive gates supplement the original acceptance contract:
 
 No mandatory gate is marked OPERATION_READY. See known-limitations.md for the
 complete implementation gaps, external blockers and scope of measured evidence.
+
+
+Owner amendment gates (no original requirement is removed):
+
+| ID | Requirement | Current evidence / remaining work |
+|---|---|---|
+| T37 | Immutable multi-period inputs | PASS scoped synthetic cross-quarter, boundary-tie, exact row/leaf references, native forensic reconstruction, overlap/mixed-instrument/tamper rejection; real multi-period calendar/revision acceptance pending |
+| T38 | Independent readiness states | PASS scoped receipt/hash/missing-gate tests; SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY all false in current project evidence |
+
+Full bulk acquisition is a post-handoff DATA_READY task under the owner's final
+amendment. Software gates still require representative real-source integration,
+all implementation requirements, full scientific workflows and tested handoff.

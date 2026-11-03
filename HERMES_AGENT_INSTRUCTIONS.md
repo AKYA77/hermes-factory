@@ -19,3 +19,15 @@ change holdout independence or fabricate wins, CPU/RAM values or test results.
 Use hosted Nous models only when owner authorized, actual catalog and quotas
 verified; no paid inference or local models by default. Do not disclose secrets,
 expose public endpoints, place brokerage orders or enable real-money trading.
+
+
+The owner's final amendment separates SOFTWARE_VERIFIED, DATA_READY and
+OPERATION_READY. After a genuinely tested software handoff, Hermes acquires and
+verifies the remaining source partitions on Contabo. Preserve the eight January
+2025 real imports; do not redownload them gratuitously. Do not interpret the
+acquisition sequencing change as acceptance of this NOT_READY checkpoint. Use
+`hermes-factory --state /path/to/state catalog-compose HASH...` to create ordered
+same-instrument multi-period views without copying or rewriting canonical quotes.
+`hermes-factory --state /path/to/evidence readiness --evidence gates.json` checks
+explicit gate receipt hashes; it does not run tests or authorize operations.
+See ADR 0011 and the source amendment before preparing the final handoff.
