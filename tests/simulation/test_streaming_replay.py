@@ -90,7 +90,9 @@ def test_native_rounding_difference_is_explicit(profile, spec):
     assert ledger["native_minus_exact_equity"] == str(
         D(ledger["native_balance"]) - D(r["ending_equity"])
     )
-    assert ledger["currency_rounding_status"] == "DIFFERENCE_REQUIRES_POLICY"
+    assert ledger["currency_rounding_status"] == "EXPLAINED_NATIVE_MONEY_POLICY"
+    assert ledger["native_reference_status"] == "VERIFIED"
+    assert D(ledger["reference_account_pnl"]) + 20 == D(ledger["native_balance"])
     assert not ledger["issues"]
     cash = sum(
         (

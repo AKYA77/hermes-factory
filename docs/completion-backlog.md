@@ -120,3 +120,8 @@ Execution v3 IOC remainder correction now has native BUY/SELL partial-entry
 and partial-stop regression goldens (ADR 0016). Full suite: 190 passed, 182
 third-party warnings, 66.77 seconds; Ruff/frontend passed. Currency, contract
 units and native money reconciliation remain next; no readiness promotion.
+
+Independent pinned native Money/account/position reference is implemented (ADR
+0017). Full suite: 212 passed, 182 warnings, 71.12 seconds; lint/frontend passed.
+Dated cross-currency conversion-context timing and native broker-unit conversion
+remain active monetary work. All readiness states remain false.

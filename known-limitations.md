@@ -37,17 +37,19 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   provider-month partitions remain pending. Calendar gap classification,
   source correction reconciliation, operational quotas, compaction/backfill,
   independent-source comparison and full period coverage remain pending.
-- C3 partial: order-aware v2 accounting tracks partial fills, order/trade IDs,
+- C3 partial: order-aware v3 accounting tracks partial fills, order/trade IDs,
   cancellation races, protection-loss safety closes and deadline quote availability.
   Diagnostics use actual stop order identity and per-fill/quote entry bases.
-  Source/version guards reject stale execution contexts; default boards separate v1/v2.
+  Source/version guards reject stale execution contexts; default boards distinguish legacy v1/v2 from v3.
   Nautilus StandardMarginModel now matches profile-rate arithmetic. Finite-liquidity
-  L1 GTC fallback can add one tick; exact-price mismatches are reported and blocked
-  by the worker rather than relabeled correct. Full broker constraints, account-currency
-  rounding/reference agreement, JPY conversion and verified Gold monetary profiles
+  L1 GTC fallback can add one tick; v3 explicitly uses IOC for market remainders,
+  retaining actual partials/cancellations and safety closes (ADR 0016). Full broker constraints, dated account-currency
+  conversion and verified Gold monetary profiles
   remain release gates. Native position/fill/inventory/cash conservation checks
-  now run; native rounded USD vs exact Decimal residuals remain explicit
-  DIFFERENCE_REQUIRES_POLICY. Real historical strategy evaluation stays blocked until
+  now run. USD native Money account/position paths now have independent tested
+  references (ADR 0017); explained differences from exact research equity are
+  explicit. Native conversion uses stale main quotes during protective fills;
+  a supported conversion-context adapter is under development, not yet accepted. Real historical strategy evaluation stays blocked until
   those profiles, calendar checks and evaluation contracts are approved.
 - C4 partial: three initial operators, exact bounded RAM/disk bar caches,
   persistent training TPE, recurring registered regions and exact-zero Tier 0
