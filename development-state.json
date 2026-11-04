@@ -28,7 +28,8 @@
     "execution v4 dated native FX context, all-eight synthetic base-unit/Gold lot math, rational risk and PnL receipts, marked equity and protected JPY worker confirmation",
     "Connected structured Validation Lab and exact-byte evidence exports with actual Chromium/API/native report and prior control regression",
     "scientific-validation/v2 forward/training/neighborhood qualification, mandatory marked/native evidence guards and explicit uncertifiable synthetic rehearsal; legacy IDs retained read-only",
-    "clean a530de5 Chromium/coordinator proof: v2 weak forward protocol ends with zero holdout use; exact export/mobile/stop and separate explicit rehearsal registration pass"
+    "clean a530de5 Chromium/coordinator proof: v2 weak forward protocol ends with zero holdout use; exact export/mobile/stop and separate explicit rehearsal registration pass",
+    "captured TZif/dated calendar rules, bounded all-event source quality with immutable migration007 receipts/captured inputs/failure retention, CLI and authenticated streaming/API/data panel"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
@@ -37,17 +38,17 @@
     "failures": 0,
     "frontend": "PASS",
     "lint": "PASS",
-    "log": "/tmp/hermes-validation-v2-full-verify.log",
-    "passed": 271,
-    "seconds": 73.22,
+    "log": "/tmp/hermes-source-quality-complete-verify.log",
+    "passed": 287,
+    "seconds": 79.66,
     "skipped": 0,
     "warnings": 340
   },
   "latest_evidence_manifest": "reports/milestones/2026-11-04-validation-v2/manifest.json",
   "latest_milestone": "docs/milestone-monetary-validation-2026-11-04.md",
   "latest_scientific_code_commit": "a530de566b56cf9c3fd97d1d815aba2cdf6e84a6",
-  "next_unfinished": "Implement verified dated instrument/calendar evidence and lossless source quality/revision software; preserve UNKNOWN_SPEC where facts are missing. Then genuine approximate screening/shared indicators, instrument-specific stop search bounds, all-family autonomous discovery/recursive diagnostics/global validation and remaining dashboard/lifecycle/target gates.",
-  "observed_at_utc": "2026-11-04T02:36:17.332002+00:00",
+  "next_unfinished": "Measure actual real January source-quality scanning and verify the data panel in Chromium on a clean code commit. Then metadata review/admission registry, source revisions and full required screening/research/product/lifecycle gates.",
+  "observed_at_utc": "2026-11-04T03:32:11.895071+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -88,8 +89,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "b04034aff67a3cf93407dd5db41ce7f7d4f3eafc",
-    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
+    "git_commit": "04f43a360336f39da710708c94183d257e72fca2",
+    "source_sha256": "1fef66266caacaab83e71693401bb1f9cd364325afbde5bef6c920a6262c3395"
   },
   "visibility": {
     "current": "PUBLIC",

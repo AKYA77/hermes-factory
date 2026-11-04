@@ -157,3 +157,10 @@ registration passes. Next: verified dated metadata/calendar, lossless quality/
 revision receipts, richer Tier 0 and full autonomous/product/reliability gates.
 Instrument-specific stop search bounds must handle a 0.001 Gold grid with a
 verified larger pip unit; a universal 20..200 tick search can be wholly infeasible.
+
+ADR 0020 adds captured declared calendars and full-event bounded source quality
+(migration007), with CLI/API/connected Market data evidence. Full suite 287
+passes, 340 warnings, 79.66 seconds; lint/frontend passed. Next: clean-source
+real January scan/resource proof and real browser data-panel verification; then
+reviewed metadata/admission, revisions, cache/approximate research and remaining
+scientific/product/lifecycle gates. Unknown broker facts still block real research.

@@ -75,6 +75,46 @@ def test_data_api_does_not_publish_staged_manifests(tmp_path):
     assert (stage / "manifest.json").exists()
 
 
+def test_source_quality_api_streams_exact_artifact_and_rejects_corruption(tmp_path):
+    from factory.operations.fixtures import seed
+    from factory.data import Catalog
+    from factory.data.source_quality import SourceQuality, SourceQualityPolicy
+
+    payload = seed(tmp_path, 120)
+    service = SourceQuality(tmp_path, Catalog(tmp_path / "catalog"))
+    policy = SourceQualityPolicy(
+        gap_threshold_ns=60 * 10**9,
+        unchanged_threshold_ns=120 * 10**9,
+        timestamp_quantum_ns=10**6,
+        max_examples=2,
+        max_events_bytes=1024**2,
+    )
+    report = service.run(payload["contract"]["dataset_hash"], policy)
+    c = client(tmp_path)
+    viewer = {"Authorization": "Bearer viewer"}
+    url = "/api/v1/data/quality/" + report["run_id"]
+    assert c.get(url).status_code == 401
+    listing = c.get("/api/v1/data/quality", headers=viewer).json()
+    assert len(listing) == 1 and listing[0]["counts"]["rows_scanned"] == 120
+    assert listing[0]["historical_admission"] is False
+    assert listing[0]["requested_period_status"] == "UNDECLARED"
+    assert c.get(url, headers=viewer).json() == report
+    events = service.directory / report["run_id"] / "events.jsonl"
+    exported = c.get(url + "/events", headers=viewer)
+    assert exported.content == events.read_bytes() and exported.headers["content-type"].startswith(
+        "application/x-ndjson"
+    )
+    assert (
+        c.post(
+            url, json={"historical_admission": True}, headers={"Authorization": "Bearer operator"}
+        ).status_code
+        == 405
+    )
+    events.write_bytes(events.read_bytes() + b"\n")
+    assert c.get(url, headers=viewer).status_code == 409
+    assert c.get(url + "/events", headers=viewer).status_code == 409
+
+
 def test_training_protocol_roles_and_actions(tmp_path):
     from factory.operations.fixtures import seed
     from factory.exploration.persistent import SearchProtocol

@@ -1,0 +1,21 @@
+{
+  "files": {
+    "core-verification.log": "a1bb3d1371d2823f40f1321667b28df502c7e2ad808c400b38d363d734afec00"
+  },
+  "observed_at_utc": "2026-11-04T03:32:11.884985+00:00",
+  "scope": "source/calendar software; broker/calendar approval, revisions and target gates unfinished",
+  "status": "IMPLEMENTING_NOT_READY",
+  "tested_source_context": {
+    "git_commit": "04f43a360336f39da710708c94183d257e72fca2",
+    "source_sha256": "1fef66266caacaab83e71693401bb1f9cd364325afbde5bef6c920a6262c3395"
+  },
+  "verification": {
+    "failed": 0,
+    "frontend": "PASS",
+    "lint": "PASS",
+    "passed": 287,
+    "seconds": 79.66,
+    "skipped": 0,
+    "warnings": 340
+  }
+}

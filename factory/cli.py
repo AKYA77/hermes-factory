@@ -21,6 +21,14 @@ def main():
     api = subs.add_parser("serve")
     api.add_argument("--port", type=int, default=8088)
     subs.add_parser("doctor")
+    quality = subs.add_parser("source-quality")
+    quality.add_argument("dataset_hash")
+    quality.add_argument("policy_file", type=Path)
+    quality.add_argument("--catalog", type=Path)
+    quality.add_argument("--calendar-spec", type=Path)
+    quality.add_argument("--tzif", type=Path)
+    quality.add_argument("--profile", type=Path)
+    subs.add_parser("source-quality-status")
     compose = subs.add_parser("catalog-compose")
     compose.add_argument("partitions", nargs="+")
     gates = subs.add_parser("readiness")
@@ -50,6 +58,50 @@ def main():
     subs.add_parser("resume")
     args = parser.parse_args()
     root = Path(args.state).resolve()
+    if args.command == "source-quality":
+        from factory.data import Catalog
+        from factory.data.source_quality import SourceQuality, SourceQualityPolicy
+        from factory.instruments.calendar import CalendarSpec, SessionCalendar
+        from factory.contracts import InstrumentSpec
+
+        if bool(args.calendar_spec) != bool(args.tzif):
+            parser.error("calendar specification and captured TZif bytes must be supplied together")
+        calendar = (
+            SessionCalendar(
+                CalendarSpec.model_validate_json(args.calendar_spec.read_text()),
+                args.tzif.read_bytes(),
+            )
+            if args.calendar_spec
+            else None
+        )
+        profile = (
+            InstrumentSpec.model_validate_json(args.profile.read_text()) if args.profile else None
+        )
+        result = SourceQuality(root, Catalog(args.catalog or root / "catalog")).run(
+            args.dataset_hash,
+            SourceQualityPolicy.model_validate_json(args.policy_file.read_text()),
+            calendar=calendar,
+            profile=profile,
+        )
+        print(json.dumps(result, indent=2))
+        if (
+            result["source_structural_status"] != "PASS"
+            or result["profile_status"] == "DECLARED_UNITS_MISMATCH"
+            or result["calendar_status"] == "UNRESOLVED_CALENDAR"
+            or result["requested_period_status"] == "OBSERVED_OUTSIDE_REQUESTED_PERIOD"
+        ):
+            raise SystemExit(1)
+        return
+    if args.command == "source-quality-status":
+        print(
+            json.dumps(
+                Store(root / "factory.sqlite").rows(
+                    "SELECT run_id,report_sha256,events_sha256,created_at FROM source_quality_receipts ORDER BY created_at DESC"
+                ),
+                indent=2,
+            )
+        )
+        return
     if args.command == "catalog-compose":
         from factory.data import Catalog
 

@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Annotated, Literal
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 import psutil
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, SYMBOLS, fingerprint
@@ -463,6 +464,59 @@ def create_app(root, dashboard=None):
                 raise HTTPException(409, "manifest namespace mismatch")
             manifests.append(value)
         return manifests
+
+    @app.get("/api/v1/data/quality", dependencies=read)
+    def source_quality_list(limit: int = Query(25, ge=1, le=100), offset: int = Query(0, ge=0)):
+        rows = store.rows(
+            """SELECT run_id,report_sha256,events_sha256,created_at,
+           json_extract(report_json,'$.instrument') instrument,
+           json_extract(report_json,'$.synthetic') synthetic,
+           json_extract(report_json,'$.inputs.dataset_hash') dataset_hash,
+           json_extract(report_json,'$.counts') counts,
+           json_extract(report_json,'$.source_structural_status') source_structural_status,
+           json_extract(report_json,'$.calendar_status') calendar_status,
+           json_extract(report_json,'$.profile_status') profile_status,
+           json_extract(report_json,'$.requested_period_status') requested_period_status,
+           json_extract(report_json,'$.historical_admission') historical_admission
+           FROM source_quality_receipts ORDER BY created_at DESC,run_id LIMIT ? OFFSET ?""",
+            (limit, offset),
+        )
+        for row in rows:
+            row["counts"] = json.loads(row["counts"])
+            row["historical_admission"] = bool(row["historical_admission"])
+            row["synthetic"] = bool(row["synthetic"])
+        return rows
+
+    def source_quality_record(identity):
+        from factory.data.source_quality import SourceQuality
+
+        if not store.rows("SELECT run_id FROM source_quality_receipts WHERE run_id=?", (identity,)):
+            raise HTTPException(404, "unknown source quality receipt")
+        try:
+            service = SourceQuality(root, Catalog(root / "catalog"))
+            return service, service.verify(identity)
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+
+    @app.get("/api/v1/data/quality/{identity}", dependencies=read)
+    def source_quality_detail(identity: str):
+        return source_quality_record(identity)[1]
+
+    @app.get("/api/v1/data/quality/{identity}/events", dependencies=read)
+    def source_quality_events(identity: str):
+        service, _ = source_quality_record(identity)
+        return FileResponse(
+            service.directory / identity / "events.jsonl",
+            media_type="application/x-ndjson",
+            filename="source-quality-" + identity + ".jsonl",
+        )
+
+    @app.get("/api/v1/data/quality-attempts", dependencies=read)
+    def source_quality_attempts(limit: int = Query(25, ge=1, le=100), offset: int = Query(0, ge=0)):
+        return store.rows(
+            "SELECT * FROM source_quality_attempts ORDER BY created_at DESC,attempt_id LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
 
     @app.get("/api/v1/audit", dependencies=read)
     def audit(limit: int = Query(25, ge=1, le=100), offset: int = Query(0, ge=0)):
