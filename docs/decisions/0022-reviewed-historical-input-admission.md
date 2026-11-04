@@ -75,3 +75,12 @@ revocation causing dependent admission export HTTP409, refreshed revoked state,
 390px layout and zero page errors. These remain generated authorization fixtures;
 this is not the required genuine historical market rehearsal. Browser evidence
 is archived in the same milestone manifest. The loopback test API was stopped.
+
+
+Clarification of review responsibility: the trusted operator includes the initial
+builder already authorized to develop and verify the system. Primary source
+facts may be reviewed during the build; no new human-only approval boundary is
+created by this registry. Unverified runtime model proposals cannot self-approve
+metadata. Changes to protected scientific assumptions still require the existing
+owner review. A pending optional venue preference does not prevent independent
+implementation or primary-source investigation.

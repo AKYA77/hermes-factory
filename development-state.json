@@ -85,10 +85,10 @@
     "log": "reports/milestones/2026-11-04-cost-shadow-decimal-identity/full-verification.log"
   },
   "latest_evidence_manifest": "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json",
-  "latest_milestone": "docs/milestone-reviewed-inputs-source-revisions-2026-11-04.md",
-  "latest_scientific_code_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
-  "next_unfinished": "Clean-commit supervised cost-shadow verification, then calibrated approximate shortlist/rejection audits and shared indicators/full discovery; legitimate historical profile review and scientific/search propagation, source intra-partition resume/UI, full diagnostics/scientific/product/lifecycle/security/target gates.",
-  "observed_at_utc": "2026-11-04T17:17:03.413649+00:00",
+  "latest_milestone": "docs/milestone-cost-shadow-decimal-identity-2026-11-04.md",
+  "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
+  "next_unfinished": "Implement frozen calibrated approximate shortlist/rejection/fallback and shared indicator transforms/full family+region discovery. Continue legitimate primary-reference investigation and historical scientific/search propagation; no new human-only fact-approval requirement. Source intra-partition resume/UI and full diagnostics/validation/product/lifecycle/security/target gates remain.",
+  "observed_at_utc": "2026-11-04T17:31:09.401197+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,

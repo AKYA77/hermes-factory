@@ -1,53 +1,40 @@
-# Implementation milestones — resumable checkpoint
+# Implementation plan — persistent software completion goal
 
-Overall NOT_READY. Do not mark a milestone complete on partial synthetic evidence.
-Use existing branch build/initial-factory and existing checkout; no worktree needed.
+Overall NOT_READY. Continue build/initial-factory in the existing checkout.
+Authoritative scope: Factory.pdf plus accepted owner directives. Exact criteria,
+implementation paths, evidence and next actions are in completion-ledger.json.
+Passing a scoped test never completes an entire milestone.
 
-| Milestone | Implemented files/components | Status / next exit proof |
+| Milestone | Current implemented software | Remaining exit proof |
 |---|---|---|
-| C0 | source archive, locked tools, private GitHub/PR, fresh security assessment | Partial; branch rules and unresolved dependency findings remain |
-| C1 | contracts/config, migration 001, Store/leases, API auth, dashboard inspector, local installer | Partial; target system deployment and complete persistence/controls pending |
-| C2 | eight-instrument free January pilots, bounded lossless import/readback, canonical proofs/raw provenance | Partial; 176 planned partitions pending, calendars/revisions and full operational ingestion remain; immutable views now exist |
-| C3 | v2 fill ledger, partial/cancel/timeout/role diagnostics, source guards and margin formula tests | Partial; finite-depth exact pricing, currency rounding, JPY/Gold monetary profiles and full reference remain |
-| C4 | shared operators, proposal generator, hashes/cache keys, bounded RAM cache | Partial; persistent training TPE/recurring admission now tested; exact disk bars/Tier 0 native audits now tested; full region discovery, families and indicator transforms pending |
-| C5 | path diagnostics, controlled child variants, basic lineage | Partial; bounded training plans/paired feedback now implemented; full cohort/regime/independent confirmation pending |
-| C6 | Wilson, quarter/purge helpers, frozen-window replays, instrument boards | Partial; full evaluation/holdout/annual/pooled reporting pending |
-| C7 | connected research/improvement controls, cancellation and scoped real browser rehearsal | Partial; full blueprint dashboard/charts/actions/exports pending |
-| C8 | real local tests/benchmarks, backup rehearsal, auth/limits, CI definitions | Partial; actual VPS/fault/soak/CI/security release gates pending |
-| C9 | docs, blocked handoff/manifest | Blocked; no approved release/tag |
+| C0 | Existing repository/branch, pinned tools, archived authority, security audits | PUBLIC/private decision, branch rules, unresolved dependency findings, current-head CI and reproducible release environment |
+| C1 | Typed contracts/config, migrations001–010, immutable ledgers/fencing, authenticated API and connected controls | Complete production installer/systemd/least privilege, installed provenance and lifecycle/recovery acceptance |
+| C2 | Nine genuine provider-month imports, bounded reversible Parquet/ZSTD, captured calendars/QA, reviewed inputs, source revisions/selection/snapshots/diffs/quarantine/restoration | Legitimate dated references/source acceptance, scheduled source workflows, intra-partition checkpoint resume, quotas/compaction/independent reconciliation and full source UI; bulk coverage is post-handoff DATA_READY |
+| C3 | Executionv4, actual native order/partial/cancel/deadline accounting, rational risk/P&L, independent Money/FX/base-unit/Gold references and marked equity | Supported finite-empty-depth discrepancy resolution, real dated profile feasibility and genuine approved market rehearsal |
+| C4 | Three operators, seven timeframes/closed confirmations, persistent TPE/CPU allocation, exact RAM/disk bars and zero-screen audits; opt-in cost-label shadow/native calibration records | Frozen calibrated cost shortlist/rejection/fallback, shared indicator transforms, full families/hybrids and continuous region discovery/fair coverage |
+| C5 | Actual stop taxonomy/MFE/MAE, bounded paired improvement plans, permanent failed hypotheses and lineage | Recursive/session/regime/cohort improvement and independent confirmation with complete forensic UX |
+| C6 | Protected managed holdouts, prior-only quarterly refits, v2 pre-confirmation qualification, annual/pooled/native cost/neighborhood and marked reports | Historical admission propagation, global selection/multiple-testing/regime robustness, comparable independently validated boards and full required protocol acceptance |
+| C7 | Connected research/improvement/queue controls, Validation Lab, source QA/review panels and actual authenticated browser/export/mobile proof | Complete strategy/trade/cohort/lineage/stability charts, source operations, supervisor console and all required export/permission/error/recovery workflows |
+| C8 | Local verification, supervised workers/resource failures, source/feature measurements, native synthetic proofs, backup/rollback foundations and CI definitions | Enforced8GB/target stress/soak, complete install/restart/disk/update/restore/rollback/security/CI/reproducible packaging gates |
+| C9 | Operator/agent documents and honest blocked manifest/checkpoints | Verified release candidate/tag/artifacts and complete Hermes handoff; no omitted software requirement |
 
-The owner completion directive is reconciled in completion-backlog.md. Existing
-functioning components are retained. The bounded replay/feature increment is
-recorded in ADR 0008; this is partial C3/C4/C8 evidence.
+Most recent actual evidence:
 
-Next work, in order:
-1. Use the owner-confirmed original Factory.pdf. Keep dependency security gates failing
-   until a compatible supported fix or explicitly reviewed disposition exists.
-2. Complete the software for source-calendar review, instrument/profile registry,
-   resumable updates and composite catalogs using representative periods and
-   synthetic multi-quarter fixtures. Bulk 2025–2026 acquisition is now a separate
-   post-handoff DATA_READY gate owned by Hermes; do not block software completion
-   on downloading the other 176 partitions. Real monetary evaluations still need
-   approved profiles and data-quality/scientific rules.
-3. Finish C3 reference/account-currency and finite-liquidity pricing gates, then
-   large artifacts, shared indicator transforms and full append/revision acceptance. Never
-   certify a fallback extra tick as the declared exact two-pip execution model.
-4. Expand the now-tested persistent training optimizer/recurring admission to
-   automatic data/region discovery, full C4–C7 generation/diagnosis, durable negative
-   hypothesis/lineage evidence, OOS/WFO/robustness and the full dashboard.
-5. Test C8 on the actual 4-vCPU/8-GB VPS; only then perform C9 release with all
-   mandatory gates proven. No production tag is issued for this increment.
+- docs/milestone-reviewed-inputs-source-revisions-2026-11-04.md: genuine February
+  EURUSD import and January–February selection/view/exact closed-feature reuse.
+- docs/milestone-cost-shadow-decimal-identity-2026-11-04.md: exact Decimal identity,
+  retained-value compatibility, opt-in cost labels and actual native disagreements.
+- development-state.json, NEXT_ACTION.md, completion-ledger.json and hashed
+  reports/milestones manifests: current continuation and verification boundaries.
 
-Actual evidence and measured source-import resources are in milestone-report.json.
-Prior failed attempts/reports remain in Git history and ignored local state. Do
-not replace the preserved PDF with a fabricated original Markdown document.
+Next implement the remaining calibrated funnel/shared indicator/family discovery
+and historical scientific propagation, while finishing source resume/UI and the
+full diagnostic/product/lifecycle gates. Genuine reference verification remains
+work to perform, not a reason to silently approve unsupported facts or stop all
+other implementation. The authorized builder may review primary evidence; an
+additional owner decision is required only where already mandated for changing
+protected scientific assumptions or other explicit approval boundaries.
 
-Owner amendment: source/Optimization_Handoff_Amendment_2026-11-03.md. Separate
-SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY; all remain false today.
-
-Latest actual checkpoint: docs/milestone-amendment-optimization.md and
-milestone-report.json. Do not rebuild the now-tested views, disk bars, exact Tier 0,
-bounded training-improvement round, protocol/CPU fixes or dashboard controls.
-Next implement full scientific independence/WFO/annual/robustness workflows and
-source/profile/reference gates; expand families/automatic discovery/cohorts and
-finish deployment/UI/handoff. Full bulk data import remains post-handoff.
+Full acquisition is owned by Hermes after software handoff. All three readiness
+states remain false; actual target Contabo verification is unrun. Existing passed
+components, canonical bytes, old contracts, failed runs and evidence are retained.

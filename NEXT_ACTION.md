@@ -49,3 +49,13 @@ was checked read-only. Final suite337passes/362warnings/89.94s plus frontend/lin
 Next clean-commit supervised counterexample, then calibrated shortlists/native
 rejection cohorts/fallback and shared indicators/full discovery. No readiness
 state or original requirement was waived; previous code/data/evidence stays intact.
+
+Clean17f2312 supervised counterexample is now verified and archived; do not rerun
+it just to increase counts. Latest milestone:
+docs/milestone-cost-shadow-decimal-identity-2026-11-04.md. Readiness command still
+exits1. Next substantive work is calibrated shortlist/audit/fallback and shared
+indicator transforms/full discovery; legitimate primary-reference investigation
+and historical scientific/search propagation also remain. The authorized builder
+may verify primary facts; no extra human-only reference approval was mandated.
+Owner visibility instruction is still pending. Keep new pushes held and preserve
+all prior evidence. No Software/Data/Operation readiness or final tag is approved.

@@ -12,7 +12,8 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   and production release gates remain unverified. See campaign-report.json for latest tests.
 - Dukascopy's offered route requires AWS Requester Pays; owner requires free sources.
   Free HistData web tick downloads now work. January 2025 archives for all eight
-  instruments have exact bounded structural imports (21,345,746 quotes). No billed access is used.
+  instruments plus February EURUSD have bounded structural imports
+  (23,399,003 quotes). No billed access is used.
 - Whole-source empirical price grids are verified, but Gold monetary pip/tick/
   contract/margin/volume conventions remain UNKNOWN_SPEC. Provider calendar gaps,
   all-eight-instrument and 2025/2026 coverage and independent evidence are unfinished.
@@ -33,10 +34,13 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 - C2 partial: free HistData ASCII ticks now have a bounded download/parser and
   8,192-row Parquet import/readback path; original ZIP bytes/notices/checksums,
   fixed EST -> UTC, millisecond precision and exact integer prices are retained.
-  All-eight January 2025 imports pass structural checks; 176 planned 2025/2026
-  provider-month partitions remain pending. Calendar gap classification,
-  source correction reconciliation, operational quotas, compaction/backfill,
-  independent-source comparison and full period coverage remain pending.
+  All-eight January 2025 plus February EURUSD imports pass structural checks;
+  175 of184 planned provider-month partitions through November2026 remain.
+  Captured declared calendars, lossless QA, reviewed-input eligibility and source
+  version/selection/diff/quarantine/restoration software now exist. Legitimate
+  reference review, automatic source workflows, intra-partition checkpoint resume,
+  operational quotas/compaction, independent-source comparison and full coverage
+  remain pending.
 - C3 partial: order-aware v4 accounting tracks partial fills, order/trade IDs,
   cancellation races, protection-loss safety closes and deadline quote availability.
   Diagnostics use actual stop order identity and per-fill/quote entry bases.
@@ -58,8 +62,9 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   persistent training TPE, recurring registered regions and exact-zero Tier 0
   rejection/native audits are implemented. Flat immutable multi-partition inputs
   preserve leaf/source row references. Full blueprint families, automatic new-data/
-  region discovery, shared indicator transforms, richer screening and full-space
-  fairness remain unfinished. Spool/result caps fail explicitly; large-artifact
+  region discovery, shared indicator transforms and full-space fairness remain
+  unfinished. A versioned opt-in cost-label shadow stage now records native
+  disagreements; actual calibrated approximate pruning remains disabled. Spool/result caps fail explicitly; large-artifact
   APIs and actual target-host throughput are unverified.
 - C5 partial: MFE/MAE, stop-role failure tags and bounded registered-region training
   improvement now run with durable plans, multiple-parent edges, paired complete-
@@ -67,12 +72,14 @@ Passing local tests is not completion of T01–T30 or gates A–M.
   Full cohort/session/regime analysis, cost sensitivity, recursive/diversity-aware
   improvement and independent confirmation remain unfinished. Mid-engine crash
   forensics are incomplete; failed execution traces remain quarantined.
-- C6 partial: Wilson intervals, quarter split helper, purge helper, frozen train/OOS
-  replay exist. No full annual reset/pooled/marked-equity/regime reports, deflated
-  Sharpe/multiple-testing evaluation, final holdout-use workflow, WFO refitting,
-  sensitivity gates or automated validation promotion. All validated boards empty.
-  The first 200,000 January EURUSD quotes were used for a feature-compilation
-  benchmark; do not retrospectively claim that interval wholly untouched.
+- C6 partial: protected one-time managed holdouts, chronological quarterly refits,
+  v2 pre-confirmation qualification, native annual resets/pooled/cost/neighborhood
+  reports and marked equity have scoped native software proof. Full historical
+  admission propagation, global selection/multiple-testing/regime inference,
+  complete comparability/validated boards and full protocol acceptance remain
+  unfinished. Validated boards remain empty. The original first200,000January
+  EURUSD quotes and now January/February technical feature rehearsal must not be
+  retrospectively declared wholly untouched; scoped input-use evidence is retained.
 - C7 partial: connected research/audit counts, bounded improvement controls,
   paired child evidence, cancellation and pause/resume are implemented. A real
   Chromium loopback rehearsal passed these controls and mobile overflow checks;
@@ -157,3 +164,18 @@ existing January quotes, with actual connected browser checks. All eight remain
 UNKNOWN_SPEC/UNKNOWN_CALENDAR and historical admission is false. Full calendar,
 metadata approval, revisions and automated admission are unfinished; the QA
 benchmark is not strategy performance or a target-VPS reliability benchmark.
+
+
+Latest correctness increment: Decimal fingerprint encoding no longer rounds with
+arithmetic context.42state/32,450retained typed-value comparisons were unchanged;
+this does not recover any precision old software may have discarded. Existing
+signed-zero semantics remain. Canonical decimal expansion is bounded before
+formatting. Source bytes and existing results/IDs were not rewritten.
+
+Cost labels are feature-only estimates, not orders/risk/equity simulations. A
+supervised generated native counterexample shows a proxy reject can complete a
+profitable3R target. Exact-zero pruning and native objectives stay authoritative;
+actual cost-based pruning needs frozen calibration/ongoing audits/fallback and
+selection-bias integration. Feature-only measured overhead is3.03–3.29×the old
+cheap screen, so shadow mode is explicit opt-in. No speedup or tick throughput
+is claimed. See ADRs0024/0025 and the latest milestone manifest.
