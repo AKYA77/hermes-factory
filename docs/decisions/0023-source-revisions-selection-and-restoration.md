@@ -68,3 +68,11 @@ corrupt-source quarantine/restoration/new incident, alias/native/completion
 quarantine guards, exact diffs/cache tampering/budget failure, CLI and refresh retry
 retention. No original gate or security check was disabled. Genuine multi-period
 source run and resource measurements follow on a clean code commit.
+
+Actual clean bd66a06 genuine proof now passes: free February EURUSD2,053,257
+quotes imported and automatically observed; January–February selected immutable
+view retains4,336,496 quotes. Source/selection/closed-feature proof79.369375s,
+81.252809CPU seconds,236,957,696B peak RSS. Identical reused M1/H1 feature streams;
+one canonical quote pass builds both timeframes. See the new milestone report
+and hashed aggregate evidence. This does not satisfy genuine native market
+strategy evaluation, monetary reference approval,8GB target or full C2 gates.

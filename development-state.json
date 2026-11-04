@@ -22,6 +22,32 @@
       "process_peak_rss_bytes": 184852480,
       "disk_state_bytes": 1935328,
       "wall_seconds": 171.80964462200063
+    },
+    "real_february_import": {
+      "wall_seconds": 65.26287403299648,
+      "cpu_seconds": 63.943652672000006,
+      "peak_rss_bytes": 195887104
+    },
+    "real_multiperiod_source_probe": {
+      "total_quotes": 4336496,
+      "wall_seconds": 79.36937545800174,
+      "cpu_seconds": 81.252809225,
+      "process_peak_rss_bytes": 236957696,
+      "state_disk_bytes": 1902917,
+      "first_build_metrics": {
+        "wall_seconds": 46.534765943011735,
+        "cpu_seconds": 47.41920925
+      },
+      "cache_reuse_metrics": {
+        "wall_seconds": 0.981662101999973,
+        "cpu_seconds": 1.0105696029999933
+      },
+      "cache_stats": {
+        "hits": 2,
+        "misses": 2,
+        "evictions": 0,
+        "quote_passes": 1
+      }
     }
   },
   "completed_local_increments": [
@@ -57,10 +83,10 @@
     "log": "reports/milestones/2026-11-04-source-revisions/full-verification.log"
   },
   "latest_evidence_manifest": "reports/milestones/2026-11-04-source-revisions/manifest.json",
-  "latest_milestone": "docs/milestone-source-quality-recovery-search-2026-11-04.md",
-  "latest_scientific_code_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
-  "next_unfinished": "Clean-source limited February EURUSD real import + retained January/February selected view and measured source-version run; then source UI/coverage, intra-partition resume, scientific/search admission propagation and remaining autonomous/product/release gates.",
-  "observed_at_utc": "2026-11-04T16:27:26.693342+00:00",
+  "latest_milestone": "docs/milestone-reviewed-inputs-source-revisions-2026-11-04.md",
+  "latest_scientific_code_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
+  "next_unfinished": "Complete real historical reference approval/propagation when legitimate venue facts are available; continue genuine cost-aware Tier 0/shared indicators and full autonomous discovery, with remaining source resume/UI/scientific/lifecycle gates.",
+  "observed_at_utc": "2026-11-04T16:35:08.480632+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,

@@ -26,9 +26,18 @@
     "github_ci_scope": "9034cbcf4cba91af2a193f518b935af27c1c9dc2 only; no CI claim for local commits"
   },
   "files": {
+    "probe-first-attempt-legacy-receipt.log": "1f36498df0bb4363f56155679b05a64a9f4a096177e08638a3be5a1d2514dc0d",
     "npm-audit.json": "1c7812dddf8e75be0ac8d93072180ccf32ccca5d7ebecbecfb4bf19a2e6a9450",
+    "real-multiperiod-source-probe.json": "d56c8ad1a0876bb7b3d42b8f63995dae877f2f94151c6c9a801e4e35394aae15",
     "focused-verification.log": "430bb74c04f37a543f94275c3161b923c4f73c9c182f95f01e1160c08a7db304",
     "python-audit.json": "aa3be602597c748c9205bca839e0a745931575adcf42e4e6c5cc4c061ac72995",
-    "full-verification.log": "85deeeaab9b6b61b4fb9f3ce8a9e4efd487aea7642c31a722d5dabdadfa1fd5f"
-  }
+    "full-verification.log": "85deeeaab9b6b61b4fb9f3ce8a9e4efd487aea7642c31a722d5dabdadfa1fd5f",
+    "real-february-import-summary.json": "cb5b758642f9415b49594f41964d14d5ae369d1fe0b6594e3e9b39ab4a9286a1",
+    "real-multiperiod-source-probe.log": "19957ec87b4459a2b5f5fe5d765f8486e9e5c0a7d5861fae6d517b2c371e2d83"
+  },
+  "real_source_context": {
+    "git_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
+    "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983"
+  },
+  "real_source_scope": "Genuine February acquisition/import plus January-February source selection/view/closed features, NOT historical strategy evaluation"
 }

@@ -30,3 +30,12 @@ compatible upstream fix; actual Contabo/8-GB host access and service soak. Full
 bulk history acquisition is post-handoff DATA_READY, not a software blocker.
 No visibility change, new push, public deployment, ready release tag or waiver
 of failing checks while required owner decisions/gates are outstanding.
+
+New completed cycles: ADR0022/0023, migrations008/009,320-test full suite and
+clean bd66a06 genuine February import + January/February immutable-view/features
+probe. See docs/milestone-reviewed-inputs-source-revisions-2026-11-04.md.
+Do not repeat these as new work. Continue remaining substantive implementation,
+starting with cost-aware screening/shared indicators and historical scientific
+propagation; source intra-partition resume/UI still need completion. No genuine
+historical strategy result has been approved. Keep code unchanged during any
+provenance-bound run. Latest remote remains9034; new pushes held for visibility.
