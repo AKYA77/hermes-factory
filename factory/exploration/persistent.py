@@ -13,7 +13,7 @@ import time
 from typing import Literal
 
 import optuna
-from pydantic import Field, model_validator
+from pydantic import Field, model_validator, model_serializer
 
 from factory.contracts import (
     Contract,
@@ -31,7 +31,8 @@ from factory.simulation.ledger import EXECUTION_VERSION, require_execution_versi
 
 
 class SearchProtocol(Contract):
-    schema_version: Literal["search/v1", "search/v2", "search/v3"] = "search/v3"
+    schema_version: Literal["search/v1", "search/v2", "search/v3", "search/v4"] = "search/v3"
+    admission_id: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     dataset_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     profile: InstrumentSpec
     window: Window
@@ -47,9 +48,9 @@ class SearchProtocol(Contract):
     )
     objective: Literal["training-net-return/v1"] = "training-net-return/v1"
     optimizer: Literal["optuna-tpe/4.5.0-reseed/v1"] = "optuna-tpe/4.5.0-reseed/v1"
-    research_kind: Literal["synthetic-training/v1", "synthetic-cost-shadow-training/v1"] = (
-        "synthetic-training/v1"
-    )
+    research_kind: Literal[
+        "synthetic-training/v1", "synthetic-cost-shadow-training/v1", "historical-training/v1"
+    ] = "synthetic-training/v1"
 
     @model_validator(mode="after")
     def training_only(self):
@@ -69,15 +70,45 @@ class SearchProtocol(Contract):
                 tf not in TIMEFRAMES or TIMEFRAMES[tf] <= TIMEFRAMES[self.timeframe]
             ):
                 raise ValueError("confirmation must be higher than entry timeframe")
-        if not self.profile.synthetic:
-            raise ValueError("real monetary profile approval remains blocked")
-        if self.schema_version == "search/v3":
+        if self.schema_version == "search/v4":
+            if (
+                self.profile.synthetic
+                or self.admission_id is None
+                or self.research_kind != "historical-training/v1"
+            ):
+                raise ValueError("search/v4 requires historical profile and explicit admission")
+        elif (
+            not self.profile.synthetic
+            or self.admission_id is not None
+            or self.research_kind == "historical-training/v1"
+        ):
+            raise ValueError("legacy search cannot acquire historical admission semantics")
+        if self.schema_version in ("search/v3", "search/v4"):
             self.stop_distribution()
         return self
 
+    @model_serializer(mode="wrap")
+    def compatible_json(self, handler):
+        value = handler(self)
+        if self.schema_version != "search/v4":
+            value.pop("admission_id", None)
+        return value
+
+    @property
+    def evaluation_policy(self):
+        if self.schema_version == "search/v4":
+            from factory.data.admission import approved_policy
+
+            return approved_policy(self.admission_id, {"optimizer_protocol": self.protocol_hash})
+        return self.research_kind
+
+    @property
+    def screening_policy(self):
+        return None if self.schema_version == "search/v4" else "exact-zero-signals-audit/16/v1"
+
     @property
     def protocol_hash(self):
-        if self.schema_version in ("search/v2", "search/v3"):
+        if self.schema_version in ("search/v2", "search/v3", "search/v4"):
             raw = self.model_dump()
             raw["cpu_budget_seconds"] = float(self.cpu_budget_seconds)
             return fingerprint(raw)
@@ -91,14 +122,14 @@ class SearchProtocol(Contract):
             engine_version="1.231.0",
             code_revision=self.code_revision,
             fill_version=EXECUTION_VERSION,
-            evaluation_policy=self.research_kind,
+            evaluation_policy=self.evaluation_policy,
             scenario=self.scenario,
             windows=(self.window,),
             seed=self.seed,
         )
 
     def stop_distribution(self):
-        if self.schema_version != "search/v3":
+        if self.schema_version not in ("search/v3", "search/v4"):
             return optuna.distributions.IntDistribution(20, 200, step=10)
         from fractions import Fraction
 
@@ -176,6 +207,14 @@ class Search:
     def __init__(self, store, root):
         self.store, self.root = store, Path(root)
 
+    def require_admission(self, protocol, contract):
+        if not protocol.profile.synthetic:
+            from factory.data.admission import InputRegistry
+
+            return InputRegistry(self.root, Catalog(self.root / "catalog")).require(
+                contract, protocol.profile
+            )
+
     def register(self, protocol):
         # Fail closed on real-data or obsolete-source prerequisites.
         probe = protocol.strategy(
@@ -183,13 +222,17 @@ class Search:
         )
         require_execution_version(protocol.contract(probe))
         m = Catalog(self.root / "catalog").verify(protocol.dataset_hash)
-        if not m["provenance"].get("synthetic") or m["instrument"] != protocol.profile.instrument:
+        if (
+            bool(m["provenance"].get("synthetic")) != protocol.profile.synthetic
+            or m["instrument"] != protocol.profile.instrument
+        ):
             raise ValueError("source/profile research identity not approved")
         if (
             protocol.window.start_ns < m["first_ns"]
             or protocol.window.end_ns > m["latest_verified_ns"] + 1
         ):
             raise ValueError("training window exceeds verified source bounds")
+        self.require_admission(protocol, protocol.contract(probe))
         with self.store.transaction() as db:
             from factory.validation.access import training_use
 
@@ -237,6 +280,19 @@ class Search:
                     {"lookback": 2, "threshold_tenths": 5, "stop_ticks": 20, "confirmation": "none"}
                 )
             )
+        )
+        self.require_admission(
+            protocol,
+            protocol.contract(
+                protocol.strategy(
+                    {
+                        "lookback": 2,
+                        "threshold_tenths": 5,
+                        "stop_ticks": protocol.stop_distribution().low,
+                        "confirmation": "none",
+                    }
+                )
+            ),
         )
         started = time.process_time()
         with self.store.transaction() as db:
@@ -382,7 +438,7 @@ class Search:
                 "strategy": json.loads(row["spec_json"]),
                 "contract": json.loads(row["contract_json"]),
                 "profile": protocol.profile.model_dump(mode="json"),
-                "screening": "exact-zero-signals-audit/16/v1",
+                "screening": protocol.screening_policy,
                 "search_trial_id": row["trial_id"],
             }
             self.store.enqueue("research", payload, contract.experiment_hash, actor="research")
@@ -396,7 +452,7 @@ class Search:
             protocol = self.protocol(row["protocol_hash"])
             if (
                 any(w.role != "train_only" for w in contract.windows)
-                or contract.evaluation_policy != protocol.research_kind
+                or contract.evaluation_policy != protocol.evaluation_policy
             ):
                 raise ValueError("optimizer observation leakage")
             jobs = self.store.rows(
@@ -449,7 +505,10 @@ class Search:
                     raise ValueError("optimizer artifact integrity mismatch") from exc
                 if not valid:
                     raise ValueError("optimizer artifact integrity mismatch")
-                if result.get("integrity_errors") or not result.get("synthetic"):
+                if (
+                    result.get("integrity_errors")
+                    or result.get("synthetic") is not protocol.profile.synthetic
+                ):
                     raise ValueError("optimizer observation failed source/execution gates")
                 run_id = experiment["run_id"]
                 if result["trades"]:

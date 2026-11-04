@@ -1,8 +1,8 @@
 {
   "schema_version": "completion-ledger/v1",
   "status": "NOT_READY",
-  "goal": "Persistent Software Completion Goal 2026-11-04",
-  "audited_head": "ced580e325633d2ed1ed76949b689df9c814a6f8",
+  "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
+  "audited_head": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "readiness": {
     "SOFTWARE_VERIFIED": false,
@@ -15,7 +15,7 @@
       "requirement_id": "T01",
       "title": "Canonical strategy identity",
       "acceptance_criteria": "Equivalent effective specs hash same; changed timeframe/stop/operator hashes differ.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/contracts/__init__.py",
         "factory/experiments/__init__.py",
@@ -35,7 +35,7 @@
       "requirement_id": "T02",
       "title": "Full experiment hash/cache",
       "acceptance_criteria": "Data, code, fill or fold version change invalidates cache; exact rerun reuses result.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/contracts/__init__.py",
         "factory/experiments/__init__.py",
@@ -54,7 +54,7 @@
       "requirement_id": "T03",
       "title": "Unique restart completion",
       "acceptance_criteria": "Restart worker after partial commit; no duplicate run/trades/attempt counts.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -118,7 +118,7 @@
       "requirement_id": "T04",
       "title": "Data round-trip",
       "acceptance_criteria": "Every original quote/time/precision value preserved for seeded sample; manifest checksums verified.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/data/__init__.py",
         "factory/data/admission.py",
@@ -142,7 +142,7 @@
       "requirement_id": "T05",
       "title": "Gaps and updates",
       "acceptance_criteria": "Quarantined quote cannot be selected; new 2026 partition updates coverage and invalidation.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/data/__init__.py",
         "factory/data/admission.py",
@@ -166,7 +166,7 @@
       "requirement_id": "T06",
       "title": "Closed MTF availability",
       "acceptance_criteria": "Unclosed H1 bar unavailable at earlier M5 decision, including UTC/session edge cases.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -193,7 +193,7 @@
       "requirement_id": "T07",
       "title": "Spread floor",
       "acceptance_criteria": "1-pip observed becomes 2; 3-pip observed remains 3; no double count.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -220,7 +220,7 @@
       "requirement_id": "T08",
       "title": "Adverse eligible fills",
       "acceptance_criteria": "Long/short entry and exit adjust exactly 2 pips where eligible, using correct units.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -247,7 +247,7 @@
       "requirement_id": "T09",
       "title": "Order semantics",
       "acceptance_criteria": "Limit never exceeds limit price, stop gap recognized, timeout quote absence flagged.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -274,7 +274,7 @@
       "requirement_id": "T10",
       "title": "Hypothetical risk",
       "acceptance_criteria": "$20, 10%, 1:3 theoretical distance, valid lot rounding down, infeasible volume skipped.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -301,7 +301,7 @@
       "requirement_id": "T11",
       "title": "24h deadline",
       "acceptance_criteria": "Intended deadline enforced; missing executable quote classified rather than invented.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -327,8 +327,8 @@
     {
       "requirement_id": "T12",
       "title": "MFE/MAE paths",
-      "acceptance_criteria": "Immediate stop, favorable→SL, near-miss, timeout, missing path, long/short all correct.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "acceptance_criteria": "Immediate stop, favorable\u2192SL, near-miss, timeout, missing path, long/short all correct.",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/diagnostics/__init__.py",
         "factory/features/__init__.py",
@@ -355,7 +355,7 @@
       "requirement_id": "T13",
       "title": "Parent-child",
       "acceptance_criteria": "Improved child records exactly what changed and preserves parent/failure history.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/coordinator/__init__.py",
         "apps/coordinator/evaluation_worker.py",
@@ -382,7 +382,7 @@
       "requirement_id": "T14",
       "title": "Reject vs remember",
       "acceptance_criteria": "Poor training score retained; failed OOS not validated; not silently discarded.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/ranking/__init__.py",
         "factory/validation/__init__.py",
@@ -405,7 +405,7 @@
       "requirement_id": "T15",
       "title": "Annual/WFO splits",
       "acceptance_criteria": "Separate 2025/2026 YTD, WFO quarter, purge/embargo and holdout state.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/ranking/__init__.py",
         "factory/validation/__init__.py",
@@ -428,7 +428,7 @@
       "requirement_id": "T16",
       "title": "Eight independent boards",
       "acceptance_criteria": "Max five per instrument, eight separate boards, <70% candidates retained, empty slots empty.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -492,7 +492,7 @@
       "requirement_id": "T17",
       "title": "Dedup + screen audit",
       "acceptance_criteria": "Duplicate skip does not count as detailed run; false-negative sample evaluated.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/coordinator/__init__.py",
         "apps/coordinator/evaluation_worker.py",
@@ -519,7 +519,7 @@
       "requirement_id": "T18",
       "title": "Search fairness",
       "acceptance_criteria": "No eligible instrument starved when queue has work; timeframe choice is searchable.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/coordinator/__init__.py",
         "apps/coordinator/evaluation_worker.py",
@@ -546,7 +546,7 @@
       "requirement_id": "T19",
       "title": "Reproducibility",
       "acceptance_criteria": "Same input + seed + release yields identical required metrics/artifact hashes or declared tolerances.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/contracts/__init__.py",
         "factory/experiments/__init__.py",
@@ -565,7 +565,7 @@
       "requirement_id": "T20",
       "title": "API/dashboard",
       "acceptance_criteria": "Unauthenticated access rejected, typed pagination and correct status/error transitions.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -629,7 +629,7 @@
       "requirement_id": "T21",
       "title": "Agent offline",
       "acceptance_criteria": "Disable hosted LLM; deterministic queue continues and resumes normally.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/coordinator/__init__.py",
         "apps/coordinator/evaluation_worker.py",
@@ -656,7 +656,7 @@
       "requirement_id": "T22",
       "title": "Rollback",
       "acceptance_criteria": "Kill update/health-check failure; last-good installation returns without lost data.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -720,7 +720,7 @@
       "requirement_id": "T23",
       "title": "Backup recovery",
       "acceptance_criteria": "Restore SQLite + manifests + artifacts; all checksums and leaderboards consistent.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -784,7 +784,7 @@
       "requirement_id": "T24",
       "title": "8GB performance + soak",
       "acceptance_criteria": "Representative soak test below set limits, no OOM, no uncontrolled swap, metrics archived.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -848,7 +848,7 @@
       "requirement_id": "T25",
       "title": "Scientific independence",
       "acceptance_criteria": "Changing OOS sample after seeing result changes contract and invalidates validated claim.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/ranking/__init__.py",
         "factory/validation/__init__.py",
@@ -871,7 +871,7 @@
       "requirement_id": "T26",
       "title": "Instrument units",
       "acceptance_criteria": "JPY and Gold tests reject ambiguous pip/contract metadata.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/data/__init__.py",
         "factory/data/admission.py",
@@ -895,7 +895,7 @@
       "requirement_id": "T27",
       "title": "Immutable evidence",
       "acceptance_criteria": "Attempt to overwrite a completed run or inject AI statistics fails.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/contracts/__init__.py",
         "factory/experiments/__init__.py",
@@ -914,7 +914,7 @@
       "requirement_id": "T28",
       "title": "User actions",
       "acceptance_criteria": "Pausing, resuming, diagnosing, stopping and exporting execute actual jobs with audit records.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -978,7 +978,7 @@
       "requirement_id": "T29",
       "title": "Provenance",
       "acceptance_criteria": "Tested versions, SHA, CPU/RAM measured, dataset/source URLs and caveats in generated report.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "factory/contracts/__init__.py",
         "factory/experiments/__init__.py",
@@ -996,8 +996,8 @@
     {
       "requirement_id": "T30",
       "title": "Full vertical",
-      "acceptance_criteria": "One known Forex sample end-to-end data→screen→Nautilus→diagnose→validate→rank→dashboard.",
-      "authority": "docs/source/Factory.pdf §16.1",
+      "acceptance_criteria": "One known Forex sample end-to-end data\u2192screen\u2192Nautilus\u2192diagnose\u2192validate\u2192rank\u2192dashboard.",
+      "authority": "docs/source/Factory.pdf \u00a716.1",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -1052,10 +1052,10 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
       ],
-      "supporting_evidence_scope": "Synthetic API→queue→Nautilus→diagnose→board tested; real Forex→validation→browser acceptance blocked/pending",
+      "supporting_evidence_scope": "Synthetic API\u2192queue\u2192Nautilus\u2192diagnose\u2192board tested; real Forex\u2192validation\u2192browser acceptance blocked/pending",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
-      "next_required_action": "Synthetic API→queue→Nautilus→diagnose→board tested; real Forex→validation→browser acceptance blocked/pending"
+      "next_required_action": "Synthetic API\u2192queue\u2192Nautilus\u2192diagnose\u2192board tested; real Forex\u2192validation\u2192browser acceptance blocked/pending"
     },
     {
       "requirement_id": "T31",
@@ -1460,9 +1460,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
       ],
-      "supporting_evidence_scope": "Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open",
+      "supporting_evidence_scope": "Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open"
@@ -1655,9 +1656,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
       ],
-      "supporting_evidence_scope": "Actual weak-forward native restart ends before final refit/selection/consumption; declared censor/DD/neighbor policy, marked insolvency/open-loss and missing native evidence guards pass; v1 IDs stay read-only; global regime/source validation remains open",
+      "supporting_evidence_scope": "Actual weak-forward native restart ends before final refit/selection/consumption; declared censor/DD/neighbor policy, marked insolvency/open-loss and missing native evidence guards pass; v1 IDs stay read-only; global regime/source validation remains open; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Actual weak-forward native restart ends before final refit/selection/consumption; declared censor/DD/neighbor policy, marked insolvency/open-loss and missing native evidence guards pass; v1 IDs stay read-only; global regime/source validation remains open"
@@ -1765,7 +1767,7 @@
       "requirement_id": "C0",
       "title": "Repository and compatibility",
       "acceptance_criteria": "Authorized private repository, branch rules, pinned supported Python/JS packages, version ADR, OS/disk inventory; clean clone, reproducible environment and committed AGENTS.md.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -1868,7 +1870,7 @@
       "requirement_id": "C1",
       "title": "Baseline platform",
       "acceptance_criteria": "Config schema, SQLite migrations, one API/dashboard, durable queue, systemd and least-privilege installer/doctor; install/recovery smoke, migration and endpoint tests.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -1971,7 +1973,7 @@
       "requirement_id": "C2",
       "title": "Price data",
       "acceptance_criteria": "Provider terms, instrument registry, reversible quote import, Parquet/ZSTD manifests and data quality; one Forex and one Gold sample round-trip/checksum/coverage report.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2065,16 +2067,18 @@
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "next_required_action": "Partial; 176 planned partitions pending, calendars/revisions and full operational ingestion remain; immutable views now exist"
+      "next_required_action": "Partial; 176 planned partitions pending, calendars/revisions and full operational ingestion remain; immutable views now exist",
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified."
     },
     {
       "requirement_id": "C3",
       "title": "Exact simulation",
-      "acceptance_criteria": "Pinned Nautilus reference and pessimistic scenarios, exact intended 1:3/$20/10%, stop/limit/24h; complete T07–T11 goldens and simulator/reference agreement.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "acceptance_criteria": "Pinned Nautilus reference and pessimistic scenarios, exact intended 1:3/$20/10%, stop/limit/24h; complete T07\u2013T11 goldens and simulator/reference agreement.",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2176,8 +2180,8 @@
     {
       "requirement_id": "C4",
       "title": "Strategy factory",
-      "acceptance_criteria": "Declarative operators and baseline families, hashes, Optuna, fair instrument/timeframe queue, feature cache and screen audit; T01–T03/T17–T18 and reproducible candidate lifecycle.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "acceptance_criteria": "Declarative operators and baseline families, hashes, Optuna, fair instrument/timeframe queue, feature cache and screen audit; T01\u2013T03/T17\u2013T18 and reproducible candidate lifecycle.",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2271,16 +2275,18 @@
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "next_required_action": "Partial; persistent training TPE/recurring admission now tested; exact disk bars/Tier 0 native audits now tested; full region discovery, families and indicator transforms pending"
+      "next_required_action": "Partial; persistent training TPE/recurring admission now tested; exact disk bars/Tier 0 native audits now tested; full region discovery, families and indicator transforms pending",
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified."
     },
     {
       "requirement_id": "C5",
       "title": "Diagnostics and improvement",
-      "acceptance_criteria": "Tick-path MFE/MAE, stop taxonomy, configurable confirmations/SL distances and family tree; T12–T14/T26 and parent-child comparisons.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "acceptance_criteria": "Tick-path MFE/MAE, stop taxonomy, configurable confirmations/SL distances and family tree; T12\u2013T14/T26 and parent-child comparisons.",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2382,8 +2388,8 @@
     {
       "requirement_id": "C6",
       "title": "Scientific validation",
-      "acceptance_criteria": "Annual reports, three-month WFO, OOS/holdout bookkeeping, uncertainty and top-five boards; T15–T16/T25–T27 with known fixed example.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "acceptance_criteria": "Annual reports, three-month WFO, OOS/holdout bookkeeping, uncertainty and top-five boards; T15\u2013T16/T25\u2013T27 with known fixed example.",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2477,16 +2483,18 @@
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "next_required_action": "Partial; full evaluation/holdout/annual/pooled reporting pending"
+      "next_required_action": "Partial; full evaluation/holdout/annual/pooled reporting pending",
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified."
     },
     {
       "requirement_id": "C7",
       "title": "Dashboard completion",
       "acceptance_criteria": "Data, diagnostics, optimization, performance and supervisor panels with exports; end-to-end action/response and authenticated UX checks.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2588,8 +2596,8 @@
     {
       "requirement_id": "C8",
       "title": "Performance, reliability, security",
-      "acceptance_criteria": "Warm/cold/compression benchmarks, throttling, backup/restore, CI and rollback; T19–T24/T28–T30 and documented actual benchmarks.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "acceptance_criteria": "Warm/cold/compression benchmarks, throttling, backup/restore, CI and rollback; T19\u2013T24/T28\u2013T30 and documented actual benchmarks.",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2692,7 +2700,7 @@
       "requirement_id": "C9",
       "title": "Release for Hermes",
       "acceptance_criteria": "Tagged release, reproducible scripts, operator guide, Hermes instructions/checklist/report; no omitted mandatory test and separately confirmed operation readiness.",
-      "authority": "docs/source/Factory.pdf §17.1; entire milestone, not a scoped test",
+      "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2804,11 +2812,12 @@
       ],
       "verification_command": ".venv/bin/pytest tests/integration/test_reviewed_inputs.py -q; node scripts/reviewed-inputs-browser-smoke.cjs",
       "evidence": [
-        "reports/milestones/2026-11-04-reviewed-inputs/manifest.json"
+        "reports/milestones/2026-11-04-reviewed-inputs/manifest.json",
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Generated TEST_ONLY authorization/native fixtures and actual Chromium pass; genuine reviewed reference and historical evaluation pending.",
-      "next_required_action": "Choose and review legitimate dated instrument/provider references; run the real source evaluation and complete historical search/scientific propagation."
+      "supporting_evidence_scope": "Generated TEST_ONLY authorization/native fixtures and actual Chromium pass; genuine reviewed reference and historical evaluation pending.; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.",
+      "next_required_action": "Complete all supported profile/Gold primary references, provider fidelity and source correction/resume; global/regime validation and final independent market results. Do not repeat the completed bounded EURUSD rehearsal as new evidence."
     },
     {
       "requirement_id": "T55",
@@ -2870,5 +2879,10 @@
     "status": "STALE_DEVELOPMENT_CHECKPOINT_NOT_A_CURRENT_RELEASE",
     "recorded_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
     "reason": "All readiness false; final release provenance/packaging remains unimplemented."
+  },
+  "latest_verified_source": {
+    "git_commit": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
+    "source_sha256": "3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b",
+    "working_tree_scientific_edits": true
   }
 }

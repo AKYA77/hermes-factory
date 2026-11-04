@@ -1,8 +1,9 @@
 """Reviewed research inputs, not a claim of broker execution or complete history.
 
 Reviewers attest reference meaning; software proves byte/identity/scope bindings.
-Only a trusted local operator may register reviews. No evidence is downloaded or
-approved by an LLM, and no measured performance can be submitted here.
+Only a trusted operator (including the authorized initial builder) registers
+verified references. Unverified runtime model proposals cannot approve inputs;
+no measured performance can be submitted here.
 """
 
 from pathlib import Path
@@ -34,6 +35,28 @@ PROFILE_FIELDS = frozenset(
 )
 CALENDAR_FIELDS = frozenset({"timezone", "weekly_sessions", "closures", "effective_period"})
 POLICY_PREFIX = "historical-approved/v1:"
+SCOPED_POLICY_PREFIX = "historical-approved/v2:"
+
+
+def admission_identity(policy):
+    import re
+
+    if policy.startswith(POLICY_PREFIX):
+        parts = [policy[len(POLICY_PREFIX) :]]
+    elif policy.startswith(SCOPED_POLICY_PREFIX):
+        parts = policy[len(SCOPED_POLICY_PREFIX) :].split(":")
+        if len(parts) != 2:
+            raise ValueError("invalid scoped historical policy")
+    else:
+        raise ValueError("HISTORICAL_APPROVAL_REQUIRED")
+    if any(re.fullmatch(r"[a-f0-9]{64}", part) is None for part in parts):
+        raise ValueError("invalid historical admission identity")
+    return parts[0]
+
+
+def approved_policy(identity, scope):
+    admission_identity(POLICY_PREFIX + identity)
+    return SCOPED_POLICY_PREFIX + identity + ":" + fingerprint(scope)
 
 
 class Citation(Contract):
@@ -222,20 +245,29 @@ class InputRegistry:
         return self._put("admission", spec, spec.reviewer)
 
     def require(self, contract, profile, *, warmup_start_ns=None):
-        if not contract.evaluation_policy.startswith(POLICY_PREFIX):
-            raise ValueError("HISTORICAL_APPROVAL_REQUIRED")
-        identity = contract.evaluation_policy[len(POLICY_PREFIX) :]
+        identity = admission_identity(contract.evaluation_policy)
+        return self.require_scope(
+            identity,
+            contract.dataset_hash,
+            profile,
+            contract.windows,
+            warmup_start_ns=warmup_start_ns,
+        )
+
+    def require_scope(self, identity, dataset_hash, profile, windows, *, warmup_start_ns=None):
+        if not windows:
+            raise ValueError("historical admission requires explicit windows")
         spec, review, quality = self._check_admission(self._load(identity, "admission"))
-        if contract.dataset_hash != quality["inputs"]["dataset_hash"] or fingerprint(
-            profile
-        ) != fingerprint(review.profile):
+        if dataset_hash != quality["inputs"]["dataset_hash"] or fingerprint(profile) != fingerprint(
+            review.profile
+        ):
             raise ValueError("HISTORICAL_CONTRACT_ADMISSION_MISMATCH")
-        starts = [w.start_ns for w in contract.windows]
+        starts = [w.start_ns for w in windows]
         if warmup_start_ns is not None:
             starts.append(warmup_start_ns)
         if (
             min(starts) < spec.window.start_ns
-            or max(w.end_ns for w in contract.windows) > spec.window.end_ns
+            or max(w.end_ns for w in windows) > spec.window.end_ns
         ):
             raise ValueError("HISTORICAL_WINDOW_OUTSIDE_ADMISSION")
         return {
@@ -279,12 +311,10 @@ def require_active_at_completion(db, contract, result, catalog_root=None):
     if type(result.get("synthetic")) is not bool:
         raise ValueError("explicit evidence source kind required")
     if result["synthetic"]:
-        if contract.evaluation_policy.startswith(POLICY_PREFIX):
+        if contract.evaluation_policy.startswith((POLICY_PREFIX, SCOPED_POLICY_PREFIX)):
             raise ValueError("historical approval cannot label synthetic output")
         return
-    if not contract.evaluation_policy.startswith(POLICY_PREFIX):
-        raise ValueError("HISTORICAL_APPROVAL_REQUIRED")
-    identity = contract.evaluation_policy[len(POLICY_PREFIX) :]
+    identity = admission_identity(contract.evaluation_policy)
     binding = result.get("input_admission") or {}
     if binding.get("admission_id") != identity:
         raise ValueError("HISTORICAL_RESULT_ADMISSION_MISMATCH")

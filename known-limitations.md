@@ -179,3 +179,19 @@ actual cost-based pruning needs frozen calibration/ongoing audits/fallback and
 selection-bias integration. Feature-only measured overhead is3.03–3.29×the old
 cheap screen, so shadow mode is explicit opt-in. No speedup or tick throughput
 is claimed. See ADRs0024/0025 and the latest milestone manifest.
+
+## Admission-bound historical checkpoint, 4 November 2026
+
+ADR0026 supersedes earlier synthetic-only search/validation limitations:
+search/v4, protected-holdout/v2 and scientific-validation/v3 propagate approved
+inputs and revocations. A complete generated positive chronological reference and
+a bounded genuine EURUSD generic-unit native rehearsal now pass. Earlier claims
+that no real-source strategy replay has ever run are historical, not current.
+This does not certify broker profiles: the one-unit FX model/calendar is explicitly
+a research assumption; Gold and provider gap/holiday fidelity remain unfinished.
+Jan/Feb prior technical use excludes a final-unseen claim. Both replay windows
+have censored positions and tiny native Money rounding; no historical promotion.
+Global-selection/regime/diversified-ranking and all full C0–C9 exit gates remain.
+Full verification346passed; actual measurements are in the milestone report.
+Latest directive authorizes tested milestone pushes; historical push holds are
+superseded. No merge, visibility change, ready tag or production deployment.

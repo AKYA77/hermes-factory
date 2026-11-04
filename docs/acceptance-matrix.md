@@ -95,3 +95,12 @@ all implementation requirements, full scientific workflows and tested handoff.
 
 | T56 | Cost labels/native shadow audit | Exact bounded/censored training label reference and compiler parity, explicit distinct opt-in contract identity, immutable native/TPE feedback and profitable native counterexample pass. Approximate pruning remains disabled; calibrated funnel/compiled alternatives/selection-bias gates unfinished |
 | T57 | Exact Decimal fingerprint input | Context2/6/28/60, high-precision collision, padding/legacy/signed-zero/resource goldens pass;42-state/32,450-retained-typed-value read-only inventory unchanged. No proof of unretained pre-normalization inputs is claimed |
+
+ADR0026 checkpoint: historical admission now propagates through search/v4,
+protected-holdout/v2 and scientific-validation/v3; revocation and legacy identity
+fixtures pass. A complete generated positive native chronological reference
+passes; it never enters historical ranking. Genuine EURUSD bounded generic-unit
+native training and chronological exploratory evaluation pass (16fills/7closed
+trades), with unproven provider gaps and prior technical-use disclosure. This
+adds evidence to T43/T49/T54, not full acceptance. Global/regime/source/lifecycle
+and target gates remain open. See milestone-historical-protocols-2026-11-04.md.

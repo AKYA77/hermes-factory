@@ -38,3 +38,15 @@ protected scientific assumptions or other explicit approval boundaries.
 Full acquisition is owned by Hermes after software handoff. All three readiness
 states remain false; actual target Contabo verification is unrun. Existing passed
 components, canonical bytes, old contracts, failed runs and evidence are retained.
+
+## Current directive reconciliation, 4 November 2026
+
+The complete Final_Software_Handoff_Directive is archived/read. Existing execution,
+source revisions, monetary adapters, disk bars, TPE, holdouts and UI are preserved.
+Remove synthetic-only historical propagation and missing positive-reference/native
+rehearsal from the active backlog: ADR0026 and its evidence implement those scoped
+items. Do not remove full scientific/source/product/release criteria. NEXT_ACTION.md
+now gives the executable remaining priority order and supersedes stale push holds.
+Readiness remains false; remaining global/regime/comparable ranking, complete
+all-instrument reference/source operations, calibrated funnel/shared indicators/
+full discovery, dashboard and installed lifecycle gates are unfinished.

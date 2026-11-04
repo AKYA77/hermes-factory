@@ -1,0 +1,23 @@
+{
+  "training": [
+    1736337600000000000,
+    1736352000000000000
+  ],
+  "exploratory_oos": [
+    1738756800000000000,
+    1738771200000000000
+  ],
+  "family": "momentum",
+  "timeframe": "M1",
+  "seed": 42,
+  "max_trials": 1,
+  "source_revision": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262@source-sha256:3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b",
+  "profile_hash": "ed2d097f31052373be6282442c7ec22b3a5534746bd4942b48b38ecfffe0b5fb",
+  "admission_id": "fda915d569e2bed721460b14c5a3920860a2a7e9a4b750eb81231d6a57535036",
+  "independent_final_holdout": false,
+  "reasons": [
+    "all Jan/Feb quotes had prior technical use",
+    "one-unit generic research cap",
+    "source gaps and broker feasibility remain uncertified"
+  ]
+}

@@ -9,7 +9,7 @@ from pathlib import Path
 import time
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, model_validator, model_serializer
 
 from factory.contracts import (
     Contract,
@@ -98,7 +98,8 @@ def training_use(db, profile, contract, owner, purpose="training"):
 
 
 class HoldoutSpec(Contract):
-    schema_version: Literal["protected-holdout/v1"] = "protected-holdout/v1"
+    schema_version: Literal["protected-holdout/v1", "protected-holdout/v2"] = "protected-holdout/v1"
+    admission_id: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     dataset_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     profile: InstrumentSpec
     window: Window
@@ -108,9 +109,24 @@ class HoldoutSpec(Contract):
 
     @model_validator(mode="after")
     def final_window(self):
+        if self.schema_version == "protected-holdout/v1" and self.admission_id is not None:
+            raise ValueError("legacy holdout cannot acquire admission semantics")
+        if not self.profile.synthetic and (
+            self.schema_version != "protected-holdout/v2" or self.admission_id is None
+        ):
+            raise ValueError("historical holdout requires v2 and explicit admission")
+        if self.profile.synthetic and self.admission_id is not None:
+            raise ValueError("synthetic holdout cannot claim historical admission")
         if self.window.role != "final_holdout_unseen":
             raise ValueError("protected holdout requires final_holdout_unseen")
         return self
+
+    @model_serializer(mode="wrap")
+    def compatible_json(self, handler):
+        value = handler(self)
+        if self.schema_version == "protected-holdout/v1":
+            value.pop("admission_id", None)
+        return value
 
     @property
     def holdout_id(self):
@@ -124,6 +140,20 @@ class Holdouts:
         self.root = Path(root)
         self.store = Store(self.root / "factory.sqlite")
 
+    def require_admission(self, spec):
+        if not spec.profile.synthetic:
+            from factory.data.admission import InputRegistry
+
+            catalog = Catalog(self.root / "catalog")
+            manifest = catalog.verify(spec.dataset_hash)
+            return InputRegistry(self.root, catalog).require_scope(
+                spec.admission_id,
+                spec.dataset_hash,
+                spec.profile,
+                (spec.window,),
+                warmup_start_ns=manifest["first_ns"],
+            )
+
     def register(self, spec):
         if spec.code_revision != execution_revision():
             raise ValueError("holdout source revision mismatch")
@@ -136,6 +166,7 @@ class Holdouts:
             or w.end_ns > m["latest_verified_ns"] + 1
         ):
             raise ValueError("holdout dataset/profile/bounds mismatch")
+        self.require_admission(spec)
         kind = evidence_kind(p)
         with self.store.transaction() as db:
             existing = db.execute(
@@ -210,6 +241,7 @@ class Holdouts:
 
     def freeze(self, identity, training_run_id):
         spec = self.spec(identity)
+        self.require_admission(spec)
         rows = self.store.rows(
             """SELECT e.*,s.spec_json FROM experiments e
             JOIN strategy_specs s ON s.strategy_id=e.strategy_id WHERE e.run_id=?""",
@@ -244,11 +276,19 @@ class Holdouts:
         strategy = StrategySpec.model_validate_json(row["spec_json"])
         if strategy.strategy_hash != training.strategy_hash:
             raise ValueError("training strategy identity mismatch")
+        if spec.profile.synthetic:
+            policy = "protected-confirmation/v1"
+        else:
+            from factory.data.admission import approved_policy, admission_identity
+
+            if admission_identity(training.evaluation_policy) != spec.admission_id:
+                raise ValueError("training and protected confirmation admission mismatch")
+            policy = approved_policy(spec.admission_id, {"holdout_id": identity})
         contract = ExperimentContract.model_validate(
             {
                 **training.model_dump(),
                 "windows": (spec.window,),
-                "evaluation_policy": "protected-confirmation/v1",
+                "evaluation_policy": policy,
             }
         )
         payload = {
@@ -277,6 +317,7 @@ class Holdouts:
         return payload
 
     def authorize(self, identity):
+        self.require_admission(self.spec(identity))
         rows = self.store.rows(
             "SELECT payload_json FROM holdout_selections WHERE holdout_id=?", (identity,)
         )

@@ -1,68 +1,63 @@
 # Persistent completion goal — NOT_READY
 
-Publication recovery, 4 November 2026: the owner explicitly requested pushing
-completed work. All 18 previously local commits through 1bfe176 were pushed and
-verified on build/initial-factory and PR #1. Historical push-hold instructions
-below are superseded for this authorized publication. Repository visibility
-remains PUBLIC; no visibility change, merge, release tag or readiness claim was
-made. See docs/publishing-recovery-2026-11-04.md. Do not redo completed work.
+Continue `/workspace/hermes-factory`, branch `build/initial-factory`. Preserve the
+current architecture and all previous evidence. No merge, visibility change,
+release tag, production deployment or readiness claim is authorized by a milestone.
+The latest owner directive explicitly authorizes committing/pushing each tested
+milestone to this branch and verifying PR #1 plus exact-SHA CI. Older push holds
+are superseded. Repository is still PUBLIC; no visibility change was made.
 
-Authority: docs/source/Persistent_Software_Completion_Goal_2026-11-04.md, original
-Factory.pdf, accepted amendments, AGENTS.md. Continue the existing branch;
-do not rebuild working components. The archived mandate's 9034 commit is older
-than current local work. Start with git status/log and development-state.json.
+Read the complete source/blueprint authority listed in AGENTS.md and
+`docs/source/Final_Software_Handoff_Directive_2026-11-04.md`, then state/ledger,
+acceptance matrix and latest report. Do not rebuild completed work or repeat
+expensive campaigns to increase counts. Keep science source unchanged during
+provenance-bound runs. No subagents unless the owner/applicable instructions ask.
 
-Current cycle: reviewed profile/calendar/source admission, immutable captured
-references and revocations, approved real-input worker paths. Run focused tests,
-full scripts/verify.sh, actual browser checks and fault tests before committing.
-Fixtures testing non-synthetic authorization flags are explicitly generated
-TEST_ONLY fixtures, never evidence of actual historical market evaluation.
-Real January source data exists; do not infer monetary facts from quote digits.
-The owner reference-venue choice remains pending. No genuine historical strategy
-result is approved merely because the technical source import/scan passed.
+Latest implemented checkpoint: ADR0026, admission-bound historical search/v4,
+protected-holdout/v2, scientific-validation/v3, strict exact-nanosecond windows,
+complete generated positive chronological/native reference, and actual genuine
+EURUSD generic-unit native training plus frozen exploratory evaluation. Full
+verification346passed/362warnings/209.55s; frontend/lint passed. Detailed evidence:
+`docs/milestone-historical-protocols-2026-11-04.md` and its linked manifest.
+Do not describe generated non-synthetic-flag authorization fixtures as market data.
 
-Next: source revisions/incremental recovery and complete scientific admission
-propagation; finite-empty-depth native discrepancy; genuine cost-aware Tier 0,
-shared indicators and full families/automatic region discovery; recursive
-cohort diagnostics; independent regime/global inference/validated ranking;
-remaining graphical dashboard and release lifecycle/installed provenance.
-Continue successive verified implementation cycles instead of treating a report
-or increased test count as the completion goal.
+Genuine rehearsal is bounded, not final independent validation. Source view
+75359494… has4,336,496 Jan/Feb quotes; all409 QA events are retained/reviewed.
+Provider gaps/calendar fidelity remain uncertified. Native windows37,752/31,761
+quotes produced16fills,7closed trades,2open positions;3R/risk/native-money checks
+passed. One-unit unlevered generic model is a declared research assumption, not
+broker specifications. Both months' prior technical use is durably recorded;
+never retroactively reserve them as wholly untouched final holdout. Local state
+`.local/genuine-eurusd-rehearsal-v1` is paused. Raw provider/reference bytes remain
+ignored; sanitized receipts are versioned. No bulk backfill needed pre-handoff.
 
-completion-ledger.json tracks all C0–C9/T01–T53; reconcile each exact criterion
-against current code and evidence. Never flip whole milestones from scoped tests.
+Next executable priorities:
 
-External gates: public/private owner decision; dependency advisories without
-compatible upstream fix; actual Contabo/8-GB host access and service soak. Full
-bulk history acquisition is post-handoff DATA_READY, not a software blocker.
-No visibility change, new push, public deployment, ready release tag or waiver
-of failing checks while required owner decisions/gates are outstanding.
+1. Finish source/profile correctness for all eight instruments, especially Gold's
+   independent units/cost convention. Generic research profiles are explicitly
+   allowed with assumptions separated from primary facts; do not invent broker
+   constraints or introduce a human-only approval blocker. Complete provider gap
+   reconciliation, correction invalidation, intra-partition resume, refresh jobs,
+   quotas/retention/compaction and data-operation APIs.
+2. Complete scientific session/regime and global multiple-selection safeguards,
+   candidate comparability/diversification and independently validated ranking.
+   Historical v3 propagation is implemented; historical promotion stays disabled
+   until remaining acceptance is implemented and genuinely demonstrated.
+3. Frozen calibrated shortlist/rejection-cohort audit/fallback; shared indicator
+   transforms; full required families/timeframe-confirmation coverage and automatic
+   new-data/region discovery. Complete controlled recursive cohort improvement.
+4. Full graphical diagnostic/performance/lineage/data/operations/export workflows
+   with actual authenticated desktop/mobile browser verification.
+5. Installed provenance, Ubuntu/systemd least privilege, atomic install/update/
+   rollback/migration safety, encrypted/off-host backup interfaces, restore and
+   failure recovery. Preserve state through upgrades; do not advertise dev scripts
+   as a verified production installer.
+6. Complete source-to-restore rehearsal, representative native/resource benchmarks,
+   exact-SHA security/CI, release packaging and Hermes handoff. Actual4-vCPU/8-GB
+   target-host installation/soak is still untested; cloud32GiB is not equivalent.
 
-New completed cycles: ADR0022/0023, migrations008/009,320-test full suite and
-clean bd66a06 genuine February import + January/February immutable-view/features
-probe. See docs/milestone-reviewed-inputs-source-revisions-2026-11-04.md.
-Do not repeat these as new work. Continue remaining substantive implementation,
-starting with cost-aware screening/shared indicators and historical scientific
-propagation; source intra-partition resume/UI still need completion. No genuine
-historical strategy result has been approved. Keep code unchanged during any
-provenance-bound run. Latest remote remains9034; new pushes held for visibility.
-
-Further cycle: ADR0024/0025 and migration010. Cost labels are a bounded shadow
-estimate enabled only by research_kind synthetic-cost-shadow-training/v1, with
-native audit records and a real synthetic-native false-negative counterexample.
-Actual cost-based pruning remains DISABLED and its full mandatory gate is open.
-Fingerprint Decimal context loss is fixed; retained typed-value compatibility
-was checked read-only. Final suite337passes/362warnings/89.94s plus frontend/lint.
-Next clean-commit supervised counterexample, then calibrated shortlists/native
-rejection cohorts/fallback and shared indicators/full discovery. No readiness
-state or original requirement was waived; previous code/data/evidence stays intact.
-
-Clean17f2312 supervised counterexample is now verified and archived; do not rerun
-it just to increase counts. Latest milestone:
-docs/milestone-cost-shadow-decimal-identity-2026-11-04.md. Readiness command still
-exits1. Next substantive work is calibrated shortlist/audit/fallback and shared
-indicator transforms/full discovery; legitimate primary-reference investigation
-and historical scientific/search propagation also remain. The authorized builder
-may verify primary facts; no extra human-only reference approval was mandated.
-Owner visibility instruction is still pending. Keep new pushes held and preserve
-all prior evidence. No Software/Data/Operation readiness or final tag is approved.
+Security remains release-blocking: fsspec2026.2.0 exact Nautilus pin and unpatched
+compatible deepmerge chain. Keep both audit checks active and red until genuinely
+resolved. Native finite-empty-book fallback is quarantined, not solved/waived.
+All original C0–C9/T01–T30 plus supplemental gates remain in completion-ledger.json.
+SOFTWARE_VERIFIED=false, DATA_READY=false, OPERATION_READY=false; no final tag.

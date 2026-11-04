@@ -18,6 +18,7 @@ from factory.contracts import (
     ExperimentContract,
     StrategySpec,
     Window,
+    Nanoseconds,
     TIMEFRAMES,
     fingerprint,
     serialize,
@@ -29,6 +30,7 @@ from factory.validation.access import Holdouts, HoldoutSpec
 from factory.validation.statistics import annual_windows, outcome_summary, holm, stability_summary
 from factory.simulation.ledger import require_execution_version
 from factory.validation.evidence import replay_quality, aggregate_quality
+from factory.data.admission import approved_policy
 
 
 class ValidationCriteria(Contract):
@@ -52,15 +54,15 @@ class ValidationEvidencePolicy(Contract):
 
 
 class ValidationProtocol(Contract):
-    schema_version: Literal["scientific-validation/v1", "scientific-validation/v2"] = (
-        "scientific-validation/v2"
-    )
+    schema_version: Literal[
+        "scientific-validation/v1", "scientific-validation/v2", "scientific-validation/v3"
+    ] = "scientific-validation/v2"
     purpose: Literal["research_qualification", "synthetic_software_rehearsal"] = (
         "research_qualification"
     )
     evidence_policy: ValidationEvidencePolicy | None = None
     holdout: HoldoutSpec
-    start_ns: int = Field(ge=0)
+    start_ns: Nanoseconds = Field(ge=0)
     family: Literal["momentum", "mean_reversion", "breakout"]
     timeframe: str
     confirmations: tuple[str, ...] = ()
@@ -73,7 +75,7 @@ class ValidationProtocol(Contract):
 
     @model_validator(mode="after")
     def coherent(self):
-        if self.schema_version == "scientific-validation/v2" and self.evidence_policy is None:
+        if self.schema_version != "scientific-validation/v1" and self.evidence_policy is None:
             raise ValueError("v2 requires explicit evidence thresholds")
         if self.schema_version == "scientific-validation/v1" and (
             self.evidence_policy is not None or self.purpose != "research_qualification"
@@ -81,10 +83,10 @@ class ValidationProtocol(Contract):
             raise ValueError("legacy protocol cannot acquire v2 semantics")
         if self.purpose == "synthetic_software_rehearsal" and not self.holdout.profile.synthetic:
             raise ValueError("SOFTWARE_REHEARSAL_REQUIRES_SYNTHETIC_INPUT")
-        if not self.holdout.profile.synthetic:
-            raise ValueError(
-                "REAL_MONETARY_PROFILE_GATE: verified profile/conversion support required"
-            )
+        if not self.holdout.profile.synthetic and (
+            self.schema_version != "scientific-validation/v3" or self.holdout.admission_id is None
+        ):
+            raise ValueError("historical validation requires v3 and reviewed admission")
         if self.timeframe not in TIMEFRAMES or len(self.confirmations) > 1:
             raise ValueError("unsupported protocol timeframes")
         if any(
@@ -124,7 +126,7 @@ class ValidationController:
         self.store, self.root = store, Path(root)
 
     def register(self, protocol):
-        if protocol.schema_version != "scientific-validation/v2":
+        if protocol.schema_version not in ("scientific-validation/v2", "scientific-validation/v3"):
             raise ValueError("LEGACY_VALIDATION_PROTOCOL_READ_ONLY")
         m = Catalog(self.root / "catalog").verify(protocol.holdout.dataset_hash, deep=True)
         if protocol.start_ns < m["first_ns"]:
@@ -163,7 +165,17 @@ class ValidationController:
                 # Existing scientific v1/v2 identities froze the v2 sampling
                 # policy. New search defaults must not change an unfinished
                 # protocol's later refits under its original identity.
-                schema_version="search/v2",
+                schema_version=(
+                    "search/v2"
+                    if p.schema_version != "scientific-validation/v3"
+                    else "search/v3"
+                    if p.holdout.profile.synthetic
+                    else "search/v4"
+                ),
+                admission_id=p.holdout.admission_id if not p.holdout.profile.synthetic else None,
+                research_kind="synthetic-training/v1"
+                if p.holdout.profile.synthetic
+                else "historical-training/v1",
                 dataset_hash=p.holdout.dataset_hash,
                 profile=p.holdout.profile,
                 window=Window(start_ns=p.start_ns, end_ns=end_ns, role="train_only"),
@@ -209,7 +221,7 @@ class ValidationController:
                 experiment = self.store.rows(
                     "SELECT * FROM experiments WHERE run_id=?", (row["run_id"],)
                 )[0]
-                result = self.verified(experiment)
+                result = self.verified(experiment, p.holdout.profile)
                 candidates.append(
                     (
                         D(result["ending_equity"]),
@@ -223,7 +235,7 @@ class ValidationController:
         # Fixed training-only tie rule; never inspect fold OOS to choose a model.
         return sorted(candidates, key=lambda item: (-item[0], item[1], item[2]))[0][3]
 
-    def verified(self, experiment):
+    def verified(self, experiment, profile=None):
         result = json.loads(experiment["result_json"])
         artifact = self.root / "artifacts" / (experiment["experiment_hash"] + ".json")
         contract = ExperimentContract.model_validate_json(experiment["contract_json"])
@@ -233,17 +245,21 @@ class ValidationController:
             or sha256(artifact) != experiment["artifact_hash"]
             or json.loads(artifact.read_bytes()) != result
             or result.get("integrity_errors")
-            or not result.get("synthetic")
+            or result.get("synthetic") is not (profile.synthetic if profile is not None else True)
             or any(w.role != "train_only" for w in contract.windows)
         ):
             raise ValueError("validation training artifact mismatch")
+        if profile is not None and not profile.synthetic:
+            from factory.data.admission import InputRegistry
+
+            InputRegistry(self.root, Catalog(self.root / "catalog")).require(contract, profile)
         return result
 
     def stage(
         self, p, name, training, window, *, strategy=None, retrospective=False, scenario=None
     ):
         original = ExperimentContract.model_validate_json(training["contract_json"])
-        self.verified(training)
+        self.verified(training, p.holdout.profile)
         raw = self.store.rows(
             "SELECT spec_json FROM strategy_specs WHERE strategy_id=?", (training["strategy_id"],)
         )[0]["spec_json"]
@@ -261,7 +277,13 @@ class ValidationController:
                 "strategy_hash": spec.strategy_hash,
                 "windows": (window,),
                 "scenario": scenario or original.scenario,
-                "evaluation_policy": "scientific-validation/v1:" + p.protocol_id + ":" + name,
+                "evaluation_policy": (
+                    "scientific-validation/v1:" + p.protocol_id + ":" + name
+                    if p.holdout.profile.synthetic
+                    else approved_policy(
+                        p.holdout.admission_id, {"protocol": p.protocol_id, "stage": name}
+                    )
+                ),
             }
         )
         identity = fingerprint(
@@ -382,7 +404,7 @@ class ValidationController:
         return False
 
     def _advance(self, p):
-        if p.schema_version != "scientific-validation/v2":
+        if p.schema_version not in ("scientific-validation/v2", "scientific-validation/v3"):
             raise ValueError("LEGACY_VALIDATION_PROTOCOL_READ_ONLY")
         folds = []
         for index, fold in enumerate(p.folds()):
@@ -412,7 +434,7 @@ class ValidationController:
                     "folds": folds,
                     "holdout": None,
                     "final_training_run_id": None,
-                    "synthetic": True,
+                    "synthetic": p.holdout.profile.synthetic,
                     "independently_validated": False,
                     "eligible_for_historical_validated_board": False,
                     "holdout_consumed_by_protocol": False,
@@ -424,7 +446,7 @@ class ValidationController:
         final = self.refit(p, -1, training_end)
         if final is None:
             return True
-        base_result = self.verified(final)
+        base_result = self.verified(final, p.holdout.profile)
         base = outcome_summary(base_result["trades"])
         training_quality = replay_quality(base_result, p.evidence_policy)
         if training_quality["status"] != "PASS" and p.purpose == "research_qualification":
@@ -439,7 +461,7 @@ class ValidationController:
                     "training_metrics": base,
                     "holdout": None,
                     "holdout_consumed_by_protocol": False,
-                    "synthetic": True,
+                    "synthetic": p.holdout.profile.synthetic,
                     "independently_validated": False,
                     "eligible_for_historical_validated_board": False,
                     "reason": "FINAL_TRAINING_QUALITY_GATE",
@@ -502,7 +524,7 @@ class ValidationController:
                     "neighborhood_evaluations": neighborhoods,
                     "holdout": None,
                     "holdout_consumed_by_protocol": False,
-                    "synthetic": True,
+                    "synthetic": p.holdout.profile.synthetic,
                     "independently_validated": False,
                     "eligible_for_historical_validated_board": False,
                     "reason": "TRAINING_NEIGHBORHOOD_GATE",
@@ -601,18 +623,33 @@ class ValidationController:
                 "cost_reference_training": reference,
                 "neighborhood": stability_summary(base, neighborhood_summaries),
                 "neighborhood_evaluations": neighborhoods,
-                "synthetic": True,
+                "synthetic": p.holdout.profile.synthetic,
                 "eligible_for_historical_validated_board": False,
                 "independently_validated": not rehearsal
+                and p.holdout.profile.synthetic
                 and decision["status"] == "VALIDATED_REFERENCE",
-                "scope": "controlled synthetic software evidence; never a verified historical strategy",
+                "protocol_qualified": decision["status"] == "VALIDATED_REFERENCE",
+                "historical_promotion_blockers": []
+                if p.holdout.profile.synthetic
+                else ["global selection and regime robustness acceptance remains required"],
+                "scope": (
+                    "controlled synthetic software evidence; never a verified historical strategy"
+                    if p.holdout.profile.synthetic
+                    else "reviewed historical protocol evidence; full promotion gates remain required"
+                ),
                 "counter_semantics": "folds each reset $20; pooled/annual are separate native scenarios, not spliced fold equity",
             },
         )
         return True
 
     def finish(self, p, report):
-        value = {"protocol_id": p.protocol_id, "protocol": p.model_dump(mode="json"), **report}
+        value = {
+            "protocol_id": p.protocol_id,
+            "protocol": p.model_dump(mode="json"),
+            "synthetic": p.holdout.profile.synthetic,
+            "eligible_for_historical_validated_board": False,
+            **report,
+        }
         digest = fingerprint(value)
         path = self.root / "artifacts" / "validation-protocols" / (p.protocol_id + ".json")
         encoded = serialize(value).encode()

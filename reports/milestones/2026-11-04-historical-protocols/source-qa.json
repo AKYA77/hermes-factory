@@ -1,0 +1,387 @@
+{
+  "status": "SOURCE_QA_AWAITING_ALL_EVENT_REVIEW",
+  "source_context": {
+    "git_commit": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
+    "source_sha256": "3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b"
+  },
+  "source_context_unchanged": true,
+  "dataset_hash": "75359494c8197cd42f9704ed1fc10f6afcc27283d283a0fd5de7cc549bac74a9",
+  "leaves": [
+    "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+    "3f8e18fbddb8ad30044e1a703a0bf36bae93e082bd802b10a1d14b3d062ca468"
+  ],
+  "rows": 4336496,
+  "profile": {
+    "instrument": "EURUSD",
+    "version": "generic-fx-base-unit-unlevered-cap1/v1",
+    "tick_size": "0.00001",
+    "pip_size": "0.0001",
+    "price_scale": 1000000,
+    "base_currency": "EUR",
+    "quote_currency": "USD",
+    "contract_multiplier": "1",
+    "volume_step": "1",
+    "min_volume": "1",
+    "max_volume": "1",
+    "margin_rate": "1",
+    "min_stop_ticks": 1,
+    "source": "GENERIC_RESEARCH_NOT_BROKER: published FX pip/currency convention; empirical-grid research choice; base-unit quantity; unlevered 1-unit cap; no historical broker minimum/maximum/margin/session feasibility certified",
+    "synthetic": false
+  },
+  "profile_review_id": "548149855fa0b7fa36f7707daaaa960f626d58a6cf4cf812661f7e4a355bd639",
+  "calendar_review_id": "b441c36e21acac798b8f7469bdd61c235ade2387a423208ea769ca38bbbd5a2a",
+  "quality": {
+    "calendar_error": null,
+    "calendar_status": "DECLARED_RULES_ONLY",
+    "complete_source_scan": true,
+    "counts": {
+      "boundary_intervals": 2,
+      "calendar_rows_CLOSED": 0,
+      "calendar_rows_OPEN": 4336496,
+      "calendar_rows_UNKNOWN": 0,
+      "consecutive_exact_duplicates_retained": 0,
+      "events": 409,
+      "gap_DECLARED_OPEN_GAP": 398,
+      "gap_MIXED_OPEN_CLOSED_GAP": 8,
+      "gaps": 406,
+      "off_declared_tick_grid": 0,
+      "outside_requested_period_rows": 0,
+      "rows_scanned": 4336496,
+      "structural_issue_rows": 0,
+      "unchanged_runs": 0
+    },
+    "events_bytes": 262957,
+    "events_sha256": "6fa8f3bc2f646e7618aa91656b04629dd09b61c5441cfde9c2671cb28d079ba1",
+    "examples": [
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735768814647000000,
+          "open_ns": 61214647000000,
+          "start_ns": 1735707600000000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "end_ns": 1735768814647000000,
+        "observed_quote": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 0,
+          "source_record_order": 0,
+          "ts": 1735768814647000000
+        },
+        "start_ns": 1735707600000000000,
+        "type": "LEADING_UNQUOTED_INTERVAL"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735768954026000000,
+          "open_ns": 134814000000,
+          "start_ns": 1735768819212000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 2,
+          "source_record_order": 2,
+          "ts": 1735768819212000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 3,
+          "source_record_order": 3,
+          "ts": 1735768954026000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735769041734000000,
+          "open_ns": 87708000000,
+          "start_ns": 1735768954026000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 3,
+          "source_record_order": 3,
+          "ts": 1735768954026000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 4,
+          "source_record_order": 4,
+          "ts": 1735769041734000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735770716879000000,
+          "open_ns": 60104000000,
+          "start_ns": 1735770656775000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 193,
+          "source_record_order": 193,
+          "ts": 1735770656775000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 194,
+          "source_record_order": 194,
+          "ts": 1735770716879000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735771112066000000,
+          "open_ns": 60022000000,
+          "start_ns": 1735771052044000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 282,
+          "source_record_order": 282,
+          "ts": 1735771052044000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 283,
+          "source_record_order": 283,
+          "ts": 1735771112066000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735789962976000000,
+          "open_ns": 64060000000,
+          "start_ns": 1735789898916000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 12336,
+          "source_record_order": 12336,
+          "ts": 1735789898916000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 12337,
+          "source_record_order": 12337,
+          "ts": 1735789962976000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735796899927000000,
+          "open_ns": 63775000000,
+          "start_ns": 1735796836152000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 14645,
+          "source_record_order": 14645,
+          "ts": 1735796836152000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 14646,
+          "source_record_order": 14646,
+          "ts": 1735796899927000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735852875083000000,
+          "open_ns": 120452000000,
+          "start_ns": 1735852754631000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 103046,
+          "source_record_order": 103046,
+          "ts": 1735852754631000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 103047,
+          "source_record_order": 103047,
+          "ts": 1735852875083000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735853606070000000,
+          "open_ns": 62334000000,
+          "start_ns": 1735853543736000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 103230,
+          "source_record_order": 103230,
+          "ts": 1735853543736000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 103231,
+          "source_record_order": 103231,
+          "ts": 1735853606070000000
+        },
+        "type": "GAP"
+      },
+      {
+        "calendar": {
+          "basis": "captured-TZif/dated-declared-rules; not metadata verification",
+          "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+          "closed_ns": 0,
+          "end_ns": 1735853811324000000,
+          "open_ns": 66779000000,
+          "start_ns": 1735853744545000000,
+          "status": "DECLARED_OPEN_GAP",
+          "unknown_ns": 0
+        },
+        "from": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 103296,
+          "source_record_order": 103296,
+          "ts": 1735853744545000000
+        },
+        "to": {
+          "leaf_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+          "sequence": 103297,
+          "source_record_order": 103297,
+          "ts": 1735853811324000000
+        },
+        "type": "GAP"
+      }
+    ],
+    "gap_warning": "long interarrival/boundary intervals are observations, not proof that a market tick is missing",
+    "historical_admission": false,
+    "inputs": {
+      "calendar_hash": "6a35f78fee0f9718a85af5f9a8b8f782b0c99a77b9b1a0d9b6e2cdbe10a4b55e",
+      "canonical_price_scale": 1000000,
+      "code_revision": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262@source-sha256:3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b",
+      "dataset_hash": "75359494c8197cd42f9704ed1fc10f6afcc27283d283a0fd5de7cc549bac74a9",
+      "manifest_hash": "b364daf969c4b226a7a58f54d1e0ddaf88caaa77b70a2816d3052e69770279d3",
+      "policy": {
+        "expected_end_ns": 1740805200000000000,
+        "expected_start_ns": 1735707600000000000,
+        "gap_threshold_ns": 60000000000,
+        "max_events_bytes": 67108864,
+        "max_examples": 10,
+        "schema_version": "source-quality-policy/v1",
+        "timestamp_quantum_ns": 1000000,
+        "unchanged_threshold_ns": 600000000000
+      },
+      "profile_hash": "ed2d097f31052373be6282442c7ec22b3a5534746bd4942b48b38ecfffe0b5fb",
+      "schema": "source-quality/v1"
+    },
+    "instrument": "EURUSD",
+    "profile_errors": [],
+    "profile_status": "DECLARED_UNITS_ONLY",
+    "requested_period_status": "OBSERVED_WITHIN_REQUESTED_PERIOD",
+    "run_id": "004384d18ca279b24694f93fc232b9bbca1d15801493d973781a991d6dbe8dbc",
+    "scope": "technical source integrity and declared rules; not verified broker metadata or historical strategy performance",
+    "source_precision_policy": "exact nanosecond divisibility; canonical timestamps/prices unchanged",
+    "source_structural_status": "PASS",
+    "synthetic": false,
+    "unchanged_warning": "unchanged observed prices, including gaps, are not proof of stale executable market data"
+  },
+  "admission_window": {
+    "start_ns": 1735707600000000000,
+    "end_ns": 1740805200000000000,
+    "role": "train_only"
+  },
+  "retrieved_references": {
+    "oanda-pip": {
+      "name": "oanda-pip",
+      "url": "https://www.oanda.com/us-en/trading/learn/introduction-to-leverage-trading/what-is-a-pip/",
+      "resolved_url": "https://www.oanda.com/us-en/skills-and-insights/education/introduction-trading/basics/what-is-a-pip/",
+      "status": 200,
+      "bytes": 236653,
+      "sha256": "2c0a705bfd231ace2e8a7bb55150ba8e2783841c2535be64411e90470448e6d0",
+      "captured_at_utc": "2026-11-04T18:13:42.111849+00:00"
+    },
+    "iso4217-list": {
+      "name": "iso4217-list",
+      "url": "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml",
+      "resolved_url": "https://www.six-group.com/dam/download/financial-information/data-center/iso-currrency/lists/list-one.xml",
+      "status": 200,
+      "bytes": 47491,
+      "sha256": "33139b438657d1cee116ba737807ea71d19d6de4b90f799a09c56f0cc6a1b0ff",
+      "captured_at_utc": "2026-11-04T18:13:45.593052+00:00"
+    },
+    "histdata-faq": {
+      "name": "histdata-faq",
+      "url": "https://www.histdata.com/f-a-q/",
+      "resolved_url": "https://www.histdata.com/f-a-q/",
+      "status": 200,
+      "bytes": 40079,
+      "sha256": "8c6e45b966fe46dd0412d93a9e5466b5fb26174fdfd729885e8325d7535b6477",
+      "captured_at_utc": "2026-11-04T18:13:44.453948+00:00"
+    },
+    "oanda-hours": {
+      "name": "oanda-hours",
+      "url": "https://www.oanda.com/us-en/trading/hours-of-operation/",
+      "resolved_url": "https://www.oanda.com/us-en/trading/hours-of-operation/",
+      "status": 200,
+      "bytes": 199302,
+      "sha256": "5671e9da5eef6d1556bec7753d8d2a1d997bc02572ffaa93b8369083c202033f",
+      "captured_at_utc": "2026-11-04T18:33:13.711264+00:00"
+    }
+  },
+  "prior_use": "January/February technical feature access already recorded; no unseen holdout claim",
+  "wall_seconds": 99.0300050359997,
+  "cpu_seconds": 100.592700867,
+  "process_peak_rss_bytes": 163528704,
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "SOFTWARE_VERIFIED": false,
+  "DATA_READY": false,
+  "OPERATION_READY": false
+}

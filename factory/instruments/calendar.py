@@ -8,29 +8,19 @@ from datetime import datetime, timedelta, timezone
 from bisect import bisect_right
 import hashlib
 import io
-from typing import Literal, Annotated
+from typing import Literal
 from zoneinfo import ZoneInfo
 
-from pydantic import Field, model_validator, BeforeValidator
+from pydantic import Field, model_validator
 
-from factory.contracts import Contract, SYMBOLS, fingerprint
+from factory.contracts import Contract, SYMBOLS, fingerprint, Nanoseconds
+from factory.contracts import exact_ns as exact_ns
 
 SECOND = 10**9
 DAY_SECONDS = 86400
 WEEK_SECONDS = DAY_SECONDS * 7
 MAX_QUERY_NS = 3 * 366 * DAY_SECONDS * SECOND
 UTC = timezone.utc
-
-
-def exact_ns(value):
-    if type(value) is int:
-        return value
-    if isinstance(value, str) and value.isascii() and value.isdecimal():
-        return int(value)
-    raise ValueError("exact integer nanoseconds or decimal string required")
-
-
-Nanoseconds = Annotated[int, BeforeValidator(exact_ns), Field(ge=0, le=2**63 - 1)]
 
 
 class WeeklySession(Contract):

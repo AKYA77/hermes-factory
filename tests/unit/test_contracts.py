@@ -203,3 +203,16 @@ def test_canonical_decimal_expansion_is_bounded_before_formatting():
     for value in (Decimal("1e1000000000"), Decimal("1e-1000000000")):
         with pytest.raises(ValueError, match="CANONICAL_DECIMAL_RESOURCE_LIMIT"):
             fingerprint({"v": value})
+
+
+def test_windows_reject_ambiguous_floating_and_boolean_nanoseconds():
+    from factory.contracts import Window
+    import pytest
+
+    for bad in (True, 1.0, 1735689600000000000.0, "1e18"):
+        with pytest.raises(ValueError, match="exact integer nanoseconds"):
+            Window(start_ns=bad, end_ns=1735689600000000001, role="train_only")
+    precise = Window(
+        start_ns="1735689600000000001", end_ns="1735689600000000002", role="train_only"
+    )
+    assert precise.end_ns - precise.start_ns == 1

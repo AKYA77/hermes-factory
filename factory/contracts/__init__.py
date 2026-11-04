@@ -4,12 +4,23 @@ from decimal import Decimal
 from enum import Enum
 import hashlib
 import json
-from typing import Literal
+from typing import Literal, Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator, BeforeValidator
 
 SYMBOLS = ("EURUSD", "GBPUSD", "USDJPY", "USDCHF", "USDCAD", "AUDUSD", "NZDUSD", "XAUUSD")
 TIMEFRAMES = {"M1": 60, "M5": 300, "M15": 900, "M30": 1800, "H1": 3600, "H4": 14400, "D1": 86400}
+
+
+def exact_ns(value):
+    if type(value) is int:
+        return value
+    if isinstance(value, str) and value.isascii() and value.isdecimal():
+        return int(value)
+    raise ValueError("exact integer nanoseconds or decimal string required")
+
+
+Nanoseconds = Annotated[int, BeforeValidator(exact_ns), Field(ge=0, le=2**63 - 1)]
 
 
 def canonical(value):
@@ -115,8 +126,8 @@ class InstrumentSpec(Contract):
 
 
 class Window(Contract):
-    start_ns: int = Field(ge=0)
-    end_ns: int = Field(gt=0)
+    start_ns: Nanoseconds = Field(ge=0)
+    end_ns: Nanoseconds = Field(gt=0)
     role: Literal[
         "train_only", "selection_oos", "final_holdout_unseen", "paper_forward", "report_only"
     ]
