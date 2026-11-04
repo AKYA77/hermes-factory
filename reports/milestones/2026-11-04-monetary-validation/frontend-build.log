@@ -1,0 +1,60 @@
+
+> hermes-factory-dashboard@0.1.0-dev build
+> vite build
+
+vite v8.3.5 building ssr environment for production...
+transforming...
+✓ 139 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/server/.vite/manifest.json                         2.80 kB │ gzip:  0.50 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.IixrjMQP.css    5.83 kB │ gzip:  1.46 kB
+.svelte-kit/output/server/chunks/index-server.js                      0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                 0.09 kB │ gzip:  0.10 kB │ map:   0.17 kB
+.svelte-kit/output/server/env.js                                      0.29 kB │ gzip:  0.18 kB │ map:   0.57 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js          0.29 kB │ gzip:  0.22 kB │ map:   0.34 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js           1.06 kB │ gzip:  0.42 kB │ map:   2.58 kB
+.svelte-kit/output/server/index.js                                    2.24 kB │ gzip:  0.90 kB │ map:   3.32 kB
+.svelte-kit/output/server/chunks/server-errors.js                    23.96 kB │ gzip:  4.49 kB │ map:  34.73 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js              25.68 kB │ gzip:  6.14 kB │ map:  39.40 kB
+.svelte-kit/output/server/chunks/server.js                           43.41 kB │ gzip: 12.05 kB │ map: 125.72 kB
+.svelte-kit/output/server/remote-entry.js                            54.23 kB │ gzip: 11.81 kB │ map:  89.76 kB
+.svelte-kit/output/server/chunks/internal.js                         87.86 kB │ gzip: 24.13 kB │ map: 192.25 kB
+.svelte-kit/output/server/chunks/instance.js                        117.51 kB │ gzip: 31.68 kB │ map: 239.93 kB
+
+✓ built in 329ms
+Analysing routes
+(node:158896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Building app
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 176 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                          0.02 kB │ gzip:  0.04 kB
+.svelte-kit/output/client/.vite/manifest.json                        3.20 kB │ gzip:  0.58 kB
+.svelte-kit/output/client/_app/immutable/assets/2.IixrjMQP.css       5.83 kB │ gzip:  1.46 kB
+.svelte-kit/output/client/_app/immutable/entry/payload.DSmR2FwN.js   0.06 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.D_0krt8K.js         0.32 kB │ gzip:  0.24 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BuP8gcrU.js         0.32 kB │ gzip:  0.26 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CW-Dcrgx.js     0.52 kB │ gzip:  0.31 kB
+.svelte-kit/output/client/_app/immutable/entry/app.Btn4Wnud.js       1.09 kB │ gzip:  0.55 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bjy-W4x2.js          1.36 kB │ gzip:  0.65 kB
+.svelte-kit/output/client/_app/immutable/chunks/CRzLMJPS.js          1.53 kB │ gzip:  0.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/DgDqqauV.js          4.29 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.CHTRPZ0H.js        34.22 kB │ gzip: 10.67 kB
+.svelte-kit/output/client/_app/immutable/chunks/k7ZApmwE.js         39.73 kB │ gzip: 14.67 kB
+.svelte-kit/output/client/_app/immutable/chunks/COreH3Yd.js         42.15 kB │ gzip: 16.30 kB
+
+✓ built in 214ms
+(node:158896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+(node:158896) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Wrote site to "build"
+✔ done

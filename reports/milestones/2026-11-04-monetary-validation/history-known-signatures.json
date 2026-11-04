@@ -1,0 +1,15 @@
+{
+  "observed_at_utc": "2026-11-04T01:58:06.320496+00:00",
+  "git_head": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+  "history_blobs_scanned": 459,
+  "bytes_scanned": 4933863,
+  "rules": [
+    "github_token",
+    "aws_access_id",
+    "slack_token",
+    "private_key"
+  ],
+  "findings": [],
+  "scope": "all reachable Git blobs, limited known token/private-key signatures; not a guarantee of absence",
+  "network_credential_verification": false
+}

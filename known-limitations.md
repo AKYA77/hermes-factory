@@ -76,7 +76,9 @@ Passing local tests is not completion of T01–T30 or gates A–M.
 - C7 partial: connected research/audit counts, bounded improvement controls,
   paired child evidence, cancellation and pause/resume are implemented. A real
   Chromium loopback rehearsal passed these controls and mobile overflow checks;
-  it exposed and fixed a CSP bootstrap failure. Full forensic charts, exports/PDF,
+  it exposed and fixed a CSP bootstrap failure. Connected validation protocols, forward marked-equity curves, annual/pooled
+  tables, protected states and exact-byte API exports now have real browser proof.
+  Full forensic charts, cohort diagnostics, exports/PDF,
   supervisor console and all blueprint browser workflows remain unfinished.
 - C8 partial: actual small synthetic benchmark, backup-copy rehearsal, lease recovery,
   auth/payload/rate-limit tests and pointer rollback harness. Real-source feed-only
@@ -140,3 +142,8 @@ are unchanged. See ADR 0011 and docs/completion-backlog.md.
 Exact-zero-signal Tier 0 now runs in persistent research and recovery, with
 immutable receipts, PRUNED feedback and native rejection audits. It does not
 perform approximate profitability screening or confer scientific validation.
+
+Latest actual evidence: docs/milestone-monetary-validation-2026-11-04.md and
+reports/milestones/2026-11-04-monetary-validation/manifest.json. The synthetic
+protocol still needs qualification before consuming final holdout and full
+marked-equity/data-completeness decision guards. No historical promotion is enabled.

@@ -1,8 +1,10 @@
 <script lang="ts">
+ import ValidationLab from '../lib/ValidationLab.svelte';
  let token = $state('');
  let view = $state('Overview');
  let symbol = $state('EURUSD');
  let data = $state<unknown>(null);
+ let evidencePath = $state('');
  let error = $state('');
  let pending = $state(false);
  const symbols=['EURUSD','GBPUSD','USDJPY','USDCHF','USDCAD','AUDUSD','NZDUSD','XAUUSD'];
@@ -19,16 +21,20 @@
  let maxParents=$state(8);
  let maxChildren=$state(4);
  let cpuBudget=$state(300);
- const routes:Record<string,string>={Overview:'overview',Leaderboards:'leaderboards/',Research:'research/status',Improvements:'improvement/status',Queue:'jobs',Experiments:'experiments',Coverage:'coverage','Market data':'data/manifest',Audit:'audit',Operations:'health/ready'};
+ const routes:Record<string,string>={Overview:'overview',Leaderboards:'leaderboards/',Research:'research/status',Improvements:'improvement/status',Validation:'validation/protocols',Queue:'jobs',Experiments:'experiments',Coverage:'coverage','Market data':'data/manifest',Audit:'audit',Operations:'health/ready'};
  async function request(path:string,method='GET',body?:unknown) {
   const r=await fetch('/api/v1/'+path,{method,headers:{Authorization:'Bearer '+token,...(body===undefined?{}:{'Content-Type':'application/json'})},...(body===undefined?{}:{body:JSON.stringify(body)})});
   if(!r.ok) throw new Error(`${r.status}: ${JSON.stringify(await r.json())}`);
   return r.json();
  }
+ async function download(path:string,name:string){
+  try{const response=await fetch('/api/v1/'+path,{headers:{Authorization:'Bearer '+token}});if(!response.ok)throw Error('Evidence download failed: '+response.status);const url=URL.createObjectURL(await response.blob());const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){error=String(e);}
+ }
  async function load(name=view){
   view=name;pending=true;error='';
   try {
-   data=await request(routes[name]+(name==='Leaderboards'?symbol:''));
+   const path=routes[name]+(name==='Leaderboards'?symbol:'');
+   data=await request(path);evidencePath=path;
    if(name==='Research'||name==='Improvements') protocols=await request('research/protocols');
    if(name==='Research') research=data as ResearchStatus;
    if(name==='Improvements'){improvement=data as ImprovementStatus;children=await request('improvement/children');}
@@ -50,7 +56,7 @@
   try{await request('improvement/policies','POST',{search_protocol_hash:selectedProtocol,max_parent_plans:maxParents,max_children:maxChildren,cpu_budget_seconds:cpuBudget});await load('Improvements');}
   catch(e){error=String(e);}finally{pending=false;}
  }
- async function inspect(run:string){pending=true;error='';try{data=await request('experiments/'+run);}catch(e){error=String(e);}finally{pending=false;}}
+ async function inspect(run:string){pending=true;error='';try{data=await request('experiments/'+run);evidencePath='experiments/'+run;}catch(e){error=String(e);}finally{pending=false;}}
 </script>
 <svelte:head><title>Hermes Factory · Research</title><meta name="description" content="Historical and paper research control plane"/></svelte:head>
 <div class="shell">
@@ -80,9 +86,10 @@
    <section class="panel"><h2>Improvement policies</h2>{#if improvement.policies.length===0}<p>No policies registered.</p>{/if}{#each improvement.policies as policy}<div class="row"><span>{policy.policy_hash.slice(0,12)} · {policy.enabled?'enabled':'disabled'}</span>{#if policy.enabled}<button disabled={pending} onclick={()=>stop('improvement/policies/'+policy.policy_hash+'/disable')}>Stop new children</button>{/if}</div>{/each}</section>
    <section class="panel"><h2>Children and paired comparisons</h2>{#if children.length===0}<p>No controlled children have been planned.</p>{/if}{#each children as child}<article><h3>{child.status??'Awaiting execution or budget'}</h3><p>{child.hypothesis}</p><button onclick={()=>{view='Experiments';inspect(child.child_experiment_hash);}} disabled={pending||!nativeChildRun(child)}>Inspect native run</button><details><summary>Paired evidence</summary><pre>{child.evidence_json?JSON.stringify(JSON.parse(child.evidence_json),null,2):'No completed comparison yet.'}</pre></details></article>{/each}</section>
   {/if}
+  {#if view==='Validation' && data!==null}<ValidationLab {request} {download}/>{/if}
   {#if view==='Queue' && Array.isArray(data)}<section class="panel"><h2>Jobs</h2>{#if data.length===0}<p>No queued jobs.</p>{/if}{#each data as job}<div class="row"><span>{job.job_id.slice(0,12)} · {job.state}</span>{#if ['QUEUED','RUNNING','FAILED_RETRYABLE'].includes(job.state)}<button disabled={pending} onclick={()=>stop('jobs/'+job.job_id+'/cancel')}>Cancel job</button>{/if}</div>{/each}</section>{/if}
   {#if view==='Experiments' && Array.isArray(data)}<ul>{#each data as run}<li><button onclick={()=>inspect(run.run_id)}>{run.instrument} · {run.status} · {run.run_id.slice(0,12)}</button></li>{/each}</ul>{/if}
-  {#if data!==null}<section class="panel"><details><summary>Application evidence</summary><pre>{JSON.stringify(data,null,2)}</pre></details></section>{:else}<section class="panel"><h2>Connect to inspect state</h2><p>No strategy metrics are displayed until deterministic jobs produce them.</p></section>{/if}
+  {#if data!==null}<section class="panel"><button disabled={pending||!evidencePath} onclick={()=>download(evidencePath,'hermes-'+view.toLowerCase().replaceAll(' ','-')+'.json')}>Download exact API response</button><details><summary>Application evidence</summary><p>Display only: browser numbers may round nanosecond timestamps. The download preserves exact API response bytes.</p><pre>{JSON.stringify(data,null,2)}</pre></details></section>{:else}<section class="panel"><h2>Connect to inspect state</h2><p>No strategy metrics are displayed until deterministic jobs produce them.</p></section>{/if}
   <footer>2025 / 2026 research · no brokerage execution · independent evidence required for validation</footer>
  </main>
 </div>

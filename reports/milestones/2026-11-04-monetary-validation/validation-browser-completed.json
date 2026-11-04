@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "phase": "completed",
+  "scope": "real Chromium + loopback authenticated API; labeled synthetic reference only; not full C7 acceptance",
+  "source": {
+    "git_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+    "source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922"
+  },
+  "state_directory": "validation-dashboard-qa-v4b",
+  "script_sha256": "7e13428002980f423ccc20fa8f45bf27d9a500f8ab6646e4d5f72e7844ce25da",
+  "frontend_sha256": {
+    "apps/dashboard/src/routes/+page.svelte": "a9a036a41d455f49830d4e201abfa4cb5892f36b3db97b41dcd0b214bf21f598",
+    "apps/dashboard/src/lib/ValidationLab.svelte": "5e3f1044ab44b017a327c16a4bd0317d3f8446f37a0528838dde96d9af72fac0"
+  },
+  "protocol_id": "109b077503c7cca06a38cdc5092ff4451b4552c83bb63b16941171f4b4829434",
+  "browser": "154.0.8037.57",
+  "checks": [
+    "live validation list",
+    "exact nanosecond response download",
+    "protected window state",
+    "responsive viewport",
+    "no page errors",
+    "actual native report and stages",
+    "observed equity curve",
+    "annual and pooled results",
+    "disabled state retained"
+  ],
+  "mobile": {
+    "document": 390,
+    "viewport": 390
+  }
+}

@@ -78,3 +78,5 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T46 | Pinned native Money policy | Actual USD/JPY/CHF constructor boundary checks and all-eight synthetic quote-P&L partial-entry/exit lifetimes pass; USD replay checks both native account and position references. Dated FX and verified broker units remain open |
 
 | T47 | Dated native conversion and base units | Scoped all-eight long/short stop/target native goldens, FX tie/chunk/materialized parity, synthetic Gold lot equivalence/third-decimal grid, gap insolvency, exact-risk boundary and actual JPY training/confirmation pass. Real metadata/calendar gates remain open |
+
+| T48 | Connected validation laboratory | Actual Chromium registration/pause/exact-nanosecond export, native staged report/curve/annual/pooled views, protected status and protocol stop pass; desktop/mobile plus previous control regression pass. Full C7 workflows remain unfinished |

@@ -133,3 +133,12 @@ lot equivalence/0.001 grid and actual JPY training/protected confirmation pass.
 Full verification: 259 tests, zero failures/skips, 322 third-party warnings,
 71.96 seconds; lint/frontend passed. Benchmark next. Verified real profiles,
 calendar integrity and full C0–C9/product gates remain active; NOT_READY.
+
+New measured v4 milestone: docs/milestone-monetary-validation-2026-11-04.md.
+Eight supervised 100k-quote synthetic jobs and 1,000 distinct short-fixture
+strategies pass with measured CPU/RSS. Connected Validation Lab passes real
+browser/API checks; no historical performance/production-throughput claim.
+Next correctness work: pre-confirmation qualification and marked-equity/data
+checks; verified profile/calendar/revision software; then complete approximate
+screening/shared indicators/discovery/recursive diagnostics/product lifecycle.
+Both dependency gates still fail. All readiness states remain false.
