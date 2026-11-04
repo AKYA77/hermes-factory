@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Annotated, Literal
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, Request
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 import psutil
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec, SYMBOLS, fingerprint
@@ -517,6 +517,65 @@ def create_app(root, dashboard=None):
             "SELECT * FROM source_quality_attempts ORDER BY created_at DESC,attempt_id LIMIT ? OFFSET ?",
             (limit, offset),
         )
+
+    @app.get("/api/v1/input-reviews", dependencies=read)
+    def reviewed_inputs(limit: int = Query(50, ge=1, le=200), offset: int = Query(0, ge=0)):
+        rows = store.rows(
+            "SELECT * FROM reviewed_inputs ORDER BY created_at DESC,review_id LIMIT ? OFFSET ?",
+            (limit, offset),
+        )
+        results = []
+        for row in rows:
+            body = json.loads(row["body_json"])
+            dependencies = [row["review_id"]]
+            if row["kind"] == "admission":
+                dependencies += [body["profile_review_id"], body["calendar_review_id"]]
+            revoked = [
+                key
+                for key in dependencies
+                if store.rows("SELECT 1 FROM input_revocations WHERE review_id=?", (key,))
+            ]
+            period = body.get("window") or {
+                "start_ns": body["effective_start_ns"],
+                "end_ns": body["effective_end_ns"],
+            }
+            results.append(
+                {
+                    "review_id": row["review_id"],
+                    "kind": row["kind"],
+                    "reviewer": body["reviewer"],
+                    "start_ns": str(period["start_ns"]),
+                    "end_ns": str(period["end_ns"]),
+                    "revoked_dependencies": revoked,
+                    "reference_count": len(
+                        {c["document_sha256"] for c in body.get("citations", {}).values()}
+                    ),
+                    "assumption_fields": [
+                        key
+                        for key, c in body.get("citations", {}).items()
+                        if c["basis"] == "explicit_research_assumption"
+                    ],
+                    "status": "REVOKED" if revoked else "RECORDED_REQUIRES_EXECUTION_RECHECK",
+                }
+            )
+        return results
+
+    @app.get("/api/v1/input-reviews/{identity}", dependencies=read)
+    def reviewed_input_detail(identity: str):
+        from factory.data.admission import InputRegistry
+
+        rows = store.rows("SELECT * FROM reviewed_inputs WHERE review_id=?", (identity,))
+        if not rows:
+            raise HTTPException(404, "unknown reviewed input")
+        registry = InputRegistry(root, Catalog(root / "catalog"))
+        try:
+            if rows[0]["kind"] == "admission":
+                registry._check_admission(registry._load(identity, "admission"))
+            else:
+                registry.reference(identity, rows[0]["kind"])
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+        return Response(rows[0]["body_json"], media_type="application/json")
 
     @app.get("/api/v1/audit", dependencies=read)
     def audit(limit: int = Query(25, ge=1, le=100), offset: int = Query(0, ge=0)):

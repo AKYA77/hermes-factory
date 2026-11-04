@@ -29,6 +29,20 @@ def main():
     quality.add_argument("--tzif", type=Path)
     quality.add_argument("--profile", type=Path)
     subs.add_parser("source-quality-status")
+    review = subs.add_parser("reference-register")
+    review.add_argument("review_file", type=Path)
+    review.add_argument("documents", nargs="+", type=Path)
+    review.add_argument("--tzif", type=Path)
+    admission = subs.add_parser("source-admit")
+    admission.add_argument("admission_file", type=Path)
+    admission.add_argument("--catalog", type=Path)
+    revoke = subs.add_parser("input-revoke")
+    revoke.add_argument("review_id")
+    revoke.add_argument("--actor", required=True)
+    revoke.add_argument("--reason", required=True)
+    reviews = subs.add_parser("input-reviews")
+    reviews.add_argument("--limit", type=int, default=50)
+    reviews.add_argument("--offset", type=int, default=0)
     compose = subs.add_parser("catalog-compose")
     compose.add_argument("partitions", nargs="+")
     gates = subs.add_parser("readiness")
@@ -58,6 +72,44 @@ def main():
     subs.add_parser("resume")
     args = parser.parse_args()
     root = Path(args.state).resolve()
+    if args.command in ("reference-register", "source-admit", "input-revoke", "input-reviews"):
+        from factory.data import Catalog
+        from factory.data.admission import InputRegistry, ReferenceReview, AdmissionSpec
+
+        registry = InputRegistry(root, Catalog(getattr(args, "catalog", None) or root / "catalog"))
+        if args.command == "reference-register":
+            if len(args.documents) > 16:
+                parser.error("maximum 16 captured reference documents")
+            documents = {}
+            for path in args.documents:
+                with path.open("rb") as stream:
+                    data = stream.read(4 * 1024**2 + 1)
+                if len(data) > 4 * 1024**2:
+                    parser.error("reference exceeds 4 MiB")
+                documents[hashlib.sha256(data).hexdigest()] = data
+            value = registry.register_reference(
+                ReferenceReview.model_validate_json(args.review_file.read_text()),
+                documents,
+                tzif=args.tzif.read_bytes() if args.tzif else None,
+            )
+        elif args.command == "source-admit":
+            value = registry.register_admission(
+                AdmissionSpec.model_validate_json(args.admission_file.read_text())
+            )
+        elif args.command == "input-revoke":
+            registry.revoke(args.review_id, args.actor, args.reason)
+            value = {"revoked": args.review_id}
+        else:
+            if not 1 <= args.limit <= 200 or args.offset < 0:
+                parser.error("input review page requires limit 1..200 and nonnegative offset")
+            value = registry.store.rows(
+                """SELECT r.*,v.reason revocation_reason
+                FROM reviewed_inputs r LEFT JOIN input_revocations v USING(review_id)
+                ORDER BY r.created_at,r.review_id LIMIT ? OFFSET ?""",
+                (args.limit, args.offset),
+            )
+        print(json.dumps(value, indent=2))
+        return
     if args.command == "source-quality":
         from factory.data import Catalog
         from factory.data.source_quality import SourceQuality, SourceQualityPolicy

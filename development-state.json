@@ -38,27 +38,28 @@
     "captured TZif/dated calendar rules, bounded all-event source quality with immutable migration007 receipts/captured inputs/failure retention, CLI and authenticated streaming/API/data panel",
     "clean df70 real-source QA: 21,345,746 rows / eight instruments, measured CPU/RSS and actual authenticated browser/exact export/mobile proof",
     "source QA SIGKILL identity retention and actual killed-child full retry regression",
-    "search/v3 exact declared pip-based stop bounds, legacy v1/v2 identities/ranges preserved, native .001-tick/.1-pip Gold endpoint BUY/SELL risk/RR goldens"
+    "search/v3 exact declared pip-based stop bounds, legacy v1/v2 identities/ranges preserved, native .001-tick/.1-pip Gold endpoint BUY/SELL risk/RR goldens",
+    "migration008 immutable reviewed profile/calendar/source admission and permanent revocations; real-input native worker/evaluator eligibility with exact experiment-policy binding and completion-lock checks; genuine reference choice and historical rehearsal remain pending"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
-    "passed": 302,
+    "passed": 310,
     "failed": 0,
     "skipped": 0,
-    "warnings": 348,
-    "pytest_seconds": 82.08,
+    "warnings": 354,
+    "pytest_seconds": 85.15,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/2026-11-04-source-recovery-search/full-verification.log"
+    "log": "reports/milestones/2026-11-04-reviewed-inputs/full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+  "latest_evidence_manifest": "reports/milestones/2026-11-04-reviewed-inputs/manifest.json",
   "latest_milestone": "docs/milestone-source-quality-recovery-search-2026-11-04.md",
   "latest_scientific_code_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
-  "next_unfinished": "Reviewed metadata/calendar admission registry and source revisions; native session integration; versioned scientific protocol opt-in to profile-aware search; calibrated cost-aware screening/shared indicators/full autonomous discovery and remaining product/lifecycle/security/target gates.",
-  "observed_at_utc": "2026-11-04T03:52:17.844950+00:00",
+  "next_unfinished": "Clean-source actual review-registry browser proof; then source revisions and full historical scientific/search admission propagation; cost-aware screening, indicators/full discovery and all remaining gates.",
+  "observed_at_utc": "2026-11-04T16:10:37.659763+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -99,8 +100,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "ea2e369b2a63117fc55a52f03c1c5282f07aa5db",
-    "source_sha256": "5d57bdbe47a9ae1c6db29d7c397a0a51bde3e75e5cdbbc4a7a0650da8022e60f",
+    "git_commit": "ced580e325633d2ed1ed76949b689df9c814a6f8",
+    "source_sha256": "4a67b603a262ebf962d35b6db52f9df42802c3b82a360822f9782e54e9290ee7",
     "working_tree_scientific_edits": true
   },
   "visibility": {
@@ -109,5 +110,8 @@
     "observed_at_utc": "2026-11-04T02:36:17.332002+00:00",
     "owner_decision_pending": true,
     "private_claim_superseded": true
-  }
+  },
+  "goal_source": "docs/source/Persistent_Software_Completion_Goal_2026-11-04.md",
+  "completion_ledger": "completion-ledger.json",
+  "resume_instructions": "NEXT_ACTION.md"
 }

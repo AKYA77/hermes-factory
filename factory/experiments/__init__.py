@@ -276,6 +276,9 @@ class Store:
 
             if type(result.get("synthetic")) is not bool:
                 raise ValueError("explicit evidence source kind required")
+            from factory.data.admission import require_active_at_completion
+
+            require_active_at_completion(db, contract, result)
             for window in contract.windows:
                 if window.role != "train_only":
                     raise ValueError("evaluation evidence cannot enter training registry")
@@ -346,6 +349,9 @@ class Store:
             raise ValueError("evaluation artifact checksum mismatch")
         holdout = result.get("managed_holdout", {}).get("holdout_id")
         with self.transaction() as db:
+            from factory.data.admission import require_active_at_completion
+
+            require_active_at_completion(db, contract, result)
             now = time.time()
             active = db.execute(
                 "SELECT 1 FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",

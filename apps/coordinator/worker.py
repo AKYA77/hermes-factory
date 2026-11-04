@@ -34,8 +34,17 @@ def run(payload, root):
     manifest = catalog.verify(contract.dataset_hash, deep=True)
     if spec.instrument != profile.instrument or manifest["instrument"] != spec.instrument:
         raise ValueError("instrument identity mismatch")
-    if not profile.synthetic or not manifest["provenance"].get("synthetic"):
-        raise ValueError("HISTORICAL_APPROVAL_REQUIRED: provider and instrument gate not complete")
+    admission = None
+    registry = None
+    if bool(manifest["provenance"].get("synthetic")) != profile.synthetic:
+        raise ValueError("source/profile evidence kind mismatch")
+    if not profile.synthetic:
+        from factory.data.admission import InputRegistry
+
+        registry = InputRegistry(root, catalog)
+        admission = registry.require(contract, profile)
+        if payload.get("screening") is not None:
+            raise ValueError("historical Tier 0 requires its own approved screening policy")
     window = contract.windows[0]
     from factory.experiments import Store
     from factory.validation.access import training_use
@@ -101,6 +110,10 @@ def run(payload, root):
         )
     catalog.verify(contract.dataset_hash, deep=True)
     result["runtime_provenance"] = context
+    if registry is not None:
+        if registry.require(contract, profile) != admission:
+            raise ValueError("historical admission changed during replay")
+        result["input_admission"] = admission
     if receipt is not None:
         result["tier0_screen"] = receipt.model_dump(mode="json")
         if receipt.decision == "AUDIT_NO_SIGNALS":

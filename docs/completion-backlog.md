@@ -189,3 +189,12 @@ Milestone: docs/milestone-source-quality-recovery-search-2026-11-04.md.
 Next: reviewed dated metadata/calendar admission and source revisions, then
 remaining real screening/discovery/diagnostics/scientific/product/lifecycle work.
 Do not mark C2/C4/C6 complete, publish a ready release or weaken security checks.
+
+Owner Persistent Software Completion Goal archived verbatim. completion-ledger.json
+tracks C0–C9/T01–T53 without treating scoped tests as complete milestones.
+ADR0022/migration008 adds captured reviewed profile/calendar/source admissions,
+permanent revocations and an approved-input branch in native workers/evaluator.
+Full verification310passed/354warnings/85.15s plus frontend/lint/format pass.
+Generated authorization fixtures are NOT genuine historical market validation.
+Next clean-source browser proof, source revisions, historical scientific/search
+propagation, cost-aware screen/shared indicators/full discovery and remaining gates.

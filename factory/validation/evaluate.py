@@ -27,10 +27,15 @@ def evaluate(root, payload):
     manifest = catalog.verify(contract.dataset_hash, deep=True)
     if manifest["instrument"] != spec.instrument or profile.instrument != spec.instrument:
         raise ValueError("instrument mismatch")
-    if not profile.synthetic or not manifest["provenance"].get("synthetic"):
-        raise ValueError(
-            "HISTORICAL_EVALUATION_BLOCKED: verified profiles and evaluation gates required"
-        )
+    admission = None
+    registry = None
+    if bool(manifest["provenance"].get("synthetic")) != profile.synthetic:
+        raise ValueError("source/profile evidence kind mismatch")
+    if not profile.synthetic:
+        from factory.data.admission import InputRegistry
+
+        registry = InputRegistry(Path(root).parent, catalog)
+        admission = registry.require(contract, profile, warmup_start_ns=manifest["first_ns"])
     from factory.experiments import Store
     from factory.validation.access import evaluation_use
 
@@ -93,7 +98,13 @@ def evaluate(root, payload):
     catalog.verify(contract.dataset_hash, deep=True)
     if require_execution_version(contract) != context:
         raise ValueError("execution source changed during evaluation")
+    if (
+        registry is not None
+        and registry.require(contract, profile, warmup_start_ns=manifest["first_ns"]) != admission
+    ):
+        raise ValueError("historical admission changed during evaluation")
     return {
+        **({"input_admission": admission} if admission is not None else {}),
         "managed_holdout": {
             "holdout_id": payload.get("holdout_id"),
             "independent_observation_id": payload.get("holdout_authorization"),

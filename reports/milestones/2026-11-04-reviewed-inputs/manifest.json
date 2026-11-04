@@ -1,0 +1,25 @@
+{
+  "status": "NOT_READY",
+  "tested_source_context": {
+    "git_commit": "ced580e325633d2ed1ed76949b689df9c814a6f8",
+    "source_sha256": "4a67b603a262ebf962d35b6db52f9df42802c3b82a360822f9782e54e9290ee7",
+    "working_tree_scientific_edits": true
+  },
+  "verification": {
+    "passed": 310,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 354,
+    "pytest_seconds": 85.15,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS"
+  },
+  "real_historical_evaluation": false,
+  "test_scope": "generated TEST_ONLY authorization fixtures using genuine native workers; not genuine historical market validation",
+  "files": {
+    "focused-verification.log": "5078bb79075086073b887424f8cce4d96087d4c56a376a01fc8807db43bc885d",
+    "full-verification.log": "1c07fa334484648b321f592e3f6db5112b84589201e827f5abc0af759cdadd8d"
+  }
+}
