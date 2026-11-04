@@ -1,0 +1,29 @@
+{
+  "status": "NOT_READY",
+  "tested_source_context": {
+    "git_commit": "242f45e7b88f50e6cd597ca1fd3ed6aa5586cbf0",
+    "source_sha256": "e1e1a9140ebce984fa57dcad95df3041b0fc9ca0685fe6ba7e4598a9377c3067",
+    "working_tree_scientific_edits": true
+  },
+  "verification": {
+    "passed": 337,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 362,
+    "pytest_seconds": 89.94,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS"
+  },
+  "benchmark_scope": "generated multi-quarter feature-only; cost labels add work; NOT native or compiled screening throughput",
+  "approximate_pruning_enabled": false,
+  "files": {
+    "feature-benchmark.json": "a7acb6ff1691cdbacf07c6d7c033deec23037eb85ae9be4847e0d044ecd6de66",
+    "first-attempt-injection-boundary.log": "ff9e76b2dd66051438da31c953900f63d6ab02e076df03296d3315ed167cc8cf",
+    "retained-identity-compatibility.json": "e6d88619352e07d258142b0a5d9c610066bf92e531a008bf970f0bccda4d4a36",
+    "focused-verification.log": "6fff745e5408cfe6189c4ed14100bd78974597ef5bc0ebf44faf9afab1765979",
+    "decimal-regression.json": "8b70126f54136ed3eb71de07cbd773cd42e7e766b14aa7c2cdba073fdfd9f6a4",
+    "full-verification.log": "3f05ef855ba877c6e6826aa15ea6c48d5b2f034ab0afbc627d9583692da8d315"
+  }
+}

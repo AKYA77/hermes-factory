@@ -66,27 +66,29 @@
     "source QA SIGKILL identity retention and actual killed-child full retry regression",
     "search/v3 exact declared pip-based stop bounds, legacy v1/v2 identities/ranges preserved, native .001-tick/.1-pip Gold endpoint BUY/SELL risk/RR goldens",
     "migration008 immutable reviewed profile/calendar/source admission and permanent revocations; real-input native worker/evaluator eligibility with exact experiment-policy binding and completion-lock checks; genuine reference choice and historical rehearsal remain pending",
-    "migration009 source observation/selection/snapshot lineage, exact bounded positional comparisons, immutable quarantine/restoration episodes and alias/completion guards; separate retained free recaptures and automatic import observation"
+    "migration009 source observation/selection/snapshot lineage, exact bounded positional comparisons, immutable quarantine/restoration episodes and alias/completion guards; separate retained free recaptures and automatic import observation",
+    "exact context-independent/bounded Decimal fingerprint encoding; read-only 42-state/32,450-retained-typed-value compatibility proof",
+    "versioned opt-in cost-horizon feature labels and immutable native shadow audits; native positive counterexample preserves candidate and disables approximate pruning authority; ordinary cheap path retained"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
-    "passed": 320,
+    "passed": 337,
     "failed": 0,
     "skipped": 0,
-    "warnings": 356,
-    "pytest_seconds": 91.45,
+    "warnings": 362,
+    "pytest_seconds": 89.94,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/2026-11-04-source-revisions/full-verification.log"
+    "log": "reports/milestones/2026-11-04-cost-shadow-decimal-identity/full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/2026-11-04-source-revisions/manifest.json",
+  "latest_evidence_manifest": "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json",
   "latest_milestone": "docs/milestone-reviewed-inputs-source-revisions-2026-11-04.md",
   "latest_scientific_code_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
-  "next_unfinished": "Complete real historical reference approval/propagation when legitimate venue facts are available; continue genuine cost-aware Tier 0/shared indicators and full autonomous discovery, with remaining source resume/UI/scientific/lifecycle gates.",
-  "observed_at_utc": "2026-11-04T16:35:08.480632+00:00",
+  "next_unfinished": "Clean-commit supervised cost-shadow verification, then calibrated approximate shortlist/rejection audits and shared indicators/full discovery; legitimate historical profile review and scientific/search propagation, source intra-partition resume/UI, full diagnostics/scientific/product/lifecycle/security/target gates.",
+  "observed_at_utc": "2026-11-04T17:17:03.413649+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -128,8 +130,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "c76757246116b589814fc884d47a271fe90d80e3",
-    "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983",
+    "git_commit": "242f45e7b88f50e6cd597ca1fd3ed6aa5586cbf0",
+    "source_sha256": "e1e1a9140ebce984fa57dcad95df3041b0fc9ca0685fe6ba7e4598a9377c3067",
     "working_tree_scientific_edits": true
   },
   "visibility": {

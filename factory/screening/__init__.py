@@ -59,6 +59,13 @@ def screen(signals, contract):
     for signal in signals:
         digest.update(serialize(signal).encode() + b"\n")
         count += 1
+    return from_summary(count, digest.hexdigest(), contract)
+
+
+def from_summary(count, signal_sha256, contract):
+    """Reuse an exact compiler digest without another full feature pass."""
+    if any(w.role != "train_only" for w in contract.windows):
+        raise ValueError("Tier 0 pruning is training-only")
     decision = (
         "PASS_TO_NATIVE"
         if count
@@ -72,7 +79,7 @@ def screen(signals, contract):
         strategy_hash=contract.strategy_hash,
         code_revision=contract.code_revision,
         signal_count=count,
-        signal_sha256=digest.hexdigest(),
+        signal_sha256=signal_sha256,
         decision=decision,
     )
 

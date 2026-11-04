@@ -1,0 +1,29 @@
+.............F............                                               [100%]
+=================================== FAILURES ===================================
+______________ test_false_negative_is_quarantined_never_promoted _______________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-96/test_false_negative_is_quarant0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7f89e42378c0>
+
+    def test_false_negative_is_quarantined_never_promoted(tmp_path, monkeypatch):
+        payload, contract = prepared(tmp_path, True, signals=True)
+        # Inject a broken screen. Real compiler + real Nautilus must contradict it.
+>       monkeypatch.setattr(worker, "screen", lambda signals, contract: screen([], contract))
+E       AttributeError: <module 'apps.coordinator.worker' from '/workspace/hermes-factory/apps/coordinator/worker.py'> has no attribute 'screen'
+
+tests/integration/test_screening.py:78: AttributeError
+=============================== warnings summary ===============================
+tests/integration/test_cost_label_native_audit.py::test_native_positive_counterexample_is_preserved_and_not_approximately_pruned
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_cost_label_native_audit.py::test_native_positive_counterexample_is_preserved_and_not_approximately_pruned
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+1 failed, 25 passed, 4 warnings in 18.01s

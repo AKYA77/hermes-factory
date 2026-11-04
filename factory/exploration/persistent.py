@@ -47,10 +47,17 @@ class SearchProtocol(Contract):
     )
     objective: Literal["training-net-return/v1"] = "training-net-return/v1"
     optimizer: Literal["optuna-tpe/4.5.0-reseed/v1"] = "optuna-tpe/4.5.0-reseed/v1"
-    research_kind: Literal["synthetic-training/v1"] = "synthetic-training/v1"
+    research_kind: Literal["synthetic-training/v1", "synthetic-cost-shadow-training/v1"] = (
+        "synthetic-training/v1"
+    )
 
     @model_validator(mode="after")
     def training_only(self):
+        if (
+            self.research_kind == "synthetic-cost-shadow-training/v1"
+            and self.schema_version != "search/v3"
+        ):
+            raise ValueError("cost shadow training requires explicit search/v3")
         if self.window.role != "train_only":
             raise ValueError("optimizer may use authorized training only, never OOS/holdout")
         if self.timeframe not in TIMEFRAMES or not self.confirmation_options:

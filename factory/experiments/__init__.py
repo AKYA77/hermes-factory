@@ -316,6 +316,9 @@ class Store:
                     time.time(),
                 ),
             )
+            from factory.screening.labels import record_native_audit
+
+            record_native_audit(db, contract, spec, result, artifact_hash)
             if job_id is not None:
                 self._resources(db, token, resources)
                 db.execute(

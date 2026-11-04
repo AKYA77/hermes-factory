@@ -149,3 +149,57 @@ def test_quarter_boundary_never_rounds_a_nanosecond_into_future():
     end = int(datetime(2025, 10, 1, tzinfo=timezone.utc).timestamp()) * 10**9
     first = next(quarter_folds(cut - 1, end))
     assert first["train_end"] == cut
+
+
+def test_decimal_identity_preserves_all_digits_independently_of_arithmetic_context():
+    from decimal import Decimal, localcontext
+    from factory.contracts import canonical, fingerprint
+
+    left = Decimal("1.0000000000000000000000000001")
+    right = Decimal("1.0000000000000000000000000002")
+    assert fingerprint({"v": left}) != fingerprint({"v": right})
+    for precision in (2, 6, 28, 60):
+        with localcontext() as context:
+            context.prec = precision
+            assert canonical(left) == "1.0000000000000000000000000001"
+            assert canonical(Decimal("1.23456789")) == "1.23456789"
+            assert (
+                fingerprint({"value": Decimal("1.23456789")})
+                == "8f85642ee24c1d6cc777b89e4c1a4278fbafbbe7faa479a537bed3e8ee8fe227"
+            )
+            assert canonical(Decimal("1000.000")) == "1000"
+            assert canonical(Decimal("0.0000100")) == "0.00001"
+            assert canonical(Decimal("-0.000")) == "-0"
+            assert fingerprint({"v": Decimal("1.2300")}) == fingerprint({"v": Decimal("1.23")})
+
+
+def test_exact_decimal_encoding_matches_legacy_for_representable_values():
+    from decimal import Decimal, localcontext
+    from factory.contracts import canonical
+
+    for raw in (
+        "1",
+        "20.00",
+        "0.1",
+        "1000000",
+        "1e-12",
+        "-125.000",
+        "-0.00",
+        "1234567890123456789012345678",
+        "100000000000000000000000000000000000",
+    ):
+        value = Decimal(raw)
+        with localcontext() as context:
+            context.prec = 28
+            legacy = format(value.normalize(), "f")
+        assert canonical(value) == legacy
+
+
+def test_canonical_decimal_expansion_is_bounded_before_formatting():
+    from decimal import Decimal
+    import pytest
+    from factory.contracts import fingerprint
+
+    for value in (Decimal("1e1000000000"), Decimal("1e-1000000000")):
+        with pytest.raises(ValueError, match="CANONICAL_DECIMAL_RESOURCE_LIMIT"):
+            fingerprint({"v": value})

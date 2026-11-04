@@ -208,3 +208,14 @@ proof next. Intra-partition import checkpoint resume, full data UI/admission/sea
 propagation and other original gates still remain. Both security scans still exit1;
 latest upstream native still pins vulnerable fsspec. GitHub remains PUBLIC and
 latest CI covers9034 only, not these unpushed commits. No readiness promotion.
+
+ADR0024/migration010 adds bounded cost-aware feature-label estimates with opt-in
+synthetic-cost-shadow-training/v1 identity and immutable native disagreement
+records. Existing cheap protocols remain unchanged; no approximate pruning is
+authorized. Native profitable counterexample demonstrates proxy false negatives.
+ADR0025 fixes Decimal.normalize context rounding in fingerprints, preserving all
+checked retained typed values and failing resource-heavy decimal expansions.
+Full verification337passed/362warnings/89.94s plus lint/format/frontend pass.
+Feature-only cost labels add3.03–3.29×cheap-stage work; no speedup/native throughput
+claim. Next frozen calibration/shortlist/audit/fallback, shared indicators/full
+families/discovery and remaining historical/scientific/source/product/release gates.

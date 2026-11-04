@@ -23,9 +23,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json"
       ],
-      "supporting_evidence_scope": "Unit normalization/differences tested; broader operator semantic coverage pending",
+      "supporting_evidence_scope": "Unit normalization/differences tested; broader operator semantic coverage pending; newly found Decimal context loss fixed and regression/retained-value compatibility verified; earlier narrow normalization evidence was incomplete for high precision.",
       "status": "PASS",
       "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "next_required_action": "Retain verified software evidence; rerun on any affected change."
@@ -2827,6 +2828,41 @@
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Generated revision/recovery/native fixtures pass; genuine additional-period integration and full source operations pending.",
       "next_required_action": "Run measured real January/February source workflow; complete source UI and intra-partition recovery."
+    },
+    {
+      "requirement_id": "T56",
+      "title": "Cost-aware labels and native shadow audit",
+      "acceptance_criteria": "Causal training-only fixed-horizon cost labels; exact compiler parity; bounded/censored label state; preserved native disagreements; genuine calibrated pruning still required.",
+      "implementation_files": [
+        "factory/screening/labels.py",
+        "factory/exploration/persistent.py",
+        "apps/coordinator/worker.py",
+        "migrations/010_cost_label_audits.sql"
+      ],
+      "verification_command": ".venv/bin/pytest tests/unit/test_cost_horizon_labels.py tests/integration/test_cost_label_native_audit.py -q",
+      "evidence": [
+        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json"
+      ],
+      "status": "NOT_TESTED",
+      "supporting_evidence_scope": "Shadow estimates and persistent TPE/native tests pass; actual pruning disabled; feature-only benchmark disclosed as extra work.",
+      "next_required_action": "Implement frozen calibrated shortlist policy, independent ongoing rejection cohorts, fallback/recovery and scientific selection-bias integration."
+    },
+    {
+      "requirement_id": "T57",
+      "title": "Lossless Decimal identity",
+      "acceptance_criteria": "Distinct finite exact decimal inputs do not collide by arithmetic-context rounding; insignificant padding and correctly representable old IDs remain stable; oversized expansion fails before allocation.",
+      "implementation_files": [
+        "factory/contracts/__init__.py",
+        "tests/unit/test_contracts.py",
+        "scripts/verify-decimal-identity.py"
+      ],
+      "verification_command": ".venv/bin/pytest tests/unit/test_contracts.py -q; .venv/bin/python scripts/verify-decimal-identity.py --states .local --output reports/runtime/decimal-identity-compatibility.json",
+      "evidence": [
+        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json"
+      ],
+      "status": "PASS",
+      "supporting_evidence_scope": "Context2/6/28/60 and collision/resource goldens;42states/32,450retained typed values unchanged,not proof of pre-normalization inputs.",
+      "next_required_action": "Retain regression and compatibility evidence; do not rewrite or fabricate older ambiguous source inputs."
     }
   ],
   "release_manifest_assessment": {

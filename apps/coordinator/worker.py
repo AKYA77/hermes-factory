@@ -16,7 +16,8 @@ from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
 from factory.strategies import iter_bar_signals
 from factory.features.disk import BarCache
-from factory.screening import SCREEN_POLICY, screen, persist
+from factory.screening import SCREEN_POLICY, screen, from_summary, persist
+from factory.screening.labels import CostHorizonPolicy, estimate_labels
 
 
 def run(payload, root):
@@ -67,7 +68,11 @@ def run(payload, root):
 
     cache = BarCache(Path(root) / "cache" / "bars")
     screening = payload.get("screening")
+    cost_shadow = contract.evaluation_policy == "synthetic-cost-shadow-training/v1"
+    if cost_shadow and screening != SCREEN_POLICY:
+        raise ValueError("cost shadow contract requires the versioned exact-zero screen")
     receipt = None
+    cost_labels = None
     if screening is not None:
         if screening != SCREEN_POLICY:
             raise ValueError("unsupported screening policy")
@@ -80,7 +85,13 @@ def run(payload, root):
             start_ns=window.start_ns,
             end_ns=window.end_ns,
         ) as events:
-            receipt = screen(iter_bar_signals(events, spec), contract)
+            if cost_shadow:
+                cost_labels = estimate_labels(events, spec, profile, contract, CostHorizonPolicy())
+                receipt = from_summary(
+                    cost_labels["signal_count"], cost_labels["signal_sha256"], contract
+                )
+            else:
+                receipt = screen(iter_bar_signals(events, spec), contract)
         catalog.verify(contract.dataset_hash, deep=True)
         with Store(Path(root) / "factory.sqlite").transaction() as db:
             reject_quarantined(db, manifest)
@@ -116,6 +127,8 @@ def run(payload, root):
     with Store(Path(root) / "factory.sqlite").transaction() as db:
         reject_quarantined(db, manifest)
     result["runtime_provenance"] = context
+    if cost_labels is not None:
+        result["cost_horizon_labels"] = cost_labels
     if registry is not None:
         if registry.require(contract, profile) != admission:
             raise ValueError("historical admission changed during replay")

@@ -18,7 +18,14 @@ def canonical(value):
     if isinstance(value, Decimal):
         if not value.is_finite():
             raise ValueError("nonfinite decimal")
-        return format(value.normalize(), "f")
+        parts = value.as_tuple()
+        if len(parts.digits) + abs(parts.exponent) > 16384:
+            raise ValueError("CANONICAL_DECIMAL_RESOURCE_LIMIT")
+        # Decimal.normalize() uses the active arithmetic context and can round
+        # distinct inputs to the same fingerprint. Formatting is exact; remove
+        # only insignificant fractional zeros, without numerical operations.
+        encoded = format(value, "f")
+        return encoded.rstrip("0").rstrip(".") if "." in encoded else encoded
     if isinstance(value, Enum):
         return value.value
     if isinstance(value, dict):

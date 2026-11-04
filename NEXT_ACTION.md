@@ -39,3 +39,13 @@ starting with cost-aware screening/shared indicators and historical scientific
 propagation; source intra-partition resume/UI still need completion. No genuine
 historical strategy result has been approved. Keep code unchanged during any
 provenance-bound run. Latest remote remains9034; new pushes held for visibility.
+
+Further cycle: ADR0024/0025 and migration010. Cost labels are a bounded shadow
+estimate enabled only by research_kind synthetic-cost-shadow-training/v1, with
+native audit records and a real synthetic-native false-negative counterexample.
+Actual cost-based pruning remains DISABLED and its full mandatory gate is open.
+Fingerprint Decimal context loss is fixed; retained typed-value compatibility
+was checked read-only. Final suite337passes/362warnings/89.94s plus frontend/lint.
+Next clean-commit supervised counterexample, then calibrated shortlists/native
+rejection cohorts/fallback and shared indicators/full discovery. No readiness
+state or original requirement was waived; previous code/data/evidence stays intact.
