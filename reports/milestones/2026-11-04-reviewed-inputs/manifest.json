@@ -19,7 +19,12 @@
   "real_historical_evaluation": false,
   "test_scope": "generated TEST_ONLY authorization fixtures using genuine native workers; not genuine historical market validation",
   "files": {
+    "browser.log": "19b3c3c437c8e10ac7b0caaf26c4fcdb25ae13469de2d6f0c9054738d0c35710",
+    "browser-desktop.png": "9664c3cc61e6026ebcff09fb0f0575113c724aafef5abfe61ca6520e489f9a5c",
+    "browser.json": "24e6f210bf917e511d1609261ecf09c5b53157f55b689742ff76aa04befef6ed",
     "focused-verification.log": "5078bb79075086073b887424f8cce4d96087d4c56a376a01fc8807db43bc885d",
-    "full-verification.log": "1c07fa334484648b321f592e3f6db5112b84589201e827f5abc0af759cdadd8d"
-  }
+    "full-verification.log": "1c07fa334484648b321f592e3f6db5112b84589201e827f5abc0af759cdadd8d",
+    "browser-mobile.png": "413bf7a6c9105c18c7ae61f16b05ec70b2e292264b705379484ddb2147b61173"
+  },
+  "browser_source_commit": "11de2230cdac1c58e2aeeb3f930ab1d05f980b45"
 }

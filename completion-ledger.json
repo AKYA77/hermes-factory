@@ -2789,6 +2789,25 @@
       ],
       "status": "NOT_TESTED",
       "next_required_action": "Blocked; no approved release/tag"
+    },
+    {
+      "requirement_id": "T54",
+      "title": "Reviewed historical inputs",
+      "acceptance_criteria": "Unknown/ambiguous metadata blocks; exact captured reference and source scope permits approved execution; revoked or changed dependencies block finalization. Genuine historical market rehearsal required separately.",
+      "implementation_files": [
+        "factory/data/admission.py",
+        "apps/coordinator/worker.py",
+        "factory/validation/evaluate.py",
+        "factory/experiments/__init__.py",
+        "apps/dashboard/src/lib/InputReviews.svelte"
+      ],
+      "verification_command": ".venv/bin/pytest tests/integration/test_reviewed_inputs.py -q; node scripts/reviewed-inputs-browser-smoke.cjs",
+      "evidence": [
+        "reports/milestones/2026-11-04-reviewed-inputs/manifest.json"
+      ],
+      "status": "NOT_TESTED",
+      "supporting_evidence_scope": "Generated TEST_ONLY authorization/native fixtures and actual Chromium pass; genuine reviewed reference and historical evaluation pending.",
+      "next_required_action": "Choose and review legitimate dated instrument/provider references; run the real source evaluation and complete historical search/scientific propagation."
     }
   ],
   "release_manifest_assessment": {

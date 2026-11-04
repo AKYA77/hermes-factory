@@ -68,3 +68,10 @@ Full verification: scripts/verify.sh exit0, 310 passed, zero failures/skips,
 and static build pass. Evidence/source hashes are preserved in
 reports/milestones/2026-11-04-reviewed-inputs/manifest.json. Browser proof follows
 on the clean committed source. Security audits are separate unresolved gates.
+
+Clean 11de223 actual Chromium proof now passes: three recorded TEST_ONLY review
+summaries, explicit assumption fields, exact exported admission bytes, CLI profile
+revocation causing dependent admission export HTTP409, refreshed revoked state,
+390px layout and zero page errors. These remain generated authorization fixtures;
+this is not the required genuine historical market rehearsal. Browser evidence
+is archived in the same milestone manifest. The loopback test API was stopped.
