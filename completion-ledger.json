@@ -24,9 +24,10 @@
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json"
+        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
-      "supporting_evidence_scope": "Unit normalization/differences tested; broader operator semantic coverage pending; newly found Decimal context loss fixed and regression/retained-value compatibility verified; earlier narrow normalization evidence was incomplete for high precision.",
+      "supporting_evidence_scope": "Unit normalization/differences tested; broader operator semantic coverage pending; newly found Decimal context loss fixed and regression/retained-value compatibility verified; earlier narrow normalization evidence was incomplete for high precision.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
       "status": "PASS",
       "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "next_required_action": "Retain verified software evidence; rerun on any affected change."
@@ -188,9 +189,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
-      "supporting_evidence_scope": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending",
+      "supporting_evidence_scope": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending"
@@ -541,9 +543,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
-      "supporting_evidence_scope": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending",
+      "supporting_evidence_scope": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending"
@@ -1137,9 +1140,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
-      "supporting_evidence_scope": "PASS scoped oracle/hash parity and stop-independent bar keys; exact disk cache, code/range invalidation, three-operator parity, recovery and budget checks pass; indicator transforms/append acceptance unfinished",
+      "supporting_evidence_scope": "PASS scoped oracle/hash parity and stop-independent bar keys; exact disk cache, code/range invalidation, three-operator parity, recovery and budget checks pass; indicator transforms/append acceptance unfinished; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "PASS scoped oracle/hash parity and stop-independent bar keys; exact disk cache, code/range invalidation, three-operator parity, recovery and budget checks pass; indicator transforms/append acceptance unfinished"
@@ -1467,9 +1471,10 @@
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
-      "supporting_evidence_scope": "Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.",
+      "supporting_evidence_scope": "Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Scoped multi-quarter separate TPE refits, frozen forward candidates, final confirmation, native annual/pooled/cost and training sensitivity stages pass; historical monetary/global inference/regime gates remain open"
@@ -2286,11 +2291,12 @@
       "evidence": [
         "development-state.json",
         "release-manifest.json",
-        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "next_required_action": "Partial; persistent training TPE/recurring admission now tested; exact disk bars/Tier 0 native audits now tested; full region discovery, families and indicator transforms pending",
-      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified."
+      "next_required_action": "Complete durable automatic discovery of approved new training regions and full-space CPU fairness; shared indicator transforms, calibrated safe shortlisting/rejection audits, selection-bias integration and complete family product controls. Typed versioned required family categories/flat confluence are now implemented.",
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open."
     },
     {
       "requirement_id": "C5",
@@ -2494,11 +2500,12 @@
       "evidence": [
         "development-state.json",
         "release-manifest.json",
-        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json",
+        "reports/milestones/2026-11-04-strategy-families/manifest.json"
       ],
       "status": "NOT_TESTED",
       "next_required_action": "Partial; full evaluation/holdout/annual/pooled reporting pending",
-      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified."
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open."
     },
     {
       "requirement_id": "C7",

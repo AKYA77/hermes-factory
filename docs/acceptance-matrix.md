@@ -119,3 +119,10 @@ explicit canonical-verified duplicate reclamation. Full384-test suite, quota,
 lock/orphan/corruption/path/interrupted-cleanup fixtures and actual generated50k
 reclamation preserve all canonical hashes. No complete C2/C8, archive hard quota,
 canonical compaction, scheduled acquisition or target-host acceptance is implied.
+
+ADR0029 supplements T01/T06/T18/T33/T43 and C4/C6: explicit Signal2 required family
+categories/flat confluence, Search5 and scientific-validation4 refits preserve
+legacy JSON/IDs. Generated hand/7-timeframe/sparse-MTF/native/offline-worker and
+refit evidence pass within a463-test full suite. No full autonomous new-region
+discovery, calibrated shared-indicator funnel, global validation, complete GUI or
+historical performance is certified from this scoped implementation.

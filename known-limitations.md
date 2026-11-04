@@ -213,3 +213,11 @@ historical-profile run also needs provider/reference access: current proxy denie
 HistData/OANDA/SIX. Additive domain requirements are saved as an unapplied draft.
 The prior genuine raw archives were not restored in this fresh environment;
 existing Git receipts are retained and are not a new local historical run.
+
+ADR0029 supersedes the three-operator-only entry-framework limitation: explicit
+Signal2 now supports trend/reversal/range/volatility/session/confluence with
+Search5/scientific-validation4 propagation and generated native/causality tests.
+Existing identities remain. This does not implement autonomous new-region
+discovery, shared indicator transforms, full calibrated Tier0 or recursive cohort
+improvement; new-family full historical qualification and graphical workflows
+remain unfinished. SOFTWARE_VERIFIED stays false after463passing tests.

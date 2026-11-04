@@ -11,7 +11,7 @@ from pathlib import Path
 import time
 from typing import Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field, model_validator, model_serializer
 
 from factory.contracts import (
     Contract,
@@ -22,6 +22,10 @@ from factory.contracts import (
     TIMEFRAMES,
     fingerprint,
     serialize,
+    Signal,
+    SignalOperator,
+    UTCHour,
+    LEGACY_OPERATORS,
 )
 from factory.data import Catalog, atomic_bytes, sha256
 from factory.exploration.persistent import Search, SearchProtocol
@@ -55,7 +59,10 @@ class ValidationEvidencePolicy(Contract):
 
 class ValidationProtocol(Contract):
     schema_version: Literal[
-        "scientific-validation/v1", "scientific-validation/v2", "scientific-validation/v3"
+        "scientific-validation/v1",
+        "scientific-validation/v2",
+        "scientific-validation/v3",
+        "scientific-validation/v4",
     ] = "scientific-validation/v2"
     purpose: Literal["research_qualification", "synthetic_software_rehearsal"] = (
         "research_qualification"
@@ -63,7 +70,9 @@ class ValidationProtocol(Contract):
     evidence_policy: ValidationEvidencePolicy | None = None
     holdout: HoldoutSpec
     start_ns: Nanoseconds = Field(ge=0)
-    family: Literal["momentum", "mean_reversion", "breakout"]
+    family: SignalOperator
+    components: tuple[SignalOperator, ...] = Field(default=(), max_length=3)
+    session_hours: tuple[UTCHour, ...] = Field(default=(), max_length=24)
     timeframe: str
     confirmations: tuple[str, ...] = ()
     seed: int = Field(ge=0, le=2**32 - 1)
@@ -75,6 +84,18 @@ class ValidationProtocol(Contract):
 
     @model_validator(mode="after")
     def coherent(self):
+        if self.schema_version != "scientific-validation/v4" and (
+            self.family not in LEGACY_OPERATORS or self.components or self.session_hours
+        ):
+            raise ValueError("new family validation requires explicit scientific-validation/v4")
+        Signal(
+            operator=self.family,
+            lookback=2,
+            threshold="1",
+            version="2" if self.schema_version == "scientific-validation/v4" else "1",
+            components=self.components,
+            session_hours=self.session_hours,
+        )
         if self.schema_version != "scientific-validation/v1" and self.evidence_policy is None:
             raise ValueError("v2 requires explicit evidence thresholds")
         if self.schema_version == "scientific-validation/v1" and (
@@ -84,7 +105,8 @@ class ValidationProtocol(Contract):
         if self.purpose == "synthetic_software_rehearsal" and not self.holdout.profile.synthetic:
             raise ValueError("SOFTWARE_REHEARSAL_REQUIRES_SYNTHETIC_INPUT")
         if not self.holdout.profile.synthetic and (
-            self.schema_version != "scientific-validation/v3" or self.holdout.admission_id is None
+            self.schema_version not in ("scientific-validation/v3", "scientific-validation/v4")
+            or self.holdout.admission_id is None
         ):
             raise ValueError("historical validation requires v3 and reviewed admission")
         if self.timeframe not in TIMEFRAMES or len(self.confirmations) > 1:
@@ -99,6 +121,17 @@ class ValidationProtocol(Contract):
         if not self.folds():
             raise ValueError("at least one chronological quarter fold required")
         return self
+
+    @model_serializer(mode="wrap")
+    def compatible_json(self, handler):
+        value = handler(self)
+        if self.schema_version != "scientific-validation/v4":
+            value.pop("components", None)
+            value.pop("session_hours", None)
+        else:
+            value["components"] = sorted(value["components"])
+            value["session_hours"] = sorted(value["session_hours"])
+        return value
 
     @property
     def protocol_id(self):
@@ -126,7 +159,11 @@ class ValidationController:
         self.store, self.root = store, Path(root)
 
     def register(self, protocol):
-        if protocol.schema_version not in ("scientific-validation/v2", "scientific-validation/v3"):
+        if protocol.schema_version not in (
+            "scientific-validation/v2",
+            "scientific-validation/v3",
+            "scientific-validation/v4",
+        ):
             raise ValueError("LEGACY_VALIDATION_PROTOCOL_READ_ONLY")
         m = Catalog(self.root / "catalog").verify(protocol.holdout.dataset_hash, deep=True)
         if protocol.start_ns < m["first_ns"]:
@@ -166,7 +203,9 @@ class ValidationController:
                 # policy. New search defaults must not change an unfinished
                 # protocol's later refits under its original identity.
                 schema_version=(
-                    "search/v2"
+                    "search/v5"
+                    if p.schema_version == "scientific-validation/v4"
+                    else "search/v2"
                     if p.schema_version != "scientific-validation/v3"
                     else "search/v3"
                     if p.holdout.profile.synthetic
@@ -180,6 +219,8 @@ class ValidationController:
                 profile=p.holdout.profile,
                 window=Window(start_ns=p.start_ns, end_ns=end_ns, role="train_only"),
                 family=p.family,
+                components=p.components,
+                session_hours=p.session_hours,
                 timeframe=p.timeframe,
                 confirmation_options=p.confirmations or ("none",),
                 code_revision=p.holdout.code_revision,
@@ -404,7 +445,11 @@ class ValidationController:
         return False
 
     def _advance(self, p):
-        if p.schema_version not in ("scientific-validation/v2", "scientific-validation/v3"):
+        if p.schema_version not in (
+            "scientific-validation/v2",
+            "scientific-validation/v3",
+            "scientific-validation/v4",
+        ):
             raise ValueError("LEGACY_VALIDATION_PROTOCOL_READ_ONLY")
         folds = []
         for index, fold in enumerate(p.folds()):

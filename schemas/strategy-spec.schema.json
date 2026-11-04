@@ -3,20 +3,57 @@
     "Signal": {
       "additionalProperties": false,
       "properties": {
-        "operator": {
-          "enum": [
-            "mean_reversion",
-            "momentum",
-            "breakout"
-          ],
-          "title": "Operator",
-          "type": "string"
+        "components": {
+          "default": [],
+          "items": {
+            "enum": [
+              "mean_reversion",
+              "momentum",
+              "breakout",
+              "trend",
+              "reversal",
+              "range",
+              "volatility",
+              "session",
+              "confluence"
+            ],
+            "type": "string"
+          },
+          "maxItems": 3,
+          "title": "Components",
+          "type": "array"
         },
         "lookback": {
           "maximum": 500,
           "minimum": 2,
           "title": "Lookback",
           "type": "integer"
+        },
+        "operator": {
+          "enum": [
+            "mean_reversion",
+            "momentum",
+            "breakout",
+            "trend",
+            "reversal",
+            "range",
+            "volatility",
+            "session",
+            "confluence"
+          ],
+          "title": "Operator",
+          "type": "string"
+        },
+        "session_hours": {
+          "default": [],
+          "items": {
+            "maximum": 23,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "maxItems": 24,
+          "title": "Session Hours",
+          "type": "array"
         },
         "threshold": {
           "anyOf": [
@@ -33,8 +70,11 @@
           "title": "Threshold"
         },
         "version": {
-          "const": "1",
           "default": "1",
+          "enum": [
+            "1",
+            "2"
+          ],
           "title": "Version",
           "type": "string"
         }
@@ -50,23 +90,6 @@
   },
   "additionalProperties": false,
   "properties": {
-    "schema_version": {
-      "const": "strategy/v1",
-      "default": "strategy/v1",
-      "title": "Schema Version",
-      "type": "string"
-    },
-    "instrument": {
-      "title": "Instrument",
-      "type": "string"
-    },
-    "timeframe": {
-      "title": "Timeframe",
-      "type": "string"
-    },
-    "signal": {
-      "$ref": "#/$defs/Signal"
-    },
     "confirmations": {
       "default": [],
       "items": {
@@ -74,6 +97,42 @@
       },
       "title": "Confirmations",
       "type": "array"
+    },
+    "direction": {
+      "default": "both",
+      "enum": [
+        "both",
+        "long",
+        "short"
+      ],
+      "title": "Direction",
+      "type": "string"
+    },
+    "instrument": {
+      "title": "Instrument",
+      "type": "string"
+    },
+    "max_hold_seconds": {
+      "default": 86400,
+      "exclusiveMinimum": 0,
+      "maximum": 86400,
+      "title": "Max Hold Seconds",
+      "type": "integer"
+    },
+    "schema_version": {
+      "const": "strategy/v1",
+      "default": "strategy/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "semantic_version": {
+      "const": "1",
+      "default": "1",
+      "title": "Semantic Version",
+      "type": "string"
+    },
+    "signal": {
+      "$ref": "#/$defs/Signal"
     },
     "stop_ticks": {
       "exclusiveMinimum": 0,
@@ -87,27 +146,8 @@
       "title": "Target Rr",
       "type": "string"
     },
-    "max_hold_seconds": {
-      "default": 86400,
-      "exclusiveMinimum": 0,
-      "maximum": 86400,
-      "title": "Max Hold Seconds",
-      "type": "integer"
-    },
-    "direction": {
-      "default": "both",
-      "enum": [
-        "both",
-        "long",
-        "short"
-      ],
-      "title": "Direction",
-      "type": "string"
-    },
-    "semantic_version": {
-      "const": "1",
-      "default": "1",
-      "title": "Semantic Version",
+    "timeframe": {
+      "title": "Timeframe",
       "type": "string"
     }
   },

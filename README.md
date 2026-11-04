@@ -5,7 +5,7 @@ and paper research only; no brokerage execution. The complete supplied v2.0
 specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical strategy
 performance is claimed.
 
-Latest verification: **384 passing tests**, Ruff lint/format, dashboard type check
+Latest verification: **463 passing tests**, Ruff lint/format, dashboard type check
 and static build. [Import recovery](docs/milestone-import-resume-2026-11-04.md) and
 [staging storage controls](docs/milestone-import-staging-2026-11-04.md) now have
 SIGKILL/restart, exact parser, quota and canonical-preservation proof. Earlier
@@ -16,7 +16,8 @@ Security findings and full software/release requirements remain unresolved.
 Implemented: typed immutable strategy/experiment contracts; fingerprints; exact
 integer quote Parquet storage with raw hashes and quarantine; leased durable job
 queue; isolated NautilusTrader replay with fixed adverse-fill extension;
-closed-bar mean-reversion/momentum/breakout signals; measured MFE/MAE diagnostics;
+versioned closed-bar mean-reversion, momentum, breakout, trend, reversal, range,
+volatility, UTC-session and confluence entry hypotheses; measured MFE/MAE diagnostics;
 bounded child proposals; frozen-window replay helper; basic metrics and separate
 instrument boards; authenticated API and connected dashboard state inspector;
 backup/restore rehearsal and release-pointer test harness.
@@ -76,3 +77,8 @@ readiness states remain false; this is not a release or completed handoff.
 For bounded post-handoff historical acquisition and safe import recovery, use the
 [backfill runbook](docs/runbooks/historical-backfill.md). Full acquisition,
 provider/calendar acceptance and target-host operation remain separate gates.
+
+The [versioned family compiler](docs/milestone-strategy-families-2026-11-04.md)
+now connects new typed entry hypotheses to screening, native replay, durable
+search and prior-only refits. Automatic discovery of new research regions and
+full shared-indicator/calibrated-funnel/diagnostic workflows remain unfinished.

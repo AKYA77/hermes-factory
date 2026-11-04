@@ -8,7 +8,7 @@ import sqlite3
 import time
 import uuid
 
-from factory.contracts import SYMBOLS, TIMEFRAMES, serialize, fingerprint
+from factory.contracts import SYMBOLS, TIMEFRAMES, OPERATORS, serialize, fingerprint
 
 
 class Store:
@@ -20,12 +20,7 @@ class Store:
                 db.executescript(migration.read_text())
             db.executemany(
                 "INSERT OR IGNORE INTO research_coverage(instrument,family,timeframe) VALUES(?,?,?)",
-                [
-                    (s, f, t)
-                    for s in SYMBOLS
-                    for f in ("mean_reversion", "momentum", "breakout")
-                    for t in TIMEFRAMES
-                ],
+                [(s, f, t) for s in SYMBOLS for f in OPERATORS for t in TIMEFRAMES],
             )
 
     @staticmethod

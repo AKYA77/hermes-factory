@@ -25,18 +25,25 @@ from factory.contracts import (
     Window,
     fingerprint,
     serialize,
+    SignalOperator,
+    UTCHour,
+    LEGACY_OPERATORS,
 )
 from factory.data import Catalog, sha256
 from factory.simulation.ledger import EXECUTION_VERSION, require_execution_version
 
 
 class SearchProtocol(Contract):
-    schema_version: Literal["search/v1", "search/v2", "search/v3", "search/v4"] = "search/v3"
+    schema_version: Literal["search/v1", "search/v2", "search/v3", "search/v4", "search/v5"] = (
+        "search/v3"
+    )
     admission_id: str | None = Field(default=None, pattern=r"^[a-f0-9]{64}$")
     dataset_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     profile: InstrumentSpec
     window: Window
-    family: Literal["mean_reversion", "momentum", "breakout"]
+    family: SignalOperator
+    components: tuple[SignalOperator, ...] = Field(default=(), max_length=3)
+    session_hours: tuple[UTCHour, ...] = Field(default=(), max_length=24)
     timeframe: str
     confirmation_options: tuple[str, ...] = ("none",)
     code_revision: str
@@ -54,6 +61,18 @@ class SearchProtocol(Contract):
 
     @model_validator(mode="after")
     def training_only(self):
+        if self.schema_version != "search/v5" and (
+            self.family not in LEGACY_OPERATORS or self.components or self.session_hours
+        ):
+            raise ValueError("new family search requires explicit search/v5")
+        Signal(
+            operator=self.family,
+            lookback=2,
+            threshold="1",
+            version="2" if self.schema_version == "search/v5" else "1",
+            components=self.components,
+            session_hours=self.session_hours,
+        )
         if (
             self.research_kind == "synthetic-cost-shadow-training/v1"
             and self.schema_version != "search/v3"
@@ -70,7 +89,9 @@ class SearchProtocol(Contract):
                 tf not in TIMEFRAMES or TIMEFRAMES[tf] <= TIMEFRAMES[self.timeframe]
             ):
                 raise ValueError("confirmation must be higher than entry timeframe")
-        if self.schema_version == "search/v4":
+        if self.schema_version == "search/v4" or (
+            self.schema_version == "search/v5" and not self.profile.synthetic
+        ):
             if (
                 self.profile.synthetic
                 or self.admission_id is None
@@ -83,20 +104,26 @@ class SearchProtocol(Contract):
             or self.research_kind == "historical-training/v1"
         ):
             raise ValueError("legacy search cannot acquire historical admission semantics")
-        if self.schema_version in ("search/v3", "search/v4"):
+        if self.schema_version in ("search/v3", "search/v4", "search/v5"):
             self.stop_distribution()
         return self
 
     @model_serializer(mode="wrap")
     def compatible_json(self, handler):
         value = handler(self)
-        if self.schema_version != "search/v4":
+        if self.schema_version not in ("search/v4", "search/v5"):
             value.pop("admission_id", None)
+        if self.schema_version != "search/v5":
+            value.pop("components", None)
+            value.pop("session_hours", None)
+        else:
+            value["components"] = sorted(value["components"])
+            value["session_hours"] = sorted(value["session_hours"])
         return value
 
     @property
     def evaluation_policy(self):
-        if self.schema_version == "search/v4":
+        if self.schema_version in ("search/v4", "search/v5") and not self.profile.synthetic:
             from factory.data.admission import approved_policy
 
             return approved_policy(self.admission_id, {"optimizer_protocol": self.protocol_hash})
@@ -104,11 +131,11 @@ class SearchProtocol(Contract):
 
     @property
     def screening_policy(self):
-        return None if self.schema_version == "search/v4" else "exact-zero-signals-audit/16/v1"
+        return None if not self.profile.synthetic else "exact-zero-signals-audit/16/v1"
 
     @property
     def protocol_hash(self):
-        if self.schema_version in ("search/v2", "search/v3", "search/v4"):
+        if self.schema_version in ("search/v2", "search/v3", "search/v4", "search/v5"):
             raw = self.model_dump()
             raw["cpu_budget_seconds"] = float(self.cpu_budget_seconds)
             return fingerprint(raw)
@@ -129,7 +156,7 @@ class SearchProtocol(Contract):
         )
 
     def stop_distribution(self):
-        if self.schema_version not in ("search/v3", "search/v4"):
+        if self.schema_version not in ("search/v3", "search/v4", "search/v5"):
             return optuna.distributions.IntDistribution(20, 200, step=10)
         from fractions import Fraction
 
@@ -170,6 +197,9 @@ class SearchProtocol(Contract):
                 operator=self.family,
                 lookback=params["lookback"],
                 threshold=Decimal(params["threshold_tenths"]) / 10,
+                version="2" if self.schema_version == "search/v5" else "1",
+                components=self.components,
+                session_hours=self.session_hours,
             ),
             confirmations=() if params["confirmation"] == "none" else (params["confirmation"],),
             stop_ticks=params["stop_ticks"],

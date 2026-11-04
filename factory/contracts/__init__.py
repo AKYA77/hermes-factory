@@ -6,10 +6,31 @@ import hashlib
 import json
 from typing import Literal, Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator, BeforeValidator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    model_validator,
+    model_serializer,
+    BeforeValidator,
+)
 
 SYMBOLS = ("EURUSD", "GBPUSD", "USDJPY", "USDCHF", "USDCAD", "AUDUSD", "NZDUSD", "XAUUSD")
 TIMEFRAMES = {"M1": 60, "M5": 300, "M15": 900, "M30": 1800, "H1": 3600, "H4": 14400, "D1": 86400}
+LEGACY_OPERATORS = ("mean_reversion", "momentum", "breakout")
+OPERATORS = (*LEGACY_OPERATORS, "trend", "reversal", "range", "volatility", "session", "confluence")
+SignalOperator = Literal[
+    "mean_reversion",
+    "momentum",
+    "breakout",
+    "trend",
+    "reversal",
+    "range",
+    "volatility",
+    "session",
+    "confluence",
+]
+UTCHour = Annotated[int, Field(strict=True, ge=0, le=23)]
 
 
 def exact_ns(value):
@@ -59,10 +80,43 @@ class Contract(BaseModel):
 
 
 class Signal(Contract):
-    operator: Literal["mean_reversion", "momentum", "breakout"]
+    operator: SignalOperator
     lookback: int = Field(ge=2, le=500)
     threshold: Decimal = Field(gt=0, le=20)
-    version: Literal["1"] = "1"
+    version: Literal["1", "2"] = "1"
+    components: tuple[SignalOperator, ...] = Field(default=(), max_length=3)
+    session_hours: tuple[UTCHour, ...] = Field(default=(), max_length=24)
+
+    @model_validator(mode="after")
+    def semantics(self):
+        if self.version == "1" and (
+            self.operator not in LEGACY_OPERATORS or self.components or self.session_hours
+        ):
+            raise ValueError("new operators require explicit signal version2")
+        if self.operator == "confluence":
+            if len(self.components) < 2 or "confluence" in self.components:
+                raise ValueError("confluence needs two or three non-nested operators")
+            if len(set(self.components)) != len(self.components):
+                raise ValueError("duplicate confluence component")
+        elif self.components:
+            raise ValueError("only confluence has components")
+        session = self.operator == "session" or "session" in self.components
+        if session != bool(self.session_hours) or len(set(self.session_hours)) != len(
+            self.session_hours
+        ):
+            raise ValueError("session operator requires unique explicit UTC hours")
+        return self
+
+    @model_serializer(mode="wrap")
+    def compatible_json(self, handler):
+        value = handler(self)
+        if self.version == "1":
+            value.pop("components", None)
+            value.pop("session_hours", None)
+        else:
+            value["components"] = sorted(value["components"])
+            value["session_hours"] = sorted(value["session_hours"])
+        return value
 
 
 class StrategySpec(Contract):

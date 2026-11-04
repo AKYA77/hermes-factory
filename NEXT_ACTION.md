@@ -90,3 +90,23 @@ The earlier genuine raw archives are not present in this fresh checkout's .local
 Git evidence is retained, but a new genuine-profile run needs bounded provider
 access and actual raw captures. Do not claim their local restoration was verified.
 Continue independent implementation while that prerequisite is unavailable.
+
+Latest executable checkpoint: ADR0029 (see milestone-strategy-families-2026-11-04).
+Signal2 now has trend/reversal/range/volatility/session/confluence in the shared
+causal compiler, with Search5 and scientific-validation4 routing, additive9-family
+coverage and legacy JSON/ID preservation. Full463passed/374warnings; actual native
+fills for all6new categories, actual offline supervised session feedback and
+strict prior-only refit propagation pass. Do not repeat these generated proofs as
+historical market evidence or call them full autonomous discovery/validation.
+
+NEXT INDEPENDENT IMPLEMENTATION: durable automatic discovery/registration of
+new eligible approved training regions across the complete family/timeframe grid.
+Use explicit training authorization and exclude all protected/previously influenced
+holdout ranges; never infer approval from a catalog file or reinterpret a consumed
+period. Give finite versioned expansion budgets and durable restart/idempotency,
+then demonstrate continued useful exploration after old registered cells exhaust.
+Follow with shared indicator transforms and frozen safe shortlist calibration,
+recursive session/regime diagnostics and global independent qualification. Keep
+source/profile/source-refresh/UI/lifecycle/security and final source-to-restore
+requirements active in the ledger. Primary reference/data access remains denied
+until the saved environment network draft is actually applied and verified.

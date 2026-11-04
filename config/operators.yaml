@@ -1,3 +1,9 @@
-version: operators/v1
-registered: [mean_reversion, momentum, breakout]
+version: operators/v2
+legacy_v1: [mean_reversion, momentum, breakout]
+registered: [mean_reversion, momentum, breakout, trend, reversal, range, volatility, session, confluence]
+new_family_signal_version: '2'
+new_family_search_version: search/v5
+new_family_validation_version: scientific-validation/v4
+session_clock: UTC publication hour; explicit session_hours required
+confluence: two or three distinct non-nested operators; shared lookback and threshold; unanimous side
 timeframes: [M1, M5, M15, M30, H1, H4, D1]

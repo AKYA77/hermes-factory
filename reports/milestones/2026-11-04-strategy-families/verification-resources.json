@@ -1,0 +1,7 @@
+{
+  "command": "bash scripts/verify.sh",
+  "exit_code": 0,
+  "wall_seconds": 169.79224560999864,
+  "children_cpu_seconds": 167.241421,
+  "max_child_rss_bytes": 951996416
+}
