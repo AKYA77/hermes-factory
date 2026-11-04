@@ -1,5 +1,12 @@
 # Persistent completion goal — NOT_READY
 
+Publication recovery, 4 November 2026: the owner explicitly requested pushing
+completed work. All 18 previously local commits through 1bfe176 were pushed and
+verified on build/initial-factory and PR #1. Historical push-hold instructions
+below are superseded for this authorized publication. Repository visibility
+remains PUBLIC; no visibility change, merge, release tag or readiness claim was
+made. See docs/publishing-recovery-2026-11-04.md. Do not redo completed work.
+
 Authority: docs/source/Persistent_Software_Completion_Goal_2026-11-04.md, original
 Factory.pdf, accepted amendments, AGENTS.md. Continue the existing branch;
 do not rebuild working components. The archived mandate's 9034 commit is older
