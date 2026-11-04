@@ -164,3 +164,11 @@ passes, 340 warnings, 79.66 seconds; lint/frontend passed. Next: clean-source
 real January scan/resource proof and real browser data-panel verification; then
 reviewed metadata/admission, revisions, cache/approximate research and remaining
 scientific/product/lifecycle gates. Unknown broker facts still block real research.
+
+Clean df70 source QA/browser milestone: all eight real January sources,
+21,345,746 quotes, structurally scanned in 171.809645s wall / 175.536930s CPU,
+184,852,480B peak RSS, 1,935,328B generated QA state. Actual Chromium Gold
+inspection/exact export/mobile checks pass. This is not historical strategy,
+broker/calendar, Contabo or complete C2/C7 evidence. All readiness remains false.
+Next reliability fix: identify retained partial source scans after uncatchable
+process death; then reviewed metadata/admission and remaining mandatory work.

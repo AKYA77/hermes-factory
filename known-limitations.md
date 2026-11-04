@@ -151,3 +151,9 @@ for integration testing but cannot certify. Full source completeness/calendar,
 regime/global inference and historical profile gates remain open. Empty custom
 books can cause native unadjusted-price fallback; such evidence is rejected,
 not accepted as complete finite-depth fidelity. No historical promotion is enabled.
+
+Real source-quality streaming has now been measured across all 21,345,746
+existing January quotes, with actual connected browser checks. All eight remain
+UNKNOWN_SPEC/UNKNOWN_CALENDAR and historical admission is false. Full calendar,
+metadata approval, revisions and automated admission are unfinished; the QA
+benchmark is not strategy performance or a target-VPS reliability benchmark.

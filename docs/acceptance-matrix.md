@@ -84,4 +84,4 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T49 | Qualification before final observation | Actual weak-forward native restart ends before final refit/selection/consumption; declared censor/DD/neighbor policy, marked insolvency/open-loss and missing native evidence guards pass; v1 IDs stay read-only; global regime/source validation remains open |
 
 | T50 | Captured declared session rules | Exact DST/holiday/one-nanosecond/ambiguous-boundary and immutable TZif goldens pass; declarations do not verify actual broker calendars |
-| T51 | Lossless full-event source QA | Scoped all-gap/view/tie/reference/precision/order/byte/cache/budget/restart/captured-input/API/CLI tests pass; historical admission remains false pending reviewed metadata/revisions and full coverage |
+| T51 | Lossless full-event source QA | Scoped all-gap/view/tie/reference/precision/order/byte/cache/budget/restart/captured-input/API/CLI tests pass; Actual clean df70 scan of 21,345,746 real rows and authenticated browser/export/mobile pass; historical admission remains false pending reviewed metadata/revisions and full coverage |

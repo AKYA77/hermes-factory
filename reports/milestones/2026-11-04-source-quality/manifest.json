@@ -1,6 +1,11 @@
 {
   "files": {
-    "core-verification.log": "a1bb3d1371d2823f40f1321667b28df502c7e2ad808c400b38d363d734afec00"
+    "browser-desktop.png": "169b28d6d3ce72fd6c6486e8802fcff0abe964c4132c03e3736f401e60729450",
+    "browser-mobile.png": "a3629088bb1071357a29d69f06d7aebf28d68b3fe09890870f6aa1e4fad4c0a5",
+    "browser.json": "599cb4440204ea2bef235a32915e272b29b1e123529db814e38f8a442cd9688b",
+    "browser.log": "73d02bb22e8f50dfad4ca6c69c0c1e0852a0ddf4ca780f0b4d863837670d4678",
+    "core-verification.log": "a1bb3d1371d2823f40f1321667b28df502c7e2ad808c400b38d363d734afec00",
+    "real-source-benchmark.json": "16f641582bcb8c736d5e52e81842c32570a25f054a3f9587ec4f99211e9bc045"
   },
   "observed_at_utc": "2026-11-04T03:32:11.884985+00:00",
   "scope": "source/calendar software; broker/calendar approval, revisions and target gates unfinished",
@@ -17,5 +22,9 @@
     "seconds": 79.66,
     "skipped": 0,
     "warnings": 340
+  },
+  "resource_browser_source_context": {
+    "git_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
+    "source_sha256": "1fef66266caacaab83e71693401bb1f9cd364325afbde5bef6c920a6262c3395"
   }
 }

@@ -16,7 +16,13 @@
       "peak_worker_rss_bytes": 302280704,
       "wall_seconds": 197.4601130059964
     },
-    "target_host_verified": false
+    "target_host_verified": false,
+    "real_source_qa": {
+      "cpu_seconds": 175.53692999999998,
+      "process_peak_rss_bytes": 184852480,
+      "disk_state_bytes": 1935328,
+      "wall_seconds": 171.80964462200063
+    }
   },
   "completed_local_increments": [
     "migration005 protected input/holdout ledgers and supervised fixed-window native evaluation",
@@ -44,11 +50,11 @@
     "skipped": 0,
     "warnings": 340
   },
-  "latest_evidence_manifest": "reports/milestones/2026-11-04-validation-v2/manifest.json",
+  "latest_evidence_manifest": "reports/milestones/2026-11-04-source-quality/manifest.json",
   "latest_milestone": "docs/milestone-monetary-validation-2026-11-04.md",
-  "latest_scientific_code_commit": "a530de566b56cf9c3fd97d1d815aba2cdf6e84a6",
-  "next_unfinished": "Measure actual real January source-quality scanning and verify the data panel in Chromium on a clean code commit. Then metadata review/admission registry, source revisions and full required screening/research/product/lifecycle gates.",
-  "observed_at_utc": "2026-11-04T03:32:11.895071+00:00",
+  "latest_scientific_code_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
+  "next_unfinished": "Retain identifiable incomplete source QA state on abrupt process death; then metadata review/admission registry, revisions and remaining screening/research/product/lifecycle gates.",
+  "observed_at_utc": "2026-11-04T03:45:53.574963+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,

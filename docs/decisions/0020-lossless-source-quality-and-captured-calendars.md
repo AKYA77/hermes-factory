@@ -65,3 +65,15 @@ actual CLI exit/status behavior and authenticated exact API export. Existing
 migration assertions now include additive schema 7; no test or security gate
 was disabled. The original data.quality helper remains intact; the new module
 is data.source_quality to avoid shadowing that existing API.
+
+Clean-source df70a9e measurement: the eight actual January imports (21,345,746
+quotes) completed structural stream QA in 171.809645 wall seconds and 175.536930
+process CPU seconds, at 184,852,480 bytes peak process RSS. Generated QA state
+was 1,935,328 bytes, excluding the original source vault. This environment has
+four CPU quota and 32 GiB memory; page cache was uncontrolled. This measures
+source scanning, not acquisition, native backtesting or target-host throughput.
+All profiles/calendars remained UNKNOWN and historical admission remained false.
+Actual authenticated Chromium desktop/mobile checks passed for all eight receipt
+summaries, Gold counters, exact event export and no overflow/page errors. Evidence:
+reports/milestones/2026-11-04-source-quality/manifest.json. Raw provider quotes
+and event artifacts remain local; only aggregate evidence is committed.
