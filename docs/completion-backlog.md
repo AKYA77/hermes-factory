@@ -149,3 +149,11 @@ Legacy v1 remains read-only; explicit synthetic software rehearsal cannot certif
 Full suite: 271 passed, 340 warnings, 73.22 seconds; lint/frontend passed.
 Next: clean-source browser verification for v2, then verified profile/calendar/
 revision software and full approximate screening/discovery/diagnostics/lifecycle.
+
+Clean-source a530de5 browser/coordinator proof now passes: v2 weak forward
+qualification ends after six actual native jobs, no final observation consumed;
+actual report/curve/exact export/mobile/stop checked. Separate explicit rehearsal
+registration passes. Next: verified dated metadata/calendar, lossless quality/
+revision receipts, richer Tier 0 and full autonomous/product/reliability gates.
+Instrument-specific stop search bounds must handle a 0.001 Gold grid with a
+verified larger pip unit; a universal 20..200 tick search can be wholly infeasible.

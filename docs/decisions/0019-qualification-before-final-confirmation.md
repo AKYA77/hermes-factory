@@ -1,7 +1,7 @@
 # Scientific protocol v2: qualification before final consumption
 
-Status: scoped native/unit verification passed; browser verification of the new
-v2 fields follows the code commit. Full C6 and SOFTWARE_VERIFIED remain open.
+Status: scoped native/unit and clean-source browser verification passed. Full
+C6 and SOFTWARE_VERIFIED remain open.
 Authority: blueprint independent-evaluation, insolvency and robustness rules;
 owner completion mandate. Native execution/risk/cost assumptions are unchanged.
 
@@ -58,3 +58,11 @@ reject it, and the new validation quality gate also rejects that evidence.
 Do not relabel it correct or claim complete finite-depth fidelity. The default
 transparent unlimited L1 scenario is unchanged; real historical L2 liquidity is
 not present in these sources. Security and remaining release gates stay red.
+
+Clean-source browser/coordinator evidence on a530de5: research qualification
+finished in seven cycles, six actual native jobs (four training experiments, two
+forward evaluations), 9.94 seconds wall / 8.04 child CPU seconds. Result remains
+INSUFFICIENT_EVIDENCE with zero holdout consumptions. Chromium verifies the actual
+report/curve, reserved final window, stop control, exact-byte export and mobile
+layout. Separate explicit rehearsal registration passes without certification.
+Evidence is preserved in reports/milestones/2026-11-04-validation-v2.
