@@ -77,3 +77,14 @@ Actual authenticated Chromium desktop/mobile checks passed for all eight receipt
 summaries, Gold counters, exact event export and no overflow/page errors. Evidence:
 reports/milestones/2026-11-04-source-quality/manifest.json. Raw provider quotes
 and event artifacts remain local; only aggregate evidence is committed.
+
+Abrupt process-death correction: every new scan now fsyncs attempt.json, its
+input/code/policy identity and its parent directory before opening the source
+stream. A SIGKILL test kills the actual child after its first source row, proves
+there is no completed receipt, and verifies a fresh full 32-row retry leaves
+the original marker unchanged. Partial files are never treated as a resumable
+semantic prefix. An orphan has no database failure row because SIGKILL cannot
+run cleanup; attempt.json remains identifiable, not proof that a process is dead.
+Automatic fenced QA scheduling/orphan inventory remains unfinished. Recovery:
+retain .pending-* artifacts, inspect their attempt.json, and retry the original
+source-quality CLI; a complete receipt requires rechecking the full source.

@@ -8,6 +8,7 @@ from pathlib import Path
 import sqlite3
 import subprocess
 import sys
+import signal
 
 import pytest
 
@@ -153,6 +154,49 @@ def test_event_budget_retains_incomplete_attempt_and_never_registers_complete_re
     succeeded = scanner.run(manifest["dataset_hash"], policy())
     assert succeeded["counts"]["rows_scanned"] == 32
     assert len(scanner.store.rows("SELECT * FROM source_quality_attempts")) == 2
+
+
+def test_sigkill_retains_exact_attempt_inputs_and_retry_does_full_scan(tmp_path):
+    manifest = commit(tmp_path, quotes([(110000, 110010)] * 32, step=121 * 10**9))
+    # The child dies inside the real scan, after reading its first real source
+    # row. No Python cleanup/failure handler can manufacture recovery evidence.
+    child_code = """
+import json, os, signal, sys
+from pathlib import Path
+from factory.data import Catalog
+from factory.data.source_quality import SourceQuality
+root = Path(sys.argv[1])
+catalog = Catalog(root / 'catalog')
+original = catalog.read
+def interrupted(*args, **kwargs):
+    for row in original(*args, **kwargs):
+        yield row
+        os.kill(os.getpid(), signal.SIGKILL)
+catalog.read = interrupted
+SourceQuality(root, catalog).run(sys.argv[2], json.loads(sys.argv[3]))
+"""
+    killed = subprocess.run(
+        [sys.executable, "-c", child_code, str(tmp_path), manifest["dataset_hash"],
+         policy().model_dump_json()],
+        capture_output=True, text=True, timeout=30,
+    )
+    assert killed.returncode == -signal.SIGKILL, killed.stderr
+    scanner = SourceQuality(tmp_path, Catalog(tmp_path / "catalog"))
+    pending = list(scanner.directory.glob(".pending-*"))
+    assert len(pending) == 1
+    marker_bytes = (pending[0] / "attempt.json").read_bytes()
+    marker = json.loads(marker_bytes)
+    assert not marker["complete_source_scan"]
+    assert marker["inputs"]["dataset_hash"] == manifest["dataset_hash"]
+    assert marker["inputs"]["policy"] == policy().model_dump()
+    assert not (pending[0] / "report.json").exists()
+    assert not scanner.store.rows("SELECT * FROM source_quality_receipts")
+    assert not scanner.store.rows("SELECT * FROM source_quality_attempts")
+    result = scanner.run(manifest["dataset_hash"], policy())
+    assert result["complete_source_scan"] and result["counts"]["rows_scanned"] == 32
+    assert result["run_id"] == marker["run_id"]
+    assert (pending[0] / "attempt.json").read_bytes() == marker_bytes
+    assert len(scanner.store.rows("SELECT * FROM source_quality_receipts")) == 1
 
 
 def test_declared_off_grid_profile_does_not_round_source_or_grant_admission(tmp_path):

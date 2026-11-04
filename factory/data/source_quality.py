@@ -151,6 +151,27 @@ class SourceQuality:
             raise ValueError("SOURCE_QUALITY_DISK_RESERVE")
         attempt = uuid.uuid4().hex
         staging = Path(tempfile.mkdtemp(prefix=".pending-", dir=self.directory))
+        # Persist identity before opening/reading the stream. SIGKILL cannot run
+        # our exception handler: this marker identifies any orphan partial scan
+        # without treating it as a completed receipt or guessing process death.
+        atomic_bytes(
+            staging / "attempt.json",
+            serialize(
+                {
+                    "schema": "source-quality-attempt/v1",
+                    "attempt_id": attempt,
+                    "run_id": identity,
+                    "inputs": inputs,
+                    "complete_source_scan": False,
+                    "restart_policy": "retain partial artifacts; retry full source scan",
+                }
+            ).encode(),
+        )
+        parent_fd = os.open(self.directory, os.O_DIRECTORY)
+        try:
+            os.fsync(parent_fd)
+        finally:
+            os.close(parent_fd)
         if calendar:
             atomic_bytes(staging / "calendar.json", serialize(calendar.spec).encode())
             atomic_bytes(staging / "timezone.tzif", calendar.tzif_bytes)

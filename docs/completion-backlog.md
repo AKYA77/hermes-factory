@@ -172,3 +172,10 @@ inspection/exact export/mobile checks pass. This is not historical strategy,
 broker/calendar, Contabo or complete C2/C7 evidence. All readiness remains false.
 Next reliability fix: identify retained partial source scans after uncatchable
 process death; then reviewed metadata/admission and remaining mandatory work.
+
+Abrupt QA process-kill/retry test now passes: durable attempt/input/code markers
+precede source reads; SIGKILL cannot create a completed receipt; retry rescans
+all rows and preserves old partial evidence. Orphan inventory/fenced scheduling
+remain open. Next correctness fix: versioned instrument-aware search bounds so
+Gold's observed precision never implies a broker pip or an infeasible universal
+20..200 tick stop region.
