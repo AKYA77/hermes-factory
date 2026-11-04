@@ -199,7 +199,12 @@ def test_protocol_hash_survives_json_defaults_and_preserves_legacy_ids(tmp_path)
     modern = protocol(payload)
     roundtrip = SearchProtocol.model_validate_json(serialize(modern))
     assert modern.protocol_hash == roundtrip.protocol_hash == fingerprint(modern)
-    assert modern.schema_version == "search/v2"
+    assert modern.schema_version == "search/v3"
+    v2 = protocol(payload, schema_version="search/v2")
+    assert v2.protocol_hash == fingerprint(v2)
+    assert SearchProtocol.model_validate_json(serialize(v2)).protocol_hash == v2.protocol_hash
+    assert v2.distributions()["stop_ticks"].low == 20
+    assert v2.distributions()["stop_ticks"].high == 200
     legacy = protocol(payload, schema_version="search/v1").model_copy(
         update={"cpu_budget_seconds": 600}
     )

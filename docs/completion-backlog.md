@@ -179,3 +179,13 @@ all rows and preserves old partial evidence. Orphan inventory/fenced scheduling
 remain open. Next correctness fix: versioned instrument-aware search bounds so
 Gold's observed precision never implies a broker pip or an infeasible universal
 20..200 tick stop region.
+
+Profile-aware search/v3 now passes native Gold endpoint eligibility/risk/3R,
+all-eight declared-pip unit checks and legacy identity/range/restart checks
+(ADR 0021). Existing scientific v1/v2 refits explicitly retain old search/v2;
+new scientific opt-in remains versioned future work. Combined full verification:
+302 passed, zero failed/skipped, 348 warnings, 82.08s; lint/format/frontend pass.
+Milestone: docs/milestone-source-quality-recovery-search-2026-11-04.md.
+Next: reviewed dated metadata/calendar admission and source revisions, then
+remaining real screening/discovery/diagnostics/scientific/product/lifecycle work.
+Do not mark C2/C4/C6 complete, publish a ready release or weaken security checks.

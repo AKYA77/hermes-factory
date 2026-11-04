@@ -31,7 +31,7 @@ from factory.simulation.ledger import EXECUTION_VERSION, require_execution_versi
 
 
 class SearchProtocol(Contract):
-    schema_version: Literal["search/v1", "search/v2"] = "search/v2"
+    schema_version: Literal["search/v1", "search/v2", "search/v3"] = "search/v3"
     dataset_hash: str = Field(pattern=r"^[a-f0-9]{64}$")
     profile: InstrumentSpec
     window: Window
@@ -64,11 +64,13 @@ class SearchProtocol(Contract):
                 raise ValueError("confirmation must be higher than entry timeframe")
         if not self.profile.synthetic:
             raise ValueError("real monetary profile approval remains blocked")
+        if self.schema_version == "search/v3":
+            self.stop_distribution()
         return self
 
     @property
     def protocol_hash(self):
-        if self.schema_version == "search/v2":
+        if self.schema_version in ("search/v2", "search/v3"):
             raw = self.model_dump()
             raw["cpu_budget_seconds"] = float(self.cpu_budget_seconds)
             return fingerprint(raw)
@@ -88,11 +90,35 @@ class SearchProtocol(Contract):
             seed=self.seed,
         )
 
+    def stop_distribution(self):
+        if self.schema_version != "search/v3":
+            return optuna.distributions.IntDistribution(20, 200, step=10)
+        from fractions import Fraction
+
+        # Exact declared pip units; empirical quote precision never defines pip.
+        pip_ticks = Fraction(self.profile.pip_size) / Fraction(self.profile.tick_size)
+        if pip_ticks.denominator != 1:
+            raise ValueError("search requires an integral declared pip/tick ratio")
+        step = int(pip_ticks)
+        # Protect against a wholly infeasible region at the conservative spread
+        # floor: 2 pip spread + 2 pip entry cost + possible outward quote tick,
+        # then the declared broker stop level. Actual wider spreads, gaps,
+        # minimum volume and margin still require per-entry native checks.
+        floor = self.profile.min_stop_ticks
+        if self.scenario == "historical-pessimistic/v1":
+            floor += 4 * step + 1
+        low = ((max(2 * step, floor) + step - 1) // step) * step
+        high = min(1_000_000, max(20 * step, low + 18 * step))
+        high = low + ((high - low) // step) * step
+        if low > high or low > 1_000_000:
+            raise ValueError("declared units leave no representable stop search range")
+        return optuna.distributions.IntDistribution(low, high, step=step)
+
     def distributions(self):
         return {
             "lookback": optuna.distributions.IntDistribution(2, 48),
             "threshold_tenths": optuna.distributions.IntDistribution(5, 30),
-            "stop_ticks": optuna.distributions.IntDistribution(20, 200, step=10),
+            "stop_ticks": self.stop_distribution(),
             "confirmation": optuna.distributions.CategoricalDistribution(self.confirmation_options),
         }
 

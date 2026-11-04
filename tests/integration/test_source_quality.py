@@ -176,9 +176,17 @@ catalog.read = interrupted
 SourceQuality(root, catalog).run(sys.argv[2], json.loads(sys.argv[3]))
 """
     killed = subprocess.run(
-        [sys.executable, "-c", child_code, str(tmp_path), manifest["dataset_hash"],
-         policy().model_dump_json()],
-        capture_output=True, text=True, timeout=30,
+        [
+            sys.executable,
+            "-c",
+            child_code,
+            str(tmp_path),
+            manifest["dataset_hash"],
+            policy().model_dump_json(),
+        ],
+        capture_output=True,
+        text=True,
+        timeout=30,
     )
     assert killed.returncode == -signal.SIGKILL, killed.stderr
     scanner = SourceQuality(tmp_path, Catalog(tmp_path / "catalog"))

@@ -85,3 +85,6 @@ all implementation requirements, full scientific workflows and tested handoff.
 
 | T50 | Captured declared session rules | Exact DST/holiday/one-nanosecond/ambiguous-boundary and immutable TZif goldens pass; declarations do not verify actual broker calendars |
 | T51 | Lossless full-event source QA | Scoped all-gap/view/tie/reference/precision/order/byte/cache/budget/restart/captured-input/API/CLI tests pass; Actual clean df70 scan of 21,345,746 real rows and authenticated browser/export/mobile pass; historical admission remains false pending reviewed metadata/revisions and full coverage |
+
+| T52 | Abrupt source QA death | Actual SIGKILL child retains fsynced attempt/input identity, creates no complete receipt; full retry preserves orphan and checks all rows. Automatic orphan inventory/fenced QA remains open |
+| T53 | Profile-aware search bounds | search/v3 exact declared-pip bounds, all-eight units, native Gold low/high BUY/SELL risk and 3R, legacy v1/v2 identity/range and restart checks pass. Existing scientific v1/v2 retains old range pending new protocol opt-in |

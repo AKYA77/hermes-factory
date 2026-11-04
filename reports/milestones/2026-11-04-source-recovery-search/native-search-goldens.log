@@ -1,0 +1,16 @@
+.........................................................                [100%]
+=============================== warnings summary ===============================
+tests/simulation/test_dated_conversion.py: 67 warnings
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/simulation/test_dated_conversion.py: 67 warnings
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+tests/simulation/test_dated_conversion.py: 12 warnings
+  /workspace/hermes-factory/factory/simulation/runner.py:523: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+57 passed, 146 warnings in 1.75s

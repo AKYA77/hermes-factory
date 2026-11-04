@@ -35,26 +35,30 @@
     "Connected structured Validation Lab and exact-byte evidence exports with actual Chromium/API/native report and prior control regression",
     "scientific-validation/v2 forward/training/neighborhood qualification, mandatory marked/native evidence guards and explicit uncertifiable synthetic rehearsal; legacy IDs retained read-only",
     "clean a530de5 Chromium/coordinator proof: v2 weak forward protocol ends with zero holdout use; exact export/mobile/stop and separate explicit rehearsal registration pass",
-    "captured TZif/dated calendar rules, bounded all-event source quality with immutable migration007 receipts/captured inputs/failure retention, CLI and authenticated streaming/API/data panel"
+    "captured TZif/dated calendar rules, bounded all-event source quality with immutable migration007 receipts/captured inputs/failure retention, CLI and authenticated streaming/API/data panel",
+    "clean df70 real-source QA: 21,345,746 rows / eight instruments, measured CPU/RSS and actual authenticated browser/exact export/mobile proof",
+    "source QA SIGKILL identity retention and actual killed-child full retry regression",
+    "search/v3 exact declared pip-based stop bounds, legacy v1/v2 identities/ranges preserved, native .001-tick/.1-pip Gold endpoint BUY/SELL risk/RR goldens"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
-    "command": "bash scripts/verify.sh",
-    "errors": 0,
-    "failures": 0,
-    "frontend": "PASS",
-    "lint": "PASS",
-    "log": "/tmp/hermes-source-quality-complete-verify.log",
-    "passed": 287,
-    "seconds": 79.66,
+    "passed": 302,
+    "failed": 0,
     "skipped": 0,
-    "warnings": 340
+    "warnings": 348,
+    "pytest_seconds": 82.08,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "command": "bash scripts/verify.sh",
+    "log": "reports/milestones/2026-11-04-source-recovery-search/full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/2026-11-04-source-quality/manifest.json",
-  "latest_milestone": "docs/milestone-monetary-validation-2026-11-04.md",
+  "latest_evidence_manifest": "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+  "latest_milestone": "docs/milestone-source-quality-recovery-search-2026-11-04.md",
   "latest_scientific_code_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
-  "next_unfinished": "Retain identifiable incomplete source QA state on abrupt process death; then metadata review/admission registry, revisions and remaining screening/research/product/lifecycle gates.",
-  "observed_at_utc": "2026-11-04T03:45:53.574963+00:00",
+  "next_unfinished": "Reviewed metadata/calendar admission registry and source revisions; native session integration; versioned scientific protocol opt-in to profile-aware search; calibrated cost-aware screening/shared indicators/full autonomous discovery and remaining product/lifecycle/security/target gates.",
+  "observed_at_utc": "2026-11-04T03:52:17.844950+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -95,8 +99,9 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "04f43a360336f39da710708c94183d257e72fca2",
-    "source_sha256": "1fef66266caacaab83e71693401bb1f9cd364325afbde5bef6c920a6262c3395"
+    "git_commit": "ea2e369b2a63117fc55a52f03c1c5282f07aa5db",
+    "source_sha256": "5d57bdbe47a9ae1c6db29d7c397a0a51bde3e75e5cdbbc4a7a0650da8022e60f",
+    "working_tree_scientific_edits": true
   },
   "visibility": {
     "current": "PUBLIC",

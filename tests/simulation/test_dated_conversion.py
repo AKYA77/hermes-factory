@@ -168,3 +168,55 @@ def test_native_volume_bounds_are_rounded_to_legal_grid_without_rounding_up_risk
     assert instrument.max_quantity.as_decimal() == D("1")
     with pytest.raises(ValueError, match="NO_LEGAL_NATIVE_VOLUME"):
         make_instrument(profile.model_copy(update={"max_volume": D(".019")}))
+
+
+@pytest.mark.parametrize("side", ["BUY", "SELL"])
+@pytest.mark.parametrize("endpoint", ["low", "high"])
+def test_v3_gold_search_bounds_with_distinct_declared_pip_are_native_eligible(side, endpoint):
+    from factory.exploration.persistent import SearchProtocol
+    from factory.contracts import Window
+
+    profile, _, data, signal = inputs("XAUUSD", side)
+    profile = profile.model_copy(
+        update={
+            "tick_size": D(".001"),
+            "pip_size": D(".1"),
+            "price_scale": 1000,
+            "margin_rate": D(".0001"),
+            "source": "synthetic declared .1 pip / .001 tick search test; not broker metadata",
+        }
+    )
+    p = SearchProtocol(
+        dataset_hash="a" * 64,
+        profile=profile,
+        family="momentum",
+        timeframe="M1",
+        window=Window(
+            start_ns=data[0].event_ts_utc_ns, end_ns=data[-1].event_ts_utc_ns + 1, role="train_only"
+        ),
+        code_revision="synthetic native stop search golden",
+        seed=42,
+    )
+    spec = p.strategy(
+        {
+            "lookback": 2,
+            "threshold_tenths": 10,
+            "stop_ticks": getattr(p.stop_distribution(), endpoint),
+            "confirmation": "none",
+        }
+    )
+    # A deliberately large adverse jump exercises stop fills for both endpoints.
+    values = [2_000_001, 2_000_001, 1_996_001 if side == "BUY" else 2_004_001]
+    data = [
+        replace(data[i], bid_int=bid, ask_int=bid + 10, price_scale=1000)
+        for i, bid in enumerate(values)
+    ]
+    result = replay(data, profile, spec, signal, True)
+    assert not result["integrity_errors"] and not result["rejections"]
+    assert len(result["trades"]) == 1 and not result["open_trade"]
+    trade = result["trades"][0]
+    assert trade["exit_reason"] == "STOP_LOSS"
+    entry, stop, target = (D(trade[k]) for k in ("intent_entry", "stop", "target"))
+    assert abs(entry - stop) == spec.stop_ticks * profile.tick_size
+    assert abs(target - entry) == 3 * abs(stop - entry)
+    assert D(trade["risk"]) <= D(trade["risk_budget"]) == 2

@@ -160,6 +160,10 @@ class ValidationController:
         )
         if not rows:
             search_protocol = SearchProtocol(
+                # Existing scientific v1/v2 identities froze the v2 sampling
+                # policy. New search defaults must not change an unfinished
+                # protocol's later refits under its original identity.
+                schema_version="search/v2",
                 dataset_hash=p.holdout.dataset_hash,
                 profile=p.holdout.profile,
                 window=Window(start_ns=p.start_ns, end_ns=end_ns, role="train_only"),
