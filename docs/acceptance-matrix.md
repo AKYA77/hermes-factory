@@ -80,3 +80,5 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T47 | Dated native conversion and base units | Scoped all-eight long/short stop/target native goldens, FX tie/chunk/materialized parity, synthetic Gold lot equivalence/third-decimal grid, gap insolvency, exact-risk boundary and actual JPY training/confirmation pass. Real metadata/calendar gates remain open |
 
 | T48 | Connected validation laboratory | Actual Chromium registration/pause/exact-nanosecond export, native staged report/curve/annual/pooled views, protected status and protocol stop pass; desktop/mobile plus previous control regression pass. Full C7 workflows remain unfinished |
+
+| T49 | Qualification before final observation | Actual weak-forward native restart ends before final refit/selection/consumption; declared censor/DD/neighbor policy, marked insolvency/open-loss and missing native evidence guards pass; v1 IDs stay read-only; global regime/source validation remains open |

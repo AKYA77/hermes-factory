@@ -1,0 +1,21 @@
+{
+  "files": {
+    "core-verification.log": "19666b2224687683fe947730da24fd01af89055d4bab6a1e5bad52faf5dbc96f"
+  },
+  "observed_at_utc": "2026-11-04T02:28:22.790517+00:00",
+  "scope": "native protocol admission and decision guards; not complete scientific/product/target verification",
+  "status": "IMPLEMENTING_NOT_READY",
+  "tested_source_context": {
+    "git_commit": "b04034aff67a3cf93407dd5db41ce7f7d4f3eafc",
+    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
+  },
+  "verification": {
+    "failed": 0,
+    "frontend": "PASS",
+    "lint": "PASS",
+    "passed": 271,
+    "seconds": 73.22,
+    "skipped": 0,
+    "warnings": 340
+  }
+}

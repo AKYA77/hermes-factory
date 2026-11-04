@@ -26,7 +26,8 @@
     "execution v3 IOC remainder policy with native long/short partial-entry and stop cancellation goldens",
     "independent native Money/position/account reference with all-eight synthetic quote-PnL goldens; cross-currency context adapter still pending",
     "execution v4 dated native FX context, all-eight synthetic base-unit/Gold lot math, rational risk and PnL receipts, marked equity and protected JPY worker confirmation",
-    "Connected structured Validation Lab and exact-byte evidence exports with actual Chromium/API/native report and prior control regression"
+    "Connected structured Validation Lab and exact-byte evidence exports with actual Chromium/API/native report and prior control regression",
+    "scientific-validation/v2 forward/training/neighborhood qualification, mandatory marked/native evidence guards and explicit uncertifiable synthetic rehearsal; legacy IDs retained read-only"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
@@ -35,17 +36,17 @@
     "failures": 0,
     "frontend": "PASS",
     "lint": "PASS",
-    "log": "/tmp/hermes-mandate-v4-risk-verify.log",
-    "passed": 259,
-    "seconds": 71.96,
+    "log": "/tmp/hermes-validation-v2-full-verify.log",
+    "passed": 271,
+    "seconds": 73.22,
     "skipped": 0,
-    "warnings": 322
+    "warnings": 340
   },
   "latest_evidence_manifest": "reports/milestones/2026-11-04-monetary-validation/manifest.json",
   "latest_milestone": "docs/milestone-monetary-validation-2026-11-04.md",
   "latest_scientific_code_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
-  "next_unfinished": "Correct scientific qualification before consuming final holdout and enforce marked-equity/data-completeness decisions; finish verified-profile/calendar/revision software, approximate cost-aware screen/shared indicators/full autonomous research/UI/lifecycle gates.",
-  "observed_at_utc": "2026-11-04T02:08:54.680629+00:00",
+  "next_unfinished": "Verify the v2 protocol fields and unconsumed-final workflow in the real browser on a clean code commit; then verified-profile/calendar/revision software and remaining screening/research/product/lifecycle gates.",
+  "observed_at_utc": "2026-11-04T02:28:22.801787+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -86,8 +87,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "bfb6902eb608dbef628668244760bb1cc35b49ed",
-    "source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922"
+    "git_commit": "b04034aff67a3cf93407dd5db41ce7f7d4f3eafc",
+    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
   },
   "visibility": {
     "current": "PUBLIC",

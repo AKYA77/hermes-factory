@@ -142,3 +142,10 @@ Next correctness work: pre-confirmation qualification and marked-equity/data
 checks; verified profile/calendar/revision software; then complete approximate
 screening/shared indicators/discovery/recursive diagnostics/product lifecycle.
 Both dependency gates still fail. All readiness states remain false.
+
+ADR 0019 scientific protocol v2 now qualifies forward/training/neighborhood
+evidence before final consumption, and requires marked/native/censoring checks.
+Legacy v1 remains read-only; explicit synthetic software rehearsal cannot certify.
+Full suite: 271 passed, 340 warnings, 73.22 seconds; lint/frontend passed.
+Next: clean-source browser verification for v2, then verified profile/calendar/
+revision software and full approximate screening/discovery/diagnostics/lifecycle.

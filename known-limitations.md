@@ -144,6 +144,10 @@ immutable receipts, PRUNED feedback and native rejection audits. It does not
 perform approximate profitability screening or confer scientific validation.
 
 Latest actual evidence: docs/milestone-monetary-validation-2026-11-04.md and
-reports/milestones/2026-11-04-monetary-validation/manifest.json. The synthetic
-protocol still needs qualification before consuming final holdout and full
-marked-equity/data-completeness decision guards. No historical promotion is enabled.
+reports/milestones/2026-11-04-monetary-validation/manifest.json. Scientific protocol v2 now requires forward/training/neighborhood qualification
+before final consumption and checks marked/native evidence (ADR 0019). Legacy v1
+is read-only. Explicit synthetic software rehearsal can consume weak evidence
+for integration testing but cannot certify. Full source completeness/calendar,
+regime/global inference and historical profile gates remain open. Empty custom
+books can cause native unadjusted-price fallback; such evidence is rejected,
+not accepted as complete finite-depth fidelity. No historical promotion is enabled.
