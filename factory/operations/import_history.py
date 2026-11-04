@@ -10,8 +10,8 @@ import time
 import resource
 import os
 
-from factory.data.histdata import download, quotes_from_archive, PARSER_VERSION
-from factory.data.streaming import StreamingCatalog
+from factory.data.histdata import download, PARSER_VERSION
+from factory.data.resume import import_archive
 from factory.data import atomic_bytes, sha256
 from factory.provenance import source_identity
 
@@ -55,9 +55,7 @@ def main():
             "Gold pip/contract/margin metadata remains UNKNOWN_SPEC",
         ],
     }
-    manifest = StreamingCatalog(args.catalog).commit(
-        quotes_from_archive(source), source["archive"], provenance, args.batch_rows
-    )
+    manifest, resume = import_archive(args.catalog, source, provenance, args.batch_rows)
     from calendar import timegm
     from factory.data import Catalog
     from factory.data.versions import SourceSlot, SourceVersions
@@ -81,6 +79,7 @@ def main():
         "wall_seconds": time.perf_counter() - started,
         "cpu_seconds": time.process_time() - cpu,
         "batch_rows": args.batch_rows,
+        "import_resume": resume,
         "peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024,
         "source_context": context,
         "source_observation_id": observation_id,

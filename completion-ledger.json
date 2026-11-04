@@ -127,13 +127,15 @@
         "factory/data/streaming.py",
         "factory/data/views.py",
         "factory/instruments/__init__.py",
-        "factory/instruments/calendar.py"
+        "factory/instruments/calendar.py",
+        "factory/data/resume.py"
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-import-resume/manifest.json"
       ],
-      "supporting_evidence_scope": "All-eight January 2025 structural round trips (21,345,746 rows), provenance/deep identity and bounded fixtures passed; calendar/source/instrument acceptance remains",
+      "supporting_evidence_scope": "All-eight January 2025 structural round trips (21,345,746 rows), provenance/deep identity and bounded fixtures passed; calendar/source/instrument acceptance remains; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2.",
       "status": "PASS",
       "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "next_required_action": "Retain verified software evidence; rerun on any affected change."
@@ -151,13 +153,15 @@
         "factory/data/streaming.py",
         "factory/data/views.py",
         "factory/instruments/__init__.py",
-        "factory/instruments/calendar.py"
+        "factory/instruments/calendar.py",
+        "factory/data/resume.py"
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/2026-11-04-import-resume/manifest.json"
       ],
-      "supporting_evidence_scope": "Quarantine/corruption/checkpoint/retry/capture recovery tested; sessions/current-month recapture/revisions pending",
+      "supporting_evidence_scope": "Quarantine/corruption/checkpoint/retry/capture recovery tested; sessions/current-month recapture/revisions pending; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Quarantine/corruption/checkpoint/retry/capture recovery tested; sessions/current-month recapture/revisions pending"
@@ -2062,17 +2066,19 @@
         "scripts/validation-browser-drive.py",
         "scripts/validation-browser-fixture.py",
         "scripts/validation-browser-smoke.cjs",
-        "scripts/verify.sh"
+        "scripts/verify.sh",
+        "factory/data/resume.py"
       ],
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
       "evidence": [
         "development-state.json",
         "release-manifest.json",
-        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json",
+        "reports/milestones/2026-11-04-import-resume/manifest.json"
       ],
       "status": "NOT_TESTED",
       "next_required_action": "Partial; 176 planned partitions pending, calendars/revisions and full operational ingestion remain; immutable views now exist",
-      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified."
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2."
     },
     {
       "requirement_id": "C3",
@@ -2828,15 +2834,17 @@
         "factory/data/reconcile.py",
         "factory/data/histdata.py",
         "factory/operations/import_history.py",
-        "migrations/009_source_versions.sql"
+        "migrations/009_source_versions.sql",
+        "factory/data/resume.py"
       ],
       "verification_command": ".venv/bin/pytest tests/integration/test_source_versions.py -q; bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-revisions/manifest.json"
+        "reports/milestones/2026-11-04-source-revisions/manifest.json",
+        "reports/milestones/2026-11-04-import-resume/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Generated revision/recovery/native fixtures pass; genuine additional-period integration and full source operations pending.",
-      "next_required_action": "Run measured real January/February source workflow; complete source UI and intra-partition recovery."
+      "supporting_evidence_scope": "Generated revision/recovery/native fixtures pass; genuine additional-period integration and full source operations pending.; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2.",
+      "next_required_action": "Complete source operations UI, scheduled refresh, quotas/retention/compaction and representative real-profile/provider fidelity. Intra-partition retained-ZIP import recovery is implemented; HTTP byte-range resume remains unsupported and explicitly disclosed."
     },
     {
       "requirement_id": "T56",

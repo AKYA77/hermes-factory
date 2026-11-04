@@ -39,7 +39,9 @@ class StreamingCatalog:
         self.root = Path(root)
         self.catalog = Catalog(root)
 
-    def commit(self, quotes, source_path, provenance, batch_rows=8192):
+    def commit(
+        self, quotes, source_path, provenance, batch_rows=8192, *, expected_source_hash=None
+    ):
         if not 1 <= batch_rows <= 65536:
             raise ValueError("batch_rows must be 1..65536")
         if not provenance.get("source") or not provenance.get("license"):
@@ -48,6 +50,8 @@ class StreamingCatalog:
             raise ValueError("insufficient disk headroom")
         source_path = Path(source_path)
         source_hash = sha256(source_path)
+        if expected_source_hash is not None and source_hash != expected_source_hash:
+            raise ValueError("raw source changed before import publication")
         pending = Path(tempfile.mkdtemp(prefix=".pending-", dir=self.root))
         writer = None
         try:

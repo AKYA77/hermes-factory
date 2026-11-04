@@ -104,3 +104,12 @@ native training and chronological exploratory evaluation pass (16fills/7closed
 trades), with unproven provider gaps and prior technical-use disclosure. This
 adds evidence to T43/T49/T54, not full acceptance. Global/regime/source/lifecycle
 and target gates remain open. See milestone-historical-protocols-2026-11-04.md.
+
+ADR0027 adds scoped source-recovery evidence to T04/T05/T55: actual SIGKILL
+checkpoint/restart, identical uninterrupted data/v2 identity, retained duplicate
+rows, corruption/cursor/lock/disk/publication failure guards and CLI/source
+observation integration. Parser/v2 exact ratio conversion rejects off-grid values
+formerly rounded onto the source scale. Generated fixtures are not historical
+market data. Full376-test verification passes; C2, provider fidelity, scheduled
+refresh/storage/UI and all release readiness remain open. See the import-resume
+milestone and its exact hashed receipts.

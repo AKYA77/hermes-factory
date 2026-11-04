@@ -195,3 +195,12 @@ Global-selection/regime/diversified-ranking and all full C0–C9 exit gates rema
 Full verification346passed; actual measurements are in the milestone report.
 Latest directive authorizes tested milestone pushes; historical push holds are
 superseded. No merge, visibility change, ready tag or production deployment.
+
+ADR0027 now implements retained-ZIP intra-partition import recovery. Earlier
+statements that all intra-partition recovery is absent are superseded for this
+specific path. HTTP range recovery remains unsupported; full downloads still
+preserve failed bytes and reacquire. Staging adds disk use and intentionally
+retains failure/orphan evidence pending explicit safe retention software. Parser
+v2 fixes Decimal-context rounding on overprecise source prices; canonical values
+alone cannot prove what a prior parser discarded. No old archive is rewritten or
+retroactively certified. Scientific/operational/release gates remain unchanged.

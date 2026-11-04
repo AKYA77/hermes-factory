@@ -30,6 +30,29 @@ def test_precision_or_time_ambiguity_rejected(line):
         parse_line(line, "EURUSD", 0, "b")
 
 
+@pytest.mark.parametrize("precision", [2, 6, 28, 60])
+def test_source_price_conversion_is_exact_under_decimal_context(precision):
+    from decimal import localcontext
+
+    with localcontext() as context:
+        context.prec = precision
+        q = parse_line("20250102 010000001,2650.123000,2650.234000,0", "XAUUSD", 0, "b")
+        assert (q.bid_int, q.ask_int) == (2650123000, 2650234000)
+        with pytest.raises(ValueError, match="nonreversible"):
+            parse_line(
+                "20250102 010000001,1.1234500000000000000000000000000001,1.12346,0",
+                "EURUSD",
+                0,
+                "b",
+            )
+
+
+@pytest.mark.parametrize("price", ["1e999999999", "1e-999999999", "sNaN", "Infinity", "-1", "0"])
+def test_source_decimal_exponents_and_nonfinite_prices_are_bounded(price):
+    with pytest.raises(ValueError):
+        parse_line(f"20250102 010000001,{price},1.12346,0", "EURUSD", 0, "b")
+
+
 def test_bounded_stream_roundtrip_and_duplicates(tmp_path):
     source = tmp_path / "source.csv"
     line = "20250102 010000001,1.123450,1.123460,0"

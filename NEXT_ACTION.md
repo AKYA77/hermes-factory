@@ -61,3 +61,15 @@ compatible deepmerge chain. Keep both audit checks active and red until genuinel
 resolved. Native finite-empty-book fallback is quarantined, not solved/waived.
 All original C0–C9/T01–T30 plus supplemental gates remain in completion-ledger.json.
 SOFTWARE_VERIFIED=false, DATA_READY=false, OPERATION_READY=false; no final tag.
+
+Latest source-recovery increment (ADR0027): retained-ZIP imports now checkpoint
+bounded decoded chunks, verify raw prefixes on retry, survive actual SIGKILL and
+preserve original data/v2 identities. HistData parser/v2 fixes a reproduced
+Decimal-context rounding acceptance bug; valid quotes stay exact, old results
+stay unchanged. Full verification376passed/362warnings; focused52passed.
+See docs/milestone-import-resume-2026-11-04.md and its manifest. Do not repeat this
+completed fixture/benchmark as historical evidence. HTTP byte-range resume is
+not supported; interrupted downloads retain bytes and reacquire. Scheduled
+refresh, quotas/retention/compaction and full data UI remain executable next work.
+The current imported-archive staging intentionally retains chunks/failures; do
+not remove evidence or source vault files to recover disk space blindly.

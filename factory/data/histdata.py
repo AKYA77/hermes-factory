@@ -7,7 +7,7 @@ Raw source archives and notices are retained. No redistribution right is inferre
 import calendar
 import csv
 from datetime import datetime, timedelta, timezone
-from decimal import Decimal as D
+from decimal import Decimal as D, InvalidOperation
 import hashlib
 import fcntl
 import time
@@ -24,7 +24,7 @@ import zipfile
 from factory.contracts import SYMBOLS
 from factory.data import Quote, atomic_bytes, sha256
 
-PARSER_VERSION = "histdata-ascii-ticks/v1"
+PARSER_VERSION = "histdata-ascii-ticks/v2"
 SCALE = 1000000
 EST = timezone(timedelta(hours=-5))
 MAX_ARCHIVE_BYTES = 128 * 1024**2
@@ -240,9 +240,22 @@ def parse_line(line, instrument, order, batch_id, expected_period=None):
         raise ValueError("row outside declared source period")
     utc = local.astimezone(timezone.utc)
     ns = calendar.timegm(utc.timetuple()) * 10**9 + int(stamp[15:]) * 10**6
-    prices = [D(bid) * SCALE, D(ask) * SCALE]
-    if any(not p.is_finite() or p <= 0 or p != p.to_integral_value() or p >= 2**63 for p in prices):
-        raise ValueError("nonreversible price precision or invalid price")
+    prices = []
+    for text in (bid, ask):
+        try:
+            value = D(text)
+        except InvalidOperation as exc:
+            raise ValueError("invalid source price") from exc
+        # Multiplication under Decimal's arithmetic context can round an off-grid
+        # value to a legal integer. Reject huge exponents before constructing an
+        # exact ratio, then use integer arithmetic independent of that context.
+        if not value.is_finite() or value <= 0 or not -6 <= value.adjusted() <= 12:
+            raise ValueError("nonreversible price precision or invalid price")
+        numerator, denominator = value.as_integer_ratio()
+        integer, remainder = divmod(numerator * SCALE, denominator)
+        if remainder or integer >= 2**63:
+            raise ValueError("nonreversible price precision or invalid price")
+        prices.append(integer)
     return Quote(
         instrument,
         ns,
