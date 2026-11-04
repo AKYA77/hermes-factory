@@ -73,3 +73,20 @@ not supported; interrupted downloads retain bytes and reacquire. Scheduled
 refresh, quotas/retention/compaction and full data UI remain executable next work.
 The current imported-archive staging intentionally retains chunks/failures; do
 not remove evidence or source vault files to recover disk space blindly.
+
+ADR0028 completes the duplicate-staging storage follow-up: default shared2GiB
+payload quota, retained orphan/failure accounting and explicit deeply verified
+reclamation CLI. Full384passed/362warnings; actual generated50k-row cleanup
+removed359,384B across7chunks without changing any canonical hash. Runbook:
+docs/runbooks/historical-backfill.md. Do not describe canonical retention,
+compaction, scheduled refresh or full data APIs/UI as implemented from this proof.
+
+Current external prerequisite: proxy CONNECT403 blocks primary reference/source
+hosts. Required additive domains were saved in the environment draft, not applied:
+histdata.com,www.histdata.com,www.oanda.com,www.six-group.com,api.github.com.
+After environment settings are reviewed/saved/published, retry actual access;
+no new secret/token is established as missing. Git/public PR and CI pages work.
+The earlier genuine raw archives are not present in this fresh checkout's .local;
+Git evidence is retained, but a new genuine-profile run needs bounded provider
+access and actual raw captures. Do not claim their local restoration was verified.
+Continue independent implementation while that prerequisite is unavailable.

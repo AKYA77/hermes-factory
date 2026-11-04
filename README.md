@@ -5,13 +5,13 @@ and paper research only; no brokerage execution. The complete supplied v2.0
 specification is preserved in [BLUEPRINT.md](BLUEPRINT.md). No historical strategy
 performance is claimed.
 
-Latest progress: [eight-instrument source integrity](docs/milestone-source-integrity.md),
-[persistent training research](docs/milestone-training-research.md) and
-[machine-readable evidence](milestone-report.json). Free January 2025 imports now
-structurally verify 21,345,746 real quotes across all eight instruments. Historical
-strategy validation remains blocked. The current suite has 144 passing tests;
-security findings and full release requirements remain unresolved. Prior reports
-and immutable experiment histories are retained.
+Latest verification: **384 passing tests**, Ruff lint/format, dashboard type check
+and static build. [Import recovery](docs/milestone-import-resume-2026-11-04.md) and
+[staging storage controls](docs/milestone-import-staging-2026-11-04.md) now have
+SIGKILL/restart, exact parser, quota and canonical-preservation proof. Earlier
+[genuine historical rehearsal](docs/milestone-historical-protocols-2026-11-04.md)
+remains bounded exploratory evidence, not independent market validation.
+Security findings and full software/release requirements remain unresolved.
 
 Implemented: typed immutable strategy/experiment contracts; fingerprints; exact
 integer quote Parquet storage with raw hashes and quarantine; leased durable job
@@ -69,6 +69,10 @@ readiness. Bulk historical acquisition follows the tested software handoff;
 this development branch has not passed that handoff gate. Immutable partition
 views and bounded exact feature reuse are described in [ADR 0011](docs/decisions/0011-software-handoff-and-exact-feature-reuse.md).
 
-Latest tested development increment: [amendment checkpoint](docs/milestone-amendment-optimization.md),
+Earlier development increment: [amendment checkpoint](docs/milestone-amendment-optimization.md),
 with 172 tests and actual 1,000-strategy regression/resource evidence. All three
 readiness states remain false; this is not a release or completed handoff.
+
+For bounded post-handoff historical acquisition and safe import recovery, use the
+[backfill runbook](docs/runbooks/historical-backfill.md). Full acquisition,
+provider/calendar acceptance and target-host operation remain separate gates.

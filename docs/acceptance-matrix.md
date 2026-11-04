@@ -113,3 +113,9 @@ formerly rounded onto the source scale. Generated fixtures are not historical
 market data. Full376-test verification passes; C2, provider fidelity, scheduled
 refresh/storage/UI and all release readiness remain open. See the import-resume
 milestone and its exact hashed receipts.
+
+ADR0028 supplements T05/T55/C2/C8 with shared staging payload admission and
+explicit canonical-verified duplicate reclamation. Full384-test suite, quota,
+lock/orphan/corruption/path/interrupted-cleanup fixtures and actual generated50k
+reclamation preserve all canonical hashes. No complete C2/C8, archive hard quota,
+canonical compaction, scheduled acquisition or target-host acceptance is implied.

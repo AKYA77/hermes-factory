@@ -286,3 +286,161 @@ def test_import_command_uses_recovery_and_retains_observation_receipts(
     assert second["import_resume"]["rows_decoded"] == 0
     assert second["import_resume"]["rows_reused"] == 19
     assert len(list((root / "import-receipts").glob("*.json"))) == 2
+
+
+def test_payload_quota_stops_before_write_and_can_resume_with_new_budget(tmp_path):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    with pytest.raises(ValueError, match="payload budget exceeded"):
+        resume.import_archive(root, source, PROVENANCE, 4, staging_budget_bytes=1)
+    assert not list((root / ".imports").glob("*/*.parquet"))
+    assert not list(root.glob("*/manifest.json"))
+    result, metrics = resume.import_archive(root, source, PROVENANCE, 4)
+    assert result["rows"] == 19 and metrics["rows_decoded"] == 19
+
+
+def test_quota_counts_other_imports_and_orphans_without_deleting_them(tmp_path):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    orphan = root / ".imports" / "old-scope" / ".pending-retained"
+    orphan.parent.mkdir(parents=True)
+    orphan.write_bytes(b"retained failure" * 1000)
+    with pytest.raises(ValueError, match="payload budget exceeded"):
+        resume.import_archive(root, source, PROVENANCE, 4, staging_budget_bytes=1000)
+    assert orphan.read_bytes() == b"retained failure" * 1000
+
+
+def test_reclaim_only_verified_duplicate_chunks_and_idempotent_retry(tmp_path):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    result, metrics = resume.import_archive(root, source, PROVENANCE, 4)
+    cp = checkpoint(root)
+    canonical = root / result["dataset_hash"]
+    before = {p.name: p.read_bytes() for p in canonical.iterdir()}
+    orphan = cp.parent / ".pending-orphan"
+    orphan.write_bytes(b"retain incomplete failed payload")
+    failure = cp.parent / "failure-retained.json"
+    failure.write_text('{"error":"retained failure evidence"}')
+    first = resume.reclaim(root, metrics["checkpoint_id"])
+    assert first["removed_chunks"] == 5 and first["reclaimed_payload_bytes"] > 0
+    assert orphan.exists() and failure.exists()
+    assert not list(cp.parent.glob("*.parquet"))
+    assert before == {p.name: p.read_bytes() for p in canonical.iterdir()}
+    second = resume.reclaim(root, metrics["checkpoint_id"])
+    assert second["removed_chunks"] == second["reclaimed_payload_bytes"] == 0
+    again, reused = resume.import_archive(root, source, PROVENANCE, 4)
+    assert again == result and reused["staging_reclaimed"]
+    assert reused["canonical_deep_verified"] and reused["rows_decoded"] == 0
+    assert len(list(cp.parent.glob("reclaim-request-*.json"))) == 2
+    assert len(list(cp.parent.glob("reclaim-result-*.json"))) == 2
+
+
+def test_reclaim_refuses_unpublished_or_corrupt_data(tmp_path, monkeypatch):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    real = StreamingCatalog.commit
+    monkeypatch.setattr(
+        StreamingCatalog, "commit", lambda *a, **k: (_ for _ in ()).throw(OSError("injected"))
+    )
+    with pytest.raises(OSError):
+        resume.import_archive(root, source, PROVENANCE, 4)
+    cp = checkpoint(root)
+    with pytest.raises(ValueError, match="publication receipt"):
+        resume.reclaim(root, cp.parent.name)
+    assert list(cp.parent.glob("*.parquet"))
+    monkeypatch.setattr(StreamingCatalog, "commit", real)
+    result, metrics = resume.import_archive(root, source, PROVENANCE, 4)
+    (root / result["dataset_hash"] / "source.bin").write_bytes(b"corrupt canonical source")
+    with pytest.raises(ValueError):
+        resume.reclaim(root, metrics["checkpoint_id"])
+    assert list(cp.parent.glob("*.parquet"))
+
+
+def test_reclaim_interruption_restarts_without_recreating_or_losing_source(tmp_path, monkeypatch):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    result, metrics = resume.import_archive(root, source, PROVENANCE, 4)
+    real = Path.unlink
+    removed = []
+
+    def interrupted(path, *args, **kwargs):
+        if path.suffix == ".parquet":
+            if removed:
+                raise OSError("injected interrupted reclamation")
+            removed.append(path)
+        return real(path, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "unlink", interrupted)
+    with pytest.raises(OSError, match="interrupted reclamation"):
+        resume.reclaim(root, metrics["checkpoint_id"])
+    cp = checkpoint(root)
+    assert json.loads(cp.read_text())["payload"]["chunks_reclaimed"]
+    monkeypatch.setattr(Path, "unlink", real)
+    receipt = resume.reclaim(root, metrics["checkpoint_id"])
+    assert receipt["removed_chunks"] == 4
+    assert Catalog(root).verify(result["dataset_hash"], deep=True) == result
+    assert len(list(cp.parent.glob("reclaim-request-*.json"))) == 2
+    assert len(list(cp.parent.glob("reclaim-result-*.json"))) == 1
+
+
+def test_corrupt_staging_or_links_are_preserved_not_reclaimed(tmp_path):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    _, metrics = resume.import_archive(root, source, PROVENANCE, 4)
+    chunk = next(checkpoint(root).parent.glob("*.parquet"))
+    chunk.write_bytes(b"damaged staging evidence")
+    with pytest.raises(ValueError, match="corrupt staged chunk"):
+        resume.reclaim(root, metrics["checkpoint_id"])
+    assert chunk.read_bytes() == b"damaged staging evidence"
+    outside = tmp_path / "outside"
+    outside.write_bytes(b"do not delete")
+    chunk.unlink()
+    chunk.symlink_to(outside)
+    with pytest.raises(ValueError, match="symlink"):
+        resume.reclaim(root, metrics["checkpoint_id"])
+    assert outside.read_bytes() == b"do not delete"
+
+
+def test_shared_payload_admission_lock_and_reclamation_cli(tmp_path):
+    import fcntl
+
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    imports = root / ".imports"
+    imports.mkdir(parents=True)
+    with (imports / "payload-budget.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with pytest.raises(BlockingIOError):
+            resume.import_archive(root, source, PROVENANCE, 4)
+    result, metrics = resume.import_archive(root, source, PROVENANCE, 4)
+    child = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "factory.operations.import_staging",
+            "--catalog",
+            str(root),
+            "--checkpoint-id",
+            metrics["checkpoint_id"],
+        ],
+        capture_output=True,
+        text=True,
+        timeout=20,
+    )
+    assert child.returncode == 0, child.stderr
+    receipt = json.loads(child.stdout)
+    assert receipt["dataset_hash"] == result["dataset_hash"] and receipt["removed_chunks"] == 5
+
+
+def test_staging_directory_link_cannot_escape_catalog(tmp_path):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    root.mkdir()
+    outside = tmp_path / "outside"
+    outside.mkdir()
+    (root / ".imports").symlink_to(outside, target_is_directory=True)
+    with pytest.raises(ValueError, match="symlink"):
+        resume.import_archive(root, source, PROVENANCE)
+    with pytest.raises(ValueError, match="symlink"):
+        resume.reclaim(root, "a" * 64)
+    assert not list(outside.iterdir())

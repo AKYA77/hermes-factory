@@ -29,6 +29,7 @@ def main():
     parser.add_argument("--archives", default=".local/histdata-archives")
     parser.add_argument("--catalog", default=".local/historical-catalog")
     parser.add_argument("--batch-rows", type=int, default=8192)
+    parser.add_argument("--staging-budget-bytes", type=int, default=2**31)
     parser.add_argument("--refresh-source", action="store_true")
     parser.add_argument("--registry-state", type=Path)
     args = parser.parse_args()
@@ -55,7 +56,13 @@ def main():
             "Gold pip/contract/margin metadata remains UNKNOWN_SPEC",
         ],
     }
-    manifest, resume = import_archive(args.catalog, source, provenance, args.batch_rows)
+    manifest, resume = import_archive(
+        args.catalog,
+        source,
+        provenance,
+        args.batch_rows,
+        staging_budget_bytes=args.staging_budget_bytes,
+    )
     from calendar import timegm
     from factory.data import Catalog
     from factory.data.versions import SourceSlot, SourceVersions

@@ -204,3 +204,12 @@ retains failure/orphan evidence pending explicit safe retention software. Parser
 v2 fixes Decimal-context rounding on overprecise source prices; canonical values
 alone cannot prove what a prior parser discarded. No old archive is rewritten or
 retroactively certified. Scientific/operational/release gates remain unchanged.
+
+ADR0028 supersedes the duplicate-staging-cleanup gap only: a catalog-wide payload
+budget and explicit deeply verified chunk reclamation now exist. JSON audit
+metadata is outside that payload quota. Canonical archive retention/compaction,
+scheduled source refresh and full data APIs/UI remain unfinished. A new bounded
+historical-profile run also needs provider/reference access: current proxy denies
+HistData/OANDA/SIX. Additive domain requirements are saved as an unapplied draft.
+The prior genuine raw archives were not restored in this fresh environment;
+existing Git receipts are retained and are not a new local historical run.

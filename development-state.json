@@ -84,7 +84,8 @@
     "exact context-independent/bounded Decimal fingerprint encoding; read-only 42-state/32,450-retained-typed-value compatibility proof",
     "versioned opt-in cost-horizon feature labels and immutable native shadow audits; native positive counterexample preserves candidate and disables approximate pruning authority; ordinary cheap path retained",
     "ADR0026 admission-bound search/v4, protected-holdout/v2 and scientific-validation/v3; exact nanosecond windows; 346-test full verification; complete generated positive chronological reference; genuine EURUSD reviewed generic-unit supervised training and frozen exploratory evaluation (not independent historical validation)",
-    "ADR0027 bounded retained-archive chunk checkpoints, SIGKILL/restart and exact original data/v2 parity; parser/v2 exact context-independent source scaling rejects formerly rounded off-grid values; source hash bound before final publication"
+    "ADR0027 bounded retained-archive chunk checkpoints, SIGKILL/restart and exact original data/v2 parity; parser/v2 exact context-independent source scaling rejects formerly rounded off-grid values; source hash bound before final publication",
+    "ADR0028 shared catalog staging payload quota and explicit verified duplicate-chunk reclamation; atomic request/marker/results and interrupted-unlink recovery preserve canonical source and failure/orphan evidence"
   ],
   "last_remote_commit": "1bfe1763721eb86ebc622fd09c4282271f01f55a",
   "last_verification": {
@@ -100,8 +101,8 @@
     "command": "bash scripts/verify.sh",
     "log": "reports/milestones/2026-11-04-cost-shadow-decimal-identity/full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/2026-11-04-import-resume/manifest.json",
-  "latest_milestone": "docs/milestone-import-resume-2026-11-04.md",
+  "latest_evidence_manifest": "reports/milestones/2026-11-04-import-staging/manifest.json",
+  "latest_milestone": "docs/milestone-import-staging-2026-11-04.md",
   "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
   "next_unfinished": "Source refresh/scheduled acquisition and safe storage lifecycle/UI; all-eight/Gold references and provider gaps; global/regime scientific validation; autonomous full families/discovery and calibrated safe funnel; diagnostics/dashboard/installed release gates remain as NEXT_ACTION.md.",
   "observed_at_utc": "2026-11-04T18:46:52.652389+00:00",
@@ -176,16 +177,32 @@
     "new_implementation_performed": false
   },
   "latest_verification": {
-    "passed": 376,
+    "passed": 384,
     "failed": 0,
     "skipped": 0,
     "warnings": 362,
-    "pytest_seconds": 165.689,
+    "pytest_seconds": 161.097,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/2026-11-04-import-resume/full-verification.log"
+    "log": "reports/milestones/2026-11-04-import-staging/full-verification.log"
+  },
+  "network_requirements": {
+    "confirmed_denied": [
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ],
+    "draft_additions_saved": [
+      "histdata.com",
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ],
+    "applied_or_published": false
   }
 }
