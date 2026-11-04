@@ -198,3 +198,13 @@ Full verification310passed/354warnings/85.15s plus frontend/lint/format pass.
 Generated authorization fixtures are NOT genuine historical market validation.
 Next clean-source browser proof, source revisions, historical scientific/search
 propagation, cost-aware screen/shared indicators/full discovery and remaining gates.
+
+ADR0023/migration009 now implements explicit source versions/selections/snapshots,
+full bounded positional comparisons and permanent quarantine/restoration episodes.
+New source IDs invalidate new-view caches while frozen prior history stays intact.
+All320tests pass;356warnings/91.45s plus lint/format/frontend pass. Actual native
+alias and same-lock completion quarantine tests pass. Genuine additional-period
+proof next. Intra-partition import checkpoint resume, full data UI/admission/search
+propagation and other original gates still remain. Both security scans still exit1;
+latest upstream native still pins vulnerable fsspec. GitHub remains PUBLIC and
+latest CI covers9034 only, not these unpushed commits. No readiness promotion.

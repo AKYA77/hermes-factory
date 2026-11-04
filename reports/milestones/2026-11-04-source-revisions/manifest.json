@@ -1,0 +1,34 @@
+{
+  "status": "NOT_READY",
+  "tested_source_context": {
+    "git_commit": "c76757246116b589814fc884d47a271fe90d80e3",
+    "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983",
+    "working_tree_scientific_edits": true
+  },
+  "verification": {
+    "passed": 320,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 356,
+    "pytest_seconds": 91.45,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS"
+  },
+  "security": {
+    "python_audit_exit_code": 1,
+    "npm_audit_exit_code": 1,
+    "upstream_nautilus_latest": "1.231.0",
+    "upstream_fsspec_latest": "2026.9.0",
+    "required_fsspec": "2026.2.0",
+    "status": "UNRESOLVED_BLOCKING",
+    "github_ci_scope": "9034cbcf4cba91af2a193f518b935af27c1c9dc2 only; no CI claim for local commits"
+  },
+  "files": {
+    "npm-audit.json": "1c7812dddf8e75be0ac8d93072180ccf32ccca5d7ebecbecfb4bf19a2e6a9450",
+    "focused-verification.log": "430bb74c04f37a543f94275c3161b923c4f73c9c182f95f01e1160c08a7db304",
+    "python-audit.json": "aa3be602597c748c9205bca839e0a745931575adcf42e4e6c5cc4c061ac72995",
+    "full-verification.log": "85deeeaab9b6b61b4fb9f3ce8a9e4efd487aea7642c31a722d5dabdadfa1fd5f"
+  }
+}

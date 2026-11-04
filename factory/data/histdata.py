@@ -79,16 +79,23 @@ def preserve_interrupted(path, reason):
     )
 
 
-def download(root, instrument, year, month):
+def download(root, instrument, year, month, *, refresh=False):
     if instrument not in SYMBOLS or year not in (2025, 2026) or not 1 <= month <= 12:
         raise ValueError("unsupported requested instrument/period")
     root = Path(root)
     root.mkdir(parents=True, exist_ok=True)
     with (root / f"{instrument}-{year}{month:02}.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
+        capture_root = root
+        if refresh:
+            import uuid
+
+            # A recapture never replaces the original successful source receipt.
+            capture_root = root / "captures" / f"{instrument}-{year}{month:02}" / uuid.uuid4().hex
+            capture_root.mkdir(parents=True)
         for attempt in range(3):
             try:
-                return _download(root, instrument, year, month)
+                return _download(capture_root, instrument, year, month)
             except urllib.error.HTTPError as exc:
                 if exc.code not in (429, 500, 502, 503, 504) or attempt == 2:
                     raise

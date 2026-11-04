@@ -38,9 +38,11 @@ def evaluate(root, payload):
         admission = registry.require(contract, profile, warmup_start_ns=manifest["first_ns"])
     from factory.experiments import Store
     from factory.validation.access import evaluation_use
+    from factory.data.versions import reject_quarantined
 
     store = Store(Path(root).parent / "factory.sqlite")
     with store.transaction() as db:
+        reject_quarantined(db, manifest)
         evaluation_use(db, profile, contract, manifest, payload)
     results = []
     cache = BarCache(Path(root).parent / "cache" / "evaluation-bars")
@@ -96,6 +98,8 @@ def evaluate(root, payload):
             }
         )
     catalog.verify(contract.dataset_hash, deep=True)
+    with store.transaction() as db:
+        reject_quarantined(db, manifest)
     if require_execution_version(contract) != context:
         raise ValueError("execution source changed during evaluation")
     if (

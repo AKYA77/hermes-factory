@@ -179,6 +179,10 @@ class InputRegistry:
         calendar = self.reference(spec.calendar_review_id, "calendar")
         quality = SourceQuality(self.root, self.catalog).verify(spec.quality_run_id)
         manifest = self.catalog.verify(quality["inputs"]["dataset_hash"])
+        from factory.data.versions import reject_quarantined
+
+        with self.store.transaction() as db:
+            reject_quarantined(db, manifest)
         if quality["synthetic"] or manifest["provenance"].get("synthetic"):
             raise ValueError("synthetic source cannot receive historical admission")
         if (
@@ -263,8 +267,15 @@ class InputRegistry:
             )
 
 
-def require_active_at_completion(db, contract, result):
+def require_active_at_completion(db, contract, result, catalog_root=None):
     """Serialize revocation against official finalization in the same DB lock."""
+    if db.execute("SELECT 1 FROM source_quarantines LIMIT 1").fetchone():
+        from factory.data import Catalog
+        from factory.data.versions import reject_quarantined
+
+        if catalog_root is None:
+            raise ValueError("catalog required for source quarantine completion check")
+        reject_quarantined(db, Catalog(catalog_root).verify(contract.dataset_hash))
     if type(result.get("synthetic")) is not bool:
         raise ValueError("explicit evidence source kind required")
     if result["synthetic"]:

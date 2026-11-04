@@ -70,6 +70,7 @@ def test_recurring_feedback_restart_and_no_llm(tmp_path, monkeypatch):
         {"version": 6},
         {"version": 7},
         {"version": 8},
+        {"version": 9},
     ]
 
 

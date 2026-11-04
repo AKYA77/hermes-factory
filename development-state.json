@@ -39,27 +39,28 @@
     "clean df70 real-source QA: 21,345,746 rows / eight instruments, measured CPU/RSS and actual authenticated browser/exact export/mobile proof",
     "source QA SIGKILL identity retention and actual killed-child full retry regression",
     "search/v3 exact declared pip-based stop bounds, legacy v1/v2 identities/ranges preserved, native .001-tick/.1-pip Gold endpoint BUY/SELL risk/RR goldens",
-    "migration008 immutable reviewed profile/calendar/source admission and permanent revocations; real-input native worker/evaluator eligibility with exact experiment-policy binding and completion-lock checks; genuine reference choice and historical rehearsal remain pending"
+    "migration008 immutable reviewed profile/calendar/source admission and permanent revocations; real-input native worker/evaluator eligibility with exact experiment-policy binding and completion-lock checks; genuine reference choice and historical rehearsal remain pending",
+    "migration009 source observation/selection/snapshot lineage, exact bounded positional comparisons, immutable quarantine/restoration episodes and alias/completion guards; separate retained free recaptures and automatic import observation"
   ],
   "last_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
   "last_verification": {
-    "passed": 310,
+    "passed": 320,
     "failed": 0,
     "skipped": 0,
-    "warnings": 354,
-    "pytest_seconds": 85.15,
+    "warnings": 356,
+    "pytest_seconds": 91.45,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/2026-11-04-reviewed-inputs/full-verification.log"
+    "log": "reports/milestones/2026-11-04-source-revisions/full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/2026-11-04-reviewed-inputs/manifest.json",
+  "latest_evidence_manifest": "reports/milestones/2026-11-04-source-revisions/manifest.json",
   "latest_milestone": "docs/milestone-source-quality-recovery-search-2026-11-04.md",
   "latest_scientific_code_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
-  "next_unfinished": "Clean-source actual review-registry browser proof; then source revisions and full historical scientific/search admission propagation; cost-aware screening, indicators/full discovery and all remaining gates.",
-  "observed_at_utc": "2026-11-04T16:10:37.659763+00:00",
+  "next_unfinished": "Clean-source limited February EURUSD real import + retained January/February selected view and measured source-version run; then source UI/coverage, intra-partition resume, scientific/search admission propagation and remaining autonomous/product/release gates.",
+  "observed_at_utc": "2026-11-04T16:27:26.693342+00:00",
   "readiness": {
     "DATA_READY": false,
     "OPERATION_READY": false,
@@ -95,13 +96,14 @@
     "required_fsspec": "2026.2.0",
     "status": "UNRESOLVED_BLOCKING",
     "upstream_nautilus": "1.231.0",
-    "worktree_scan": "9730 entropy candidates in report hashes; review scope is not a guarantee of absence"
+    "worktree_scan": "9730 entropy candidates in report hashes; review scope is not a guarantee of absence",
+    "latest_recheck": "reports/milestones/2026-11-04-source-revisions/manifest.json"
   },
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "ced580e325633d2ed1ed76949b689df9c814a6f8",
-    "source_sha256": "4a67b603a262ebf962d35b6db52f9df42802c3b82a360822f9782e54e9290ee7",
+    "git_commit": "c76757246116b589814fc884d47a271fe90d80e3",
+    "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983",
     "working_tree_scientific_edits": true
   },
   "visibility": {

@@ -2808,6 +2808,25 @@
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Generated TEST_ONLY authorization/native fixtures and actual Chromium pass; genuine reviewed reference and historical evaluation pending.",
       "next_required_action": "Choose and review legitimate dated instrument/provider references; run the real source evaluation and complete historical search/scientific propagation."
+    },
+    {
+      "requirement_id": "T55",
+      "title": "Source versions and recovery",
+      "acceptance_criteria": "Immutable source revision history; explicit current selection; missing periods cannot be silently skipped; exact bounded comparison; quarantine blocks aliases/finalization; byte-proven restoration retains incident history.",
+      "implementation_files": [
+        "factory/data/versions.py",
+        "factory/data/reconcile.py",
+        "factory/data/histdata.py",
+        "factory/operations/import_history.py",
+        "migrations/009_source_versions.sql"
+      ],
+      "verification_command": ".venv/bin/pytest tests/integration/test_source_versions.py -q; bash scripts/verify.sh",
+      "evidence": [
+        "reports/milestones/2026-11-04-source-revisions/manifest.json"
+      ],
+      "status": "NOT_TESTED",
+      "supporting_evidence_scope": "Generated revision/recovery/native fixtures pass; genuine additional-period integration and full source operations pending.",
+      "next_required_action": "Run measured real January/February source workflow; complete source UI and intra-partition recovery."
     }
   ],
   "release_manifest_assessment": {

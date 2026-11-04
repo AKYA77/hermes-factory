@@ -90,3 +90,5 @@ all implementation requirements, full scientific workflows and tested handoff.
 | T53 | Profile-aware search bounds | search/v3 exact declared-pip bounds, all-eight units, native Gold low/high BUY/SELL risk and 3R, legacy v1/v2 identity/range and restart checks pass. Existing scientific v1/v2 retains old range pending new protocol opt-in |
 
 | T54 | Reviewed historical inputs | Scoped generated TEST_ONLY reference/admission authorization fixtures exercise real native workers, exact policy identity, dated scope, evidence bytes, revocation and same-lock completion. Actual legitimate reference selection and genuine historical evaluation remain pending; not full C2/C3/C6 acceptance |
+
+| T55 | Source versions and recovery | Scoped generated source correction/reimport, immutable selection/snapshot, year/tie, exact full positional diff, budget/cache corruption, native alias/completion quarantine and exact restoration tests pass. Real multi-period workflow/resource proof and full C2 operational resume/UI/admission remain unfinished |

@@ -48,8 +48,10 @@ def run(payload, root):
     window = contract.windows[0]
     from factory.experiments import Store
     from factory.validation.access import training_use
+    from factory.data.versions import reject_quarantined
 
     with Store(Path(root) / "factory.sqlite").transaction() as db:
+        reject_quarantined(db, manifest)
         training_use(db, profile, contract, contract.experiment_hash, "training-execution")
 
     def read_window():
@@ -80,6 +82,8 @@ def run(payload, root):
         ) as events:
             receipt = screen(iter_bar_signals(events, spec), contract)
         catalog.verify(contract.dataset_hash, deep=True)
+        with Store(Path(root) / "factory.sqlite").transaction() as db:
+            reject_quarantined(db, manifest)
         if require_execution_version(contract) != context:
             raise ValueError("execution source changed during screen")
         screen_hash = persist(root, receipt)
@@ -109,6 +113,8 @@ def run(payload, root):
             spool_directory=Path(root),
         )
     catalog.verify(contract.dataset_hash, deep=True)
+    with Store(Path(root) / "factory.sqlite").transaction() as db:
+        reject_quarantined(db, manifest)
     result["runtime_provenance"] = context
     if registry is not None:
         if registry.require(contract, profile) != admission:

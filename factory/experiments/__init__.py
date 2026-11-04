@@ -278,7 +278,7 @@ class Store:
                 raise ValueError("explicit evidence source kind required")
             from factory.data.admission import require_active_at_completion
 
-            require_active_at_completion(db, contract, result)
+            require_active_at_completion(db, contract, result, self.path.parent / "catalog")
             for window in contract.windows:
                 if window.role != "train_only":
                     raise ValueError("evaluation evidence cannot enter training registry")
@@ -351,7 +351,7 @@ class Store:
         with self.transaction() as db:
             from factory.data.admission import require_active_at_completion
 
-            require_active_at_completion(db, contract, result)
+            require_active_at_completion(db, contract, result, self.path.parent / "catalog")
             now = time.time()
             active = db.execute(
                 "SELECT 1 FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",

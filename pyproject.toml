@@ -42,3 +42,4 @@ line-length = 100
 "migrations/006_scientific_protocol.sql" = "factory/sql/006_scientific_protocol.sql"
 "migrations/007_source_quality.sql" = "factory/sql/007_source_quality.sql"
 "migrations/008_reviewed_inputs.sql" = "factory/sql/008_reviewed_inputs.sql"
+"migrations/009_source_versions.sql" = "factory/sql/009_source_versions.sql"

@@ -29,6 +29,33 @@ def main():
     quality.add_argument("--tzif", type=Path)
     quality.add_argument("--profile", type=Path)
     subs.add_parser("source-quality-status")
+    observe = subs.add_parser("source-observe")
+    observe.add_argument("slot_file", type=Path)
+    observe.add_argument("dataset_hash")
+    observe.add_argument("--catalog", type=Path)
+    select_source = subs.add_parser("source-select")
+    select_source.add_argument("observation_id")
+    select_source.add_argument("--catalog", type=Path)
+    select_source.add_argument("--actor", required=True)
+    select_source.add_argument("--reason", required=True)
+    select_source.add_argument("--expected-selection")
+    quarantine = subs.add_parser("source-quarantine")
+    quarantine.add_argument("observation_id")
+    quarantine.add_argument("--actor", required=True)
+    quarantine.add_argument("--reason", required=True)
+    restore_source = subs.add_parser("source-resolve")
+    restore_source.add_argument("quarantine_id")
+    restore_source.add_argument("--catalog", type=Path)
+    restore_source.add_argument("--actor", required=True)
+    restore_source.add_argument("--reason", required=True)
+    snapshot = subs.add_parser("source-snapshot")
+    snapshot.add_argument("slots_file", type=Path)
+    snapshot.add_argument("--catalog", type=Path)
+    comparison = subs.add_parser("source-compare")
+    comparison.add_argument("left_observation")
+    comparison.add_argument("right_observation")
+    comparison.add_argument("--catalog", type=Path)
+    comparison.add_argument("--max-events-bytes", type=int, default=64 * 1024**2)
     review = subs.add_parser("reference-register")
     review.add_argument("review_file", type=Path)
     review.add_argument("documents", nargs="+", type=Path)
@@ -72,6 +99,52 @@ def main():
     subs.add_parser("resume")
     args = parser.parse_args()
     root = Path(args.state).resolve()
+    if args.command in (
+        "source-observe",
+        "source-select",
+        "source-quarantine",
+        "source-resolve",
+        "source-snapshot",
+        "source-compare",
+    ):
+        from factory.data import Catalog
+        from factory.data.versions import SourceVersions, SourceSlot
+
+        versions = SourceVersions(root, Catalog(getattr(args, "catalog", None) or root / "catalog"))
+        if args.command == "source-observe":
+            value = versions.observe(
+                SourceSlot.model_validate_json(args.slot_file.read_text()), args.dataset_hash
+            )
+        elif args.command == "source-select":
+            value = versions.select(
+                args.observation_id,
+                actor=args.actor,
+                reason=args.reason,
+                expected_selection_id=args.expected_selection,
+            )
+        elif args.command == "source-quarantine":
+            value = {
+                "quarantine_id": versions.quarantine(args.observation_id, args.actor, args.reason),
+                "observation_id": args.observation_id,
+            }
+        elif args.command == "source-resolve":
+            value = versions.resolve(args.quarantine_id, args.actor, args.reason)
+        elif args.command == "source-compare":
+            from factory.data.reconcile import compare_sources
+
+            value = compare_sources(
+                versions,
+                args.left_observation,
+                args.right_observation,
+                max_events_bytes=args.max_events_bytes,
+            )
+        else:
+            slots = json.loads(args.slots_file.read_text())
+            if not isinstance(slots, list):
+                parser.error("source snapshot requires an ordered JSON array of slot definitions")
+            value = versions.snapshot(slots)
+        print(json.dumps(value, indent=2))
+        return
     if args.command in ("reference-register", "source-admit", "input-revoke", "input-reviews"):
         from factory.data import Catalog
         from factory.data.admission import InputRegistry, ReferenceReview, AdmissionSpec
