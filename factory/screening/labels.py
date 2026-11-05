@@ -33,7 +33,7 @@ class CostHorizonPolicy(Contract):
     cost_basis: Literal["hypothetical-two-market-round-trip"] = "hypothetical-two-market-round-trip"
 
 
-def estimate_labels(events, spec, profile, contract, policy):
+def estimate_labels(events, spec, profile, contract, policy, *, transform_lookup=None):
     """One bounded pass, shared causal signal compiler and exact rational sums.
 
     Outcomes deliberately use later TRAINING features as labels. They cannot enter
@@ -106,7 +106,7 @@ def estimate_labels(events, spec, profile, contract, policy):
                     )
             yield event
 
-    for signal in iter_bar_signals(observed(), spec):
+    for signal in iter_bar_signals(observed(), spec, transform_lookup=transform_lookup):
         if current is None or signal["available_at"] != current.available_at:
             raise ValueError("signal/feature availability mismatch")
         signal_digest.update(serialize(signal).encode() + b"\n")

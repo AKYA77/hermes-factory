@@ -32,13 +32,14 @@
         "T36",
         "C4"
       ],
-      "state": "QUEUED",
+      "state": "VERIFIED_SCOPE",
       "work_kind": [
         "implementation",
         "integration",
         "verification"
       ],
-      "next_action": "Cache reusable exact causal transforms independently of stops/risk and prove compiler parity/invalidation."
+      "next_action": "Retain scoped shared indicator evidence; full-system gates remain open.",
+      "evidence": "docs/milestone-shared-indicators.md"
     },
     {
       "id": "safe_screening",
@@ -48,7 +49,7 @@
         "T56",
         "C4"
       ],
-      "state": "QUEUED",
+      "state": "IMPLEMENTING",
       "work_kind": [
         "implementation",
         "integration",

@@ -10,6 +10,7 @@ from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
 from factory.strategies import iter_bar_signals
 from factory.features.disk import BarCache
+from factory.features.indicators import compiler_events
 from pathlib import Path
 
 
@@ -58,17 +59,18 @@ def evaluate(root, payload):
                 {"window": window.model_dump(), "status": "DATA_UNAVAILABLE", "metrics": None}
             )
             continue
-        with cache.events(
+        with compiler_events(
+            cache,
             catalog,
             contract.dataset_hash,
             contract.instrument_hash,
             contract.code_revision,
-            (spec.timeframe, *spec.confirmations),
+            spec,
             end_ns=window.end_ns,
-        ) as events:
+        ) as (events, transform_lookup):
             window_signals = (
                 s
-                for s in iter_bar_signals(events, spec)
+                for s in iter_bar_signals(events, spec, transform_lookup=transform_lookup)
                 if window.start_ns <= s["available_at"] < window.end_ns
             )
             result = replay(

@@ -21,6 +21,7 @@ import pyarrow.parquet as pq
 from factory.contracts import TIMEFRAMES, fingerprint, serialize
 from factory.data import atomic_bytes, sha256
 from factory.features import Bar, closed_bar_events
+from factory.features.transforms import decimal_policy
 
 SCHEMA = pa.schema(
     [
@@ -58,6 +59,7 @@ class BarCache:
             "start_ns": start_ns,
             "end_ns": end_ns,
             "policy": POLICY,
+            "decimal": decimal_policy(),
         }
 
     def _verify(self, key, inputs):

@@ -16,6 +16,7 @@ from factory.simulation.runner import replay
 from factory.simulation.ledger import require_execution_version
 from factory.strategies import iter_bar_signals
 from factory.features.disk import BarCache
+from factory.features.indicators import compiler_events
 from factory.screening import SCREEN_POLICY, screen, from_summary, persist
 from factory.screening.labels import CostHorizonPolicy, estimate_labels
 
@@ -62,7 +63,7 @@ def run(payload, root):
 
     def signals():
         nonlocal generated
-        for signal in iter_bar_signals(events, spec):
+        for signal in iter_bar_signals(events, spec, transform_lookup=transform_lookup):
             generated += 1
             yield signal
 
@@ -76,22 +77,32 @@ def run(payload, root):
     if screening is not None:
         if screening != SCREEN_POLICY:
             raise ValueError("unsupported screening policy")
-        with cache.events(
+        with compiler_events(
+            cache,
             catalog,
             contract.dataset_hash,
             contract.instrument_hash,
             contract.code_revision,
-            (spec.timeframe, *spec.confirmations),
+            spec,
             start_ns=window.start_ns,
             end_ns=window.end_ns,
-        ) as events:
+        ) as (events, transform_lookup):
             if cost_shadow:
-                cost_labels = estimate_labels(events, spec, profile, contract, CostHorizonPolicy())
+                cost_labels = estimate_labels(
+                    events,
+                    spec,
+                    profile,
+                    contract,
+                    CostHorizonPolicy(),
+                    transform_lookup=transform_lookup,
+                )
                 receipt = from_summary(
                     cost_labels["signal_count"], cost_labels["signal_sha256"], contract
                 )
             else:
-                receipt = screen(iter_bar_signals(events, spec), contract)
+                receipt = screen(
+                    iter_bar_signals(events, spec, transform_lookup=transform_lookup), contract
+                )
         catalog.verify(contract.dataset_hash, deep=True)
         with Store(Path(root) / "factory.sqlite").transaction() as db:
             reject_quarantined(db, manifest)
@@ -104,15 +115,16 @@ def run(payload, root):
                 "screen": receipt.model_dump(mode="json"),
                 "screen_artifact_hash": screen_hash,
             }
-    with cache.events(
+    with compiler_events(
+        cache,
         catalog,
         contract.dataset_hash,
         contract.instrument_hash,
         contract.code_revision,
-        (spec.timeframe, *spec.confirmations),
+        spec,
         start_ns=window.start_ns,
         end_ns=window.end_ns,
-    ) as events:
+    ) as (events, transform_lookup):
         result = replay(
             read_window(),
             profile,

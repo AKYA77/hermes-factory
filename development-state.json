@@ -87,26 +87,27 @@
     "ADR0027 bounded retained-archive chunk checkpoints, SIGKILL/restart and exact original data/v2 parity; parser/v2 exact context-independent source scaling rejects formerly rounded off-grid values; source hash bound before final publication",
     "ADR0028 shared catalog staging payload quota and explicit verified duplicate-chunk reclamation; atomic request/marker/results and interrupted-unlink recovery preserve canonical source and failure/orphan evidence",
     "ADR0029 explicit Signal2 trend/reversal/range/volatility/session/confluence in shared causal compiler; Search5 and scientific-validation4 propagation, legacy JSON/hash preservation, nine-category additive coverage, actual native/offline-worker proof and seven-timeframe lookahead regressions",
-    "ADR0030 bounded authorized automatic discovery, immutable planned-region SIGKILL recovery, source arrival continuation, historical scope guards and authenticated desktop/mobile control/export; 476-test full verification"
+    "ADR0030 bounded authorized automatic discovery, immutable planned-region SIGKILL recovery, source arrival continuation, historical scope guards and authenticated desktop/mobile control/export; 476-test full verification",
+    "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption"
   ],
-  "last_remote_commit": "f45fda1ba038c91cd090d482d5e23daea078c1ca",
+  "last_remote_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
   "last_verification": {
-    "passed": 476,
+    "passed": 544,
     "failed": 0,
     "skipped": 0,
-    "warnings": 374,
-    "pytest_seconds": 171.1,
+    "warnings": 390,
+    "pytest_seconds": 184.0,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/autonomous-discovery/discovery-full-verification.log"
+    "log": "reports/milestones/shared-indicators/indicators-full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/autonomous-discovery/manifest.json",
-  "latest_milestone": "docs/milestone-autonomous-discovery.md",
+  "latest_evidence_manifest": "reports/milestones/shared-indicators/manifest.json",
+  "latest_milestone": "docs/milestone-shared-indicators.md",
   "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
-  "next_unfinished": "Immediately implement shared exact causal indicator primitives/cache; benchmark reuse against raw compiler and integrate screening/native evaluation with unchanged semantics. Continue queue to screening/diagnostics/science/source/dashboard/lifecycle/security/release.",
+  "next_unfinished": "Continue safe_screening: frozen calibration/rejection cohorts and durable native audit fallback. Cost-horizon approximation stays unauthorized to prune; preserve profitable native counterexample. Continue all remaining queue streams.",
   "observed_at_utc": "2026-11-04T18:46:52.652389+00:00",
   "readiness": {
     "DATA_READY": false,
@@ -149,8 +150,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "f45fda1ba038c91cd090d482d5e23daea078c1ca",
-    "source_sha256": "2e5706105a702231badf5f6a4be0e4633da40fb9de41b1b83519f0269aae33b6",
+    "git_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
+    "source_sha256": "a502f6a49ac4ad7ea785526f4442946baaed168fa155f5bffb41dc3fc0349aac",
     "working_tree_scientific_edits": true
   },
   "visibility": {
@@ -177,21 +178,21 @@
     "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
     "scope": "This receipt observes the source push; the following metadata-only commit records its recovery.",
     "new_implementation_performed": false,
-    "latest_verified_development_commit": "b31f6cd111c5ae1852c1db303242cd29b29ff6e3",
-    "latest_verified_development_ci": "reports/milestones/2026-11-04-strategy-families/prior-b31f6cd-ci-observations.json"
+    "latest_verified_development_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
+    "latest_verified_development_ci": "reports/milestones/shared-indicators/prior-discovery-publication.json"
   },
   "latest_verification": {
-    "passed": 476,
+    "passed": 544,
     "failed": 0,
     "skipped": 0,
-    "warnings": 374,
-    "pytest_seconds": 171.1,
+    "warnings": 390,
+    "pytest_seconds": 184.0,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/autonomous-discovery/discovery-full-verification.log"
+    "log": "reports/milestones/shared-indicators/indicators-full-verification.log"
   },
   "network_requirements": {
     "confirmed_denied": [

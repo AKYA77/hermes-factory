@@ -3,23 +3,26 @@
 from collections import deque
 
 from factory.features import closed_bar_events
+from factory.features.transforms import groups_for, primitives
 
 
-def operator_side(history, current, signal, operator=None):
+def operator_side(history, current, signal, operator=None, transforms=None):
     """One past-only interpreter used by screening and authoritative replay.
 
     v2 confluence requires unanimous nonempty sides, sharing explicit lookback
     and threshold. Session hours refer to UTC publication time, not broker hours.
     """
     operator = operator or signal.operator
+    if transforms is None:
+        transforms = primitives(history, groups_for(signal))
     if operator == "confluence":
-        sides = [operator_side(history, current, signal, op) for op in signal.components]
+        sides = [
+            operator_side(history, current, signal, op, transforms) for op in signal.components
+        ]
         return sides[0] if sides and sides[0] and len(set(sides)) == 1 else None
-    n, threshold = signal.lookback, signal.threshold
-    prices = [b.close for b in history]
-    mean = sum(prices) / n
+    threshold = signal.threshold
     if operator == "mean_reversion":
-        variance = sum((p - mean) ** 2 for p in prices) / n
+        mean, variance = transforms["mean"], transforms["variance"]
         if variance:
             score = (current.close - mean) / variance.sqrt()
             return "SELL" if score >= threshold else "BUY" if score <= -threshold else None
@@ -29,49 +32,52 @@ def operator_side(history, current, signal, operator=None):
             and (current.available_at // (3600 * 10**9)) % 24 not in signal.session_hours
         ):
             return None
-        delta = current.close - prices[0]
-        scale = sum(abs(b - a) for a, b in zip(prices, prices[1:])) / (n - 1)
+        delta = current.close - transforms["first"]
+        scale = transforms["change_scale"]
         if scale and abs(delta) >= threshold * scale:
             return "BUY" if delta > 0 else "SELL"
     elif operator == "breakout":
         return (
             "BUY"
-            if current.close > max(b.high for b in history)
+            if current.close > transforms["high"]
             else "SELL"
-            if current.close < min(b.low for b in history)
+            if current.close < transforms["low"]
             else None
         )
     elif operator == "trend":
-        slope = 6 * sum((2 * i - n + 1) * p for i, p in enumerate(prices)) / (n * (n * n - 1))
-        scale = sum(abs(b - a) for a, b in zip(prices, prices[1:])) / (n - 1)
+        slope = transforms["slope"]
+        scale = transforms["change_scale"]
         if scale and abs(slope) >= threshold * scale:
-            if slope > 0 and current.close >= prices[-1]:
+            if slope > 0 and current.close >= transforms["last"]:
                 return "BUY"
-            if slope < 0 and current.close <= prices[-1]:
+            if slope < 0 and current.close <= transforms["last"]:
                 return "SELL"
     elif operator == "reversal":
-        scale = sum(abs(b - a) for a, b in zip(prices, prices[1:])) / (n - 1)
-        delta, previous_trend = current.close - prices[-1], prices[-1] - prices[0]
+        scale = transforms["change_scale"]
+        delta, previous_trend = (
+            current.close - transforms["last"],
+            transforms["last"] - transforms["first"],
+        )
         if scale and previous_trend < 0 and delta >= threshold * scale:
             return "BUY"
         if scale and previous_trend > 0 and delta <= -threshold * scale:
             return "SELL"
     elif operator == "range":
-        low, high = min(b.low for b in history), max(b.high for b in history)
+        low, high = transforms["low"], transforms["high"]
         zone = (high - low) * threshold / (2 * (1 + threshold))
         if low <= current.close <= high and high > low:
-            if current.close <= low + zone and current.close > prices[-1]:
+            if current.close <= low + zone and current.close > transforms["last"]:
                 return "BUY"
-            if current.close >= high - zone and current.close < prices[-1]:
+            if current.close >= high - zone and current.close < transforms["last"]:
                 return "SELL"
     elif operator == "volatility":
-        scale = sum(b.high - b.low for b in history) / n
+        scale = transforms["range_mean"]
         if scale and current.high - current.low >= threshold * scale:
             return (
                 "BUY"
-                if current.close > prices[-1]
+                if current.close > transforms["last"]
                 else "SELL"
-                if current.close < prices[-1]
+                if current.close < transforms["last"]
                 else None
             )
     return None
@@ -83,7 +89,7 @@ def iter_signals(quotes, spec):
     )
 
 
-def iter_bar_signals(events, spec):
+def iter_bar_signals(events, spec, *, transform_lookup=None):
     """Single-pass past-only compiler, bounded by lookback and confirmation count.
 
     Higher bars are aligned monotonically by both end and publication time. A
@@ -110,7 +116,8 @@ def iter_bar_signals(events, spec):
         if len(history) < n:
             history.append(current)
             continue
-        side = operator_side(history, current, spec.signal)
+        transforms = transform_lookup(current) if transform_lookup is not None else None
+        side = operator_side(history, current, spec.signal, transforms=transforms)
         for higher in eligible.values():
             if (
                 len(higher) < 2
