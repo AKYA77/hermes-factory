@@ -110,3 +110,7 @@ recursive session/regime diagnostics and global independent qualification. Keep
 source/profile/source-refresh/UI/lifecycle/security and final source-to-restore
 requirements active in the ledger. Primary reference/data access remains denied
 until the saved environment network draft is actually applied and verified.
+
+Latest scoped checkpoint: ADR0030, docs/milestone-autonomous-discovery.md. Full476passed/374warnings, lint/format/frontend pass; real Chromium generated authorization/resume/region/pause/stop/exact-export/mobile proof. All11wheel migrations match. First full run interrupted by environment restart; sandbox API hangs are not passes. No parent acceptance or readiness flag changed.
+
+CONTINUE AUTOMATICALLY: run `.venv/bin/python scripts/completion-queue.py`, then shared_indicators. Exact primitives/cache identity must include code/data/profile/range/closed-time/lookback/formula/Decimal context; stop/threshold variants should reuse. Require raw parity, causality/invalidation/resource tests and actual measured benefit before adopting. Staged design files /tmp/hermes-transforms.py and /tmp/hermes-indicators.py are NOT integrated or verified and may be discarded if unsuitable. Continue subsequent tasks without waiting for owner input. Discovery fixture .local/discovery-browser-final is paused/stopped; its old-source grant must not be reused after commit changes. Source revision is provenance-bound.

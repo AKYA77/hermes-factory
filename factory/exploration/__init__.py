@@ -12,6 +12,7 @@ def propose(store, seed, budget=8):
         with store.transaction() as db:
             row = db.execute(
                 """SELECT c.* FROM research_coverage c
+                WHERE c.family IN ('mean_reversion','momentum','breakout')
                 ORDER BY (SELECT sum(i.proposals) FROM research_coverage i WHERE i.instrument=c.instrument),
                 (SELECT sum(f.proposals) FROM research_coverage f WHERE f.instrument=c.instrument AND f.family=c.family),
                 c.proposals,c.cpu_seconds,c.instrument,c.family,c.timeframe LIMIT 1"""

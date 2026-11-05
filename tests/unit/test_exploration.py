@@ -18,6 +18,16 @@ def test_proposal_coverage_and_seed(tmp_path):
     # This tests proposal-count coverage, not CPU-time fairness or all instruments.
 
 
+def test_legacy_template_sampler_remains_valid_after_full_family_grid(tmp_path):
+    store = Store(tmp_path / "registry")
+    proposals = list(propose(store, 42, budget=64))
+    assert len(proposals) == 64
+    assert all(
+        s.signal.version == "1" and s.signal.operator in ("mean_reversion", "momentum", "breakout")
+        for s, _ in proposals
+    )
+
+
 def test_T25_window_change_identity(spec, profile):
     def make(end):
         return ExperimentContract(

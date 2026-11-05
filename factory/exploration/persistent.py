@@ -245,7 +245,7 @@ class Search:
                 contract, protocol.profile
             )
 
-    def register(self, protocol):
+    def register(self, protocol, *, registration_guard=None):
         # Fail closed on real-data or obsolete-source prerequisites.
         probe = protocol.strategy(
             {"lookback": 2, "threshold_tenths": 5, "stop_ticks": 20, "confirmation": "none"}
@@ -265,6 +265,9 @@ class Search:
         self.require_admission(protocol, protocol.contract(probe))
         with self.store.transaction() as db:
             from factory.validation.access import training_use
+
+            if registration_guard is not None:
+                registration_guard(db)
 
             training_use(
                 db,
@@ -331,6 +334,16 @@ class Search:
             ).fetchone()
             if not enabled or not enabled[0]:
                 return None
+            managed = db.execute(
+                "SELECT c.enabled,r.state FROM discovery_regions d JOIN discovery_controls c USING(policy_id) JOIN discovery_region_controls r USING(region_id) WHERE d.protocol_hash=?",
+                (identity,),
+            ).fetchone()
+            if managed:
+                if not managed[0] or managed[1] != "REGISTERED":
+                    return None
+                from factory.exploration.discovery import require_training_scope
+
+                require_training_scope(db, protocol)
             history = [
                 dict(r)
                 for r in db.execute(

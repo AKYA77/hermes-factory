@@ -544,9 +544,10 @@
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/2026-11-04-strategy-families/manifest.json"
+        "reports/milestones/2026-11-04-strategy-families/manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
-      "supporting_evidence_scope": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
+      "supporting_evidence_scope": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending"
@@ -654,9 +655,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
-      "supporting_evidence_scope": "Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending",
+      "supporting_evidence_scope": "Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending"
@@ -1168,9 +1170,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
-      "supporting_evidence_scope": "PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim",
+      "supporting_evidence_scope": "PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim"
@@ -1360,9 +1363,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
-      "supporting_evidence_scope": "PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained",
+      "supporting_evidence_scope": "PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained"
@@ -1526,9 +1530,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
-      "supporting_evidence_scope": "Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged",
+      "supporting_evidence_scope": "Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged"
@@ -2292,11 +2297,12 @@
         "development-state.json",
         "release-manifest.json",
         "reports/milestones/2026-11-04-historical-protocols/manifest.json",
-        "reports/milestones/2026-11-04-strategy-families/manifest.json"
+        "reports/milestones/2026-11-04-strategy-families/manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
       "status": "NOT_TESTED",
       "next_required_action": "Complete durable automatic discovery of approved new training regions and full-space CPU fairness; shared indicator transforms, calibrated safe shortlisting/rejection audits, selection-bias integration and complete family product controls. Typed versioned required family categories/flat confluence are now implemented.",
-      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open."
+      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open."
     },
     {
       "requirement_id": "C5",
@@ -2605,10 +2611,12 @@
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "reports/milestones/autonomous-discovery/manifest.json"
       ],
       "status": "NOT_TESTED",
-      "next_required_action": "Partial; full blueprint dashboard/charts/actions/exports pending"
+      "next_required_action": "Partial; full blueprint dashboard/charts/actions/exports pending",
+      "supporting_evidence_scope": "; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open."
     },
     {
       "requirement_id": "C8",
@@ -2909,5 +2917,6 @@
     "git_commit": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
     "source_sha256": "3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b",
     "working_tree_scientific_edits": true
-  }
+  },
+  "latest_checkpoint": "docs/milestone-autonomous-discovery.md"
 }

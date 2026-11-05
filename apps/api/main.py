@@ -133,6 +133,28 @@ def create_app(root, dashboard=None):
     def search_status():
         return research_status(store)
 
+    from factory.exploration.discovery import Discovery, DiscoveryPolicy
+
+    @app.get("/api/v1/research/discovery", dependencies=read)
+    def discovery_status(limit: int = Query(50, ge=1, le=200), offset: int = Query(0, ge=0)):
+        return Discovery(store, root).status(limit, offset)
+
+    @app.post("/api/v1/research/discovery", dependencies=write)
+    def register_discovery(policy: DiscoveryPolicy):
+        try:
+            identity = Discovery(store, root).register(policy)
+            return {"policy_id": identity, "paused": store.paused()}
+        except (ValueError, OSError) as exc:
+            raise HTTPException(409, str(exc)) from exc
+
+    @app.post("/api/v1/research/discovery/{identity}/disable", dependencies=write)
+    def disable_discovery(identity: str):
+        try:
+            Discovery(store, root).disable(identity)
+            return {"policy_id": identity, "enabled": False}
+        except ValueError as exc:
+            raise HTTPException(404, str(exc)) from exc
+
     @app.get("/api/v1/improvement/status", dependencies=read)
     def improvement_status():
         from factory.improvement.service import Improvement

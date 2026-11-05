@@ -1,6 +1,131 @@
 {
   "components": {
     "schemas": {
+      "DiscoveryPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "attestation": {
+            "const": "I authorize training-only discovery within these bounds, never evaluation or holdout reuse",
+            "title": "Attestation",
+            "type": "string"
+          },
+          "authorized_by": {
+            "maxLength": 256,
+            "minLength": 1,
+            "title": "Authorized By",
+            "type": "string"
+          },
+          "code_revision": {
+            "title": "Code Revision",
+            "type": "string"
+          },
+          "cpu_seconds_per_region": {
+            "default": 120,
+            "exclusiveMinimum": 0.0,
+            "maximum": 86400.0,
+            "title": "Cpu Seconds Per Region",
+            "type": "number"
+          },
+          "families": {
+            "items": {
+              "$ref": "#/components/schemas/Family"
+            },
+            "maxItems": 32,
+            "minItems": 1,
+            "title": "Families",
+            "type": "array"
+          },
+          "higher_confirmations": {
+            "default": true,
+            "title": "Higher Confirmations",
+            "type": "boolean"
+          },
+          "max_active_regions": {
+            "default": 8,
+            "maximum": 64.0,
+            "minimum": 1.0,
+            "title": "Max Active Regions",
+            "type": "integer"
+          },
+          "max_regions": {
+            "default": 256,
+            "maximum": 4096.0,
+            "minimum": 1.0,
+            "title": "Max Regions",
+            "type": "integer"
+          },
+          "profiles": {
+            "items": {
+              "$ref": "#/components/schemas/InstrumentSpec"
+            },
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Profiles",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "discovery/v1",
+            "default": "discovery/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seed": {
+            "maximum": 4294967295.0,
+            "minimum": 0.0,
+            "title": "Seed",
+            "type": "integer"
+          },
+          "timeframes": {
+            "default": [
+              "M1",
+              "M5",
+              "M15",
+              "M30",
+              "H1",
+              "H4",
+              "D1"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "title": "Timeframes",
+            "type": "array"
+          },
+          "total_cpu_seconds": {
+            "default": 3600,
+            "exclusiveMinimum": 0.0,
+            "maximum": 2592000.0,
+            "title": "Total Cpu Seconds",
+            "type": "number"
+          },
+          "training_windows": {
+            "items": {
+              "$ref": "#/components/schemas/Window"
+            },
+            "maxItems": 16,
+            "minItems": 1,
+            "title": "Training Windows",
+            "type": "array"
+          },
+          "trials_per_region": {
+            "default": 16,
+            "maximum": 256.0,
+            "minimum": 1.0,
+            "title": "Trials Per Region",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "profiles",
+          "training_windows",
+          "code_revision",
+          "seed",
+          "authorized_by",
+          "attestation"
+        ],
+        "title": "DiscoveryPolicy",
+        "type": "object"
+      },
       "ExperimentContract": {
         "additionalProperties": false,
         "properties": {
@@ -107,6 +232,62 @@
           "seed"
         ],
         "title": "ExperimentContract",
+        "type": "object"
+      },
+      "Family": {
+        "additionalProperties": false,
+        "properties": {
+          "components": {
+            "default": [],
+            "items": {
+              "enum": [
+                "mean_reversion",
+                "momentum",
+                "breakout",
+                "trend",
+                "reversal",
+                "range",
+                "volatility",
+                "session",
+                "confluence"
+              ],
+              "type": "string"
+            },
+            "maxItems": 3,
+            "title": "Components",
+            "type": "array"
+          },
+          "operator": {
+            "enum": [
+              "mean_reversion",
+              "momentum",
+              "breakout",
+              "trend",
+              "reversal",
+              "range",
+              "volatility",
+              "session",
+              "confluence"
+            ],
+            "title": "Operator",
+            "type": "string"
+          },
+          "session_hours": {
+            "default": [],
+            "items": {
+              "maximum": 23.0,
+              "minimum": 0.0,
+              "type": "integer"
+            },
+            "maxItems": 24,
+            "title": "Session Hours",
+            "type": "array"
+          }
+        },
+        "required": [
+          "operator"
+        ],
+        "title": "Family",
         "type": "object"
       },
       "HTTPValidationError": {
@@ -2619,6 +2800,178 @@
           }
         },
         "summary": "Overview"
+      }
+    },
+    "/api/v1/research/discovery": {
+      "get": {
+        "operationId": "discovery_status_api_v1_research_discovery_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 200,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Discovery Status"
+      },
+      "post": {
+        "operationId": "register_discovery_api_v1_research_discovery_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscoveryPolicy"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Register Discovery"
+      }
+    },
+    "/api/v1/research/discovery/{identity}/disable": {
+      "post": {
+        "operationId": "disable_discovery_api_v1_research_discovery__identity__disable_post",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "identity",
+            "required": true,
+            "schema": {
+              "title": "Identity",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Disable Discovery"
       }
     },
     "/api/v1/research/pause": {

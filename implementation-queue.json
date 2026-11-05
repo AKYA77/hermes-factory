@@ -1,0 +1,226 @@
+{
+  "schema_version": "engineering-queue/v1",
+  "goal": "SOFTWARE_VERIFIED",
+  "policy": "Work item verification never implies its parent blueprint gates pass. The agent executes cycles; this file does not create an unattended coding process.",
+  "tasks": [
+    {
+      "id": "autonomous_discovery",
+      "priority": 10,
+      "requirements": [
+        "T18",
+        "T21",
+        "T34",
+        "T40",
+        "C4"
+      ],
+      "state": "VERIFIED_SCOPE",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Retain scoped evidence; parent full-system gates remain open.",
+      "evidence": "docs/milestone-autonomous-discovery.md"
+    },
+    {
+      "id": "shared_indicators",
+      "priority": 20,
+      "requirements": [
+        "T02",
+        "T06",
+        "T33",
+        "T36",
+        "C4"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Cache reusable exact causal transforms independently of stops/risk and prove compiler parity/invalidation."
+    },
+    {
+      "id": "safe_screening",
+      "priority": 30,
+      "requirements": [
+        "T17",
+        "T56",
+        "C4"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Freeze safe shortlist calibration, independent native audit cohorts, false-negative retention and fallback."
+    },
+    {
+      "id": "recursive_diagnostics",
+      "priority": 40,
+      "requirements": [
+        "T12",
+        "T13",
+        "T14",
+        "T39",
+        "C5"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Session/regime/path cohorts, bounded recursive diverse children, full lineage and independent confirmation."
+    },
+    {
+      "id": "scientific_selection",
+      "priority": 50,
+      "requirements": [
+        "T15",
+        "T16",
+        "T25",
+        "T42",
+        "T43",
+        "T44",
+        "T46",
+        "T47",
+        "T49",
+        "C6"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Global selection/multiple-testing, independent comparability/diversification and full qualification gates."
+    },
+    {
+      "id": "source_reference_software",
+      "priority": 60,
+      "requirements": [
+        "T04",
+        "T07",
+        "T08",
+        "T09",
+        "T10",
+        "T11",
+        "T26",
+        "T32",
+        "T45",
+        "T50",
+        "T51",
+        "T53",
+        "T54",
+        "C2",
+        "C3"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Finish all-instrument/Gold profile software and independent units; primary-reference capture remains network-blocked."
+    },
+    {
+      "id": "source_operations",
+      "priority": 65,
+      "requirements": [
+        "T05",
+        "T37",
+        "T52",
+        "T55",
+        "C2"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Scheduled source refresh, source operations API/UI, canonical quotas/retention/compaction and recovery."
+    },
+    {
+      "id": "complete_dashboard",
+      "priority": 70,
+      "requirements": [
+        "T20",
+        "T28",
+        "T41",
+        "T48",
+        "C7"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Complete connected graphical diagnostic/performance/lineage/data/operations/export flows and Chromium acceptance."
+    },
+    {
+      "id": "production_lifecycle",
+      "priority": 80,
+      "requirements": [
+        "T03",
+        "T18",
+        "T21",
+        "T22",
+        "T23",
+        "T24",
+        "T35",
+        "C1",
+        "C8"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Complete installation/provenance, services, migration/update/restore/rollback software and isolated acceptance. Target-host-only proof remains separate."
+    },
+    {
+      "id": "release_security",
+      "priority": 90,
+      "requirements": [
+        "C0",
+        "C8"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Resolve compatible security fixes or document exact upstream/owner disposition; finish isolation and supply-chain gates."
+    },
+    {
+      "id": "full_system_release",
+      "priority": 100,
+      "requirements": [
+        "T01",
+        "T19",
+        "T27",
+        "T29",
+        "T30",
+        "T31",
+        "T38",
+        "T57",
+        "C9",
+        "T34",
+        "T40"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Source-to-restore genuine/reference integration, reproducible packaged resources, current-source evidence and Hermes handoff."
+    }
+  ]
+}

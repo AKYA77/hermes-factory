@@ -21,6 +21,11 @@ def main():
     api = subs.add_parser("serve")
     api.add_argument("--port", type=int, default=8088)
     subs.add_parser("doctor")
+    discovery = subs.add_parser("discovery-register")
+    discovery.add_argument("policy_file", type=Path)
+    subs.add_parser("discovery-status")
+    discovery_stop = subs.add_parser("discovery-disable")
+    discovery_stop.add_argument("policy_id")
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -260,7 +265,23 @@ def main():
         )
         raise SystemExit(1)
     Store(root / "factory.sqlite")
-    if args.command == "create-admin":
+    if args.command in ("discovery-register", "discovery-status", "discovery-disable"):
+        from factory.exploration.discovery import Discovery, DiscoveryPolicy
+
+        manager = Discovery(Store(root / "factory.sqlite"), root)
+        if args.command == "discovery-register":
+            if args.policy_file.stat().st_size > 65536:
+                raise ValueError("discovery policy exceeds input budget")
+            identity = manager.register(
+                DiscoveryPolicy.model_validate_json(args.policy_file.read_text())
+            )
+            print(json.dumps({"policy_id": identity, "research_paused": manager.store.paused()}))
+        elif args.command == "discovery-disable":
+            manager.disable(args.policy_id)
+            print(json.dumps({"policy_id": args.policy_id, "enabled": False}))
+        else:
+            print(json.dumps(manager.status()))
+    elif args.command == "create-admin":
         path = root / "access.json"
         key = secrets.token_urlsafe(32)
         keys = json.loads(path.read_text()) if path.exists() else []

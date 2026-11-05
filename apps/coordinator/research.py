@@ -20,6 +20,10 @@ def maintenance(store, root, max_queued=2):
     improvement.feedback()
     if store.paused():
         return {"feedback": applied, "proposed": 0}
+    from factory.exploration.discovery import Discovery
+
+    discovery = Discovery(store, root)
+    discovery.advance()
     from factory.validation.protocol import ValidationController
 
     ValidationController(store, root).advance()
@@ -64,7 +68,10 @@ def maintenance(store, root, max_queued=2):
         LEFT JOIN search_trials t USING(protocol_hash) LEFT JOIN search_outcomes o USING(trial_id)
         WHERE c.enabled=1 GROUP BY p.protocol_hash""")
     instrument_cpu = {}
-    for cell in cells:
+    all_cells = store.rows("""SELECT p.protocol_json,coalesce(sum(coalesce(o.cpu_seconds,0)+t.generation_cpu_seconds),0) cpu
+        FROM search_protocols p LEFT JOIN search_trials t USING(protocol_hash)
+        LEFT JOIN search_outcomes o USING(trial_id) GROUP BY p.protocol_hash""")
+    for cell in all_cells:
         symbol = json.loads(cell["protocol_json"])["profile"]["instrument"]
         instrument_cpu[symbol] = instrument_cpu.get(symbol, 0) + cell["cpu"]
     cells.sort(
@@ -79,6 +86,8 @@ def maintenance(store, root, max_queued=2):
         try:
             trial = search.ask(cell["protocol_hash"])
         except ValueError as exc:
+            if discovery.block_protocol(cell["protocol_hash"], str(exc)):
+                continue
             # Scientific source changes never silently rebase a protocol or reuse
             # its supposedly independent window. Owner registers a new version.
             if "source revision mismatch" not in str(exc):
