@@ -1,0 +1,14 @@
+{
+  "legacy_reference_source_commit": "242f45e",
+  "legacy_normalization_reference_hashes": [
+    "7bb1728e697e5b90618d0abda45bdcca6fc8ac6a07b02ea34cd62d1a56853453",
+    "7bb1728e697e5b90618d0abda45bdcca6fc8ac6a07b02ea34cd62d1a56853453"
+  ],
+  "current_exact_hashes": [
+    "738e583d6e3951e3020a55b7b433376309b36312e6af7c68a0872056e20aa9a7",
+    "74c5165b3f05158af1ccb033931340ecaa2c0128c82fa48b483653aa98cc18d2"
+  ],
+  "legacy_collided": true,
+  "current_distinct": true,
+  "source_scope": "input encoding regression, not SHA256 cryptanalysis"
+}

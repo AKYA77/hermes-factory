@@ -1,0 +1,36 @@
+// DEV ONLY: generated authorization-boundary fixture; never market validation.
+const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),crypto=require('crypto'),cp=require('child_process');
+(async()=>{
+ const root=path.resolve(__dirname,'..'),state=root+'/.local/reviewed-inputs-browser',base='http://127.0.0.1:8110';
+ const token=fs.readFileSync(state+'/operator-1.token','utf8').trim(),headers={Authorization:'Bearer '+token};
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:1280,height:900},acceptDownloads:true}),errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'/');await page.getByLabel('Access token',{exact:true}).fill(token);
+ await page.getByRole('button',{name:'Connect / refresh',exact:true}).click();
+ await page.getByText('Application evidence',{exact:true}).waitFor();
+ await page.getByRole('button',{name:'Market data',exact:true}).click();
+ await page.getByRole('heading',{name:'Reviewed research inputs',exact:true}).waitFor();
+ await page.getByText('Reviewer: TEST_ONLY reviewer',{exact:false}).first().waitFor();
+ const records=await (await page.request.get(base+'/api/v1/input-reviews',{headers})).json();
+ if(records.length!==3||records.some(r=>r.status!=='RECORDED_REQUIRES_EXECUTION_RECHECK'||typeof r.start_ns!=='string'))throw Error('Expected three TEST_ONLY exact-scope reviews');
+ const admission=records.find(r=>r.kind==='admission'),profile=records.find(r=>r.kind==='profile');
+ const raw=await (await page.request.get(base+'/api/v1/input-reviews/'+admission.review_id,{headers})).body();
+ const wait=page.waitForEvent('download');
+ await page.getByRole('button',{name:'Verify and export review '+admission.review_id.slice(0,8),exact:true}).click();
+ const artifact=await wait,exported=root+'/reports/runtime/reviewed-inputs-browser-export.json';await artifact.saveAs(exported);
+ if(!fs.readFileSync(exported).equals(raw))throw Error('Export bytes differ');
+ await page.screenshot({path:root+'/reports/runtime/reviewed-inputs-browser-desktop.png',fullPage:true});
+ const revoke=cp.spawnSync(root+'/.venv/bin/python',['-m','factory.cli','--state',state,'input-revoke',profile.review_id,'--actor','TEST_ONLY browser','--reason','browser revocation check'],{cwd:root,encoding:'utf8'});
+ if(revoke.status!==0)throw Error('Revocation CLI failed');
+ await page.getByRole('button',{name:'Refresh input reviews',exact:true}).click();
+ await page.getByText('This review or a required reference was revoked.',{exact:false}).first().waitFor();
+ if((await page.request.get(base+'/api/v1/input-reviews/'+admission.review_id,{headers})).status()!==409)throw Error('Revoked dependency export not blocked');
+ await page.setViewportSize({width:390,height:844});
+ const widths=await page.evaluate(()=>({document:document.documentElement.scrollWidth,viewport:innerWidth}));
+ if(widths.document>widths.viewport||errors.length)throw Error('Page errors/overflow '+JSON.stringify({errors,widths}));
+ await page.screenshot({path:root+'/reports/runtime/reviewed-inputs-browser-mobile.png',fullPage:true});
+ await browser.close();
+ const report={status:'PASS',scope:'TEST_ONLY generated authorization fixtures; actual authenticated Chromium registry/exact export/revocation/mobile. NOT historical market validation or full C7.',browser:'Chromium /usr/bin/chromium',records:3,source_commit:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),exported_sha256:crypto.createHash('sha256').update(raw).digest('hex'),checks:['actual registry summaries','explicit assumption fields','exact-byte export','revoked dependency refusal','mobile layout','zero page errors'],widths};
+ fs.writeFileSync(root+'/reports/runtime/reviewed-inputs-browser.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
+})().catch(e=>{console.error(e.message);process.exit(1)});

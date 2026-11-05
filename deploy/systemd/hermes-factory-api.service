@@ -1,0 +1,26 @@
+[Unit]
+Description=Hermes Factory authenticated local API (unreleased template)
+After=network-online.target
+
+[Service]
+Type=simple
+User=hermes-factory
+Group=hermes-factory
+WorkingDirectory=/opt/hermes-factory/current
+Environment=FACTORY_STATE=/var/lib/hermes-factory
+ExecStart=/opt/hermes-factory/current/.venv/bin/python -m factory.cli serve
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hermes-factory
+UMask=0077
+MemoryMax=768M
+CPUQuota=50%
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target

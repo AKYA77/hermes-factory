@@ -1,0 +1,12 @@
+{
+  "request_id": "a005b16d46a64883b4b644e4f15bc1a6",
+  "checkpoint_id": "b3fa5a913b05cc744df41d333802eeb39cca88b6bbf201d9f7646665698f7602",
+  "dataset_hash": "fc5ab67bfc477547a5a8053e06dbc2cbb4d7b725553a1dc33a47080743c2fcfe",
+  "reclaimed_payload_bytes": 359384,
+  "removed_chunks": 7,
+  "canonical_source_and_evidence_preserved": true,
+  "wall_seconds": 0.37419000000045344,
+  "children_cpu_seconds": 0.677053,
+  "max_child_rss_bytes": 138137600,
+  "fixture": "50000 generated rows; original canonical files unchanged and deep verified"
+}

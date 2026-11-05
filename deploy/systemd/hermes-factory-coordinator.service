@@ -1,0 +1,28 @@
+[Unit]
+Description=Hermes Factory leased deterministic research coordinator (unreleased template)
+After=network-online.target
+
+[Service]
+Type=simple
+User=hermes-factory
+Group=hermes-factory
+WorkingDirectory=/opt/hermes-factory/current
+Environment=FACTORY_STATE=/var/lib/hermes-factory
+Environment=OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 NUMBA_NUM_THREADS=1 RAYON_NUM_THREADS=1
+ExecStart=/opt/hermes-factory/current/.venv/bin/python -m factory.cli coordinator
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+KillMode=control-group
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/hermes-factory
+UMask=0077
+MemoryMax=4G
+CPUQuota=200%
+TasksMax=32
+
+[Install]
+WantedBy=multi-user.target

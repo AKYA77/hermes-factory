@@ -1,0 +1,97 @@
+{
+  "status": "PASS_SOURCE_SELECTION_VIEW_AND_EXACT_CLOSED_FEATURES",
+  "scope": "genuine historical source pipeline only; NOT native strategy evaluation, scientific validation or full C2",
+  "source_context": {
+    "git_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
+    "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983"
+  },
+  "source_context_unchanged": true,
+  "script_sha256": "718d214382dc07c6347e310c8a47aa5e23dcdac62a10d8c3dd9a601676fe6371",
+  "source_stage": {
+    "wall_seconds": 31.247969703006675,
+    "cpu_seconds": 32.228737728
+  },
+  "observations": [
+    {
+      "observation_id": "742b7f18637b987f005473f30ff7db88ac575031bd5b033f95551922bc323bf5",
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "rows": 2283239,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "original_import_source_context": "NOT_CAPTURED_IN_LEGACY_IMPORT_RECEIPT; independently verified now",
+      "quote_stream_sha256": "47db421efed0291f98f0e1afe1b8deb51ce5201be414a76f0b266f86f0148f9e"
+    },
+    {
+      "observation_id": "ba9c038a68f9d8fffc4267ada5eaf1a88bbdfad6ab3fdd0385e22530379f97ea",
+      "dataset_hash": "3f8e18fbddb8ad30044e1a703a0bf36bae93e082bd802b10a1d14b3d062ca468",
+      "rows": 2053257,
+      "source_sha256": "63c3b2717c024f7aada8642b38e7a944646dbe2440303632918e5c594db2313e",
+      "original_import_source_context": {
+        "git_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
+        "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983"
+      },
+      "quote_stream_sha256": "734bcd6b0b2989e2edef27b4c90a3ffd57060e6aa92ecbb80dfbc2dfb9e60a5e"
+    }
+  ],
+  "snapshot": {
+    "snapshot_id": "39b5f02e2ecdb3f2f3380244f7441e9de592d0badacd2002d59501ebdd81ec86",
+    "schema_version": "selected-source-snapshot/v1",
+    "dataset_hash": "75359494c8197cd42f9704ed1fc10f6afcc27283d283a0fd5de7cc549bac74a9",
+    "selection_ids": [
+      "a5eef6c5c67c7f39f64beff9d36039e31498fbd3cc4d5329fcb3c9ada85efad9",
+      "d202d6976b5ff58eb07d36aa114b8a0cd6039f976af4dc91dabcdedce66758e2"
+    ],
+    "scope": "immutable selected source leaves; not historical approval or complete market coverage"
+  },
+  "total_quotes": 4336496,
+  "closed_features": {
+    "sha256": "45a998233333e402d6af4d583d68c850b412a78fbb865363c88618ae003450e2",
+    "counts": {
+      "M1": 60334,
+      "H1": 1007
+    },
+    "cross_month_publication": [
+      {
+        "timeframe": "H1",
+        "end_ns": "1738360800000000000",
+        "available_at_ns": "1738533607171000000"
+      },
+      {
+        "timeframe": "M1",
+        "end_ns": "1738360800000000000",
+        "available_at_ns": "1738533607171000000"
+      }
+    ]
+  },
+  "first_build_metrics": {
+    "wall_seconds": 46.534765943011735,
+    "cpu_seconds": 47.41920925
+  },
+  "cache_reuse_metrics": {
+    "wall_seconds": 0.981662101999973,
+    "cpu_seconds": 1.0105696029999933
+  },
+  "cache_stats": {
+    "hits": 2,
+    "misses": 2,
+    "evictions": 0,
+    "quote_passes": 1
+  },
+  "coverage": {
+    "requested_partitions": 184,
+    "structurally_imported_partitions": 9,
+    "remaining_partitions": 175,
+    "new_partition_attempts": 0
+  },
+  "wall_seconds": 79.36937545800174,
+  "cpu_seconds": 81.252809225,
+  "process_peak_rss_bytes": 236957696,
+  "state_disk_bytes": 1902917,
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "page_cache": "uncontrolled; first build is not an OS cold-cache claim",
+  "historical_strategy_evaluation": false,
+  "instrument_profile_status": "UNKNOWN_SPEC",
+  "SOFTWARE_VERIFIED": false,
+  "DATA_READY": false,
+  "OPERATION_READY": false
+}

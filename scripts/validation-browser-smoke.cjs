@@ -1,0 +1,82 @@
+const {chromium}=require('playwright');
+const fs=require('fs'),path=require('path'),crypto=require('crypto');
+(async()=>{
+ const root=path.resolve(__dirname,'..');
+ const state=path.resolve(process.env.FACTORY_BROWSER_STATE||path.join(root,'.local/validation-dashboard-qa-v4'));
+ const base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8099';
+ if(!['127.0.0.1','localhost','[::1]'].includes(new URL(base).hostname))throw Error('Loopback QA only');
+ const token=fs.readFileSync(state+'/operator-1.token','utf8').trim(),qa=JSON.parse(fs.readFileSync(state+'/qa.json','utf8'));
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const context=await browser.newContext({viewport:{width:1280,height:900},timezoneId:'UTC',acceptDownloads:true});
+ const page=await context.newPage(),errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(base+'/');await page.getByLabel('Access token',{exact:true}).fill(token);
+ await page.getByRole('button',{name:'Connect / refresh',exact:true}).click();
+ await page.getByText('Application evidence',{exact:true}).waitFor();
+ await page.getByRole('button',{name:'Validation',exact:true}).click();
+ await page.getByRole('heading',{name:'Validation laboratory',exact:true}).waitFor();
+ const headers={Authorization:'Bearer '+token};
+ let rows=await (await page.request.get(base+'/api/v1/validation/protocols',{headers})).json();
+ if(!process.argv.includes('--inspect-existing')){
+  if(rows.length)throw Error('Fresh paused UI state required for registration rehearsal');
+  await page.getByText('Register prospective validation',{exact:true}).click();
+  await page.getByLabel('Validation research source',{exact:true}).selectOption(qa.protocol_hash);
+  await page.getByLabel('Validation purpose',{exact:true}).selectOption(process.argv.includes('--rehearsal')?'synthetic_software_rehearsal':'research_qualification');
+  await page.getByLabel('Maximum marked drawdown',{exact:true}).fill('.95');
+  await page.getByLabel('Maximum censored fraction',{exact:true}).fill('.10');
+  await page.getByLabel('Development start (UTC)',{exact:true}).fill('2025-01-01T00:00');
+  await page.getByLabel('Final window start (UTC)',{exact:true}).fill('2025-10-01T00:00');
+  await page.getByLabel('Final window end, exclusive (UTC)',{exact:true}).fill('2025-10-01T07:58:00.123');
+  await page.getByLabel('Trials per refit',{exact:true}).fill('1');
+  await page.getByLabel('CPU seconds per refit',{exact:true}).fill('60');
+  await page.getByLabel('External-use declaration notes',{exact:true}).fill('Fresh synthetic browser reference window; no external research use. This is software evidence only.');
+  await page.getByRole('checkbox',{name:"I declare no prior use of this instrument's final window outside the managed research history."}).check();
+  await page.getByRole('button',{name:'Register validation protocol',exact:true}).click();
+  await page.getByText('Protocol registered. Research remains paused.',{exact:true}).waitFor();
+  await page.getByText('RESERVED_UNSEEN',{exact:false}).waitFor();
+  rows=await (await page.request.get(base+'/api/v1/validation/protocols',{headers})).json();
+  if(rows.length!==1)throw Error('Expected one actual registered protocol');
+  const health=await (await page.request.get(base+'/api/v1/overview',{headers})).json();
+  if(!health.paused)throw Error('Registration unexpectedly resumed research');
+ }else{
+  if(rows.length!==1)throw Error('Existing actual protocol report required');
+  await page.getByRole('button',{name:'Inspect validation '+rows[0].protocol_id.slice(0,8),exact:true}).click();
+  await page.getByText('INSUFFICIENT_EVIDENCE',{exact:true}).waitFor();
+  await page.getByRole('table',{name:'Forward folds · each resets $20',exact:true}).waitFor();
+  await page.getByRole('img',{name:'Observed forward mark-to-market equity display envelope',exact:true}).waitFor();
+  const report=(await (await page.request.get(base+'/api/v1/validation/protocols/'+rows[0].protocol_id,{headers})).json()).report;
+  if(report.holdout_consumed_by_protocol===false){await page.getByText('Final window was not consumed by this protocol. Its qualification did not pass.',{exact:true}).waitFor();await page.getByText('RESERVED_UNSEEN',{exact:false}).waitFor();}
+  else{await page.getByRole('table',{name:'Annual reset and pooled retrospective reports · not additional OOS',exact:true}).waitFor();await page.getByText('HOLDOUT_CONSUMED',{exact:false}).waitFor();}
+ }
+ const id=rows[0].protocol_id;
+ const evidenceResponse=await page.request.get(base+'/api/v1/validation/protocols/'+id,{headers});
+ const raw=await evidenceResponse.body();
+ const pendingDownload=page.waitForEvent('download');
+ await page.getByRole('button',{name:'Download exact API evidence',exact:true}).click();
+ const download=await pendingDownload;
+ const destination=root+'/reports/runtime/validation-browser-evidence-'+(process.argv.includes('--inspect-existing')?'completed':'registered')+'.json';
+ await download.saveAs(destination);
+ if(!fs.readFileSync(destination).equals(raw))throw Error('Downloaded API response bytes differ');
+ const exactEnd=(BigInt(Date.parse('2025-10-01T07:58:00.123Z'))*1000000n).toString();
+ if(!raw.toString('utf8').includes(exactEnd))throw Error('Nanosecond boundary was rounded during registration/export');
+ const phase=process.argv.includes('--inspect-existing')?'completed':'registered';
+ const responseDetail=JSON.parse(raw.toString('utf8'));
+ const confirmed=responseDetail.report?.holdout_consumed_by_protocol!==false;
+ await page.screenshot({path:root+'/reports/runtime/validation-browser-'+phase+'-desktop.png',fullPage:true});
+ await page.setViewportSize({width:390,height:844});
+ const overflow=await page.evaluate(()=>({document:document.documentElement.scrollWidth,viewport:innerWidth}));
+ await page.screenshot({path:root+'/reports/runtime/validation-browser-'+phase+'-mobile.png',fullPage:true});
+ if(overflow.document>overflow.viewport)throw Error('Mobile horizontal overflow');
+ let disabledByTest=false;
+ if(rows[0].enabled&&!process.argv.includes('--leave-enabled')){
+  await page.getByRole('button',{name:'Stop new stages',exact:true}).click();
+  await page.getByRole('button',{name:'Stop new stages',exact:true}).waitFor({state:'detached'});
+  const disabled=await (await page.request.get(base+'/api/v1/validation/protocols',{headers})).json();
+  if(disabled[0].enabled)throw Error('Backend protocol still enabled');
+  disabledByTest=true;
+ }
+ if(errors.length)throw Error('Browser errors: '+errors.join(';'));
+ const report={status:'PASS',phase,scope:'real Chromium + loopback authenticated API; labeled synthetic reference only; not full C7 acceptance',source:qa.source,state_directory:path.basename(state),protocol_purpose:responseDetail.protocol.purpose??'legacy-v1',script_sha256:crypto.createHash('sha256').update(fs.readFileSync(__filename)).digest('hex'),frontend_sha256:Object.fromEntries(['apps/dashboard/src/routes/+page.svelte','apps/dashboard/src/lib/ValidationLab.svelte'].map(p=>[p,crypto.createHash('sha256').update(fs.readFileSync(root+'/'+p)).digest('hex')])),protocol_id:id,browser:await browser.version(),checks:['live validation list','exact nanosecond response download','protected window state','responsive viewport','no page errors',...(phase==='completed'?['actual native report and stages','observed equity curve',...(confirmed?['annual and pooled results']:['failed qualification preserved final window'])]:['typed UTC prospective registration','pause preserved']),disabledByTest?'disable new stages':rows[0].enabled?'protocol left enabled under preserved pause':'disabled state retained'],mobile:overflow};
+ fs.writeFileSync(root+'/reports/runtime/validation-browser-'+phase+'.json',JSON.stringify(report,null,2));
+ console.log(JSON.stringify(report));await browser.close();
+})().catch(e=>{console.error(e.stack);process.exit(1)});

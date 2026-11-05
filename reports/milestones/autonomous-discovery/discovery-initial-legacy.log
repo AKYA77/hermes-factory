@@ -1,0 +1,14 @@
+.............                                                            [100%]
+=============================== warnings summary ===============================
+tests/unit/test_exploration.py::test_engine_exact_reproducibility
+tests/unit/test_exploration.py::test_engine_exact_reproducibility
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/unit/test_exploration.py::test_engine_exact_reproducibility
+tests/unit/test_exploration.py::test_engine_exact_reproducibility
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+13 passed, 4 warnings in 9.60s

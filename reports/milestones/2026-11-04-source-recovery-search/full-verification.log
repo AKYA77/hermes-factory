@@ -1,0 +1,125 @@
+All checks passed!
+115 files already formatted
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 95%]
+..............                                                           [100%]
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/fastapi/testclient.py:1
+  /workspace/hermes-factory/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+.venv/lib/python3.12/site-packages/starlette/testclient.py:53
+  /workspace/hermes-factory/.venv/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+tests/integration/test_campaign.py: 8 warnings
+tests/integration/test_catalog_views.py: 2 warnings
+tests/integration/test_evaluation.py: 2 warnings
+tests/integration/test_holdouts.py: 4 warnings
+tests/integration/test_monetary_workers.py: 1 warning
+tests/integration/test_screening.py: 2 warnings
+tests/recovery/test_immutable.py: 3 warnings
+tests/simulation/test_dated_conversion.py: 67 warnings
+tests/simulation/test_engine.py: 12 warnings
+tests/simulation/test_ioc_execution.py: 4 warnings
+tests/simulation/test_partial_engine.py: 8 warnings
+tests/simulation/test_streaming_replay.py: 29 warnings
+tests/simulation/test_validation_quality.py: 9 warnings
+tests/unit/test_exploration.py: 2 warnings
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_campaign.py: 8 warnings
+tests/integration/test_catalog_views.py: 2 warnings
+tests/integration/test_evaluation.py: 2 warnings
+tests/integration/test_holdouts.py: 4 warnings
+tests/integration/test_monetary_workers.py: 1 warning
+tests/integration/test_screening.py: 2 warnings
+tests/recovery/test_immutable.py: 3 warnings
+tests/simulation/test_dated_conversion.py: 67 warnings
+tests/simulation/test_engine.py: 12 warnings
+tests/simulation/test_ioc_execution.py: 4 warnings
+tests/simulation/test_partial_engine.py: 8 warnings
+tests/simulation/test_streaming_replay.py: 29 warnings
+tests/simulation/test_validation_quality.py: 9 warnings
+tests/unit/test_exploration.py: 2 warnings
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+tests/simulation/test_dated_conversion.py: 12 warnings
+tests/simulation/test_streaming_replay.py: 28 warnings
+  /workspace/hermes-factory/factory/simulation/runner.py:523: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+302 passed, 348 warnings in 82.08s (0:01:22)
+
+> hermes-factory-dashboard@0.1.0-dev check
+> svelte-kit sync && svelte-check --tsconfig ./tsconfig.json
+
+Loading svelte-check in workspace: /workspace/hermes-factory/apps/dashboard
+Getting Svelte diagnostics...
+
+svelte-check found 0 errors and 0 warnings
+
+> hermes-factory-dashboard@0.1.0-dev build
+> vite build
+
+vite v8.3.5 building ssr environment for production...
+transforming...
+✓ 141 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/server/.vite/manifest.json                         2.80 kB │ gzip:  0.50 kB
+.svelte-kit/output/server/_app/immutable/assets/_page.CSjjukcd.css    7.09 kB │ gzip:  1.61 kB
+.svelte-kit/output/server/chunks/index-server.js                      0.03 kB │ gzip:  0.05 kB
+.svelte-kit/output/server/entries/pages/_layout.ts.js                 0.09 kB │ gzip:  0.10 kB │ map:   0.17 kB
+.svelte-kit/output/server/env.js                                      0.29 kB │ gzip:  0.18 kB │ map:   0.57 kB
+.svelte-kit/output/server/entries/fallbacks/layout.svelte.js          0.29 kB │ gzip:  0.22 kB │ map:   0.34 kB
+.svelte-kit/output/server/entries/fallbacks/error.svelte.js           1.06 kB │ gzip:  0.42 kB │ map:   2.58 kB
+.svelte-kit/output/server/index.js                                    2.24 kB │ gzip:  0.90 kB │ map:   3.32 kB
+.svelte-kit/output/server/chunks/server-errors.js                    23.96 kB │ gzip:  4.49 kB │ map:  34.73 kB
+.svelte-kit/output/server/entries/pages/_page.svelte.js              31.43 kB │ gzip:  7.18 kB │ map:  49.44 kB
+.svelte-kit/output/server/chunks/server.js                           43.41 kB │ gzip: 12.05 kB │ map: 125.72 kB
+.svelte-kit/output/server/remote-entry.js                            54.23 kB │ gzip: 11.81 kB │ map:  89.76 kB
+.svelte-kit/output/server/chunks/internal.js                         87.86 kB │ gzip: 24.14 kB │ map: 192.25 kB
+.svelte-kit/output/server/chunks/instance.js                        117.51 kB │ gzip: 31.68 kB │ map: 239.93 kB
+
+✓ built in 320ms
+Analysing routes
+(node:183995) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Building app
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 178 modules transformed.
+rendering chunks...
+computing gzip size...
+.svelte-kit/output/client/_app/version.json                          0.02 kB │ gzip:  0.04 kB
+.svelte-kit/output/client/.vite/manifest.json                        3.20 kB │ gzip:  0.57 kB
+.svelte-kit/output/client/_app/immutable/assets/2.CSjjukcd.css       7.09 kB │ gzip:  1.61 kB
+.svelte-kit/output/client/_app/immutable/entry/payload.DSmR2FwN.js   0.06 kB │ gzip:  0.07 kB
+.svelte-kit/output/client/_app/immutable/nodes/1.D_0krt8K.js         0.32 kB │ gzip:  0.24 kB
+.svelte-kit/output/client/_app/immutable/nodes/0.BuP8gcrU.js         0.32 kB │ gzip:  0.26 kB
+.svelte-kit/output/client/_app/immutable/entry/start.CW-Dcrgx.js     0.52 kB │ gzip:  0.31 kB
+.svelte-kit/output/client/_app/immutable/entry/app.BBNrl-bK.js       1.09 kB │ gzip:  0.55 kB
+.svelte-kit/output/client/_app/immutable/chunks/Bjy-W4x2.js          1.36 kB │ gzip:  0.65 kB
+.svelte-kit/output/client/_app/immutable/chunks/CRzLMJPS.js          1.53 kB │ gzip:  0.80 kB
+.svelte-kit/output/client/_app/immutable/chunks/DgDqqauV.js          4.29 kB │ gzip:  1.93 kB
+.svelte-kit/output/client/_app/immutable/chunks/k7ZApmwE.js         39.73 kB │ gzip: 14.67 kB
+.svelte-kit/output/client/_app/immutable/chunks/COreH3Yd.js         42.15 kB │ gzip: 16.30 kB
+.svelte-kit/output/client/_app/immutable/nodes/2.BgbNyVSw.js        43.42 kB │ gzip: 13.08 kB
+
+✓ built in 324ms
+(node:183995) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+Run npm run preview to preview your production build locally.
+
+> Using @sveltejs/adapter-static
+(node:183995) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Wrote site to "build"
+✔ done

@@ -1,0 +1,22 @@
+{
+  "source": {
+    "git_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+    "source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922"
+  },
+  "scope": "real loopback API + Chromium, synthetic paused state; not full C7 acceptance",
+  "status": "PASS",
+  "browser": "154.0.8037.57",
+  "checks": [
+    "authenticated overview",
+    "live research counts",
+    "register bounded improvement policy",
+    "pause preserved",
+    "disable policy",
+    "cancel queued job",
+    "no page exceptions"
+  ],
+  "mobile": {
+    "document": 390,
+    "viewport": 390
+  }
+}

@@ -1,0 +1,4 @@
+id: historical-pessimistic/v1
+spread_floor_pips: '2'
+adverse_eligible_fill_pips: '2'
+commission: '0'

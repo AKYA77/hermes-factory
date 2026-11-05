@@ -1,0 +1,26 @@
+..........                                                               [100%]
+=============================== warnings summary ===============================
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_actual_native_recheck_preserves_negative_evidence_pause_and_dedup
+tests/integration/test_screen_fallback.py::test_corrupt_breaker_fails_closed_and_unknown_policy_still_rejected
+tests/integration/test_screen_fallback.py::test_disabled_screen_preserves_cost_shadow_labels_and_native_only_policy
+tests/integration/test_cost_label_native_audit.py::test_native_positive_counterexample_is_preserved_and_not_approximately_pruned
+tests/integration/test_cost_label_native_audit.py::test_shadow_mode_keeps_native_exact_zero_false_negative_guard
+tests/integration/test_cost_label_native_audit.py::test_ordinary_training_keeps_original_cheap_screen_and_no_shadow_metadata
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_actual_native_recheck_preserves_negative_evidence_pause_and_dedup
+tests/integration/test_screen_fallback.py::test_corrupt_breaker_fails_closed_and_unknown_policy_still_rejected
+tests/integration/test_screen_fallback.py::test_disabled_screen_preserves_cost_shadow_labels_and_native_only_policy
+tests/integration/test_cost_label_native_audit.py::test_native_positive_counterexample_is_preserved_and_not_approximately_pruned
+tests/integration/test_cost_label_native_audit.py::test_shadow_mode_keeps_native_exact_zero_false_negative_guard
+tests/integration/test_cost_label_native_audit.py::test_ordinary_training_keeps_original_cheap_screen_and_no_shadow_metadata
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+10 passed, 16 warnings in 4.54s

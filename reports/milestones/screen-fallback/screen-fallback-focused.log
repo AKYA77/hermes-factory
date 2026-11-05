@@ -1,0 +1,22 @@
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_actual_native_recheck_preserves_negative_evidence_pause_and_dedup
+tests/integration/test_screen_fallback.py::test_corrupt_breaker_fails_closed_and_unknown_policy_still_rejected
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_real_native_disagreement_trips_once_and_future_jobs_bypass
+tests/integration/test_screen_fallback.py::test_actual_native_recheck_preserves_negative_evidence_pause_and_dedup
+tests/integration/test_screen_fallback.py::test_corrupt_breaker_fails_closed_and_unknown_policy_still_rejected
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+9 passed, 12 warnings in 4.70s

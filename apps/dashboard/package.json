@@ -1,0 +1,23 @@
+{
+  "name": "hermes-factory-dashboard",
+  "private": true,
+  "version": "0.1.0-dev",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+  },
+  "dependencies": {
+    "@sveltejs/kit": "3.1.1",
+    "svelte": "5.57.3",
+    "lightweight-charts": "5.0.9"
+  },
+  "devDependencies": {
+    "@sveltejs/adapter-static": "4.0.1",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "vite": "8.3.5",
+    "typescript": "6.0.3",
+    "svelte-check": "4.7.8"
+  }
+}

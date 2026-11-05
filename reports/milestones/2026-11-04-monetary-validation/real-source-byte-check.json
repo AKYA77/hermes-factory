@@ -1,0 +1,97 @@
+{
+  "status": "PASS_FULL_BYTE_AND_MANIFEST_CHECK",
+  "observed_at_utc": "2026-11-04T02:06:48.695576+00:00",
+  "scope": "Rehash all original source and Parquet bytes and verify manifest/schema/count/bounds; not a fresh full-row semantic scan or market strategy backtest",
+  "source_context": {
+    "git_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+    "source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922"
+  },
+  "source_unchanged": true,
+  "datasets": [
+    {
+      "instrument": "AUDUSD",
+      "dataset_hash": "1520c4173abb5823a4e36b23f96f1b0e43b135a7c8d767ed25de4b4b8c294b6a",
+      "rows": 1668426,
+      "source_sha256": "bcb94bfa9d2da041e2a4ba28f2c18efcf32cfad1e92a37dfe3c3abeac633b8d9",
+      "parquet_sha256": "28de1b4743649a4261cf9733f774736c46be0034dcadfccce4476194202cf880",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.00001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "USDCAD",
+      "dataset_hash": "1fbb7f213c466db7540d04431534ac349ca68cc953d8b4d0288d7a45457021b9",
+      "rows": 2494413,
+      "source_sha256": "45ae9034b12d0fb5ff16aad8fde01118827d097903ce2491dd3050b666964dd8",
+      "parquet_sha256": "1d540d9fd5e8cd9b00055abeb6c901ba3826f43ac31dd414d97b07c171d655a1",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.00001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "EURUSD",
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "rows": 2283239,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.00001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "XAUUSD",
+      "dataset_hash": "ab3f273988dcb7b2aaff21168bc9d0f6afe624d8e18856b73b37a93b975ae755",
+      "rows": 5798226,
+      "source_sha256": "8653c8c14951e5b84315090f7e813ff38325223b59e1ad8c702e4e4fb78af51d",
+      "parquet_sha256": "e0dd55dd37c7651c65c1fbd0308ebc3d090f4100b4d915ced525a2639e3c23d0",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "NZDUSD",
+      "dataset_hash": "cefa1d6d328dfc76f96288188628bade0a9317736bd6e88eee23264a42fe18e1",
+      "rows": 1346505,
+      "source_sha256": "f34788e0b34279f46ae508f86a219acd98c8d1fa7c40b25b516a658b5de86c1e",
+      "parquet_sha256": "09ef3520c8758bba4a749b5a21b55254afe62d318704292282d1b396f06bff02",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.00001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "GBPUSD",
+      "dataset_hash": "eaf174f6780fb80e674438b7ea5c36fe98710ff05a009ddd547163cb00730119",
+      "rows": 2660109,
+      "source_sha256": "665455f96f31328ee663d1fe9088098c700fcbba8d85352cbc6fdb4f17cdaee1",
+      "parquet_sha256": "b1dc2f120f1baec36a835048435a558c16bb6a74dccbf8564183f587c9652be7",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.00001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "USDJPY",
+      "dataset_hash": "eb96f6feeec011eb2f45a1443ca8cdacc48618f49133a6d94c002b0ce0fd70b8",
+      "rows": 3467097,
+      "source_sha256": "72834b8a2d3c553e76018a8a3724af64ac30de4ec7211875378887b73232a896",
+      "parquet_sha256": "e34ab70f65aba69dcd83ac726df67d3750fe8600e9d15e5ba44c79860a94a170",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    },
+    {
+      "instrument": "USDCHF",
+      "dataset_hash": "f7b5b7a95f585aa4f7936a311f2ad03d9727e9f5f71d993e4d26000164f67ee8",
+      "rows": 1627731,
+      "source_sha256": "ac8cfb5e93ed40588198b2c80faf0dfaa4003d2e2f03cafc5e097b734d58fc79",
+      "parquet_sha256": "12c32824ada5acdb808b45751298bb86f69b0dedcd1b721070688429bad61355",
+      "price_scale": 1000000,
+      "observed_price_quantum": "0.00001",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED"
+    }
+  ],
+  "rows_in_preserved_partitions": 21345746,
+  "wall_seconds": 0.540529070996854,
+  "cpu_seconds": 0.5365469999999999,
+  "process_peak_rss_bytes": 217743360,
+  "remaining": "calendar/session/revision/independent-source and verified broker metadata still required"
+}

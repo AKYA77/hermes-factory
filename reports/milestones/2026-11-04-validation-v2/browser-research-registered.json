@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "phase": "registered",
+  "scope": "real Chromium + loopback authenticated API; labeled synthetic reference only; not full C7 acceptance",
+  "source": {
+    "git_commit": "a530de566b56cf9c3fd97d1d815aba2cdf6e84a6",
+    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
+  },
+  "state_directory": "validation-v2-browser",
+  "protocol_purpose": "research_qualification",
+  "script_sha256": "d8940dbe03491bb95860fe987c6875a26c95bea4a0641b10a120a0c0d521ad76",
+  "frontend_sha256": {
+    "apps/dashboard/src/routes/+page.svelte": "a9a036a41d455f49830d4e201abfa4cb5892f36b3db97b41dcd0b214bf21f598",
+    "apps/dashboard/src/lib/ValidationLab.svelte": "2975cc7c5579924ad9bfc98d576ee9b9787c50e33b030ae95d8288fa2037b5a1"
+  },
+  "protocol_id": "e7901fa136114b1b45860a9de3aafd6a8ceeeae936b4dab7a4d6507af82cfcf1",
+  "browser": "154.0.8037.57",
+  "checks": [
+    "live validation list",
+    "exact nanosecond response download",
+    "protected window state",
+    "responsive viewport",
+    "no page errors",
+    "typed UTC prospective registration",
+    "pause preserved",
+    "protocol left enabled under preserved pause"
+  ],
+  "mobile": {
+    "document": 390,
+    "viewport": 390
+  }
+}

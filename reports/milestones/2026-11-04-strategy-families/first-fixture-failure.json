@@ -1,0 +1,29 @@
+{
+  "command": ".venv/bin/pytest tests/unit/test_strategy_families.py -q",
+  "exit_code": 1,
+  "passed": 56,
+  "failed": 7,
+  "failure": "Reversal prefix fixtures across all seven timeframes emitted no signals at the declared one-average-step threshold. Prefix equivalence assertions passed; the required nonempty activity assertion failed.",
+  "correction": "Added explicit one-step reversal price paths to the generated fixture, retaining the range-bounce path and the original scientific threshold/formula.",
+  "original_levels": [
+    110100,
+    110000,
+    109990,
+    110000,
+    110100,
+    110200,
+    110210,
+    110200
+  ],
+  "lookback": 3,
+  "threshold": "1",
+  "affected_timeframes": [
+    "M1",
+    "M5",
+    "M15",
+    "M30",
+    "H1",
+    "H4",
+    "D1"
+  ]
+}
