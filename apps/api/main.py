@@ -18,6 +18,7 @@ from factory.improvement.service import ImprovementPolicy
 from factory.validation.access import HoldoutSpec, Holdouts
 from factory.validation.protocol import ValidationProtocol, ValidationController
 from factory.ranking import leaderboard
+from factory.screening.cohorts import Cohorts, CohortRequest
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
@@ -132,6 +133,60 @@ def create_app(root, dashboard=None):
     @app.get("/api/v1/research/status", dependencies=read)
     def search_status():
         return research_status(store)
+
+    @app.get("/api/v1/research/screen-cohort-inputs", dependencies=read)
+    def screen_cohort_inputs(limit: int = Query(50, ge=1, le=100), offset: int = Query(0, ge=0)):
+        from factory.provenance import execution_revision
+
+        revision = execution_revision()
+        calibration = store.rows(
+            """SELECT experiment_hash,
+            json_extract(body_json,'$.instrument') instrument,
+            json_extract(body_json,'$.operator') operator,
+            json_extract(body_json,'$.timeframe') timeframe,
+            json_extract(body_json,'$.native_closed_trades') native_closed_trades,
+            json_extract(body_json,'$.observed_false_negative') observed_false_negative
+            FROM cost_label_audits WHERE json_extract(body_json,'$.code_revision')=?
+            ORDER BY created_at,experiment_hash LIMIT ? OFFSET ?""",
+            (revision, limit, offset),
+        )
+        prospective = store.rows(
+            """SELECT j.job_id,
+            json_extract(j.payload,'$.strategy.instrument') instrument,
+            json_extract(j.payload,'$.strategy.signal.operator') operator,
+            json_extract(j.payload,'$.strategy.timeframe') timeframe
+            FROM jobs j WHERE j.kind='research' AND j.state='QUEUED' AND j.attempts=0
+            AND json_extract(j.payload,'$.contract.evaluation_policy')='synthetic-cost-shadow-training/v1'
+            AND json_extract(j.payload,'$.contract.code_revision')=?
+            AND NOT EXISTS(SELECT 1 FROM screen_cohort_members m WHERE m.job_id=j.job_id AND m.role='prospective')
+            ORDER BY j.created_at,j.job_id LIMIT ? OFFSET ?""",
+            (revision, limit, offset),
+        )
+        return {
+            "calibration": calibration,
+            "prospective": prospective,
+            "limit": limit,
+            "offset": offset,
+        }
+
+    @app.post("/api/v1/research/screen-cohorts", dependencies=write)
+    def freeze_screen_cohort(payload: CohortRequest):
+        return {"cohort_id": Cohorts(store, root).freeze(payload)}
+
+    @app.get("/api/v1/research/screen-cohorts", dependencies=read)
+    def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):
+        return {
+            "cohorts": store.rows(
+                "SELECT cohort_id,created_at FROM screen_cohorts ORDER BY created_at,cohort_id LIMIT ? OFFSET ?",
+                (limit, offset),
+            ),
+            "limit": limit,
+            "offset": offset,
+        }
+
+    @app.get("/api/v1/research/screen-cohorts/{identity}", dependencies=read)
+    def screen_cohort_report(identity: str):
+        return Cohorts(store, root).report(identity)
 
     from factory.exploration.discovery import Discovery, DiscoveryPolicy
 

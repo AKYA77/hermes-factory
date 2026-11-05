@@ -1,0 +1,36 @@
+.........                                                                [100%]
+=============================== warnings summary ===============================
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[embargo]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[duplicate_effective]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[artifact]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[policy]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[influenced]
+tests/integration/test_screen_cohorts.py::test_api_roles_freeze_pause_and_report
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[embargo]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[duplicate_effective]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[artifact]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[policy]
+tests/integration/test_screen_cohorts.py::test_unsafe_freeze_is_rejected_atomically[influenced]
+tests/integration/test_screen_cohorts.py::test_api_roles_freeze_pause_and_report
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+tests/integration/test_screen_cohorts.py::test_api_roles_freeze_pause_and_report
+  /workspace/hermes-factory/.venv/lib/python3.12/site-packages/fastapi/testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/integration/test_screen_cohorts.py::test_api_roles_freeze_pause_and_report
+  /workspace/hermes-factory/.venv/lib/python3.12/site-packages/starlette/testclient.py:53: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = Callable[[], AbstractContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+9 passed, 20 warnings in 4.63s

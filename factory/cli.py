@@ -26,6 +26,10 @@ def main():
     subs.add_parser("discovery-status")
     discovery_stop = subs.add_parser("discovery-disable")
     discovery_stop.add_argument("policy_id")
+    cohort = subs.add_parser("screen-cohort-freeze")
+    cohort.add_argument("request_file", type=Path)
+    cohort_report = subs.add_parser("screen-cohort-report")
+    cohort_report.add_argument("cohort_id")
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -281,6 +285,19 @@ def main():
             print(json.dumps({"policy_id": args.policy_id, "enabled": False}))
         else:
             print(json.dumps(manager.status()))
+    elif args.command in ("screen-cohort-freeze", "screen-cohort-report"):
+        from factory.screening.cohorts import Cohorts, CohortRequest
+
+        cohorts = Cohorts(Store(root / "factory.sqlite"), root)
+        if args.command == "screen-cohort-freeze":
+            if args.request_file.stat().st_size > 65536:
+                raise ValueError("cohort request exceeds input budget")
+            identity = cohorts.freeze(
+                CohortRequest.model_validate_json(args.request_file.read_text())
+            )
+            print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
+        else:
+            print(json.dumps(cohorts.report(args.cohort_id)))
     elif args.command == "create-admin":
         path = root / "access.json"
         key = secrets.token_urlsafe(32)

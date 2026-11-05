@@ -230,7 +230,8 @@ def record_native_audit(db, contract, spec, result, artifact_hash):
         "prospective_cost_rejection": estimate["rejection_suggested"],
         "observed_false_negative": bool(estimate["rejection_suggested"] and native_positive),
         "approximate_pruning_enabled": False,
-        "scope": "all native survivors of the exact-zero screen; shadow feature labels, not a validated strategy or pruning permission",
+        "scope": "authoritative native shadow outcomes including frozen audits; feature labels, not a validated strategy or pruning permission",
+        "frozen_screen_audit_cohort": result.get("frozen_screen_audit_cohort"),
     }
     region = fingerprint(
         {

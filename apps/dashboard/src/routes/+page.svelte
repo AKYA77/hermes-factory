@@ -3,6 +3,7 @@
  import SourceQualityPanel from '../lib/SourceQualityPanel.svelte';
  import InputReviews from '../lib/InputReviews.svelte';
  import DiscoveryPanel from '../lib/DiscoveryPanel.svelte';
+ import ScreenCohortsPanel from '../lib/ScreenCohortsPanel.svelte';
  let token = $state('');
  let view = $state('Overview');
  let symbol = $state('EURUSD');
@@ -76,6 +77,7 @@
   {#if view==='Leaderboards'}<label>Instrument <select bind:value={symbol} onchange={()=>load()}>{#each symbols as s}<option>{s}</option>{/each}</select></label><p>Five maximum per instrument. Empty slots stay empty. Synthetic runs are labeled; validation is separate.</p>{/if}
   {#if view==='Research' && research && data!==null}
    <DiscoveryPanel {request} {download}/>
+   <ScreenCohortsPanel {request} {download}/>
    <section class="panel"><h2>Research activity</h2>{#if !research.screening.circuit_breaker.enabled}<p role="alert">Screen pruning is disabled after a native audit disagreement. New candidates use native replay. Prior rejections remain visible while bounded native rechecks run.</p><p>{research.screening.circuit_breaker.reason}</p><p>{research.screening.recovery_budget.admitted} / {research.screening.recovery_budget.max_rechecks} rechecks admitted · {research.screening.recovery_budget.measured_cpu_seconds.toFixed(1)} / {research.screening.recovery_budget.max_cpu_seconds} measured CPU seconds. {research.screening.recovery_budget.admission_stopped ? 'Recovery admission stopped at its budget.' : 'Bounded in-flight work may finish.'}</p>{#each research.screening.native_rechecks as recheck}<p>{recheck.count} native rechecks: {recheck.state}</p>{/each}{/if}<div class="metrics"><p><strong>{research.trials_considered}</strong> hypotheses</p><p><strong>{research.distinct_referenced_simulations}</strong> native runs</p><p><strong>{research.exact_duplicates_skipped}</strong> exact duplicates</p><p><strong>{research.screening.pruned_completed_jobs}</strong> no-signal rejections</p><p><strong>{research.screening.native_rejection_audits_passed}</strong> passed native rejection audits</p><p><strong>{research.screening.false_negative_failed_jobs}</strong> false-negative failed jobs</p></div><p>Exploratory training results require independent evaluation. A rejected screen has no simulated return.</p></section>
    <section class="panel"><h2>Registered research regions</h2>{#if protocols.length===0}<p>No regions registered.</p>{/if}{#each protocols as row}<div class="row"><span>{protocolName(row)} · {row.enabled?'enabled':'disabled'}</span>{#if row.enabled}<button disabled={pending} onclick={()=>stop('research/protocols/'+row.protocol_hash+'/disable')}>Stop new proposals</button>{/if}</div>{/each}</section>
   {/if}

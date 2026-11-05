@@ -1,6 +1,162 @@
 {
   "components": {
     "schemas": {
+      "CohortRequest": {
+        "additionalProperties": false,
+        "properties": {
+          "attestation": {
+            "const": "Freeze this training-only screening cohort before native audit outcomes; no validation or pruning authority",
+            "title": "Attestation",
+            "type": "string"
+          },
+          "audit_sample_count": {
+            "maximum": 128.0,
+            "minimum": 1.0,
+            "title": "Audit Sample Count",
+            "type": "integer"
+          },
+          "authorized_by": {
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Authorized By",
+            "type": "string"
+          },
+          "calibration_experiments": {
+            "items": {
+              "pattern": "^[a-f0-9]{64}$",
+              "type": "string"
+            },
+            "maxItems": 128,
+            "minItems": 1,
+            "title": "Calibration Experiments",
+            "type": "array"
+          },
+          "policy": {
+            "$ref": "#/components/schemas/CostHorizonPolicy"
+          },
+          "prospective_job_ids": {
+            "items": {
+              "maxLength": 64,
+              "minLength": 1,
+              "type": "string"
+            },
+            "maxItems": 256,
+            "minItems": 1,
+            "title": "Prospective Job Ids",
+            "type": "array"
+          },
+          "schema_version": {
+            "const": "frozen-screen-cohort/v1",
+            "default": "frozen-screen-cohort/v1",
+            "title": "Schema Version",
+            "type": "string"
+          },
+          "seed": {
+            "minimum": 0.0,
+            "title": "Seed",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "calibration_experiments",
+          "prospective_job_ids",
+          "audit_sample_count",
+          "seed",
+          "authorized_by",
+          "attestation"
+        ],
+        "title": "CohortRequest",
+        "type": "object"
+      },
+      "CostHorizonPolicy": {
+        "additionalProperties": false,
+        "properties": {
+          "cost_basis": {
+            "const": "hypothetical-two-market-round-trip",
+            "default": "hypothetical-two-market-round-trip",
+            "title": "Cost Basis",
+            "type": "string"
+          },
+          "dispersion_multiplier": {
+            "anyOf": [
+              {
+                "maximum": 10.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "default": "2",
+            "title": "Dispersion Multiplier"
+          },
+          "horizon_bars": {
+            "default": 5,
+            "maximum": 1440.0,
+            "minimum": 1.0,
+            "title": "Horizon Bars",
+            "type": "integer"
+          },
+          "max_censored_fraction": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "default": "0.10",
+            "title": "Max Censored Fraction"
+          },
+          "max_label_elapsed_seconds": {
+            "const": 86400,
+            "default": 86400,
+            "title": "Max Label Elapsed Seconds",
+            "type": "integer"
+          },
+          "min_labels": {
+            "default": 50,
+            "maximum": 100000.0,
+            "minimum": 2.0,
+            "title": "Min Labels",
+            "type": "integer"
+          },
+          "price_basis": {
+            "const": "closed-midpoint-feature-difference",
+            "default": "closed-midpoint-feature-difference",
+            "title": "Price Basis",
+            "type": "string"
+          },
+          "rejection_score_pips": {
+            "anyOf": [
+              {
+                "maximum": 0.0,
+                "type": "number"
+              },
+              {
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+                "type": "string"
+              }
+            ],
+            "default": "0",
+            "title": "Rejection Score Pips"
+          },
+          "schema_version": {
+            "const": "cost-horizon-labels/v1",
+            "default": "cost-horizon-labels/v1",
+            "title": "Schema Version",
+            "type": "string"
+          }
+        },
+        "title": "CostHorizonPolicy",
+        "type": "object"
+      },
       "DiscoveryPolicy": {
         "additionalProperties": false,
         "properties": {
@@ -3286,6 +3442,245 @@
           }
         },
         "summary": "Resume"
+      }
+    },
+    "/api/v1/research/screen-cohort-inputs": {
+      "get": {
+        "operationId": "screen_cohort_inputs_api_v1_research_screen_cohort_inputs_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 50,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Screen Cohort Inputs"
+      }
+    },
+    "/api/v1/research/screen-cohorts": {
+      "get": {
+        "operationId": "screen_cohorts_api_v1_research_screen_cohorts_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 100,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "offset",
+            "required": false,
+            "schema": {
+              "default": 0,
+              "minimum": 0,
+              "title": "Offset",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Screen Cohorts"
+      },
+      "post": {
+        "operationId": "freeze_screen_cohort_api_v1_research_screen_cohorts_post",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CohortRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Freeze Screen Cohort"
+      }
+    },
+    "/api/v1/research/screen-cohorts/{identity}": {
+      "get": {
+        "operationId": "screen_cohort_report_api_v1_research_screen_cohorts__identity__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "identity",
+            "required": true,
+            "schema": {
+              "title": "Identity",
+              "type": "string"
+            }
+          },
+          {
+            "in": "header",
+            "name": "authorization",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Authorization"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            },
+            "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
+          }
+        },
+        "summary": "Screen Cohort Report"
       }
     },
     "/api/v1/research/status": {

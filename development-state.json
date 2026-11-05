@@ -89,27 +89,27 @@
     "ADR0029 explicit Signal2 trend/reversal/range/volatility/session/confluence in shared causal compiler; Search5 and scientific-validation4 propagation, legacy JSON/hash preservation, nine-category additive coverage, actual native/offline-worker proof and seven-timeframe lookahead regressions",
     "ADR0030 bounded authorized automatic discovery, immutable planned-region SIGKILL recovery, source arrival continuation, historical scope guards and authenticated desktop/mobile control/export; 476-test full verification",
     "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption",
-    "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification"
+    "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification",
+    "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification"
   ],
-  "last_remote_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
+  "last_remote_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
   "last_verification": {
-    "passed": 550,
+    "passed": 562,
     "failed": 0,
     "skipped": 0,
-    "warnings": 400,
-    "pytest_seconds": 182.32,
+    "warnings": 422,
+    "pytest_seconds": 186.19,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/screen-fallback/screen-fallback-full-verification.log",
-    "supplemental": "Four queue-controller tests passed after complete final-reconciliation coverage was added; the new fourth case is additional to the full-suite collection."
+    "log": "reports/milestones/frozen-screen-cohorts/cohort-full-verification.log"
   },
-  "latest_evidence_manifest": "reports/milestones/screen-fallback/manifest.json",
-  "latest_milestone": "docs/milestone-screen-fallback.md",
+  "latest_evidence_manifest": "reports/milestones/frozen-screen-cohorts/manifest.json",
+  "latest_milestone": "docs/milestone-frozen-screen-cohorts.md",
   "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
-  "next_unfinished": "Remain in safe_screening: freeze calibration plus prospective rejection-cohort membership before native outcomes, deterministic unbiased audit selection, exact lineage/false-negative confidence and conservative all-native fallback. Approximation stays unauthorized to prune; continue subsequent queue tasks.",
+  "next_unfinished": "Implement reviewed-admission-bound historical shadow/calibration diagnostics and explicit versioned cohort support; retain generated v1 identities, strict training/holdout/source/code scope, conservative all-native fallback and no approximate pruning authority. Then independently verify remaining screening/comparability safeguards and continue recursive diagnostics.",
   "observed_at_utc": "2026-11-04T18:46:52.652389+00:00",
   "readiness": {
     "DATA_READY": false,
@@ -152,8 +152,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
-    "source_sha256": "a566eed517a77229d2c620e39fc0437778808e6c54af6f2e87ddbb5247015c98",
+    "git_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
+    "source_sha256": "0849d91cadf936ef1e01228fb2b2c07b813b4626782b2e690ced9df59f1c6d59",
     "working_tree_scientific_edits": true
   },
   "visibility": {
@@ -180,22 +180,21 @@
     "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
     "scope": "This receipt observes the source push; the following metadata-only commit records its recovery.",
     "new_implementation_performed": false,
-    "latest_verified_development_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
-    "latest_verified_development_ci": "reports/milestones/screen-fallback/prior-indicators-ci-runs.json"
+    "latest_verified_development_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
+    "latest_verified_development_ci": "reports/milestones/frozen-screen-cohorts/prior-screen-fallback-publication.json"
   },
   "latest_verification": {
-    "passed": 550,
+    "passed": 562,
     "failed": 0,
     "skipped": 0,
-    "warnings": 400,
-    "pytest_seconds": 182.32,
+    "warnings": 422,
+    "pytest_seconds": 186.19,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/screen-fallback/screen-fallback-full-verification.log",
-    "supplemental": "Four queue-controller tests passed after complete final-reconciliation coverage was added; the new fourth case is additional to the full-suite collection."
+    "log": "reports/milestones/frozen-screen-cohorts/cohort-full-verification.log"
   },
   "network_requirements": {
     "confirmed_denied": [
@@ -213,5 +212,14 @@
     ],
     "applied_or_published": false
   },
-  "implementation_queue": "implementation-queue.json"
+  "implementation_queue": "implementation-queue.json",
+  "continuation": {
+    "controller": "scripts/completion-queue.py",
+    "current_task": "safe_screening",
+    "state": "IMPLEMENTING",
+    "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume.",
+    "publication_identity": "Resolve git HEAD and verify the authorized remote branch; last_remote_commit records the last independently observed remote before this checkpoint was committed.",
+    "runtime": "4 CPU quota / 32GiB environment, not the target 8GiB host. API/full pytest requires unsandboxed execution because TestClient hangs under sandbox networking.",
+    "services": "Only isolated generated loopback development fixtures. Latest cohort fixture .local/screen-cohort-browser-final API8099 and coordinator remain paused after browser verification. Grants are source-revision-bound and become stale on commit."
+  }
 }

@@ -72,6 +72,9 @@ def run(payload, root):
     from factory.screening.fallback import status as screening_status
 
     pruning_enabled = screening_status(Store(Path(root) / "factory.sqlite"))["enabled"]
+    from factory.screening.cohorts import selected_cohort
+
+    audit_cohort = selected_cohort(Store(Path(root) / "factory.sqlite"), contract)
     cost_shadow = contract.evaluation_policy == "synthetic-cost-shadow-training/v1"
     if cost_shadow and screening != SCREEN_POLICY:
         raise ValueError("cost shadow contract requires the versioned exact-zero screen")
@@ -113,7 +116,12 @@ def run(payload, root):
         if require_execution_version(contract) != context:
             raise ValueError("execution source changed during screen")
         screen_hash = persist(root, receipt) if receipt is not None else None
-        if receipt is not None and receipt.decision == "PRUNE_NO_SIGNALS" and pruning_enabled:
+        if (
+            receipt is not None
+            and receipt.decision == "PRUNE_NO_SIGNALS"
+            and pruning_enabled
+            and audit_cohort is None
+        ):
             return {
                 "result_kind": "SCREENED_OUT",
                 "screen": receipt.model_dump(mode="json"),
@@ -143,6 +151,8 @@ def run(payload, root):
     with Store(Path(root) / "factory.sqlite").transaction() as db:
         reject_quarantined(db, manifest)
     result["runtime_provenance"] = context
+    if audit_cohort is not None:
+        result["frozen_screen_audit_cohort"] = audit_cohort
     if screening is not None and not pruning_enabled:
         result["tier0_pruning_bypassed"] = "PERSISTENT_NATIVE_AUDIT_CIRCUIT_BREAKER"
     if cost_labels is not None:
@@ -153,7 +163,7 @@ def run(payload, root):
         result["input_admission"] = admission
     if receipt is not None:
         result["tier0_screen"] = receipt.model_dump(mode="json")
-        if receipt.decision == "AUDIT_NO_SIGNALS" and pruning_enabled:
+        if receipt.signal_count == 0 and pruning_enabled:
             audit_passed = not (
                 result["fills"] or result["trades"] or result["open_trade"] or generated
             )

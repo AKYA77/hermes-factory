@@ -45,3 +45,4 @@ line-length = 100
 "migrations/009_source_versions.sql" = "factory/sql/009_source_versions.sql"
 "migrations/010_cost_label_audits.sql" = "factory/sql/010_cost_label_audits.sql"
 "migrations/011_discovery.sql" = "factory/sql/011_discovery.sql"
+"migrations/012_screen_cohorts.sql" = "factory/sql/012_screen_cohorts.sql"

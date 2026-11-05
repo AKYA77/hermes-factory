@@ -1,124 +1,87 @@
-# Persistent completion goal — NOT_READY
+# Continuous completion loop — NOT_READY
 
-Continue `/workspace/hermes-factory`, branch `build/initial-factory`. Preserve the
-current architecture and all previous evidence. No merge, visibility change,
-release tag, production deployment or readiness claim is authorized by a milestone.
-The latest owner directive explicitly authorizes committing/pushing each tested
-milestone to this branch and verifying PR #1 plus exact-SHA CI. Older push holds
-are superseded. Repository is still PUBLIC; no visibility change was made.
+Continue `/workspace/hermes-factory`, branch `build/initial-factory`, PR #1:
+https://github.com/AKYA77/hermes-factory/pull/1. The owner authorizes each tested
+milestone commit/push and exact-SHA PR/CI verification. No merge, repository
+visibility change, production deployment, release tag or readiness claim.
 
-Read the complete source/blueprint authority listed in AGENTS.md and
-`docs/source/Final_Software_Handoff_Directive_2026-11-04.md`, then state/ledger,
-acceptance matrix and latest report. Do not rebuild completed work or repeat
-expensive campaigns to increase counts. Keep science source unchanged during
-provenance-bound runs. No subagents unless the owner/applicable instructions ask.
+Read AGENTS.md, the complete authority/blueprint and latest owner directive:
+`docs/source/Continuous_Autonomous_Completion_Loop.md`. Then inspect Git HEAD/tree,
+completion-ledger.json, development-state.json, implementation-queue.json and run:
+`.venv/bin/python scripts/completion-queue.py`. Continue without asking what to do.
+Scoped task verification never implies its parent gates pass. Final reconciliation
+explicitly maps every one of the67requirements; none may disappear behind a
+scoped checkpoint. SOFTWARE_VERIFIED/DATA_READY/OPERATION_READY remain false.
 
-Latest implemented checkpoint: ADR0026, admission-bound historical search/v4,
-protected-holdout/v2, scientific-validation/v3, strict exact-nanosecond windows,
-complete generated positive chronological/native reference, and actual genuine
-EURUSD generic-unit native training plus frozen exploratory evaluation. Full
-verification346passed/362warnings/209.55s; frontend/lint passed. Detailed evidence:
-`docs/milestone-historical-protocols-2026-11-04.md` and its linked manifest.
-Do not describe generated non-synthetic-flag authorization fixtures as market data.
+Latest tested source:0849d91cadf936ef1e01228fb2b2c07b813b4626782b2e690ced9df59f1c6d59.
+Full562passed/0failed/0skipped,422warnings/186.19s; lint/format/Svelte/build pass.
+See docs/milestone-frozen-screen-cohorts.md, ADR0033 and its hashed manifest.
+The commit containing this checkpoint packages that tested source; verify actual
+remote HEAD on resume. Last independently observed prior remote:
+ae0b7de38f4902ebd89dc5e0ea45f2e143d64375; PR and exact Python41959218657 /
+dashboard41959218638 passed. New publication observations are checked after push.
+Do not use prior CI as proof for a later commit.
 
-Genuine rehearsal is bounded, not final independent validation. Source view
-75359494… has4,336,496 Jan/Feb quotes; all409 QA events are retained/reviewed.
-Provider gaps/calendar fidelity remain uncertified. Native windows37,752/31,761
-quotes produced16fills,7closed trades,2open positions;3R/risk/native-money checks
-passed. One-unit unlevered generic model is a declared research assumption, not
-broker specifications. Both months' prior technical use is durably recorded;
-never retroactively reserve them as wholly untouched final holdout. Local state
-`.local/genuine-eurusd-rehearsal-v1` is paused. Raw provider/reference bytes remain
-ignored; sanitized receipts are versioned. No bulk backfill needed pre-handoff.
+Completed this continuation: ADR0030 authorized bounded discovery with actual
+SIGKILL/new-source/native/browser recovery; ADR0031 shared exact indicator L2 with
+measured conservative adoption and native parity; ADR0032 persistent native-audit
+screen breaker plus64job/300CPU bounded rechecks preserving negative evidence;
+ADR0033 immutable generated calibration/prospective audit frames, deterministic
+pre-outcome selection, global seed-only/effective-experiment dedup, forced native
+zero-signal audits, descriptive feedback and authenticated graphical exact export.
+All original earlier evidence remains in reports/milestones and source authority.
+No generated proof is historical market evidence or independent qualification.
 
-Next executable priorities:
+## Exact next implementation
 
-1. Finish source/profile correctness for all eight instruments, especially Gold's
-   independent units/cost convention. Generic research profiles are explicitly
-   allowed with assumptions separated from primary facts; do not invent broker
-   constraints or introduce a human-only approval blocker. Complete provider gap
-   reconciliation, correction invalidation, intra-partition resume, refresh jobs,
-   quotas/retention/compaction and data-operation APIs.
-2. Complete scientific session/regime and global multiple-selection safeguards,
-   candidate comparability/diversification and independently validated ranking.
-   Historical v3 propagation is implemented; historical promotion stays disabled
-   until remaining acceptance is implemented and genuinely demonstrated.
-3. Frozen calibrated shortlist/rejection-cohort audit/fallback; shared indicator
-   transforms; full required families/timeframe-confirmation coverage and automatic
-   new-data/region discovery. Complete controlled recursive cohort improvement.
-4. Full graphical diagnostic/performance/lineage/data/operations/export workflows
-   with actual authenticated desktop/mobile browser verification.
-5. Installed provenance, Ubuntu/systemd least privilege, atomic install/update/
-   rollback/migration safety, encrypted/off-host backup interfaces, restore and
-   failure recovery. Preserve state through upgrades; do not advertise dev scripts
-   as a verified production installer.
-6. Complete source-to-restore rehearsal, representative native/resource benchmarks,
-   exact-SHA security/CI, release packaging and Hermes handoff. Actual4-vCPU/8-GB
-   target-host installation/soak is still untested; cloud32GiB is not equivalent.
+Remain in `safe_screening` (IMPLEMENTING). Implement historical shadow/calibration
+diagnostics under an immutable typed policy bound to current reviewed admission,
+profile/data/code/training windows and an explicit no-pruning attestation. Keep
+historical cheap pruning disabled. Add explicit new cohort version supporting
+that policy; preserve generated v1 identities/restrictions. Worker and fenced
+completion must recheck admission/quarantine/holdout/source/version scope, retain
+native and diagnostic hashes separately, and never reinterpret consumed evaluation.
+Use existing shared compiler/feature engine, fixed cost proxy and Nautilus, not a
+second matching engine or new scoring/cost convention. Preserve the known
+profitable native counterexample and all-native fallback. Exercise current
+reviewed-input TEST_ONLY fixtures honestly; genuine new-source proof remains
+blocked by actual primary-source access. Do not invent broker/Gold reference facts.
 
-Security remains release-blocking: fsspec2026.2.0 exact Nautilus pin and unpatched
-compatible deepmerge chain. Keep both audit checks active and red until genuinely
-resolved. Native finite-empty-book fallback is quarantined, not solved/waived.
-All original C0–C9/T01–T30 plus supplemental gates remain in completion-ledger.json.
-SOFTWARE_VERIFIED=false, DATA_READY=false, OPERATION_READY=false; no final tag.
+Then complete remaining safe shortlist/comparability/selection safeguards and
+continue the dependency-aware queue: recursive session/regime/MFE/MAE diagnostics,
+global independent qualification, source/profile/refresh/storage/data APIs,
+full dashboard, installed provenance/Ubuntu/systemd/update/rollback/backup/restore,
+security remediation and full source-to-restore/release/Hermes handoff. Do not
+stop at one milestone or repeat expensive campaigns merely to increase counts.
 
-Latest source-recovery increment (ADR0027): retained-ZIP imports now checkpoint
-bounded decoded chunks, verify raw prefixes on retry, survive actual SIGKILL and
-preserve original data/v2 identities. HistData parser/v2 fixes a reproduced
-Decimal-context rounding acceptance bug; valid quotes stay exact, old results
-stay unchanged. Full verification376passed/362warnings; focused52passed.
-See docs/milestone-import-resume-2026-11-04.md and its manifest. Do not repeat this
-completed fixture/benchmark as historical evidence. HTTP byte-range resume is
-not supported; interrupted downloads retain bytes and reacquire. Scheduled
-refresh, quotas/retention/compaction and full data UI remain executable next work.
-The current imported-archive staging intentionally retains chunks/failures; do
-not remove evidence or source vault files to recover disk space blindly.
+## Environment and evidence constraints
 
-ADR0028 completes the duplicate-staging storage follow-up: default shared2GiB
-payload quota, retained orphan/failure accounting and explicit deeply verified
-reclamation CLI. Full384passed/362warnings; actual generated50k-row cleanup
-removed359,384B across7chunks without changing any canonical hash. Runbook:
-docs/runbooks/historical-backfill.md. Do not describe canonical retention,
-compaction, scheduled refresh or full data APIs/UI as implemented from this proof.
+Read the cloud runtime skill/status on resume. Current restricted proxy policy
+has no primary-source additions enforced. Required domains were saved in an
+unapplied environment draft: histdata.com,www.histdata.com,www.oanda.com,
+www.six-group.com,api.github.com. Prior actual requests returned CONNECT403.
+Git and public GitHub PR/CI pages work; do not bypass the proxy or dump secrets.
+Continue independent implementation while source/reference access is unavailable.
 
-Current external prerequisite: proxy CONNECT403 blocks primary reference/source
-hosts. Required additive domains were saved in the environment draft, not applied:
-histdata.com,www.histdata.com,www.oanda.com,www.six-group.com,api.github.com.
-After environment settings are reviewed/saved/published, retry actual access;
-no new secret/token is established as missing. Git/public PR and CI pages work.
-The earlier genuine raw archives are not present in this fresh checkout's .local;
-Git evidence is retained, but a new genuine-profile run needs bounded provider
-access and actual raw captures. Do not claim their local restoration was verified.
-Continue independent implementation while that prerequisite is unavailable.
+fsspec2026.2.0 exact Nautilus pin and compatible deepmerge advisories remain
+release-blocking; audits stay active. Do not force incompatible pins or suppress
+failures. Native finite-empty-book fallback remains quarantined, not waived.
 
-Latest executable checkpoint: ADR0029 (see milestone-strategy-families-2026-11-04).
-Signal2 now has trend/reversal/range/volatility/session/confluence in the shared
-causal compiler, with Search5 and scientific-validation4 routing, additive9-family
-coverage and legacy JSON/ID preservation. Full463passed/374warnings; actual native
-fills for all6new categories, actual offline supervised session feedback and
-strict prior-only refit propagation pass. Do not repeat these generated proofs as
-historical market evidence or call them full autonomous discovery/validation.
+Run focused tests for changes, then `bash scripts/verify.sh` when warranted. API/
+full pytest hangs inside sandbox networking; run those checks outside it. Keep
+scientific source unchanged during provenance-bound runs. Current host has4CPU
+quota/32GiB; this is not the target4-vCPU/8GB installation/soak proof. Actual native
+resource receipts distinguish wall, CPU and process RSS from aggregate/throughput.
 
-NEXT INDEPENDENT IMPLEMENTATION: durable automatic discovery/registration of
-new eligible approved training regions across the complete family/timeframe grid.
-Use explicit training authorization and exclude all protected/previously influenced
-holdout ranges; never infer approval from a catalog file or reinterpret a consumed
-period. Give finite versioned expansion budgets and durable restart/idempotency,
-then demonstrate continued useful exploration after old registered cells exhaust.
-Follow with shared indicator transforms and frozen safe shortlist calibration,
-recursive session/regime diagnostics and global independent qualification. Keep
-source/profile/source-refresh/UI/lifecycle/security and final source-to-restore
-requirements active in the ledger. Primary reference/data access remains denied
-until the saved environment network draft is actually applied and verified.
+Latest browser state `.local/screen-cohort-browser-final` is generated and paused;
+its loopback API8099/coordinator are development fixtures. Do not reuse its old
+source-bound grant after a commit. Preserve local credentials, failed attempts,
+raw/canonical/source vault bytes, receipts and hashes; never blindly git-clean or
+delete evidence. Earlier genuine EURUSD archives are absent from this checkout;
+prior versioned genuine receipts are retained but restoration is not reverified.
+Jan/Feb prior technical use cannot be relabeled wholly untouched final holdout.
 
-Latest scoped checkpoint: ADR0030, docs/milestone-autonomous-discovery.md. Full476passed/374warnings, lint/format/frontend pass; real Chromium generated authorization/resume/region/pause/stop/exact-export/mobile proof. All11wheel migrations match. First full run interrupted by environment restart; sandbox API hangs are not passes. No parent acceptance or readiness flag changed.
-
-CONTINUE AUTOMATICALLY: run `.venv/bin/python scripts/completion-queue.py`, then shared_indicators. Exact primitives/cache identity must include code/data/profile/range/closed-time/lookback/formula/Decimal context; stop/threshold variants should reuse. Require raw parity, causality/invalidation/resource tests and actual measured benefit before adopting. Staged design files /tmp/hermes-transforms.py and /tmp/hermes-indicators.py are NOT integrated or verified and may be discarded if unsuitable. Continue subsequent tasks without waiting for owner input. Discovery fixture .local/discovery-browser-final is paused/stopped; its old-source grant must not be reused after commit changes. Source revision is provenance-bound.
-
-Latest scoped checkpoint: ADR0031 shared exact indicators; docs/milestone-shared-indicators.md. Full544passed/390warnings, lint/format/frontend pass;68new tests include actual SIGKILL and identical native training/evaluation output. Final sourcea502f6a49ac4ad7ea785526f4442946baaed168fa155f5bffb41dc3fc0349aac. Prior72c591b remote/PR and Python41940676730/dashboard41940676749 verified green. New milestone publication is checked after commit.
-
-CONTINUE safe_screening immediately. Implement durable circuit-breaker/native recovery after a discovered false negative and frozen scientifically safe calibration/audit cohorts. Existing exact-zero screen plus unauthorized cost-shadow labels are the only present semantics; never enable approximate pruning from this checkpoint. Keep all parent gates/readiness false; all67requirements remain in implementation-queue.json. Staged indicator files are now integrated, superseding the prior /tmp design note.
-
-Latest scoped checkpoint: ADR0032/docs/milestone-screen-fallback.md. Full550passed/400warnings/182.32s; lint/format/Svelte/build pass; additional4queue tests pass. Generated actual native disagreement, persistent disablement, supervised recheck/original receipt preservation,64job/300measuredCPU guards and authenticated desktop/mobile alerts pass. Sourcea566eed517a77229d2c620e39fc0437778808e6c54af6f2e87ddbb5247015c98. Prior8ce57c9 remote/PR and exact Python41957950193/dashboard41957950113 green. Final queue task now maps every ledger requirement so scoped checkpoints cannot hide unfinished parent gates.
-
-CONTINUE safe_screening (still IMPLEMENTING), not diagnostics yet: frozen calibration and preselected independent native rejection cohorts, finite budget/immutable membership, false-negative confidence, selection safeguards, conservative shortlist and all-native fallback. Existing profitable cost-label counterexample must keep approximation unauthorized to prune. Recheck recovery never reauthorizes old-code contracts; no automatic budget/breaker reset. Final generated fixture .local/screen-fallback-browser-final is paused; loopbackAPI8097 is a development test service. Full current remote/PR/CI is checked after this commit; all readiness remains false.
+If a real session/tool limit intervenes, leave a clean tested pushed checkpoint
+and exact next action here, in the ledger and development state. Do not promise
+execution after the session without an execution mechanism. Resume the loop from
+the highest-priority unfinished requirement, rather than rebuilding prior work.

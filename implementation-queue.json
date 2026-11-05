@@ -55,8 +55,8 @@
         "integration",
         "verification"
       ],
-      "next_action": "Finish frozen calibration and preselected native rejection cohorts, reporting confidence/false negatives and safe shortlist/fallback with no approximate pruning authority. ADR0032 supplies bounded persistent disagreement recovery.",
-      "evidence": "docs/milestone-screen-fallback.md"
+      "next_action": "Implement reviewed-admission-bound historical shadow/calibration diagnostics and explicit versioned cohort support; retain generated v1 identities, strict training/holdout/source/code scope, conservative all-native fallback and no approximate pruning authority. Then independently verify remaining screening/comparability safeguards and continue recursive diagnostics.",
+      "evidence": "docs/milestone-frozen-screen-cohorts.md"
     },
     {
       "id": "recursive_diagnostics",
