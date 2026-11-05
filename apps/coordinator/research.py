@@ -20,6 +20,9 @@ def maintenance(store, root, max_queued=2):
     improvement.feedback()
     if store.paused():
         return {"feedback": applied, "proposed": 0}
+    from factory.screening.fallback import enqueue_rechecks
+
+    enqueue_rechecks(store, root, max_queued=max_queued)
     from factory.exploration.discovery import Discovery
 
     discovery = Discovery(store, root)

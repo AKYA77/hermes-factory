@@ -598,6 +598,8 @@ class Search:
 
 def status(store):
     """Separate trials, duplicates, referenced runs, failures and measured CPU."""
+    from factory.screening.fallback import status as screening_status, recovery_budget
+
     counts = store.rows("SELECT outcome,count(*) count FROM search_outcomes GROUP BY outcome")
     cpu = store.rows("SELECT coalesce(sum(cpu_seconds),0) cpu FROM search_outcomes")[0]["cpu"]
     generation = store.rows(
@@ -629,6 +631,11 @@ def status(store):
         "measured_generation_cpu_seconds": generation,
         "screening": {
             "policy": "exact-zero-signals-audit/16/v1",
+            "circuit_breaker": screening_status(store),
+            "recovery_budget": recovery_budget(store),
+            "native_rechecks": store.rows(
+                "SELECT state,count(*) count FROM jobs WHERE idempotency_key LIKE 'screen-recheck:%' GROUP BY state"
+            ),
             "pruned_completed_jobs": pruned,
             "native_rejection_audits_passed": audits,
             "false_negative_failed_jobs": audit_failures,

@@ -69,14 +69,17 @@ def run(payload, root):
 
     cache = BarCache(Path(root) / "cache" / "bars")
     screening = payload.get("screening")
+    from factory.screening.fallback import status as screening_status
+
+    pruning_enabled = screening_status(Store(Path(root) / "factory.sqlite"))["enabled"]
     cost_shadow = contract.evaluation_policy == "synthetic-cost-shadow-training/v1"
     if cost_shadow and screening != SCREEN_POLICY:
         raise ValueError("cost shadow contract requires the versioned exact-zero screen")
+    if screening is not None and screening != SCREEN_POLICY:
+        raise ValueError("unsupported screening policy")
     receipt = None
     cost_labels = None
-    if screening is not None:
-        if screening != SCREEN_POLICY:
-            raise ValueError("unsupported screening policy")
+    if screening is not None and (pruning_enabled or cost_shadow):
         with compiler_events(
             cache,
             catalog,
@@ -96,9 +99,10 @@ def run(payload, root):
                     CostHorizonPolicy(),
                     transform_lookup=transform_lookup,
                 )
-                receipt = from_summary(
-                    cost_labels["signal_count"], cost_labels["signal_sha256"], contract
-                )
+                if pruning_enabled:
+                    receipt = from_summary(
+                        cost_labels["signal_count"], cost_labels["signal_sha256"], contract
+                    )
             else:
                 receipt = screen(
                     iter_bar_signals(events, spec, transform_lookup=transform_lookup), contract
@@ -108,8 +112,8 @@ def run(payload, root):
             reject_quarantined(db, manifest)
         if require_execution_version(contract) != context:
             raise ValueError("execution source changed during screen")
-        screen_hash = persist(root, receipt)
-        if receipt.decision == "PRUNE_NO_SIGNALS":
+        screen_hash = persist(root, receipt) if receipt is not None else None
+        if receipt is not None and receipt.decision == "PRUNE_NO_SIGNALS" and pruning_enabled:
             return {
                 "result_kind": "SCREENED_OUT",
                 "screen": receipt.model_dump(mode="json"),
@@ -139,6 +143,8 @@ def run(payload, root):
     with Store(Path(root) / "factory.sqlite").transaction() as db:
         reject_quarantined(db, manifest)
     result["runtime_provenance"] = context
+    if screening is not None and not pruning_enabled:
+        result["tier0_pruning_bypassed"] = "PERSISTENT_NATIVE_AUDIT_CIRCUIT_BREAKER"
     if cost_labels is not None:
         result["cost_horizon_labels"] = cost_labels
     if registry is not None:
@@ -147,7 +153,7 @@ def run(payload, root):
         result["input_admission"] = admission
     if receipt is not None:
         result["tier0_screen"] = receipt.model_dump(mode="json")
-        if receipt.decision == "AUDIT_NO_SIGNALS":
+        if receipt.decision == "AUDIT_NO_SIGNALS" and pruning_enabled:
             audit_passed = not (
                 result["fills"] or result["trades"] or result["open_trade"] or generated
             )
@@ -171,6 +177,10 @@ def run(payload, root):
             / f"{contract.experiment_hash}-{quarantine_hash}.json"
         )
         atomic_bytes(failed, serialize(quarantine).encode())
+        if any(e.get("reason") == "TIER0_FALSE_NEGATIVE" for e in result["integrity_errors"]):
+            from factory.screening.fallback import trip
+
+            trip(Store(Path(root) / "factory.sqlite"), contract, quarantine_hash)
         raise ValueError(
             "EXECUTION_CONTRACT_MISMATCH: "
             + serialize(result["integrity_errors"])

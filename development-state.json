@@ -88,26 +88,28 @@
     "ADR0028 shared catalog staging payload quota and explicit verified duplicate-chunk reclamation; atomic request/marker/results and interrupted-unlink recovery preserve canonical source and failure/orphan evidence",
     "ADR0029 explicit Signal2 trend/reversal/range/volatility/session/confluence in shared causal compiler; Search5 and scientific-validation4 propagation, legacy JSON/hash preservation, nine-category additive coverage, actual native/offline-worker proof and seven-timeframe lookahead regressions",
     "ADR0030 bounded authorized automatic discovery, immutable planned-region SIGKILL recovery, source arrival continuation, historical scope guards and authenticated desktop/mobile control/export; 476-test full verification",
-    "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption"
+    "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption",
+    "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification"
   ],
-  "last_remote_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
+  "last_remote_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
   "last_verification": {
-    "passed": 544,
+    "passed": 550,
     "failed": 0,
     "skipped": 0,
-    "warnings": 390,
-    "pytest_seconds": 184.0,
+    "warnings": 400,
+    "pytest_seconds": 182.32,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/shared-indicators/indicators-full-verification.log"
+    "log": "reports/milestones/screen-fallback/screen-fallback-full-verification.log",
+    "supplemental": "Four queue-controller tests passed after complete final-reconciliation coverage was added; the new fourth case is additional to the full-suite collection."
   },
-  "latest_evidence_manifest": "reports/milestones/shared-indicators/manifest.json",
-  "latest_milestone": "docs/milestone-shared-indicators.md",
+  "latest_evidence_manifest": "reports/milestones/screen-fallback/manifest.json",
+  "latest_milestone": "docs/milestone-screen-fallback.md",
   "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
-  "next_unfinished": "Continue safe_screening: frozen calibration/rejection cohorts and durable native audit fallback. Cost-horizon approximation stays unauthorized to prune; preserve profitable native counterexample. Continue all remaining queue streams.",
+  "next_unfinished": "Remain in safe_screening: freeze calibration plus prospective rejection-cohort membership before native outcomes, deterministic unbiased audit selection, exact lineage/false-negative confidence and conservative all-native fallback. Approximation stays unauthorized to prune; continue subsequent queue tasks.",
   "observed_at_utc": "2026-11-04T18:46:52.652389+00:00",
   "readiness": {
     "DATA_READY": false,
@@ -150,8 +152,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
-    "source_sha256": "a502f6a49ac4ad7ea785526f4442946baaed168fa155f5bffb41dc3fc0349aac",
+    "git_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
+    "source_sha256": "a566eed517a77229d2c620e39fc0437778808e6c54af6f2e87ddbb5247015c98",
     "working_tree_scientific_edits": true
   },
   "visibility": {
@@ -178,21 +180,22 @@
     "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
     "scope": "This receipt observes the source push; the following metadata-only commit records its recovery.",
     "new_implementation_performed": false,
-    "latest_verified_development_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
-    "latest_verified_development_ci": "reports/milestones/shared-indicators/prior-discovery-publication.json"
+    "latest_verified_development_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
+    "latest_verified_development_ci": "reports/milestones/screen-fallback/prior-indicators-ci-runs.json"
   },
   "latest_verification": {
-    "passed": 544,
+    "passed": 550,
     "failed": 0,
     "skipped": 0,
-    "warnings": 390,
-    "pytest_seconds": 184.0,
+    "warnings": 400,
+    "pytest_seconds": 182.32,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
     "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/shared-indicators/indicators-full-verification.log"
+    "log": "reports/milestones/screen-fallback/screen-fallback-full-verification.log",
+    "supplemental": "Four queue-controller tests passed after complete final-reconciliation coverage was added; the new fourth case is additional to the full-suite collection."
   },
   "network_requirements": {
     "confirmed_denied": [

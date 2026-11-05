@@ -58,3 +58,17 @@ def test_missing_gate_coverage_is_a_controller_error(tmp_path, monkeypatch):
     path.write_text(json.dumps(queue))
     with pytest.raises(ValueError, match="exact acceptance ledger"):
         inspect(tmp_path)
+
+
+def test_all_scoped_checkpoints_still_require_full_ledger_reconciliation(tmp_path, monkeypatch):
+    inspect = queue_fixture(tmp_path, monkeypatch)
+    path = tmp_path / "implementation-queue.json"
+    queue = json.loads(path.read_text())
+    for task in queue["tasks"]:
+        if task["id"] != "full_system_release":
+            task["state"] = "VERIFIED_SCOPE"
+    path.write_text(json.dumps(queue))
+    result = inspect(tmp_path)
+    assert result["next_task"]["id"] == "full_system_release"
+    assert result["unfinished_requirements"]
+    assert not any(result["readiness"].values())

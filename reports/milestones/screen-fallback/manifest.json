@@ -1,0 +1,50 @@
+{
+  "source": {
+    "git_commit": "8ce57c9f2ab84bf77455ffe0d545c6f473a83e76",
+    "source_sha256": "a566eed517a77229d2c620e39fc0437778808e6c54af6f2e87ddbb5247015c98"
+  },
+  "verification": {
+    "passed": 550,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 400,
+    "pytest_seconds": 182.32,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "command": "bash scripts/verify.sh",
+    "log": "reports/milestones/screen-fallback/screen-fallback-full-verification.log",
+    "supplemental": "Four queue-controller tests passed after complete final-reconciliation coverage was added; the new fourth case is additional to the full-suite collection."
+  },
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "scope": "Generated/native fault-injection software acceptance, NOT_READY; full safe_screening stream remains IMPLEMENTING",
+  "files": {
+    "prior-indicators-ci-runs.json": "1bf461504ab41df6111550cfef7f7af2559656095a5b1c3f4a258ed4fe009481",
+    "prior-indicators-publication.json": "0f8690f56113f864953ca68567f12c7a977377b015fc74e45b6dcb1da1e75839",
+    "screen-fallback-before-budget-interrupted.log": "2f8780b3b97adc84add861fea270410005ae7c5217cbdb12f127381643600f6d",
+    "screen-fallback-before-budget-resources.json": "d54e4ef36d053e7741b8e4218ad1e7bd43a8877c037f459c7c903b275f4a50ea",
+    "screen-fallback-browser-api.log": "2677f24fe2d76690e5957dcf522d6719a397df99cadad127a51b97e5861eafdd",
+    "screen-fallback-browser-final-api.log": "024cce68fe1ec72950846254a4b59552b37207c0e1d0fa6d9f60ac5c9b85de5f",
+    "screen-fallback-browser-final-fixture.log": "81ae7e20e5ba26a4f53c8cb1872da08cc8c47dc1a5232b8dccdade4f91754afc",
+    "screen-fallback-browser-final.log": "c8554d5e34b3bb4e74900d2965c84d4b957a8d83d509b1c104d3da932cbc0fd7",
+    "screen-fallback-browser-fixture.log": "004991b88772a15eb3a8070c97724d6fe90cdeb02ec2ea30769968d0192700a8",
+    "screen-fallback-browser-initial-failure.log": "ce3b37cd658b73160169a89d060f7669621985b44cc577bc1d7893cf281d991e",
+    "screen-fallback-browser.log": "c8554d5e34b3bb4e74900d2965c84d4b957a8d83d509b1c104d3da932cbc0fd7",
+    "screen-fallback-cycle-state.json": "5866831ae15c6287f5a123640c77ff58e780cc81b7aca671e562ac9dd7b4589b",
+    "screen-fallback-desktop.png": "893bbffc8d39ebc7a87f8d457a24b714d388a84760a800c3794241ce2253cad1",
+    "screen-fallback-final-focused.log": "4cf2532cf551421ea6e6daaa64b60c9dc2ebac7787384a141dbdd9fce18199d1",
+    "screen-fallback-focused.log": "bc40250c8b9992490f6ef5fb6c30342fded75bc09df0e73c76a66be56a53ce1e",
+    "screen-fallback-frontend.log": "2fbf04a6140c9d19315f507c96e66262f8476530e093f206725f38f22ddb05a6",
+    "screen-fallback-full-verification.log": "6c1c0636978a2614472f1966e38de84234731c6820243cbcbba62ce79c92f143",
+    "screen-fallback-mobile.png": "906d7385994c54f26ddb7a26240c9a2af90a9ec6f05d1bcbd7f90d3e0b26af88",
+    "screen-fallback-native-focused.log": "31a379f230969a976c137cf24c490303660f6ec268134683787f236418cff05a",
+    "screen-fallback-queue-regression.log": "452fada82e1df58d7f89fa99128aea691c519ad7daf4915a4bece62bd06ecbdf",
+    "screen-fallback-verification-resources.json": "52f514456ef72d5eef3819a71d2d815941d34d253bf0af8828c2e5376336cf47",
+    "test-results.xml": "57b94769514229bf548b4ef0d0cd0d83b307b775fb38fae9b14d3f4768fcaff2"
+  }
+}
