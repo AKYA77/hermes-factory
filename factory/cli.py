@@ -26,6 +26,8 @@ def main():
     subs.add_parser("discovery-status")
     discovery_stop = subs.add_parser("discovery-disable")
     discovery_stop.add_argument("policy_id")
+    historical = subs.add_parser("historical-shadow")
+    historical.add_argument("request_file", type=Path)
     cohort = subs.add_parser("screen-cohort-freeze")
     cohort.add_argument("request_file", type=Path)
     cohort_report = subs.add_parser("screen-cohort-report")
@@ -298,6 +300,18 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "historical-shadow":
+        from factory.screening.historical import HistoricalShadowRequest, diagnose
+
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("historical shadow request exceeds input budget")
+        print(
+            json.dumps(
+                diagnose(
+                    root, HistoricalShadowRequest.model_validate_json(args.request_file.read_text())
+                )
+            )
+        )
     elif args.command == "create-admin":
         path = root / "access.json"
         key = secrets.token_urlsafe(32)

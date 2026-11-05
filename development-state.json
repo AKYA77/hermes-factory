@@ -92,24 +92,23 @@
     "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification",
     "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification"
   ],
-  "last_remote_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
+  "last_remote_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
   "last_verification": {
-    "passed": 562,
+    "passed": 566,
+    "warnings": 430,
+    "pytest_seconds": 188.3,
     "failed": 0,
     "skipped": 0,
-    "warnings": 422,
-    "pytest_seconds": 186.19,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
-    "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/frozen-screen-cohorts/cohort-full-verification.log"
+    "log": "reports/milestones/historical-shadow/historical-shadow-full.log"
   },
-  "latest_evidence_manifest": "reports/milestones/frozen-screen-cohorts/manifest.json",
-  "latest_milestone": "docs/milestone-frozen-screen-cohorts.md",
+  "latest_evidence_manifest": "reports/milestones/historical-shadow/manifest.json",
+  "latest_milestone": "docs/milestone-historical-shadow.md",
   "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
-  "next_unfinished": "Implement reviewed-admission-bound historical shadow/calibration diagnostics and explicit versioned cohort support; retain generated v1 identities, strict training/holdout/source/code scope, conservative all-native fallback and no approximate pruning authority. Then independently verify remaining screening/comparability safeguards and continue recursive diagnostics.",
+  "next_unfinished": "Finish prospective historical calibration policy/cohort v2, worker integration and authenticated API/dashboard; then continue the remaining implementation queue. Posthoc CLI is only a verified foundation.",
   "observed_at_utc": "2026-11-04T18:46:52.652389+00:00",
   "readiness": {
     "DATA_READY": false,
@@ -152,9 +151,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
-    "source_sha256": "0849d91cadf936ef1e01228fb2b2c07b813b4626782b2e690ced9df59f1c6d59",
-    "working_tree_scientific_edits": true
+    "git_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
+    "source_sha256": "115fe5e58823ac6ca6e3dca02b291efbde91d113b077554e834c8896c045aba9"
   },
   "visibility": {
     "current": "PUBLIC",
@@ -184,17 +182,16 @@
     "latest_verified_development_ci": "reports/milestones/frozen-screen-cohorts/prior-screen-fallback-publication.json"
   },
   "latest_verification": {
-    "passed": 562,
+    "passed": 566,
+    "warnings": 430,
+    "pytest_seconds": 188.3,
     "failed": 0,
     "skipped": 0,
-    "warnings": 422,
-    "pytest_seconds": 186.19,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
-    "command": "bash scripts/verify.sh",
-    "log": "reports/milestones/frozen-screen-cohorts/cohort-full-verification.log"
+    "log": "reports/milestones/historical-shadow/historical-shadow-full.log"
   },
   "network_requirements": {
     "confirmed_denied": [

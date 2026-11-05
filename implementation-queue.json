@@ -55,7 +55,7 @@
         "integration",
         "verification"
       ],
-      "next_action": "Implement reviewed-admission-bound historical shadow/calibration diagnostics and explicit versioned cohort support; retain generated v1 identities, strict training/holdout/source/code scope, conservative all-native fallback and no approximate pruning authority. Then independently verify remaining screening/comparability safeguards and continue recursive diagnostics.",
+      "next_action": "Posthoc historical diagnostics CLI is implemented. Finish immutable prospective historical policy/cohort v2, worker-native feedback integration and API/dashboard. Keep approximation unauthorized to prune, then continue diagnostics and remaining queue.",
       "evidence": "docs/milestone-frozen-screen-cohorts.md"
     },
     {
