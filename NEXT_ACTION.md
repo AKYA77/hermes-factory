@@ -125,6 +125,10 @@ and no remote SHA/CI claim is made.
 ## Environment and evidence constraints
 
 Run focused tests for changes, then `bash scripts/verify.sh` when warranted.
+**Never commit while pytest is running**: `execution_revision()` binds to git HEAD
+and the scientific source hash, so a mid-run commit invalidates every contract's
+`code_revision` and produces spurious `require_execution_version` failures. Wait
+for the suite to finish, then commit.
 API/full pytest can hang inside sandbox networking; run those checks outside it.
 Keep scientific source unchanged during provenance-bound runs.
 
