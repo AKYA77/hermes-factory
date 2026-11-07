@@ -1893,10 +1893,12 @@
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "docs/security-advisories-2026-11-07.md"
       ],
       "status": "FAIL",
-      "next_required_action": "Partial; branch rules and unresolved dependency findings remain"
+      "next_required_action": "Partial; branch rules and unresolved dependency findings remain",
+      "supporting_evidence_scope": "Dependency security disposition: fsspec GHSA-27vj-qcqg-25rc and npm deepmerge GHSA-gcqx-w48m-w2h4 both measured unreachable in this system; no compatible fix exists for either without overriding an upstream exact pin or accepting a breaking dependency downgrade. Reachability and pin checks are codified as regression tests. No auditing disabled."
     },
     {
       "requirement_id": "C1",
@@ -2742,11 +2744,12 @@
       "evidence": [
         "development-state.json",
         "release-manifest.json",
-        "reports/milestones/2026-11-04-import-staging/manifest.json"
+        "reports/milestones/2026-11-04-import-staging/manifest.json",
+        "docs/security-advisories-2026-11-07.md"
       ],
       "status": "NOT_TESTED",
       "next_required_action": "Partial; actual VPS/fault/soak/CI/security release gates pending",
-      "supporting_evidence_scope": "; ADR0028 catalog-wide staging payload budget and explicit deeply verified duplicate-chunk reclamation/interrupt recovery pass. Does not complete canonical retention/compaction, scheduled source refresh, off-host backup or source UI."
+      "supporting_evidence_scope": "; ADR0028 catalog-wide staging payload budget and explicit deeply verified duplicate-chunk reclamation/interrupt recovery pass. Does not complete canonical retention/compaction, scheduled source refresh, off-host backup or source UI.; Dependency security disposition: fsspec GHSA-27vj-qcqg-25rc and npm deepmerge GHSA-gcqx-w48m-w2h4 both measured unreachable in this system; no compatible fix exists for either without overriding an upstream exact pin or accepting a breaking dependency downgrade. Reachability and pin checks are codified as regression tests. No auditing disabled."
     },
     {
       "requirement_id": "C9",
