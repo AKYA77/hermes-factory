@@ -93,13 +93,14 @@
     "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification",
     "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification",
     "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification",
-    "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification"
+    "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification",
+    "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification"
   ],
   "last_remote_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
   "last_verification": {
-    "passed": 572,
+    "passed": 576,
     "warnings": 0,
-    "pytest_seconds": 593.827,
+    "pytest_seconds": 617.381,
     "failed": 0,
     "skipped": 0,
     "lint": "PASS",
@@ -154,8 +155,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "603415b1d7534b8be2d5f48fde04bcd2991e07a9",
-    "source_sha256": "8ea5ea06b8ef7c5bbfa0da6ab3a9719d2473e04709b627ba3b52f2b99072fdc7"
+    "git_commit": "2850240832995852aa544ecc6ab5412a3d8b812e",
+    "source_sha256": "9797112e0a29bf9b8ecc1af735865bc55ea5dd50f5f249f6cd324b750d2f280b"
   },
   "visibility": {
     "current": "PUBLIC",

@@ -354,9 +354,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-historical-screen-cohorts.md"
       ],
-      "supporting_evidence_scope": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending",
+      "supporting_evidence_scope": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending"
@@ -524,7 +525,7 @@
         "reports/milestones/historical-shadow/manifest.json",
         "docs/milestone-historical-screen-cohorts.md"
       ],
-      "supporting_evidence_scope": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.; ADR0034 admission-bound posthoc historical training diagnostics preserve native bytes and reject revocation/corruption. Prospective historical calibration remains unfinished.; ADR0035 historical prospective calibration policy/cohort v2 with immutable typed admission/profile/data/code/training-coverage binding, retained posthoc-diagnostic hash reverification, 24h post-calibration embargo, subject equality, global effective-experiment dedup, canonical/quarantine/holdout/training-scope and active-admission rechecks, deterministic pre-outcome selection, CLI/API and fenced-completion diagnostic production without native-artifact mutation. Approximate historical pruning remains disabled and the native counterexample/all-native fallback are preserved.; ADR0035 also adds the authenticated dashboard workflow for cohort v2 (policy derivation from selected calibration evidence, incompatible-selection and embargo guards, actual native feedback, exact export) plus a Playwright Chromium acceptance at 1280x900 and 390x844: frozen before outcomes, pause preserved, 1 fenced native observation, approximate pruning disabled, byte-exact export, no mobile overflow, zero page errors.; ADR0036 frozen screening comparability and selection-bias reporting: screen-comparability/v1 re-verifies cohort bodies, compares the frozen subject contract pairwise with exact differing fields, reports selection-bias counters, and is content-addressed and immutable. pooled_claim_authorized is always false.",
+      "supporting_evidence_scope": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.; ADR0034 admission-bound posthoc historical training diagnostics preserve native bytes and reject revocation/corruption. Prospective historical calibration remains unfinished.; ADR0035 historical prospective calibration policy/cohort v2 with immutable typed admission/profile/data/code/training-coverage binding, retained posthoc-diagnostic hash reverification, 24h post-calibration embargo, subject equality, global effective-experiment dedup, canonical/quarantine/holdout/training-scope and active-admission rechecks, deterministic pre-outcome selection, CLI/API and fenced-completion diagnostic production without native-artifact mutation. Approximate historical pruning remains disabled and the native counterexample/all-native fallback are preserved.; ADR0035 also adds the authenticated dashboard workflow for cohort v2 (policy derivation from selected calibration evidence, incompatible-selection and embargo guards, actual native feedback, exact export) plus a Playwright Chromium acceptance at 1280x900 and 390x844: frozen before outcomes, pause preserved, 1 fenced native observation, approximate pruning disabled, byte-exact export, no mobile overflow, zero page errors.; ADR0036 frozen screening comparability and selection-bias reporting: screen-comparability/v1 re-verifies cohort bodies, compares the frozen subject contract pairwise with exact differing fields, reports selection-bias counters, and is content-addressed and immutable. pooled_claim_authorized is always false.; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending"
@@ -1348,9 +1349,10 @@
       ],
       "verification_command": "bash scripts/verify.sh",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-historical-screen-cohorts.md"
       ],
-      "supporting_evidence_scope": "PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending",
+      "supporting_evidence_scope": "PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending"
@@ -2939,8 +2941,8 @@
     "reason": "All readiness false; final release provenance/packaging remains unimplemented."
   },
   "latest_verified_source": {
-    "git_commit": "603415b1d7534b8be2d5f48fde04bcd2991e07a9",
-    "source_sha256": "8ea5ea06b8ef7c5bbfa0da6ab3a9719d2473e04709b627ba3b52f2b99072fdc7",
+    "git_commit": "2850240832995852aa544ecc6ab5412a3d8b812e",
+    "source_sha256": "9797112e0a29bf9b8ecc1af735865bc55ea5dd50f5f249f6cd324b750d2f280b",
     "working_tree_scientific_edits": false
   },
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md"
