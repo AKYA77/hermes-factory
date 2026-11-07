@@ -52,6 +52,12 @@ the full historical and scientific acceptance remains open.
   hypothesis counts. Content-addressed and immutable; descriptive only and never
   independently validated. CLI `improvement-sensitivity` and authenticated API
   `POST /api/v1/research/improvement-sensitivity`.
+- ADR0039 diversity-aware candidate reporting: `candidate-diversity/v1` reports
+  trial outcomes, distinct parameter sets and the largest single-set share with a
+  concentration flag, operator/timeframe distributions and per-field coverage
+  buckets. Content-addressed and immutable; descriptive only and never feeds the
+  optimizer. CLI `candidate-diversity` and authenticated API
+  `POST /api/v1/research/candidate-diversity`.
 
 ## Preserved
 
