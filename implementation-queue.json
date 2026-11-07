@@ -55,8 +55,8 @@
         "integration",
         "verification"
       ],
-      "next_action": "Posthoc historical diagnostics CLI is implemented. Finish immutable prospective historical policy/cohort v2, worker-native feedback integration and API/dashboard. Keep approximation unauthorized to prune, then continue diagnostics and remaining queue.",
-      "evidence": "docs/milestone-frozen-screen-cohorts.md"
+      "next_action": "Historical prospective policy/cohort v2, CLI/API and fenced-completion diagnostics are implemented (ADR0035). Remaining: authenticated dashboard workflow, screening comparability/selection safeguards, and worker-native prospective diagnostics for cohorts frozen before this increment. Keep approximation unauthorized to prune, then continue the remaining queue.",
+      "evidence": "docs/milestone-historical-screen-cohorts.md"
     },
     {
       "id": "recursive_diagnostics",

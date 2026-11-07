@@ -11,7 +11,7 @@ import tempfile
 import time
 
 import psutil
-from factory.contracts import ExperimentContract, StrategySpec
+from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec
 from factory.experiments import Store
 from factory.operations.resources import memory_headroom
 
@@ -161,8 +161,9 @@ def _cycle(store, root, timeout, memory_limit_bytes):
                     },
                 )
             else:
+                completed = ExperimentContract.model_validate(payload["contract"])
                 store.complete_experiment(
-                    ExperimentContract.model_validate(payload["contract"]),
+                    completed,
                     StrategySpec.model_validate(payload["strategy"]),
                     result["result"],
                     result["artifact_hash"],
@@ -170,6 +171,7 @@ def _cycle(store, root, timeout, memory_limit_bytes):
                     token=job["lease_token"],
                     resources=resources,
                 )
+                historical_completion_diagnostics(root, store, payload, completed)
     except (OSError, subprocess.TimeoutExpired, ValueError, KeyError, TypeError) as exc:
         if child is not None and child.poll() is None:
             child.kill()
@@ -200,6 +202,48 @@ def _cycle(store, root, timeout, memory_limit_bytes):
                     raise
                 store.audit("coordinator", "stale_failure_rejected", {"job_id": job["job_id"]})
     return True
+
+
+HISTORICAL_DIAGNOSTIC_ATTESTATION = (
+    "Authorize training-only feature diagnostics and mandatory native evidence; "
+    "no approximate pruning"
+)
+
+
+def historical_completion_diagnostics(root, store, payload, contract):
+    """Fenced completion produces the historical diagnostic for cohort members.
+
+    The native artifact is never mutated. The diagnostic is a separate
+    content-addressed artifact with its own hash and immutable audit lineage. It
+    rechecks reviewed admission, quarantine, protected holdout, source and code
+    scope before feature access and again at publication. A blocked diagnostic is
+    recorded as an immutable audit event; it never reinterprets the consumed
+    native evaluation.
+    """
+    from factory.screening.historical import HistoricalShadowRequest, diagnose
+    from factory.screening.historical_cohorts import selected_historical_cohort
+
+    if selected_historical_cohort(store, contract) is None:
+        return
+    profile = InstrumentSpec.model_validate(payload["profile"])
+    if profile.synthetic:
+        return
+    try:
+        diagnose(
+            root,
+            HistoricalShadowRequest(
+                experiment_hash=contract.experiment_hash,
+                profile=profile,
+                authorized_by="coordinator-fenced-historical-completion",
+                attestation=HISTORICAL_DIAGNOSTIC_ATTESTATION,
+            ),
+        )
+    except ValueError as exc:
+        store.audit(
+            "coordinator",
+            "historical_completion_diagnostic_blocked",
+            {"experiment_hash": contract.experiment_hash, "error": str(exc)[:1000]},
+        )
 
 
 def serve(root):

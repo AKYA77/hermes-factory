@@ -32,6 +32,8 @@ def main():
     cohort.add_argument("request_file", type=Path)
     cohort_report = subs.add_parser("screen-cohort-report")
     cohort_report.add_argument("cohort_id")
+    historical_cohort = subs.add_parser("historical-screen-cohort-freeze")
+    historical_cohort.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -300,6 +302,19 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "historical-screen-cohort-freeze":
+        from factory.screening.historical_cohorts import (
+            HistoricalCohortRequest,
+            HistoricalCohorts,
+        )
+
+        cohorts = HistoricalCohorts(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("historical cohort request exceeds input budget")
+        identity = cohorts.freeze(
+            HistoricalCohortRequest.model_validate_json(args.request_file.read_text())
+        )
+        print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
     elif args.command == "historical-shadow":
         from factory.screening.historical import HistoricalShadowRequest, diagnose
 

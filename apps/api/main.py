@@ -19,6 +19,7 @@ from factory.validation.access import HoldoutSpec, Holdouts
 from factory.validation.protocol import ValidationProtocol, ValidationController
 from factory.ranking import leaderboard
 from factory.screening.cohorts import Cohorts, CohortRequest
+from factory.screening.historical_cohorts import HistoricalCohortRequest, HistoricalCohorts
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
@@ -172,6 +173,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/screen-cohorts", dependencies=write)
     def freeze_screen_cohort(payload: CohortRequest):
         return {"cohort_id": Cohorts(store, root).freeze(payload)}
+
+    @app.post("/api/v1/research/historical-screen-cohorts", dependencies=write)
+    def freeze_historical_screen_cohort(payload: HistoricalCohortRequest):
+        return {"cohort_id": HistoricalCohorts(store, root).freeze(payload)}
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):

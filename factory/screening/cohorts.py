@@ -88,6 +88,12 @@ class Cohorts:
             raise ValueError("calibration/audit native artifact unavailable") from exc
 
     def freeze(self, request):
+        if isinstance(request, dict) and request.get("schema_version") == (
+            "historical-screen-cohort/v2"
+        ):
+            raise ValueError(
+                "historical cohort v2 requires the historical-screen-cohort-freeze command"
+            )
         request = CohortRequest.model_validate(request)
         revision = execution_revision()
         policy_hash = fingerprint(request.policy)
@@ -282,6 +288,10 @@ class Cohorts:
         body = json.loads(rows[0]["body_json"])
         if fingerprint(body) != identity:
             raise ValueError("screen cohort identity mismatch")
+        if body.get("schema_version") == "historical-screen-cohort/v2":
+            from factory.screening.historical_cohorts import HistoricalCohorts
+
+            return HistoricalCohorts(self.store, self.root).report(identity)
         for calibration in body["calibration"]:
             self.verify_native(calibration)
         observations = []
