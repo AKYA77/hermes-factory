@@ -40,6 +40,12 @@ the full historical and scientific acceptance remains open.
   `pooled_claim_authorized` is always false. CLI `screen-comparability`,
   authenticated API `POST /api/v1/research/screen-comparability` and a
   dashboard comparability panel.
+- ADR0037 descriptive diagnostic cohort aggregation: session/side/stop-class/
+  failure-pattern/excursion/hold-duration/drawdown-recovery cohorts from one
+  retained verified training-only result, content-addressed and immutable, with
+  declared UTC hour buckets (not a broker calendar) and cost sensitivity
+  explicitly not measured. CLI `diagnose-cohorts` and authenticated API
+  `POST /api/v1/research/diagnostic-cohorts`.
 
 ## Preserved
 
