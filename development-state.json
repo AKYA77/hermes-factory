@@ -94,13 +94,14 @@
     "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification",
     "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification",
     "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification",
-    "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification"
+    "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification",
+    "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification"
   ],
   "last_remote_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
   "last_verification": {
-    "passed": 576,
+    "passed": 581,
     "warnings": 0,
-    "pytest_seconds": 617.381,
+    "pytest_seconds": 695.457,
     "failed": 0,
     "skipped": 0,
     "lint": "PASS",
@@ -165,8 +166,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "2850240832995852aa544ecc6ab5412a3d8b812e",
-    "source_sha256": "9797112e0a29bf9b8ecc1af735865bc55ea5dd50f5f249f6cd324b750d2f280b"
+    "git_commit": "2547577b76d4b11f2d22142ed24a37375a88e218",
+    "source_sha256": "bd0c37ef90c7de80065d9154e11f7bca90007a5c0fbc5406a3abee0d415c5b52"
   },
   "visibility": {
     "current": "PUBLIC",

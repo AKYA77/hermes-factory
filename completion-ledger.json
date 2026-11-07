@@ -357,7 +357,7 @@
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "docs/milestone-historical-screen-cohorts.md"
       ],
-      "supporting_evidence_scope": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.",
+      "supporting_evidence_scope": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.; ADR0038 parameter sensitivity: improvement-sensitivity/v1 groups retained controlled parent-child outcomes by exact changed-field set with outcome counts and mean/min/max equity deltas; content-addressed and immutable; descriptive only and never independently validated.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending"
@@ -1352,7 +1352,7 @@
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "docs/milestone-historical-screen-cohorts.md"
       ],
-      "supporting_evidence_scope": "PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.",
+      "supporting_evidence_scope": "PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.; ADR0038 parameter sensitivity: improvement-sensitivity/v1 groups retained controlled parent-child outcomes by exact changed-field set with outcome counts and mean/min/max equity deltas; content-addressed and immutable; descriptive only and never independently validated.",
       "status": "NOT_TESTED",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "next_required_action": "PASS scoped actual offline parent/child workers, immutable plans/edges/outcomes, identical non-strategy contracts, CPU budgets, small-sample/selectivity/censoring guards; full regime/independent confirmation pending"
@@ -2944,8 +2944,8 @@
     "reason": "All readiness false; final release provenance/packaging remains unimplemented."
   },
   "latest_verified_source": {
-    "git_commit": "2850240832995852aa544ecc6ab5412a3d8b812e",
-    "source_sha256": "9797112e0a29bf9b8ecc1af735865bc55ea5dd50f5f249f6cd324b750d2f280b",
+    "git_commit": "2547577b76d4b11f2d22142ed24a37375a88e218",
+    "source_sha256": "bd0c37ef90c7de80065d9154e11f7bca90007a5c0fbc5406a3abee0d415c5b52",
     "working_tree_scientific_edits": false
   },
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md"
