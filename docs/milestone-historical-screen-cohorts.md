@@ -64,6 +64,13 @@ the full historical and scientific acceptance remains open.
   Regimes are relative to the reviewed window, never broker-calendar
   classifications; a missing dataset yields null rather than an invented label.
   ADR0040 documents the thresholds and safeguards.
+- ADR0041 improvement lineage: `improvement-lineage/v1` reconstructs the retained
+  parent-to-child tree for one improvement policy with plans, distinct parents,
+  children, changed fields, hypotheses, parameter summaries and outcome statuses.
+  Content-addressed and immutable; every child is explicitly training-only and a
+  `TRAIN_IMPROVED_ONLY` child is not independently validated. CLI
+  `improvement-lineage` and authenticated API
+  `POST /api/v1/research/improvement-lineage`.
 
 ## Preserved
 

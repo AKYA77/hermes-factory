@@ -105,7 +105,8 @@ Remaining in this task:
 
 `recursive_diagnostics` has begun (ADR0037 descriptive cohort aggregation, ADR0038
 parameter sensitivity, ADR0039 candidate diversity, ADR0040 market volatility
-regimes). Remaining there: independent confirmation of improvements.
+regimes, ADR0041 improvement lineage). Remaining there: independent confirmation
+of improvements.
 
 Then continue the dependency-aware queue: recursive session/regime/MFE/MAE
 diagnostics, global independent qualification, source/profile/refresh/storage/data

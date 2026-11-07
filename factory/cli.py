@@ -42,6 +42,8 @@ def main():
     sensitivity.add_argument("request_file", type=Path)
     diversity = subs.add_parser("candidate-diversity")
     diversity.add_argument("request_file", type=Path)
+    lineage = subs.add_parser("improvement-lineage")
+    lineage.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -310,6 +312,18 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "improvement-lineage":
+        from factory.improvement.lineage import Lineage, LineageRequest
+
+        service = Lineage(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("lineage request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(LineageRequest.model_validate_json(args.request_file.read_text())),
+                indent=2,
+            )
+        )
     elif args.command == "candidate-diversity":
         from factory.exploration.diversity import Diversity, DiversityRequest
 

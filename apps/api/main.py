@@ -25,6 +25,7 @@ from factory.simulation.ledger import require_execution_version, EXECUTION_VERSI
 from factory.diagnostics.cohorts import DiagnosticCohortRequest, DiagnosticCohorts
 from factory.improvement.sensitivity import Sensitivity, SensitivityRequest
 from factory.exploration.diversity import Diversity, DiversityRequest
+from factory.improvement.lineage import Lineage, LineageRequest
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
@@ -266,6 +267,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/candidate-diversity", dependencies=read)
     def candidate_diversity(payload: DiversityRequest):
         return Diversity(store, root).report(payload)
+
+    @app.post("/api/v1/research/improvement-lineage", dependencies=read)
+    def improvement_lineage(payload: LineageRequest):
+        return Lineage(store, root).report(payload)
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):
