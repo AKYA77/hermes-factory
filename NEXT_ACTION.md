@@ -119,9 +119,13 @@ Run focused tests for changes, then `bash scripts/verify.sh` when warranted.
 API/full pytest can hang inside sandbox networking; run those checks outside it.
 Keep scientific source unchanged during provenance-bound runs.
 
-fsspec 2026.2.0 exact Nautilus pin and compatible deepmerge advisories remain
-release-blocking; audits stay active. Do not force incompatible pins or suppress
-failures. Native finite-empty-book fallback remains quarantined, not waived.
+fsspec 2026.2.0 exact Nautilus pin and compatible deepmerge advisories are now
+dispositioned with measured reachability evidence in
+`docs/security-advisories-2026-11-07.md`; reachability and pin regression tests
+live in `tests/security/test_dependency_advisories.py`. Neither sink is
+reachable in this system and no compatible fix exists, so no pin was overridden
+and no auditing was disabled. Re-run those tests on every Nautilus or dashboard
+dependency upgrade.
 
 Preserve local credentials, failed attempts, raw/canonical/source vault bytes,
 receipts and hashes; never blindly git-clean or delete evidence. Earlier genuine
