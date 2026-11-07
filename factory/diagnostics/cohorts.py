@@ -103,6 +103,14 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
     drawdown = D(0)
     recovery_points = 0
     in_drawdown = False
+    regime_stats = defaultdict(
+        lambda: {"trades": 0, "wins": 0, "losses": 0, "pnl": D(0), "losing_streak": 0}
+    )
+    running = D(result.get("initial_equity", "0") or 0)
+    running_peak = running
+    regime = "PEAK"
+    max_losing_streak = 0
+    losing_streak = 0
     for trade in closed:
         entry = trade["entry_fill"]
         exit_fill = trade["exit_fill"]
@@ -110,9 +118,22 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
         direction = D(1) if side == "BUY" else D(-1)
         entry_price = D(entry["price"])
         realized = (D(exit_fill["price"]) - entry_price) * direction
+        _bucket(regime_stats, regime, realized)
         session_label_key = session_label(entry["ts"], sessions)
         _bucket(session_stats, session_label_key, realized)
         _bucket(side_stats, side, realized)
+        if realized > 0:
+            losing_streak = 0
+        elif realized < 0:
+            losing_streak += 1
+            max_losing_streak = max(max_losing_streak, losing_streak)
+        was_drawdown = running < running_peak
+        running += realized
+        if running >= running_peak:
+            running_peak = running
+            regime = "RECOVERY" if was_drawdown else "PEAK"
+        else:
+            regime = "DRAWDOWN"
         diagnostic = trade.get("diagnostic") or {}
         trade_tags = tuple(sorted(set(diagnostic.get("tags", ()))))
         for tag in trade_tags:
@@ -146,6 +167,8 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
         ),
         "sessions": _finalize(session_stats),
         "sides": _finalize(side_stats),
+        "equity_regimes": _finalize(regime_stats),
+        "max_losing_streak": max_losing_streak,
         "stop_and_timeout_classes": dict(tags),
         "failure_pattern_groups": {
             ",".join(group) if group else "NO_TAGGED_FAILURE": count
@@ -173,6 +196,7 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
         "limitations": [
             "Descriptive cohorts of one retained training result; not strategy qualification",
             "Session buckets are declared UTC hour ranges, not a verified broker calendar",
+            "Equity regimes are derived from the realized trade sequence, not market volatility",
             "Correlated trades and overlapping positions are not independent",
             "Cost sensitivity is not measured by a single training result",
             "No protected evaluation or holdout window is read or reported",

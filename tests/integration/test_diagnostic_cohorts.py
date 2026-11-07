@@ -60,6 +60,9 @@ def test_aggregate_reports_descriptive_cohorts_without_qualifying():
     assert body["sessions"]["ASIA"]["trades"] == 2
     assert body["sessions"]["EUROPE"]["trades"] == 1
     assert body["sides"]["BUY"]["wins"] == 2 and body["sides"]["SELL"]["losses"] == 1
+    assert set(body["equity_regimes"]) <= {"PEAK", "DRAWDOWN", "RECOVERY"}
+    assert sum(v["trades"] for v in body["equity_regimes"].values()) == 3
+    assert body["max_losing_streak"] == 1
     assert body["stop_and_timeout_classes"] == {"FAST_STOP": 1}
     assert body["failure_pattern_groups"]["FAST_STOP"] == 1
     assert body["failure_pattern_groups"]["NO_TAGGED_FAILURE"] == 2

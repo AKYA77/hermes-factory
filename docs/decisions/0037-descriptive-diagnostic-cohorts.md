@@ -16,6 +16,8 @@ native result into a `diagnostic-cohorts/v1` report:
 
 - declared UTC hour session buckets (ASIA/EUROPE/AMERICAS/OFFSHORE);
 - long/short side cohorts;
+- equity-regime cohorts (PEAK / DRAWDOWN / RECOVERY) derived from the realized
+  trade sequence, plus the maximum losing streak;
 - stop and timeout class counts plus failure-pattern grouping;
 - MFE/MAE excursion means in stop-distance R;
 - hold-duration mean/median/max;
@@ -34,6 +36,8 @@ return the same report.
   windows are never read.
 - Session buckets are declared UTC hour ranges, explicitly **not** a verified
   broker calendar; captured TZif session rules remain the authority.
+- Equity regimes are derived from the realized trade sequence, not from market
+  volatility; no volatility regime is claimed.
 - Cost sensitivity is reported as not measured: it requires repeated native
   replay under varied cost policies, not one training result.
 - `descriptive_only` is always true. Aggregation never qualifies, ranks or
