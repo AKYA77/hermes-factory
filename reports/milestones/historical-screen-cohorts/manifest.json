@@ -1,0 +1,26 @@
+{
+  "source": {
+    "git_commit": "fc2a54f78969cb30cd3275482941b6d4b56f3fac",
+    "source_sha256": "1dd0717cf6805fda7a0b1aa257073da116882b4cd6076d8df4965c3289d1495b"
+  },
+  "verification": {
+    "passed": 570,
+    "warnings": 0,
+    "pytest_seconds": 564.668,
+    "failed": 0,
+    "skipped": 0,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "focused_passed": 4,
+    "log": "reports/runtime/test-results.xml"
+  },
+  "scope": "Historical prospective calibration cohort v2 software scope (ADR0035). TEST_ONLY authorization fixtures; not genuine market validation, broker execution or independent strategy qualification. NOT_READY.",
+  "files": {
+    "test-results.xml": "5a5c86723f4a8df189bbc4cccc18fbd9370a4fb1294efab5ca2174e7f56aba54",
+    "historical-screen-cohorts-focused.log": "8ce8c241e2c5cbb739c2735790053e0926ac5999c30a41ea283338f5f83adbbd",
+    "historical-screen-cohorts-source.json": "2bab95cc26d96bbab49b7bffef724ce2000680b2183e60724eca225b6f56e3a7",
+    "historical-screen-cohorts-queue.json": "2b71aa9b4c1c1620e92c93381392f8cb0d72851951b3b9a96b091a000d35ae17"
+  }
+}

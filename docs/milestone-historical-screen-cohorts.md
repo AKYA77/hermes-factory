@@ -48,6 +48,11 @@ Focused acceptance: `tests/integration/test_historical_cohorts.py` —
 embargo/admission/duplicate rejection, reviewed-admission revocation, and
 fenced-completion diagnostic production.
 
+Full verification at this checkpoint: 570 passed / 0 failed / 0 skipped
+(566 baseline + 4 new), ruff check/format clean, svelte-check 0 errors and
+0 warnings, vite build OK. Exact receipts:
+[manifest.json](../reports/milestones/historical-screen-cohorts/manifest.json).
+
 These are generated TEST_ONLY authorization fixtures. They exercise the
 historical admission branch and are **not** genuine market validation, broker
 execution or independent strategy qualification.

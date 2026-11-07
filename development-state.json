@@ -90,25 +90,26 @@
     "ADR0030 bounded authorized automatic discovery, immutable planned-region SIGKILL recovery, source arrival continuation, historical scope guards and authenticated desktop/mobile control/export; 476-test full verification",
     "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption",
     "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification",
-    "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification"
+    "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification",
+    "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification"
   ],
   "last_remote_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
   "last_verification": {
-    "passed": 566,
-    "warnings": 430,
-    "pytest_seconds": 188.3,
+    "passed": 570,
+    "warnings": 0,
+    "pytest_seconds": 564.668,
     "failed": 0,
     "skipped": 0,
     "lint": "PASS",
     "format": "PASS",
     "frontend_check": "PASS",
     "frontend_build": "PASS",
-    "log": "reports/milestones/historical-shadow/historical-shadow-full.log"
+    "log": "reports/runtime/test-results.xml"
   },
-  "latest_evidence_manifest": "reports/milestones/historical-shadow/manifest.json",
-  "latest_milestone": "docs/milestone-historical-shadow.md",
+  "latest_evidence_manifest": "reports/milestones/historical-screen-cohorts/manifest.json",
+  "latest_milestone": "docs/milestone-historical-screen-cohorts.md",
   "latest_scientific_code_commit": "17f231242ced5797ad8b1dcf41f2cf0d6a4976ea",
-  "next_unfinished": "Finish prospective historical calibration policy/cohort v2, worker integration and authenticated API/dashboard; then continue the remaining implementation queue. Posthoc CLI is only a verified foundation.",
+  "next_unfinished": "Finish the authenticated dashboard workflow and screening comparability/selection safeguards for historical cohort v2, then continue recursive diagnostics, global qualification, source/profile/refresh/storage/data APIs, full dashboard, installed provenance/Ubuntu/systemd/update/rollback/backup/restore, security remediation and full source-to-restore/release/Hermes handoff. Historical data acquisition is running under owner authorization.",
   "observed_at_utc": "2026-11-04T18:46:52.652389+00:00",
   "readiness": {
     "DATA_READY": false,
@@ -151,8 +152,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
-    "source_sha256": "115fe5e58823ac6ca6e3dca02b291efbde91d113b077554e834c8896c045aba9"
+    "git_commit": "fc2a54f78969cb30cd3275482941b6d4b56f3fac",
+    "source_sha256": "1dd0717cf6805fda7a0b1aa257073da116882b4cd6076d8df4965c3289d1495b"
   },
   "visibility": {
     "current": "PUBLIC",
