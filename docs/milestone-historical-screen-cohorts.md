@@ -58,6 +58,12 @@ the full historical and scientific acceptance remains open.
   buckets. Content-addressed and immutable; descriptive only and never feeds the
   optimizer. CLI `candidate-diversity` and authenticated API
   `POST /api/v1/research/candidate-diversity`.
+- ADR0040 market volatility regime cohorts: canonical M1 midpoints over the
+  experiment's own admitted window produce a trailing 60-minute realized
+  volatility classifier mapped to LOW / NORMAL / HIGH by window percentiles.
+  Regimes are relative to the reviewed window, never broker-calendar
+  classifications; a missing dataset yields null rather than an invented label.
+  ADR0040 documents the thresholds and safeguards.
 
 ## Preserved
 

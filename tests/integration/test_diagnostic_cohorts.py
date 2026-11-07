@@ -117,6 +117,11 @@ def test_cohort_report_requires_retained_training_experiment(tmp_path):
     assert body["descriptive_only"] is True and body["closed_trades"] > 0
     assert 0 <= body["unresolved_trades"] <= body["closed_trades"]
     assert set(body["sides"]) <= {"BUY", "SELL"}
+    assert report["volatility_regime_thresholds"] is not None
+    assert report["volatility_regime_thresholds"]["window_minutes"] == 60
+    regimes = body["volatility_regimes"]
+    assert regimes and set(regimes) <= {"LOW", "NORMAL", "HIGH"}
+    assert sum(entry["trades"] for entry in regimes.values()) <= body["closed_trades"]
     identity = fingerprint(report)
     path = tmp_path / "artifacts" / "cohorts" / (identity + ".json")
     assert path.exists() and sha256(path) == identity

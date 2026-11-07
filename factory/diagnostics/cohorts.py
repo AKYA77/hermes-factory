@@ -17,9 +17,16 @@ from pydantic import Field, model_validator
 
 from factory.contracts import Contract, ExperimentContract, fingerprint, serialize
 from factory.data import atomic_bytes, sha256
+from factory.diagnostics.market_regimes import (
+    load_m1_midpoints,
+    realized_volatility,
+    regime_classifier,
+    regime_of,
+)
 
 Hash = Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
 SCHEMA = "diagnostic-cohorts/v1"
+VOLATILITY_WINDOW_MINUTES = 60
 ATTESTATION = (
     "Aggregate retained verified training diagnostics into descriptive cohorts only; "
     "no qualification, ranking or strategy evidence"
@@ -83,7 +90,7 @@ def _finalize(stats):
     return out
 
 
-def aggregate(result, sessions=DEFAULT_SESSIONS):
+def aggregate(result, sessions=DEFAULT_SESSIONS, regime_of=None):
     """Descriptive cohort statistics from one retained native training result."""
     trades = list(result.get("trades", ()))
     closed = [t for t in trades if t.get("exit_fill")]
@@ -106,6 +113,9 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
     regime_stats = defaultdict(
         lambda: {"trades": 0, "wins": 0, "losses": 0, "pnl": D(0), "losing_streak": 0}
     )
+    volatility_regimes = defaultdict(
+        lambda: {"trades": 0, "wins": 0, "losses": 0, "pnl": D(0), "losing_streak": 0}
+    )
     running = D(result.get("initial_equity", "0") or 0)
     running_peak = running
     regime = "PEAK"
@@ -119,6 +129,9 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
         entry_price = D(entry["price"])
         realized = (D(exit_fill["price"]) - entry_price) * direction
         _bucket(regime_stats, regime, realized)
+        market_regime = regime_of(entry["ts"]) if regime_of is not None else None
+        if market_regime:
+            _bucket(volatility_regimes, market_regime, realized)
         session_label_key = session_label(entry["ts"], sessions)
         _bucket(session_stats, session_label_key, realized)
         _bucket(side_stats, side, realized)
@@ -168,6 +181,7 @@ def aggregate(result, sessions=DEFAULT_SESSIONS):
         "sessions": _finalize(session_stats),
         "sides": _finalize(side_stats),
         "equity_regimes": _finalize(regime_stats),
+        "volatility_regimes": _finalize(volatility_regimes) if volatility_regimes else None,
         "max_losing_streak": max_losing_streak,
         "stop_and_timeout_classes": dict(tags),
         "failure_pattern_groups": {
@@ -220,6 +234,18 @@ class DiagnosticCohorts:
         contract = ExperimentContract.model_validate_json(row["contract_json"])
         if any(w.role != "train_only" for w in contract.windows):
             raise ValueError("cohort aggregation is training-only")
+        classifier = None
+        if contract.windows:
+            window = contract.windows[0]
+            bars = load_m1_midpoints(
+                self.root / "catalog",
+                contract.dataset_hash,
+                window.start_ns,
+                window.end_ns,
+            )
+            if bars is not None:
+                volatility = realized_volatility(bars[1], VOLATILITY_WINDOW_MINUTES)
+                classifier = regime_classifier(bars[0], volatility, VOLATILITY_WINDOW_MINUTES)
         result = json.loads(row["result_json"])
         path = self.root / "artifacts" / (request.experiment_hash + ".json")
         if (
@@ -236,7 +262,16 @@ class DiagnosticCohorts:
             "experiment_hash": request.experiment_hash,
             "instrument": result.get("instrument"),
             "code_revision": contract.code_revision,
-            "aggregate": aggregate(result),
+            "aggregate": aggregate(result, regime_of=lambda ts: regime_of(classifier, ts)),
+            "volatility_regime_thresholds": (
+                {
+                    "window_minutes": VOLATILITY_WINDOW_MINUTES,
+                    "low": classifier["low_threshold"],
+                    "high": classifier["high_threshold"],
+                }
+                if classifier
+                else None
+            ),
         }
         identity = fingerprint(body)
         target = self.root / "artifacts" / "cohorts" / (identity + ".json")
