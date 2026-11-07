@@ -138,19 +138,29 @@
     19
   ],
   "security": {
-    "deepmerge_latest": "4.3.1",
-    "fixed_fsspec_available": "2026.9.0",
-    "history_known_signature_scan": {
-      "blobs": 459,
-      "bytes": 4933863,
-      "findings": 0,
-      "scope": "known token/private-key signatures, no online credential validation"
+    "disposition_document": "docs/security-advisories-2026-11-07.md",
+    "status": "DISPOSITION_DOCUMENTED_RESIDUAL_LOW",
+    "fsspec": {
+      "advisory": "GHSA-27vj-qcqg-25rc",
+      "installed": "2026.2.0",
+      "constraint": "nautilus_trader==1.231.0 exact pin fsspec==2026.2.0",
+      "compatible_fix": "none without overriding the upstream pin",
+      "reachable": false,
+      "evidence": "nautilus_trader never imports fsspec.implementations.reference; not loaded at runtime",
+      "residual_review": "re-run the reachability test on every Nautilus upgrade"
     },
-    "required_fsspec": "2026.2.0",
-    "status": "UNRESOLVED_BLOCKING",
-    "upstream_nautilus": "1.231.0",
-    "worktree_scan": "9730 entropy candidates in report hashes; review scope is not a guarantee of absence",
-    "latest_recheck": "reports/milestones/2026-11-04-historical-protocols/prior-exact-sha-dependency-failure.log"
+    "deepmerge": {
+      "advisory": "GHSA-gcqx-w48m-w2h4",
+      "ecosystem": "npm",
+      "installed": "4.3.1 (latest, inside the affected range)",
+      "path": "@sveltejs/vite-plugin-svelte -> @sveltejs/kit -> @sveltejs/adapter-static",
+      "reachable": false,
+      "evidence": "build-time dev dependency only; absent from the built dashboard bundle",
+      "residual_review": "re-run npm audit on every dashboard dependency update"
+    },
+    "regression_tests": "tests/security/test_dependency_advisories.py",
+    "auditing_disabled": false,
+    "updated_utc": "2026-11-07"
   },
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
