@@ -51,6 +51,16 @@ known profitable native counterexample/all-native fallback are preserved.
 
 See docs/milestone-historical-screen-cohorts.md and ADR0035.
 
+ADR0036 adds frozen screening comparability and selection-bias reporting:
+`screen-comparability/v1` re-verifies cohort bodies, compares the frozen subject
+contract pairwise with the exact differing fields, reports selection-bias
+counters (distinct effective experiments, selected, observed,
+selected-but-unobserved, unselected, selection ratio) and is content-addressed
+and immutable. `pooled_claim_authorized` is always false; comparability never
+authorizes pooling screening observations into a qualification, ranking or
+performance claim. CLI `screen-comparability`, authenticated API
+`POST /api/v1/research/screen-comparability` and a dashboard comparability panel.
+
 Authenticated dashboard workflow for v2 is implemented and browser-verified:
 `HistoricalScreenCohortsPanel.svelte` derives the immutable policy from the
 selected calibration evidence, blocks incompatible selections and embargo
@@ -81,9 +91,7 @@ Remain in `safe_screening` (IMPLEMENTING). Historical cohort v2 policy, freeze,
 report, CLI, API and fenced-completion diagnostics are implemented and tested.
 Remaining in this task:
 
-1. Screening comparability and selection safeguards (frozen comparability
-   contracts across cohorts; explicit selection-bias reporting).
-2. Worker-native prospective diagnostics for cohorts frozen before this
+1. Worker-native prospective diagnostics for cohorts frozen before this
    increment, if any are retained.
 
 Then continue the dependency-aware queue: recursive session/regime/MFE/MAE

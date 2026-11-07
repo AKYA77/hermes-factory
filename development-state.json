@@ -92,13 +92,14 @@
     "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification",
     "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification",
     "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification",
-    "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification"
+    "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification",
+    "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification"
   ],
   "last_remote_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
   "last_verification": {
-    "passed": 571,
+    "passed": 572,
     "warnings": 0,
-    "pytest_seconds": 591.856,
+    "pytest_seconds": 593.827,
     "failed": 0,
     "skipped": 0,
     "lint": "PASS",
@@ -153,8 +154,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "26968746caf821d2f6c525b31c4f76dc428494d8",
-    "source_sha256": "f35cce340faf64394e71d4b94be57093cc12c47580b049b1d68c6647eccdf81f"
+    "git_commit": "f58eb05575dd477b5966e2f9e1ec439577e91bc4",
+    "source_sha256": "8ea5ea06b8ef7c5bbfa0da6ab3a9719d2473e04709b627ba3b52f2b99072fdc7"
   },
   "visibility": {
     "current": "PUBLIC",

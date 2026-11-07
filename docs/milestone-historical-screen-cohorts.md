@@ -32,6 +32,14 @@ the full historical and scientific acceptance remains open.
   dispatches on `schema_version`.
 - CLI `historical-screen-cohort-freeze`; authenticated API
   `POST /api/v1/research/historical-screen-cohorts`.
+- ADR0036 screening comparability and selection-bias reporting:
+  `screen-comparability/v1` re-verifies cohort bodies, compares the frozen
+  subject contract pairwise with exact differing fields, reports
+  selection-bias counters (distinct effective experiments, selected, observed,
+  selected-but-unobserved, unselected), and is content-addressed and immutable.
+  `pooled_claim_authorized` is always false. CLI `screen-comparability`,
+  authenticated API `POST /api/v1/research/screen-comparability` and a
+  dashboard comparability panel.
 
 ## Preserved
 

@@ -21,7 +21,7 @@ from factory.contracts import (
     Window,
     fingerprint,
 )
-from factory.data import Catalog, Quote
+from factory.data import Catalog, Quote, sha256
 from factory.data.admission import (
     AdmissionSpec,
     Citation,
@@ -375,6 +375,104 @@ def test_historical_cohort_api_inputs_freeze_and_report(tmp_path):
     )
     assert report["approximate_pruning_authorized"] is False
     assert report["selected_count"] == 1 and report["native_observed"] == 0
+
+
+def add_prospective(store, profile, dataset_hash, admission, start_ns, end_ns, stop_ticks, seed):
+    spec = StrategySpec(
+        instrument="EURUSD",
+        timeframe="M1",
+        signal=Signal(operator="momentum", lookback=3, threshold="1"),
+        stop_ticks=stop_ticks,
+    )
+    contract = ExperimentContract(
+        strategy_hash=spec.strategy_hash,
+        dataset_hash=dataset_hash,
+        instrument_hash=fingerprint(profile),
+        engine_version="1.231.0",
+        code_revision=execution_revision(),
+        fill_version=EXECUTION_VERSION,
+        evaluation_policy=POLICY_PREFIX + admission,
+        scenario="historical-pessimistic/v1",
+        windows=(Window(start_ns=start_ns, end_ns=end_ns, role="train_only"),),
+        seed=seed,
+    )
+    payload = {
+        "strategy": spec.model_dump(mode="json"),
+        "profile": profile.model_dump(mode="json"),
+        "contract": contract.model_dump(mode="json"),
+    }
+    return store.enqueue("research", payload, contract.experiment_hash)
+
+
+def test_comparability_reports_semantics_and_selection_bias(tmp_path):
+    from factory.screening.comparability import ATTESTATION, Comparability, ComparabilityRequest
+
+    store, request, calibration, prospective, admission = prepared(tmp_path)
+    service = HistoricalCohorts(store, tmp_path)
+    first = service.freeze(request)
+    payload = json.loads(
+        store.rows("SELECT payload FROM jobs WHERE job_id=?", (request.prospective_job_ids[0],))[0][
+            "payload"
+        ]
+    )
+    profile = InstrumentSpec.model_validate(payload["profile"])
+    later = request.policy.training_end_ns + 2 * DAY
+    second_job = add_prospective(
+        store,
+        profile,
+        payload["contract"]["dataset_hash"],
+        admission,
+        later,
+        later + 120 * MINUTE,
+        70,
+        125,
+    )
+    second = service.freeze(
+        request.model_copy(update={"prospective_job_ids": (second_job,), "seed": 32})
+    )
+    report = Comparability(store, tmp_path).compare(
+        ComparabilityRequest(
+            cohort_ids=(first, second),
+            authorized_by="comparability acceptance",
+            attestation=ATTESTATION,
+        )
+    )
+    assert report["all_comparable"] is True and report["pairwise"][0]["comparable"] is True
+    assert report["pooled_claim_authorized"] is False
+    assert report["approximate_pruning_authorized"] is False
+    assert all(row["approximate_pruning_authorized"] is False for row in report["cohorts"])
+    bias = report["selection_bias"]
+    assert bias["distinct_effective_experiments"] == 2
+    assert bias["selected_for_native_audit"] == 2
+    assert bias["selected_and_observed"] == 0
+    assert bias["selected_but_unobserved"] == 2
+    assert bias["unselected_frame_members"] == 0
+    # The report is content-addressed and immutable.
+    identity = fingerprint(report)
+    path = tmp_path / "artifacts" / "comparability" / (identity + ".json")
+    assert path.exists() and sha256(path) == identity
+    repeated = Comparability(store, tmp_path).compare(
+        ComparabilityRequest(
+            cohort_ids=(first, second),
+            authorized_by="comparability acceptance",
+            attestation=ATTESTATION,
+        )
+    )
+    assert fingerprint(repeated) == identity
+    with pytest.raises(ValueError, match="unknown screen cohort"):
+        Comparability(store, tmp_path).compare(
+            ComparabilityRequest(
+                cohort_ids=(first, "f" * 64),
+                authorized_by="comparability acceptance",
+                attestation=ATTESTATION,
+            )
+        )
+    with pytest.raises(ValueError, match="duplicate cohort"):
+        ComparabilityRequest(
+            cohort_ids=(first, first),
+            authorized_by="comparability acceptance",
+            attestation=ATTESTATION,
+        )
 
 
 def test_historical_cohort_requires_reviewed_admission_at_freeze(tmp_path):
