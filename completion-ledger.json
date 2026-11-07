@@ -2939,7 +2939,7 @@
     "reason": "All readiness false; final release provenance/packaging remains unimplemented."
   },
   "latest_verified_source": {
-    "git_commit": "f58eb05575dd477b5966e2f9e1ec439577e91bc4",
+    "git_commit": "603415b1d7534b8be2d5f48fde04bcd2991e07a9",
     "source_sha256": "8ea5ea06b8ef7c5bbfa0da6ab3a9719d2473e04709b627ba3b52f2b99072fdc7",
     "working_tree_scientific_edits": false
   },
