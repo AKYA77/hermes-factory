@@ -51,6 +51,15 @@ known profitable native counterexample/all-native fallback are preserved.
 
 See docs/milestone-historical-screen-cohorts.md and ADR0035.
 
+Authenticated dashboard workflow for v2 is implemented and browser-verified:
+`HistoricalScreenCohortsPanel.svelte` derives the immutable policy from the
+selected calibration evidence, blocks incompatible selections and embargo
+violations before submit, freezes, shows actual native feedback and exports the
+exact cohort evidence. Playwright Chromium acceptance at 1280x900 and 390x844
+froze before outcomes, preserved pause, observed 1 fenced native feedback,
+disabled approximate pruning, exported byte-exact evidence, and reported no
+mobile overflow or page errors.
+
 ## Historical data acquisition (owner-authorized, in progress)
 
 `scripts/acquire_history.py` is a bounded, checkpointed, resumable driver around
@@ -72,11 +81,9 @@ Remain in `safe_screening` (IMPLEMENTING). Historical cohort v2 policy, freeze,
 report, CLI, API and fenced-completion diagnostics are implemented and tested.
 Remaining in this task:
 
-1. Authenticated dashboard workflow for v2 (eligible calibration/prospective
-   inputs, freeze, actual native feedback, exact export), desktop and mobile.
-2. Screening comparability and selection safeguards (frozen comparability
+1. Screening comparability and selection safeguards (frozen comparability
    contracts across cohorts; explicit selection-bias reporting).
-3. Worker-native prospective diagnostics for cohorts frozen before this
+2. Worker-native prospective diagnostics for cohorts frozen before this
    increment, if any are retained.
 
 Then continue the dependency-aware queue: recursive session/regime/MFE/MAE

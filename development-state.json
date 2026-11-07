@@ -91,13 +91,14 @@
     "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption",
     "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification",
     "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification",
-    "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification"
+    "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification",
+    "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification"
   ],
   "last_remote_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
   "last_verification": {
-    "passed": 570,
+    "passed": 571,
     "warnings": 0,
-    "pytest_seconds": 564.668,
+    "pytest_seconds": 591.856,
     "failed": 0,
     "skipped": 0,
     "lint": "PASS",
@@ -152,8 +153,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "fc2a54f78969cb30cd3275482941b6d4b56f3fac",
-    "source_sha256": "1dd0717cf6805fda7a0b1aa257073da116882b4cd6076d8df4965c3289d1495b"
+    "git_commit": "26968746caf821d2f6c525b31c4f76dc428494d8",
+    "source_sha256": "f35cce340faf64394e71d4b94be57093cc12c47580b049b1d68c6647eccdf81f"
   },
   "visibility": {
     "current": "PUBLIC",
