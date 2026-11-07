@@ -103,9 +103,9 @@ Remaining in this task:
 1. Worker-native prospective diagnostics for cohorts frozen before this
    increment, if any are retained.
 
-`recursive_diagnostics` has begun (ADR0037 descriptive cohort aggregation).
-Remaining there: volatility/regime cohorts, parameter sensitivity, diversity
-aware candidate exploration, and independent confirmation of improvements.
+`recursive_diagnostics` has begun (ADR0037 descriptive cohort aggregation, ADR0038
+parameter sensitivity). Remaining there: volatility/regime cohorts, diversity-aware
+candidate exploration, and independent confirmation of improvements.
 
 Then continue the dependency-aware queue: recursive session/regime/MFE/MAE
 diagnostics, global independent qualification, source/profile/refresh/storage/data

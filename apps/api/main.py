@@ -23,6 +23,7 @@ from factory.screening.comparability import Comparability, ComparabilityRequest
 from factory.screening.historical_cohorts import HistoricalCohortRequest, HistoricalCohorts
 from factory.simulation.ledger import require_execution_version, EXECUTION_VERSION
 from factory.diagnostics.cohorts import DiagnosticCohortRequest, DiagnosticCohorts
+from factory.improvement.sensitivity import Sensitivity, SensitivityRequest
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
@@ -256,6 +257,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/diagnostic-cohorts", dependencies=read)
     def diagnostic_cohorts(payload: DiagnosticCohortRequest):
         return DiagnosticCohorts(store, root).report(payload)
+
+    @app.post("/api/v1/research/improvement-sensitivity", dependencies=read)
+    def improvement_sensitivity(payload: SensitivityRequest):
+        return Sensitivity(store, root).report(payload)
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):

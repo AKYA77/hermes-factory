@@ -46,6 +46,12 @@ the full historical and scientific acceptance remains open.
   declared UTC hour buckets (not a broker calendar) and cost sensitivity
   explicitly not measured. CLI `diagnose-cohorts` and authenticated API
   `POST /api/v1/research/diagnostic-cohorts`.
+- ADR0038 parameter sensitivity for controlled improvements:
+  `improvement-sensitivity/v1` groups retained parent-child outcomes by the exact
+  changed-field set with outcome counts and mean/min/max equity deltas, plus
+  hypothesis counts. Content-addressed and immutable; descriptive only and never
+  independently validated. CLI `improvement-sensitivity` and authenticated API
+  `POST /api/v1/research/improvement-sensitivity`.
 
 ## Preserved
 

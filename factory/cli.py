@@ -38,6 +38,8 @@ def main():
     comparability.add_argument("request_file", type=Path)
     cohorts_report = subs.add_parser("diagnose-cohorts")
     cohorts_report.add_argument("request_file", type=Path)
+    sensitivity = subs.add_parser("improvement-sensitivity")
+    sensitivity.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -306,6 +308,20 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "improvement-sensitivity":
+        from factory.improvement.sensitivity import Sensitivity, SensitivityRequest
+
+        service = Sensitivity(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("sensitivity request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    SensitivityRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command == "diagnose-cohorts":
         from factory.diagnostics.cohorts import DiagnosticCohortRequest, DiagnosticCohorts
 
