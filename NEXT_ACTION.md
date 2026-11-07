@@ -72,6 +72,15 @@ mobile overflow or page errors.
 
 ## Historical data acquisition (owner-authorized, in progress)
 
+`scripts/acquisition_watchdog.py` is a deterministic `no_agent` Hermes cron job
+(`085932ae4c7b`, hourly, deliver origin) that prints only when the backfill needs
+attention — supervisor not running, blocked partitions, low disk reserve, a
+stalled completion count, or completion. Empty stdout means healthy, so the
+scheduler stays silent. The scheduler copy lives at
+`~/.hermes/scripts/acquisition_watchdog.py`; keep it in sync with the repository
+copy when the watchdog changes. The watchdog does not import the scientific
+stack, so it keeps running when the model or network is unavailable.
+
 `scripts/acquire_history.py` is a bounded, checkpointed, resumable driver around
 the existing `factory.operations.import_history` CLI. It never imports, parses or
 scores data itself. It runs **sequentially by design**: `factory/data/resume.py`
