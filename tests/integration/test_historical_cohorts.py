@@ -318,15 +318,63 @@ def test_fenced_completion_produces_the_historical_diagnostic(tmp_path):
     assert report["approximate_pruning_authorized"] is False
     # The native artifact is unchanged; the diagnostic is separately hashed.
     result = json.loads(
-        store.rows("SELECT result_json FROM experiments WHERE experiment_hash=?", (prospective.experiment_hash,))[0][
-            "result_json"
-        ]
+        store.rows(
+            "SELECT result_json FROM experiments WHERE experiment_hash=?",
+            (prospective.experiment_hash,),
+        )[0]["result_json"]
     )
     assert result["frozen_screen_audit_cohort"] == identity
     events = store.rows(
         "SELECT payload FROM audit_events WHERE action='historical_shadow_completed'"
     )
     assert len(events) == 2  # calibration posthoc + fenced prospective completion
+
+
+def test_historical_cohort_api_inputs_freeze_and_report(tmp_path):
+    import hashlib
+
+    from fastapi.testclient import TestClient
+    from apps.api.main import create_app
+
+    store, request, calibration, prospective, admission = prepared(tmp_path)
+    (tmp_path / "access.json").write_text(
+        json.dumps(
+            [
+                {"role": role, "sha256": hashlib.sha256(("test-" + role).encode()).hexdigest()}
+                for role in ("viewer", "operator")
+            ]
+        )
+    )
+    client = TestClient(create_app(tmp_path))
+    url = "/api/v1/research/historical-screen-cohorts"
+    inputs_url = "/api/v1/research/historical-screen-cohort-inputs"
+    headers = {"Authorization": "Bearer test-operator"}
+    assert client.get(inputs_url).status_code == 401
+    anonymous = client.get(inputs_url, headers={"Authorization": "Bearer test-viewer"}).json()
+    assert len(anonymous["calibration"]) == 1
+    assert anonymous["calibration"][0]["experiment_hash"] == calibration.experiment_hash
+    assert anonymous["calibration"][0]["admission_id"] == admission
+    assert len(anonymous["prospective"]) == 1
+    assert anonymous["prospective"][0]["job_id"] == request.prospective_job_ids[0]
+    assert "not broker execution" in anonymous["scope"]
+    assert client.get(inputs_url + "?limit=101", headers=headers).status_code == 422
+    assert (
+        client.post(
+            url,
+            json=request.model_dump(mode="json"),
+            headers={"Authorization": "Bearer test-viewer"},
+        ).status_code
+        == 403
+    )
+    response = client.post(url, json=request.model_dump(mode="json"), headers=headers)
+    assert response.status_code == 200, response.text
+    identity = response.json()["cohort_id"]
+    report = client.get("/api/v1/research/screen-cohorts/" + identity, headers=headers).json()
+    assert (
+        report["historical"] is True and report["schema_version"] == "historical-screen-cohort/v2"
+    )
+    assert report["approximate_pruning_authorized"] is False
+    assert report["selected_count"] == 1 and report["native_observed"] == 0
 
 
 def test_historical_cohort_requires_reviewed_admission_at_freeze(tmp_path):

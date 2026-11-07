@@ -170,6 +170,75 @@ def create_app(root, dashboard=None):
             "offset": offset,
         }
 
+    @app.get("/api/v1/research/historical-screen-cohort-inputs", dependencies=read)
+    def historical_screen_cohort_inputs(
+        limit: int = Query(50, ge=1, le=100), offset: int = Query(0, ge=0)
+    ):
+        from factory.data.admission import admission_identity
+        from factory.provenance import execution_revision
+
+        revision = execution_revision()
+        calibration = []
+        for row in store.rows(
+            """SELECT e.experiment_hash, e.contract_json,
+                       json_extract(a.payload,'$.artifact_hash') AS diagnostic_artifact_hash,
+                       json_extract(a.payload,'$.estimate_hash') AS estimate_hash
+                FROM audit_events a
+                JOIN experiments e ON e.artifact_hash = json_extract(a.payload,'$.native_artifact_hash')
+                WHERE a.action='historical_shadow_completed'
+                ORDER BY a.created_at, e.experiment_hash LIMIT 500"""
+        ):
+            contract = json.loads(row["contract_json"])
+            if contract.get("code_revision") != revision:
+                continue
+            try:
+                admission = admission_identity(contract.get("evaluation_policy", ""))
+            except ValueError:
+                continue
+            window = contract["windows"][0]
+            calibration.append(
+                {
+                    "experiment_hash": row["experiment_hash"],
+                    "admission_id": admission,
+                    "dataset_hash": contract["dataset_hash"],
+                    "profile_hash": contract["instrument_hash"],
+                    "code_revision": contract["code_revision"],
+                    "training_start_ns": window["start_ns"],
+                    "training_end_ns": window["end_ns"],
+                    "evaluation_policy": contract["evaluation_policy"],
+                    "diagnostic_artifact_hash": row["diagnostic_artifact_hash"],
+                    "estimate_hash": row["estimate_hash"],
+                }
+            )
+        prospective = store.rows(
+            """SELECT j.job_id,
+                       json_extract(j.payload,'$.contract.evaluation_policy') AS evaluation_policy,
+                       json_extract(j.payload,'$.contract.dataset_hash') AS dataset_hash,
+                       json_extract(j.payload,'$.contract.instrument_hash') AS profile_hash,
+                       json_extract(j.payload,'$.contract.code_revision') AS code_revision,
+                       json_extract(j.payload,'$.contract.windows[0].start_ns') AS start_ns,
+                       json_extract(j.payload,'$.contract.windows[0].end_ns') AS end_ns
+                FROM jobs j WHERE j.kind='research' AND j.state='QUEUED' AND j.attempts=0
+                AND json_extract(j.payload,'$.contract.evaluation_policy') LIKE 'historical-approved/%'
+                AND json_extract(j.payload,'$.contract.code_revision')=?
+                AND NOT EXISTS(SELECT 1 FROM screen_cohort_members m
+                               WHERE m.job_id=j.job_id AND m.role='prospective')
+                ORDER BY j.created_at, j.job_id LIMIT ? OFFSET ?""",
+            (revision, limit, offset),
+        )
+        for row in prospective:
+            row["admission_id"] = admission_identity(row["evaluation_policy"])
+        return {
+            "calibration": calibration[offset : offset + limit],
+            "prospective": prospective,
+            "limit": limit,
+            "offset": offset,
+            "scope": (
+                "Reviewed-admission historical training inputs only; not broker execution, "
+                "independent strategy validation or DATA_READY evidence"
+            ),
+        }
+
     @app.post("/api/v1/research/screen-cohorts", dependencies=write)
     def freeze_screen_cohort(payload: CohortRequest):
         return {"cohort_id": Cohorts(store, root).freeze(payload)}

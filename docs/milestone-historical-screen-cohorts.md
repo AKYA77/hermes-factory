@@ -48,10 +48,22 @@ Focused acceptance: `tests/integration/test_historical_cohorts.py` —
 embargo/admission/duplicate rejection, reviewed-admission revocation, and
 fenced-completion diagnostic production.
 
-Full verification at this checkpoint: 570 passed / 0 failed / 0 skipped
-(566 baseline + 4 new), ruff check/format clean, svelte-check 0 errors and
+Full verification at this checkpoint: 571 passed / 0 failed / 0 skipped
+(566 baseline + 5 new), ruff check/format clean, svelte-check 0 errors and
 0 warnings, vite build OK. Exact receipts:
 [manifest.json](../reports/milestones/historical-screen-cohorts/manifest.json).
+
+## Authenticated browser acceptance
+
+`scripts/historical-screen-cohort-browser-fixture.py` builds a fresh paused
+TEST_ONLY reviewed-admission fixture and `scripts/historical-screen-cohort-browser-smoke.cjs`
+drives the real dashboard and API in Chromium at 1280x900 and 390x844. Observed:
+authenticated session, cohort frozen before any prospective outcome, pause
+preserved, actual fenced native feedback (1 selected observation), approximate
+pruning disabled, byte-exact export matching the API response, no mobile
+overflow and zero page errors. Receipts:
+`reports/runtime/completion/historical-cohort-{desktop,mobile}.png` and
+`historical-cohort-browser-export.json`.
 
 These are generated TEST_ONLY authorization fixtures. They exercise the
 historical admission branch and are **not** genuine market validation, broker
