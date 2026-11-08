@@ -26,6 +26,7 @@ from factory.diagnostics.cohorts import DiagnosticCohortRequest, DiagnosticCohor
 from factory.improvement.sensitivity import Sensitivity, SensitivityRequest
 from factory.exploration.diversity import Diversity, DiversityRequest
 from factory.improvement.lineage import Lineage, LineageRequest
+from factory.improvement.confirmation import Confirmation, ConfirmationRequest
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
@@ -271,6 +272,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/improvement-lineage", dependencies=read)
     def improvement_lineage(payload: LineageRequest):
         return Lineage(store, root).report(payload)
+
+    @app.post("/api/v1/research/improvement-confirmation", dependencies=read)
+    def improvement_confirmation(payload: ConfirmationRequest):
+        return Confirmation(store, root).confirm(payload)
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):

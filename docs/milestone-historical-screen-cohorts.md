@@ -71,6 +71,12 @@ the full historical and scientific acceptance remains open.
   `TRAIN_IMPROVED_ONLY` child is not independently validated. CLI
   `improvement-lineage` and authenticated API
   `POST /api/v1/research/improvement-lineage`.
+- ADR0042 independent confirmation of training improvements:
+  `improvement-confirmation/v1` binds a `TRAIN_IMPROVED_ONLY` edge to a retained
+  independent evaluation, refusing self-evaluation, overlapping windows or a
+  different canonical dataset. `qualification_authorized` is always false.
+  CLI `improvement-confirmation` and authenticated API
+  `POST /api/v1/research/improvement-confirmation`.
 
 ## Preserved
 

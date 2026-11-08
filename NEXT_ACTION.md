@@ -103,10 +103,12 @@ Remaining in this task:
 1. Worker-native prospective diagnostics for cohorts frozen before this
    increment, if any are retained.
 
-`recursive_diagnostics` has begun (ADR0037 descriptive cohort aggregation, ADR0038
-parameter sensitivity, ADR0039 candidate diversity, ADR0040 market volatility
-regimes, ADR0041 improvement lineage). Remaining there: independent confirmation
-of improvements.
+`recursive_diagnostics` is now substantially complete (ADR0037 descriptive cohort
+aggregation, ADR0038 parameter sensitivity, ADR0039 candidate diversity, ADR0040
+market volatility regimes, ADR0041 improvement lineage, ADR0042 independent
+confirmation of improvements). Remaining there: controlled recursive child
+generation is provided by `improvement/v1`; global regime/source validation stays
+open under `scientific_selection`.
 
 Then continue the dependency-aware queue: recursive session/regime/MFE/MAE
 diagnostics, global independent qualification, source/profile/refresh/storage/data
