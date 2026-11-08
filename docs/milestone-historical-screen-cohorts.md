@@ -119,6 +119,12 @@ the full historical and scientific acceptance remains open.
   immutable; `qualification_authorized` is always false. CLI
   `independent-ranking` and authenticated API
   `POST /api/v1/research/independent-ranking`.
+- ADR0050 data source registry, storage inventory and refresh:
+  `factory/data/sources.py` lists committed partitions as sources, reports
+  per-instrument storage totals, and re-verifies every partition parquet digest
+  against its manifest on refresh without mutating catalog data. API
+  `GET /api/v1/sources`, `GET /api/v1/sources/{identity}`, `GET
+  /api/v1/storage`, `POST /api/v1/refresh`; CLI `sources`, `storage`, `refresh`.
 
 ## Preserved
 

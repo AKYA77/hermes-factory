@@ -61,6 +61,9 @@ def main():
     soak.add_argument("--iterations", type=int, default=3)
     independent = subs.add_parser("independent-ranking")
     independent.add_argument("request_file", type=Path)
+    subs.add_parser("sources")
+    subs.add_parser("storage")
+    subs.add_parser("refresh")
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -329,6 +332,16 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command in ("sources", "storage", "refresh"):
+        from factory.data.sources import SourceRegistry
+
+        registry = SourceRegistry(root / "catalog")
+        if args.command == "sources":
+            print(json.dumps({"sources": registry.list()}, indent=2))
+        elif args.command == "storage":
+            print(json.dumps(registry.storage(), indent=2))
+        else:
+            print(json.dumps(registry.refresh(), indent=2))
     elif args.command == "independent-ranking":
         from factory.ranking.independent import IndependentRanking, IndependentRankingRequest
 

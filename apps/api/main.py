@@ -661,6 +661,33 @@ def create_app(root, dashboard=None):
     def coverage():
         return store.rows("SELECT * FROM research_coverage ORDER BY instrument,family,timeframe")
 
+    @app.get("/api/v1/sources", dependencies=read)
+    def sources():
+        from factory.data.sources import SourceRegistry
+
+        return {"sources": SourceRegistry(root / "catalog").list()}
+
+    @app.get("/api/v1/sources/{identity}", dependencies=read)
+    def source_detail(identity: str):
+        from factory.data.sources import SourceRegistry
+
+        try:
+            return SourceRegistry(root / "catalog").detail(identity)
+        except KeyError:
+            raise HTTPException(status_code=404, detail="unknown source")
+
+    @app.get("/api/v1/storage", dependencies=read)
+    def storage():
+        from factory.data.sources import SourceRegistry
+
+        return SourceRegistry(root / "catalog").storage()
+
+    @app.post("/api/v1/refresh", dependencies=write)
+    def refresh_sources():
+        from factory.data.sources import SourceRegistry
+
+        return SourceRegistry(root / "catalog").refresh()
+
     @app.get("/api/v1/data/manifest", dependencies=read)
     def manifests():
         manifests = []
