@@ -254,6 +254,11 @@ the full historical and scientific acceptance remains open.
   `train_end == oos_start - (purge + embargo)`, that consecutive folds meet
   exactly at the embargo boundary, and that the holdout start equals the final
   fold's out-of-sample end so purge/embargo never shrink the holdout.
+- `docs/source-quality-findings.md` records two measured source findings: the
+  October 2025 archives for EURUSD/GBPUSD/USDJPY contain a duplicated hour
+  (2025-10-27 00:00–01:00 UTC), which the quality gate correctly quarantines as
+  non-monotonic, and the cumulative staging budget exhaustion that blocked three
+  September partitions until published staging was reclaimed.
 
 ## Preserved
 
