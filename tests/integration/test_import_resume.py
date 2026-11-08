@@ -444,3 +444,22 @@ def test_staging_directory_link_cannot_escape_catalog(tmp_path):
     with pytest.raises(ValueError, match="symlink"):
         resume.reclaim(root, "a" * 64)
     assert not list(outside.iterdir())
+
+
+def test_reclaim_all_frees_published_staging_and_preserves_canonical(tmp_path):
+    source = archive_fixture(tmp_path)
+    root = tmp_path / "catalog"
+    manifest, _ = resume.import_archive(root, source, PROVENANCE, 4)
+    staging = root / ".imports"
+    before = sum(p.stat().st_size for p in staging.rglob("*.parquet"))
+    assert before > 0
+    receipts = resume.reclaim_all(root)
+    assert len(receipts) == 1
+    assert receipts[0]["reclaimed_payload_bytes"] == before
+    assert receipts[0]["canonical_source_and_evidence_preserved"] is True
+    assert not list(staging.rglob("*.parquet"))
+    # Canonical data and the checkpoint evidence are preserved.
+    assert list(Catalog(root).read(manifest["dataset_hash"])) == list(quotes_from_archive(source))
+    assert list(staging.glob("*/checkpoint.json"))
+    # A second pass removes nothing further.
+    assert [r["reclaimed_payload_bytes"] for r in resume.reclaim_all(root)] == [0]

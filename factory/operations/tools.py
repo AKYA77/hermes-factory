@@ -15,7 +15,10 @@ from factory.operations.fixtures import seed
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("action", choices=["seed", "backup", "restore-test", "restore", "rollback-plan"])
+    p.add_argument(
+        "action",
+        choices=["seed", "backup", "restore-test", "restore", "rollback-plan", "reclaim-staging"],
+    )
     p.add_argument("path")
     p.add_argument("destination", nargs="?")
     p.add_argument("--services-stopped", action="store_true")
@@ -37,6 +40,20 @@ def main():
             p.error("destination required")
         files = backup(args.path, args.destination)
         print(json.dumps({"verified_files": len(files), "backup": args.destination}))
+    elif args.action == "reclaim-staging":
+        from factory.data.resume import reclaim_all
+
+        receipts = reclaim_all(args.path)
+        print(
+            json.dumps(
+                {
+                    "reclaimed_checkpoints": len(receipts),
+                    "reclaimed_payload_bytes": sum(r["reclaimed_payload_bytes"] for r in receipts),
+                    "removed_chunks": sum(r["removed_chunks"] for r in receipts),
+                },
+                indent=2,
+            )
+        )
     elif args.action == "restore":
         if not args.destination:
             p.error("destination required")

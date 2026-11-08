@@ -219,6 +219,30 @@ def reclaim(catalog, checkpoint_id):
         return receipt
 
 
+def reclaim_all(catalog):
+    """Reclaim staged chunks for every published import checkpoint.
+
+    Staging is cumulative: without reclamation the payload budget is eventually
+    exhausted and further imports block even though their canonical data is
+    already published. Only published checkpoints with verified chunks are
+    touched; unpublished, failed and already-reclaimed intents are skipped.
+    """
+    cat = StreamingCatalog(catalog)
+    root = cat.root / ".imports"
+    if not root.exists():
+        return []
+    reclaimed = []
+    for child in sorted(root.iterdir()):
+        if not child.is_dir() or child.is_symlink():
+            continue
+        try:
+            receipt = reclaim(catalog, child.name)
+        except (ValueError, KeyError, OSError):
+            continue
+        reclaimed.append(receipt)
+    return reclaimed
+
+
 def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_budget_bytes=2**31):
     """Resume a retained archive. Return (unchanged data/v2 manifest, metrics)."""
     if type(batch_rows) is not int or not 1 <= batch_rows <= 65536:
