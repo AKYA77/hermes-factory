@@ -160,6 +160,12 @@ the full historical and scientific acceptance remains open.
   plus the CSP, and adds `Strict-Transport-Security` only when the request is
   HTTPS, since a transport header on plaintext HTTP is ignored by browsers and
   would misrepresent the deployment. Applied uniformly to every response.
+- ADR0056 release manifest verification coverage:
+  `tests/recovery/test_releases.py` now exercises `verify_release` directly —
+  accepting a consistent manifest and refusing `NOT_READY` status, an empty
+  commit, an empty tag, an empty file list, a tampered file and a manifest entry
+  escaping the release root. A shared `write_release` helper keeps every fixture
+  a well-formed release; the pointer health-failure rollback test is retained.
 
 ## Preserved
 
