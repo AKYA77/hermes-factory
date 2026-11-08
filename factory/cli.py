@@ -54,6 +54,8 @@ def main():
     annual.add_argument("request_file", type=Path)
     funnel = subs.add_parser("selection-funnel")
     funnel.add_argument("request_file", type=Path)
+    comparability = subs.add_parser("comparability-contract")
+    comparability.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -322,6 +324,23 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "comparability-contract":
+        from factory.validation.comparability_contract import (
+            ComparabilityContractRequest,
+            ComparabilityContracts,
+        )
+
+        service = ComparabilityContracts(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("comparability contract request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    ComparabilityContractRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command == "selection-funnel":
         from factory.validation.selection_funnel import (
             SelectionFunnel,

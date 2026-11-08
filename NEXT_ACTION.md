@@ -112,8 +112,8 @@ open under `scientific_selection`.
 
 Then continue the dependency-aware queue: `scientific_selection` has begun
 (ADR0043 multiple-testing safeguards, ADR0044 diversity-aware qualified
-shortlist, ADR0045 annual and pooled reporting, ADR0046 global selection funnel).
-Remaining there: comparability contracts and qualified ranking. Then
+shortlist, ADR0045 annual and pooled reporting, ADR0046 global selection funnel,
+ADR0047 typed comparability contracts). Remaining there: qualified ranking. Then
 source/profile/refresh/storage/data APIs, full dashboard, installed
 provenance/Ubuntu/systemd/update/rollback/backup/restore, security remediation
 and full source-to-restore/release/Hermes handoff. Do not stop at one milestone

@@ -100,6 +100,13 @@ the full historical and scientific acceptance remains open.
   promotions and a `funnel_complete` flag. Content-addressed and immutable;
   `qualification_authorized` is always false. CLI `selection-funnel` and
   authenticated API `POST /api/v1/research/selection-funnel`.
+- ADR0047 typed comparability contracts: `comparability-contract/v1` registers a
+  typed assertion of which peer context hashes an evaluation window is comparable
+  with, plus protected windows it must never enter. Stored in migration
+  `013_comparability_contracts.sql` (immutable by trigger) and retained under
+  `artifacts/comparability-contracts/`; `qualification_authorized` is always false.
+  CLI `comparability-contract` and authenticated API
+  `POST /api/v1/research/comparability-contract`.
 
 ## Preserved
 

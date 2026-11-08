@@ -31,6 +31,10 @@ from factory.validation.multiple_testing import MultipleTesting, MultipleTesting
 from factory.ranking.qualified import QualifiedRanking, QualifiedRankingRequest
 from factory.validation.annual import AnnualReporting, AnnualReportingRequest
 from factory.validation.selection_funnel import SelectionFunnel, SelectionFunnelRequest
+from factory.validation.comparability_contract import (
+    ComparabilityContractRequest,
+    ComparabilityContracts,
+)
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
@@ -296,6 +300,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/selection-funnel", dependencies=read)
     def selection_funnel(payload: SelectionFunnelRequest):
         return SelectionFunnel(store, root).report(payload)
+
+    @app.post("/api/v1/research/comparability-contract", dependencies=read)
+    def comparability_contract(payload: ComparabilityContractRequest):
+        return ComparabilityContracts(store, root).report(payload)
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):
