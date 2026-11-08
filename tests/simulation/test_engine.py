@@ -162,3 +162,35 @@ def test_T08_limit_exit_has_no_adverse_adjustment(profile, spec):
     assert "actual_adverse_adjustment" not in exit_
     assert D(r["fill_trace"][1]["slippage"]) == 0
     assert not r["integrity_errors"]
+
+
+def test_T09_limit_never_exceeds_limit_price(profile, spec):
+    # A SELL take-profit must fill at or above its target; the runner flags any
+    # fill beyond the limit price as an integrity error.
+    q = quotes([(110000, 110010), (110000, 110010), (110350, 110360), (110400, 110410)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert not r["rejections"] and len(r["trades"]) == 1, r
+    exit_ = r["fills"][1]
+    assert exit_["role"] == "TAKE_PROFIT"
+    assert D(exit_["price"]) >= D(r["trades"][0]["target"])
+    assert not r["integrity_errors"]
+
+
+def test_T09_stop_gap_is_recognized(profile, spec):
+    # Price gaps through the stop, so the exit fills worse than the stop level.
+    q = quotes([(110000, 110010), (110000, 110010), (109000, 109010), (109000, 109010)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert not r["rejections"] and len(r["trades"]) == 1, r
+    trade = r["trades"][0]
+    assert D(trade["stop"]) == D("1.09935")
+    assert D(r["fills"][1]["price"]) < D(trade["stop"])
+    assert r["fills"][1]["role"] == "STOP_LOSS"
+    assert not r["integrity_errors"]
+
+
+def test_T09_timeout_quote_absence_is_flagged(profile, spec):
+    q = quotes([(110000, 110010)] * 3, step=86400 * 10**9)
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert len(r["trades"]) == 1, r
+    assert "TIMEOUT" in r["trades"][0]["flags"]
+    assert not r["integrity_errors"]

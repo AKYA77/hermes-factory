@@ -128,8 +128,9 @@ T02 has begun: the bar/indicator cache identity now covers code and fill version
 begun with completion idempotency after worker restart (ADR0059), and T14 has
 begun with retained rejected candidates (ADR0060), and T05 has begun with a
 source coverage report (ADR0061), and T08 has begun with adverse fill coverage
-for entry and exit (ADR0062). Do not stop at one milestone or repeat expensive
-campaigns merely to increase counts.
+for entry and exit (ADR0062), and T09 has begun with order semantics coverage
+(ADR0063). Do not stop at one milestone or repeat expensive campaigns merely to
+increase counts.
 
 ## Publication blocker
 

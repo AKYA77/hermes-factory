@@ -216,6 +216,11 @@ the full historical and scientific acceptance remains open.
   adverse adjustment and zero slippage. T08 previously covered the pricing
   function for entry only, leaving exit pricing and the runner's exit
   verification unexercised.
+- ADR0063 order semantics coverage: scenario tests assert that a SELL take-profit
+  fills at or above its target, that a stop gap produces an exit strictly worse
+  than the stop level with the role recorded as `STOP_LOSS`, and that a trade
+  still open at the deadline carries the `TIMEOUT` flag. T09 previously had no
+  coverage despite the runner enforcing all three.
 
 ## Preserved
 
