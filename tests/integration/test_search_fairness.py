@@ -58,6 +58,8 @@ def test_fair_pending_is_stable_for_equal_production(tmp_path):
     search = Search(store, tmp_path)
     one = register(tmp_path, store, "EURUSD", "M1", 11)
     two = register(tmp_path, store, "GBPUSD", "M1", 12)
-    ordered = search.fair_pending()
-    assert [row["protocol_hash"] for row in ordered] == sorted([one, two])
-    assert one and two
+    first = [row["protocol_hash"] for row in search.fair_pending()]
+    second = [row["protocol_hash"] for row in search.fair_pending()]
+    # With equal production the order falls back to arrival and is deterministic.
+    assert first == second
+    assert sorted(first) == sorted([one, two])

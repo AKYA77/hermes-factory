@@ -233,6 +233,11 @@ the full historical and scientific acceptance remains open.
   `enqueue_pending()` and the coordinator enqueue loop both use it. Scheduling
   fairness only — it never changes what is searchable or what a trial may
   conclude.
+- ADR0066 duplicate-skip accounting coverage:
+  `test_T17_duplicate_skip_is_not_a_detailed_run` pins the study so two asks
+  propose the same spec, then asserts the second is recorded as `PRUNED` with
+  reason `EXACT_DUPLICATE_SPEC`, that no job and no experiment exist, and that
+  `exact_duplicates_skipped` is 1.
 
 ## Preserved
 

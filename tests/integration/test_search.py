@@ -258,3 +258,39 @@ def test_reused_native_job_cpu_is_attributed_once_across_protocols(tmp_path):
     assert sum(o["cpu_seconds"] for o in outcomes) == sum(
         json.loads(r["resources_json"])["cpu_seconds"] for r in measured
     )
+
+
+def test_T17_duplicate_skip_is_not_a_detailed_run(tmp_path, monkeypatch):
+    from types import SimpleNamespace
+
+    from factory.exploration import persistent
+    from factory.exploration.persistent import status as research_status
+
+    class FixedStudy:
+        def ask(self, fixed_distributions=None):
+            return SimpleNamespace(
+                params={
+                    "lookback": 4,
+                    "threshold_tenths": 9,
+                    "stop_ticks": 30,
+                    "confirmation": "none",
+                }
+            )
+
+    monkeypatch.setattr(persistent, "rebuild_study", lambda protocol, history, number: FixedStudy())
+
+    payload = seed(tmp_path, 120)
+    store = Store(tmp_path / "factory.sqlite")
+    search = Search(store, tmp_path)
+    identity = search.register(protocol(payload, max_trials=2))
+    first = search.ask(identity)
+    assert not first["duplicate"]
+    second = search.ask(identity)
+    assert second["duplicate"] is True
+    outcomes = store.rows("SELECT * FROM search_outcomes WHERE trial_id=?", (second["trial_id"],))
+    assert outcomes and outcomes[0]["outcome"] == "PRUNED"
+    assert outcomes[0]["reason"] == "EXACT_DUPLICATE_SPEC"
+    # The duplicate skip is not a detailed run: no job and no experiment exist.
+    assert not store.rows("SELECT * FROM jobs")
+    assert not store.rows("SELECT * FROM experiments")
+    assert research_status(store)["exact_duplicates_skipped"] == 1
