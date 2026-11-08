@@ -94,6 +94,12 @@ the full historical and scientific acceptance remains open.
   win-rate and ending-equity counts. Content-addressed and immutable;
   `qualification_authorized` is always false. CLI `annual-reporting` and
   authenticated API `POST /api/v1/research/annual-reporting`.
+- ADR0046 global candidate-selection funnel: `selection-funnel/v1` reports search
+  trials, distinct trial configurations, distinct effective cohort candidates,
+  candidates selected for native audit, selected-and-observed counts, training
+  promotions and a `funnel_complete` flag. Content-addressed and immutable;
+  `qualification_authorized` is always false. CLI `selection-funnel` and
+  authenticated API `POST /api/v1/research/selection-funnel`.
 
 ## Preserved
 

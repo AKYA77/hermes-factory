@@ -52,6 +52,8 @@ def main():
     qualified.add_argument("request_file", type=Path)
     annual = subs.add_parser("annual-reporting")
     annual.add_argument("request_file", type=Path)
+    funnel = subs.add_parser("selection-funnel")
+    funnel.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -320,6 +322,23 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "selection-funnel":
+        from factory.validation.selection_funnel import (
+            SelectionFunnel,
+            SelectionFunnelRequest,
+        )
+
+        service = SelectionFunnel(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("selection funnel request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    SelectionFunnelRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command == "annual-reporting":
         from factory.validation.annual import AnnualReporting, AnnualReportingRequest
 
