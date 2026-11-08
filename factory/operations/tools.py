@@ -9,15 +9,17 @@ import sqlite3
 import tempfile
 from factory.contracts import ExperimentContract
 from factory.experiments import Store
-from factory.operations import backup, verify_backup
+from factory.operations import backup, restore, rollback_plan, verify_backup
 from factory.operations.fixtures import seed
 
 
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("action", choices=["seed", "backup", "restore-test"])
+    p.add_argument("action", choices=["seed", "backup", "restore-test", "restore", "rollback-plan"])
     p.add_argument("path")
     p.add_argument("destination", nargs="?")
+    p.add_argument("--services-stopped", action="store_true")
+    p.add_argument("--previous-release-verified", action="store_true")
     args = p.parse_args()
     if args.action == "seed":
         root = Path(args.path)
@@ -35,6 +37,24 @@ def main():
             p.error("destination required")
         files = backup(args.path, args.destination)
         print(json.dumps({"verified_files": len(files), "backup": args.destination}))
+    elif args.action == "restore":
+        if not args.destination:
+            p.error("destination required")
+        receipt = restore(args.path, args.destination)
+        print(json.dumps(receipt))
+    elif args.action == "rollback-plan":
+        if not args.destination:
+            p.error("destination required")
+        print(
+            json.dumps(
+                rollback_plan(
+                    args.path,
+                    args.destination,
+                    args.services_stopped,
+                    args.previous_release_verified,
+                )
+            )
+        )
     else:
         verify_backup(args.path)
         with tempfile.TemporaryDirectory() as temp:

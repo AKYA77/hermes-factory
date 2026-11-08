@@ -138,6 +138,14 @@ the full historical and scientific acceptance remains open.
   view. Every report action requires a named authorizer and the descriptive-use
   attestation; buttons stay disabled until both are supplied. svelte-check
   reports 0 errors and 0 warnings and the production build succeeds.
+- ADR0053 state restore and rollback planning:
+  `factory/operations.restore` verifies a backup and copies it into a target that
+  must not exist and must sit outside the backup, then re-verifies the copy.
+  `rollback_plan` returns a plan with `applied: false` and refuses unless
+  services-stopped and previous-release-verified are both affirmed. CLI actions
+  `restore` and `rollback-plan`; `scripts/restore.sh` and
+  `scripts/rollback-plan.sh`. `scripts/rollback.sh` remains a refusal stub
+  because no production release exists yet.
 
 ## Preserved
 

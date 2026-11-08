@@ -34,6 +34,57 @@ def backup(state_root, destination):
     return files
 
 
+def restore(backup_path, state_root):
+    """Restore a verified backup into a fresh state root.
+
+    The target must not exist and must sit outside the backup, so a restore can
+    never overwrite live state or the backup it came from.
+    """
+    manifest = verify_backup(backup_path)
+    source = Path(backup_path).resolve()
+    root = Path(state_root).resolve()
+    if root.exists():
+        raise ValueError("restore target must not exist")
+    if root == source or source in root.parents or root in source.parents:
+        raise ValueError("restore target must be outside the backup")
+    shutil.copytree(source, root)
+    verify_backup(root)
+    return {
+        "schema": "restore/v1",
+        "files": len(manifest["files"]),
+        "restored_to": str(root),
+        "backup": str(source),
+    }
+
+
+def rollback_plan(backup_path, state_root, services_stopped, previous_release_verified):
+    """Describe a rollback without performing it.
+
+    A rollback is refused unless the caller affirms that services are stopped and
+    the previous release is verified. No production release exists yet, so this
+    never switches live state.
+    """
+    manifest = verify_backup(backup_path)
+    if not services_stopped:
+        raise ValueError("rollback requires stopped services")
+    if not previous_release_verified:
+        raise ValueError("rollback requires a verified previous release")
+    return {
+        "schema": "rollback-plan/v1",
+        "backup": str(Path(backup_path).resolve()),
+        "target": str(Path(state_root).resolve()),
+        "files": len(manifest["files"]),
+        "services_stopped": True,
+        "previous_release_verified": True,
+        "applied": False,
+        "limitations": [
+            "Plan only; live state is never switched by this call",
+            "No production release exists yet",
+            "A rehearsal must restore into a fresh root and re-run verification",
+        ],
+    }
+
+
 def verify_backup(path):
     path = Path(path)
     manifest = json.loads((path / "backup-manifest.json").read_text())

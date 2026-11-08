@@ -117,10 +117,10 @@ shortlist, ADR0045 annual and pooled reporting, ADR0046 global selection funnel,
 (ADR0048), and `scientific_selection` now has qualified ranking over independent
 evaluations (ADR0049), data source/storage/refresh APIs (ADR0050) and instrument
 profile registry/integrity (ADR0051) and a research reports dashboard panel
-(ADR0052). Remaining: installed provenance/Ubuntu/systemd/update/rollback/backup/
-restore, security remediation and full source-to-restore/release/Hermes
-handoff. Do not stop at one milestone or repeat expensive campaigns merely to
-increase counts.
+(ADR0052) plus state restore and rollback planning (ADR0053). Remaining:
+installed provenance/Ubuntu/systemd/update, security remediation and full
+source-to-restore/release/Hermes handoff. Do not stop at one milestone or repeat
+expensive campaigns merely to increase counts.
 
 ## Publication blocker
 
