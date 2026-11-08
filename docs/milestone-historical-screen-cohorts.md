@@ -166,6 +166,13 @@ the full historical and scientific acceptance remains open.
   commit, an empty tag, an empty file list, a tampered file and a manifest entry
   escaping the release root. A shared `write_release` helper keeps every fixture
   a well-formed release; the pointer health-failure rollback test is retained.
+- Hermes handoff runbook: `docs/runbooks/hermes-handoff.md` records the checkout
+  and state layout, the hard environment facts (no GitHub credentials, the
+  `PYTHONPATH` shadowing, the 3.12 venv requirement, the off-PATH Node toolchain,
+  HistData reachability), the commands, the verified state, the hazards
+  (mid-run commits, the pinned migration list, wall-time-sensitive tests,
+  acquisition pausing, `store.rows()` dict access), the continuation loop and the
+  standing constraints. It is linked from `docs/operator-guide.md`.
 
 ## Preserved
 

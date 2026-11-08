@@ -114,3 +114,9 @@ broker profile, monetary evaluation or source completeness. Current-month recapt
 correction reconciliation and complete annual dataset views remain unfinished.
 Defaults use .local/historical-catalog, deliberately separate from active synthetic
 research. Do not relabel these imports as independently validated strategy results.
+
+## Handoff
+
+`docs/runbooks/hermes-handoff.md` records the environment facts, verified state,
+hazards and continuation loop needed to resume this work without re-deriving
+them. Read it before the first command in a new session.

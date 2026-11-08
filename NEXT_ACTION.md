@@ -120,8 +120,11 @@ profile registry/integrity (ADR0051) and a research reports dashboard panel
 (ADR0052), state restore and rollback planning (ADR0053), and an
 installed-operations doctor report (ADR0054), and a restrictive security header
 policy (ADR0055), and release manifest verification coverage (ADR0056).
-Remaining: full source-to-restore/release/Hermes handoff. Do not stop at one
-milestone or repeat expensive campaigns merely to increase counts.
+Remaining: full source-to-restore/release/Hermes handoff —
+`docs/runbooks/hermes-handoff.md` now records the environment facts, verified
+state, hazards and continuation loop, and is linked from `docs/operator-guide.md`.
+Do not stop at one milestone or repeat expensive campaigns merely to increase
+counts.
 
 ## Publication blocker
 
