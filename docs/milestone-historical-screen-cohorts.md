@@ -188,6 +188,12 @@ the full historical and scientific acceptance remains open.
   fill a gap; `synthesized_quotes` is always 0. Observed on a real partition
   (USDJPY, March 2025, 3.9M ticks): 21 covered, 5 partial (Sundays) and 5 missing
   (Saturdays).
+- ADR0059 completion idempotency after worker restart:
+  `tests/integration/test_completion_idempotency.py` re-queues a `COMPLETED` job
+  as if the lease expired after the experiment row landed, re-claims it and
+  completes it again with identical content. The experiment count and cost-label
+  audit count are unchanged, exactly one additional attempt is recorded, and the
+  job ends `COMPLETED` — covering the T03 window the fenced-restart test did not.
 
 ## Preserved
 
