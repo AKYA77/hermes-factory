@@ -151,3 +151,30 @@ def test_shared_child_job_has_one_cpu_owner_across_policies(tmp_path):
     assert sum(o["cpu_seconds"] for o in outcomes) == sum(
         json.loads(r["resources_json"])["cpu_seconds"] for r in measured
     )
+
+
+def test_T13_failed_child_preserves_parent_and_lineage(tmp_path):
+    store, identity, parent = parent_run(tmp_path)
+    policy = ImprovementPolicy(search_protocol_hash=identity, max_parent_plans=1, max_children=2)
+    service = Improvement(store, tmp_path)
+    service.register(policy)
+    assert service.discover() == 1
+    edges = store.rows("SELECT * FROM improvement_edges")
+    assert edges
+    with store.transaction() as db:
+        db.execute(
+            "INSERT OR IGNORE INTO improvement_outcomes VALUES(?,?,?,?,?)",
+            (edges[0]["edge_id"], "FAILED_CHECKS", "{}", 0.0, 1.0),
+        )
+    # The parent experiment and the child's recorded change both survive failure.
+    assert store.rows("SELECT * FROM experiments WHERE run_id=?", (parent["run_id"],)) == [parent]
+    row = store.rows(
+        "SELECT * FROM strategy_specs WHERE strategy_id=?", (edges[0]["child_strategy_hash"],)
+    )[0]
+    assert row["parent_id"] == parent["strategy_id"]
+    assert json.loads(row["changed_fields"]) != []
+    assert row["hypothesis"]
+    outcome = store.rows(
+        "SELECT * FROM improvement_outcomes WHERE edge_id=?", (edges[0]["edge_id"],)
+    )[0]
+    assert outcome["status"] == "FAILED_CHECKS"

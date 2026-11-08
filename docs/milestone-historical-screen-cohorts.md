@@ -243,6 +243,11 @@ the full historical and scientific acceptance remains open.
   timeout (`TIMEOUT`), short stop-loss (negative MAE with `FAST_STOP`) and
   missing-path (`INCONCLUSIVE` / `UNRESOLVED_PATH`, zero points) paths. T12
   previously covered only favourable-then-stop.
+- ADR0068 failed-child lineage preservation:
+  `test_T13_failed_child_preserves_parent_and_lineage` records a `FAILED_CHECKS`
+  outcome for a discovered improvement edge, then asserts the parent experiment
+  row is unchanged, the child's `parent_id`/`changed_fields`/`hypothesis` are
+  intact, and the failed outcome is retained rather than rewritten.
 
 ## Preserved
 
