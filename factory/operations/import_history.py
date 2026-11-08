@@ -51,7 +51,7 @@ def main():
         "raw_zip_contains_provider_notices": True,
         "volume_status": "not supplied; fourth-column placeholder ignored per provider FAQ",
         "limitations": [
-            "calendar gaps unclassified",
+            "calendar gaps classified descriptively; no quote is invented to fill them",
             "provider-specific quotes, not brokerage fills",
             "Gold pip/contract/margin metadata remains UNKNOWN_SPEC",
         ],
@@ -65,6 +65,7 @@ def main():
     )
     from calendar import timegm
     from factory.data import Catalog
+    from factory.data.gaps import classify_quotes
     from factory.data.versions import SourceSlot, SourceVersions
 
     next_year, next_month = (args.year + 1, 1) if args.month == 12 else (args.year, args.month + 1)
@@ -78,9 +79,18 @@ def main():
     observation_id = SourceVersions(
         args.registry_state or Path(args.catalog).resolve().parent, Catalog(args.catalog)
     ).observe(slot, manifest["dataset_hash"])
+    # Classify calendar gaps from the committed partition. Missing days are
+    # reported, never filled with an invented quote.
+    gaps = classify_quotes(
+        args.instrument,
+        args.year,
+        args.month,
+        Catalog(args.catalog).read(manifest["dataset_hash"]),
+    )
     report = {
         "status": "STRUCTURAL_IMPORT_PASS",
         "historical_validation": False,
+        "calendar_gaps": gaps,
         "source": source,
         "dataset": manifest,
         "wall_seconds": time.perf_counter() - started,

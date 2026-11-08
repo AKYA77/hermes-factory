@@ -179,6 +179,15 @@ the full historical and scientific acceptance remains open.
   the running source identity and execution version. `BarCache.events` and
   `IndicatorCache.events` accept optional overrides. A data, code, fill or fold
   version change now invalidates the cache; an exact rerun still hits it.
+- ADR0058 calendar gap classification: `factory/data/gaps.py` classifies every UTC
+  calendar day of a declared period as MISSING (zero ticks), PARTIAL (below half
+  the median observed day) or COVERED, with the median taken over observed days
+  only so widespread outages are not normalised away. `import_history.py` now
+  includes the result as `calendar_gaps` in the import report, replacing the
+  standing "calendar gaps unclassified" limitation. No quote is ever invented to
+  fill a gap; `synthesized_quotes` is always 0. Observed on a real partition
+  (USDJPY, March 2025, 3.9M ticks): 21 covered, 5 partial (Sundays) and 5 missing
+  (Saturdays).
 
 ## Preserved
 
