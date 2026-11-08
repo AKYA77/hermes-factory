@@ -209,6 +209,13 @@ the full historical and scientific acceptance remains open.
   only while unresolved. API `GET /api/v1/source-coverage`; CLI
   `source-coverage`. Live state root: EURUSD has 5 observed monthly periods, none
   selected and none quarantined.
+- ADR0062 adverse fill coverage for entry and exit: scenario tests assert the
+  exact two-pip adverse adjustment on both legs of long and short stop-loss
+  trades (long entry ask + 2 pips, long exit bid − 2 pips; short entry bid − 2
+  pips, short exit ask + 2 pips) and confirm a take-profit limit exit carries no
+  adverse adjustment and zero slippage. T08 previously covered the pricing
+  function for entry only, leaving exit pricing and the runner's exit
+  verification unexercised.
 
 ## Preserved
 

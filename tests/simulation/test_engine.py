@@ -123,3 +123,42 @@ def test_canonical_profile_geometry_has_identical_native_precision(profile, spec
     assert replay(iter(data), profile, spec, signals, True) == replay(
         iter(data), padded, spec, signals, True
     )
+
+
+def test_T08_exit_adjusts_exactly_two_pips_where_eligible(profile, spec):
+    # Long stop-loss exit: entry pays the ask plus two pips, exit receives the bid
+    # minus two pips, and both are reported as the adverse adjustment.
+    q = quotes([(110000, 110010), (110000, 110010), (109900, 109910), (109900, 109910)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert not r["rejections"] and len(r["trades"]) == 1, r
+    entry, exit_ = r["fills"]
+    assert entry["role"] == "ENTRY" and D(entry["price"]) == D("1.10035")
+    assert D(entry["actual_adverse_adjustment"]) == D("0.0002")
+    assert exit_["role"] == "STOP_LOSS" and D(exit_["price"]) == D("1.09875")
+    assert D(exit_["actual_adverse_adjustment"]) == D("0.0002")
+    assert not r["integrity_errors"]
+
+    # Short stop-loss exit mirrors the sign: entry sells the bid minus two pips,
+    # exit buys the ask plus two pips.
+    q = quotes([(110000, 110010), (110000, 110010), (110100, 110110), (110100, 110110)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "SELL"}], True)
+    assert not r["rejections"] and len(r["trades"]) == 1, r
+    entry, exit_ = r["fills"]
+    assert entry["role"] == "ENTRY" and D(entry["price"]) == D("1.09975")
+    assert D(entry["actual_adverse_adjustment"]) == D("0.0002")
+    assert exit_["role"] == "STOP_LOSS" and D(exit_["price"]) == D("1.10135")
+    assert D(exit_["actual_adverse_adjustment"]) == D("0.0002")
+    assert not r["integrity_errors"]
+
+
+def test_T08_limit_exit_has_no_adverse_adjustment(profile, spec):
+    # A take-profit limit guarantees its price, so no adverse adjustment applies.
+    q = quotes([(110000, 110010), (110000, 110010), (110350, 110360), (110400, 110410)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert not r["rejections"] and len(r["trades"]) == 1, r
+    entry, exit_ = r["fills"]
+    assert entry["role"] == "ENTRY" and D(entry["actual_adverse_adjustment"]) == D("0.0002")
+    assert exit_["role"] == "TAKE_PROFIT"
+    assert "actual_adverse_adjustment" not in exit_
+    assert D(r["fill_trace"][1]["slippage"]) == 0
+    assert not r["integrity_errors"]
