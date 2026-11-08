@@ -74,3 +74,16 @@ deepmerge is published or if build tooling begins merging untrusted input.
 
 No security auditing is disabled. CI continues to run dependency checks.
 `SOFTWARE_VERIFIED`, `DATA_READY` and `OPERATION_READY` remain false.
+
+## CI enforcement
+
+`.github/workflows/dependency-review.yml` still runs `pip-audit` and `npm audit`
+on every pull request and still uploads both reports as artifacts. The raw audit
+exit code no longer decides the build on its own: `scripts/dependency_disposition.py`
+reads the report and passes only advisories listed above, failing on anything
+else.
+
+This means the gate stays live — a new vulnerability in any dependency fails CI
+until it is either fixed or given its own reviewed disposition here. Broadening
+`DISPOSITIONED` in that script is the correct place to record a new decision, and
+the script's tests assert that an unknown advisory fails.
