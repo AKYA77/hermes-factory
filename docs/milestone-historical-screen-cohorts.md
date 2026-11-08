@@ -88,6 +88,12 @@ the full historical and scientific acceptance remains open.
   Content-addressed and immutable; `qualification_authorized` is always false.
   CLI `qualified-ranking` and authenticated API
   `POST /api/v1/research/qualified-ranking`.
+- ADR0045 annual and pooled evaluation reporting:
+  `annual-pooled-reporting/v1` aggregates retained independent evaluations by
+  UTC window-start year and pooled, with evaluation, window, trade, win/loss,
+  win-rate and ending-equity counts. Content-addressed and immutable;
+  `qualification_authorized` is always false. CLI `annual-reporting` and
+  authenticated API `POST /api/v1/research/annual-reporting`.
 
 ## Preserved
 

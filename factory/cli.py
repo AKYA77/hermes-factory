@@ -50,6 +50,8 @@ def main():
     multiple_testing.add_argument("request_file", type=Path)
     qualified = subs.add_parser("qualified-ranking")
     qualified.add_argument("request_file", type=Path)
+    annual = subs.add_parser("annual-reporting")
+    annual.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -318,6 +320,20 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "annual-reporting":
+        from factory.validation.annual import AnnualReporting, AnnualReportingRequest
+
+        service = AnnualReporting(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("annual reporting request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    AnnualReportingRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command == "qualified-ranking":
         from factory.ranking.qualified import QualifiedRanking, QualifiedRankingRequest
 

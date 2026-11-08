@@ -29,6 +29,7 @@ from factory.improvement.lineage import Lineage, LineageRequest
 from factory.improvement.confirmation import Confirmation, ConfirmationRequest
 from factory.validation.multiple_testing import MultipleTesting, MultipleTestingRequest
 from factory.ranking.qualified import QualifiedRanking, QualifiedRankingRequest
+from factory.validation.annual import AnnualReporting, AnnualReportingRequest
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
@@ -286,6 +287,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/qualified-ranking", dependencies=read)
     def qualified_ranking(payload: QualifiedRankingRequest):
         return QualifiedRanking(store, root).report(payload)
+
+    @app.post("/api/v1/research/annual-reporting", dependencies=read)
+    def annual_reporting(payload: AnnualReportingRequest):
+        return AnnualReporting(store, root).report(payload)
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):
