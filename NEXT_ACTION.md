@@ -123,8 +123,9 @@ policy (ADR0055), and release manifest verification coverage (ADR0056).
 Remaining: full source-to-restore/release/Hermes handoff —
 `docs/runbooks/hermes-handoff.md` now records the environment facts, verified
 state, hazards and continuation loop, and is linked from `docs/operator-guide.md`.
-Do not stop at one milestone or repeat expensive campaigns merely to increase
-counts.
+T02 has begun: the bar/indicator cache identity now covers code and fill version
+(ADR0057). Do not stop at one milestone or repeat expensive campaigns merely to
+increase counts.
 
 ## Publication blocker
 

@@ -227,3 +227,37 @@ with IndicatorCache(root/'indicators').events(Catalog(root/'catalog'),request['d
     assert cached(IndicatorCache(root), bars, cat, key, spec) == expected
     assert len(list(root.glob("*/manifest.json"))) == 1
     assert not list(root.glob(".building-*"))
+
+
+def test_bar_cache_identity_covers_code_and_fill_version(tmp_path):
+    cat, dataset, _ = fixture(tmp_path)
+    cache = BarCache(tmp_path / "bars")
+    with cache.events(
+        cat, dataset, "profile", "rev", ("M1",), code_revision="code-a", fill_version="fill-1"
+    ) as stream:
+        first = list(stream)
+    assert cache.stats["misses"] == 1
+    # An exact rerun reuses the cached bars.
+    with cache.events(
+        cat, dataset, "profile", "rev", ("M1",), code_revision="code-a", fill_version="fill-1"
+    ) as stream:
+        assert list(stream) == first
+    assert cache.stats["hits"] == 1
+    # A code version change invalidates the cache.
+    with cache.events(
+        cat, dataset, "profile", "rev", ("M1",), code_revision="code-b", fill_version="fill-1"
+    ) as stream:
+        assert list(stream) == first
+    assert cache.stats["misses"] == 2
+    # A fill version change invalidates the cache.
+    with cache.events(
+        cat, dataset, "profile", "rev", ("M1",), code_revision="code-b", fill_version="fill-2"
+    ) as stream:
+        assert list(stream) == first
+    assert cache.stats["misses"] == 3
+    # A data revision change invalidates the cache.
+    with cache.events(
+        cat, dataset, "profile", "rev2", ("M1",), code_revision="code-b", fill_version="fill-2"
+    ) as stream:
+        assert list(stream) == first
+    assert cache.stats["misses"] == 4

@@ -173,6 +173,12 @@ the full historical and scientific acceptance remains open.
   (mid-run commits, the pinned migration list, wall-time-sensitive tests,
   acquisition pausing, `store.rows()` dict access), the continuation loop and the
   standing constraints. It is linked from `docs/operator-guide.md`.
+- ADR0057 cache identity covers code and fill version: `BarCache._input` now keys
+  cached bars on `code_revision` and `fill_version` in addition to dataset,
+  instrument, revision, timeframe, range, policy and decimal policy, defaulting to
+  the running source identity and execution version. `BarCache.events` and
+  `IndicatorCache.events` accept optional overrides. A data, code, fill or fold
+  version change now invalidates the cache; an exact rerun still hits it.
 
 ## Preserved
 

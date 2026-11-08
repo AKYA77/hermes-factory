@@ -22,6 +22,8 @@ from factory.contracts import TIMEFRAMES, fingerprint, serialize
 from factory.data import atomic_bytes, sha256
 from factory.features import Bar, closed_bar_events
 from factory.features.transforms import decimal_policy
+from factory.provenance import execution_revision
+from factory.simulation.ledger import EXECUTION_VERSION
 
 SCHEMA = pa.schema(
     [
@@ -46,7 +48,7 @@ class BarCache:
         self.max_bytes, self.max_entries, self.batch_rows = max_bytes, max_entries, batch_rows
         self.stats = {"hits": 0, "misses": 0, "evictions": 0, "quote_passes": 0}
 
-    def _input(self, dataset, instrument, revision, timeframe, start_ns, end_ns):
+    def _input(self, dataset, instrument, revision, timeframe, start_ns, end_ns, identity):
         if timeframe not in TIMEFRAMES or not all((dataset, instrument, revision)):
             raise ValueError("invalid bar cache identity")
         if start_ns is not None and end_ns is not None and start_ns >= end_ns:
@@ -60,6 +62,8 @@ class BarCache:
             "end_ns": end_ns,
             "policy": POLICY,
             "decimal": decimal_policy(),
+            "code_revision": identity["code_revision"],
+            "fill_version": identity["fill_version"],
         }
 
     def _verify(self, key, inputs):
@@ -99,15 +103,33 @@ class BarCache:
 
     @contextmanager
     def events(
-        self, catalog, dataset, instrument, revision, timeframes, *, start_ns=None, end_ns=None
+        self,
+        catalog,
+        dataset,
+        instrument,
+        revision,
+        timeframes,
+        *,
+        start_ns=None,
+        end_ns=None,
+        code_revision=None,
+        fill_version=None,
     ):
         # Revalidate canonical bytes even for a cache hit, never trust mtimes.
         catalog.verify(dataset)
         frames = sorted(set(timeframes))
         if not frames or len(frames) > len(TIMEFRAMES):
             raise ValueError("invalid bar cache timeframes")
+        # A data, code, fill or fold version change invalidates the cache; an
+        # exact rerun reuses it. The revision defaults to the running source
+        # identity so a commit cannot silently reuse a stale bar cache.
+        identity = {
+            "code_revision": code_revision or execution_revision(),
+            "fill_version": fill_version or EXECUTION_VERSION,
+        }
         inputs = {
-            tf: self._input(dataset, instrument, revision, tf, start_ns, end_ns) for tf in frames
+            tf: self._input(dataset, instrument, revision, tf, start_ns, end_ns, identity)
+            for tf in frames
         }
         keys = {tf: fingerprint(value) for tf, value in inputs.items()}
         with (self.root / ".lock").open("a+b") as lock:

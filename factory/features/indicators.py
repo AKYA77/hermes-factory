@@ -21,6 +21,8 @@ from factory.contracts import fingerprint, serialize
 from factory.data import atomic_bytes, sha256
 from factory.features.disk import BarCache
 from factory.features.transforms import FIELDS, VERSION, decimal_policy, groups_for, primitives
+from factory.provenance import execution_revision
+from factory.simulation.ledger import EXECUTION_VERSION
 
 SCHEMA = pa.schema(
     [("end_ns", pa.int64()), ("available_at", pa.int64()), ("values", pa.list_(pa.string()))]
@@ -52,15 +54,30 @@ class IndicatorCache(BarCache):
 
     @contextmanager
     def events(
-        self, catalog, dataset, instrument, revision, spec, bar_cache, *, start_ns=None, end_ns=None
+        self,
+        catalog,
+        dataset,
+        instrument,
+        revision,
+        spec,
+        bar_cache,
+        *,
+        start_ns=None,
+        end_ns=None,
+        code_revision=None,
+        fill_version=None,
     ):
         catalog.verify(dataset)
         context = decimal_policy()
         groups = groups_for(spec.signal)
+        identity = {
+            "code_revision": code_revision or execution_revision(),
+            "fill_version": fill_version or EXECUTION_VERSION,
+        }
         inputs = {
             group: {
                 "bars": bar_cache._input(
-                    dataset, instrument, revision, spec.timeframe, start_ns, end_ns
+                    dataset, instrument, revision, spec.timeframe, start_ns, end_ns, identity
                 ),
                 "group": group,
                 "lookback": spec.signal.lookback,
