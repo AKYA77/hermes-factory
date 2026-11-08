@@ -130,7 +130,14 @@ the full historical and scientific acceptance remains open.
   synthetic flag, source, sizes, currencies, volume bounds, margin rate and a
   content hash, plus a drift-checking integrity report. API `GET
   /api/v1/profiles`, `GET /api/v1/profiles/{symbol}`, `GET
-  /api/v1/profile-integrity`; CLI `profiles`, `profile-integrity`.
+  `/api/v1/profile-integrity`; CLI `profiles`, `profile-integrity`.
+- ADR0052 research reports dashboard panel:
+  `apps/dashboard/src/lib/ResearchReportsPanel.svelte` surfaces the selection
+  funnel, annual/pooled reporting, independent qualified ranking, storage
+  inventory, instrument profiles and committed data sources under the Research
+  view. Every report action requires a named authorizer and the descriptive-use
+  attestation; buttons stay disabled until both are supplied. svelte-check
+  reports 0 errors and 0 warnings and the production build succeeds.
 
 ## Preserved
 
