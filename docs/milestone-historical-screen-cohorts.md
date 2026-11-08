@@ -124,7 +124,13 @@ the full historical and scientific acceptance remains open.
   per-instrument storage totals, and re-verifies every partition parquet digest
   against its manifest on refresh without mutating catalog data. API
   `GET /api/v1/sources`, `GET /api/v1/sources/{identity}`, `GET
-  /api/v1/storage`, `POST /api/v1/refresh`; CLI `sources`, `storage`, `refresh`.
+  `GET /api/v1/storage`, `POST /api/v1/refresh`; CLI `sources`, `storage`, `refresh`.
+- ADR0051 instrument profile registry and integrity:
+  `factory/instruments/registry.py` lists every known symbol with version,
+  synthetic flag, source, sizes, currencies, volume bounds, margin rate and a
+  content hash, plus a drift-checking integrity report. API `GET
+  /api/v1/profiles`, `GET /api/v1/profiles/{symbol}`, `GET
+  /api/v1/profile-integrity`; CLI `profiles`, `profile-integrity`.
 
 ## Preserved
 

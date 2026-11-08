@@ -64,6 +64,8 @@ def main():
     subs.add_parser("sources")
     subs.add_parser("storage")
     subs.add_parser("refresh")
+    subs.add_parser("profiles")
+    subs.add_parser("profile-integrity")
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -332,6 +334,14 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command in ("profiles", "profile-integrity"):
+        from factory.instruments import registry as profiles_module
+        from factory.instruments.registry import integrity
+
+        if args.command == "profiles":
+            print(json.dumps({"profiles": profiles_module.registry()}, indent=2))
+        else:
+            print(json.dumps(integrity(), indent=2))
     elif args.command in ("sources", "storage", "refresh"):
         from factory.data.sources import SourceRegistry
 

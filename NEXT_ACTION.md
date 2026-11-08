@@ -115,11 +115,11 @@ Then continue the dependency-aware queue: `scientific_selection` has begun
 shortlist, ADR0045 annual and pooled reporting, ADR0046 global selection funnel,
 (ADR0047 typed comparability contracts), T24 has a bounded synthetic soak
 (ADR0048), and `scientific_selection` now has qualified ranking over independent
-evaluations (ADR0049), and data source/storage/refresh APIs (ADR0050). Remaining:
-profiles, full dashboard, installed provenance/Ubuntu/systemd/update/rollback/
-backup/restore, security remediation and full source-to-restore/release/Hermes
-handoff. Do not stop at one milestone or repeat expensive campaigns merely to
-increase counts.
+evaluations (ADR0049), data source/storage/refresh APIs (ADR0050) and instrument
+profile registry/integrity (ADR0051). Remaining: full dashboard, installed
+provenance/Ubuntu/systemd/update/rollback/backup/restore, security remediation
+and full source-to-restore/release/Hermes handoff. Do not stop at one milestone
+or repeat expensive campaigns merely to increase counts.
 
 ## Publication blocker
 

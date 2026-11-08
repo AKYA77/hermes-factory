@@ -661,6 +661,27 @@ def create_app(root, dashboard=None):
     def coverage():
         return store.rows("SELECT * FROM research_coverage ORDER BY instrument,family,timeframe")
 
+    @app.get("/api/v1/profiles", dependencies=read)
+    def profiles():
+        from factory.instruments.registry import registry
+
+        return {"profiles": registry()}
+
+    @app.get("/api/v1/profiles/{symbol}", dependencies=read)
+    def profile_detail(symbol: str):
+        from factory.instruments.registry import detail
+
+        try:
+            return detail(symbol)
+        except KeyError:
+            raise HTTPException(status_code=404, detail="unknown instrument")
+
+    @app.get("/api/v1/profile-integrity", dependencies=read)
+    def profile_integrity():
+        from factory.instruments.registry import integrity
+
+        return integrity()
+
     @app.get("/api/v1/sources", dependencies=read)
     def sources():
         from factory.data.sources import SourceRegistry
