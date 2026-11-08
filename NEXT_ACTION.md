@@ -118,9 +118,10 @@ shortlist, ADR0045 annual and pooled reporting, ADR0046 global selection funnel,
 evaluations (ADR0049), data source/storage/refresh APIs (ADR0050) and instrument
 profile registry/integrity (ADR0051) and a research reports dashboard panel
 (ADR0052), state restore and rollback planning (ADR0053), and an
-installed-operations doctor report (ADR0054). Remaining: security remediation and
-full source-to-restore/release/Hermes handoff. Do not stop at one milestone or
-repeat expensive campaigns merely to increase counts.
+installed-operations doctor report (ADR0054), and a restrictive security header
+policy (ADR0055). Remaining: full source-to-restore/release/Hermes handoff. Do
+not stop at one milestone or repeat expensive campaigns merely to increase
+counts.
 
 ## Publication blocker
 

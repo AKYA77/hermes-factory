@@ -82,10 +82,14 @@ def create_app(root, dashboard=None):
 
             return JSONResponse({"detail": "payload too large"}, status_code=413)
         response = await call_next(request)
-        response.headers["X-Content-Type-Options"] = "nosniff"
-        response.headers["Cache-Control"] = "no-store"
-        response.headers["Content-Security-Policy"] = content_security_policy
-        return response
+        from apps.api.headers import apply
+
+        return apply(
+            response,
+            content_security_policy,
+            secure=request.url.scheme == "https"
+            or request.headers.get("x-forwarded-proto") == "https",
+        )
 
     def auth(authorization: Annotated[str | None, Header()] = None):
         if not authorization or not authorization.startswith("Bearer "):

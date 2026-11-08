@@ -154,6 +154,12 @@ the full historical and scientific acceptance remains open.
   Observed here: Python 3.12.3, Node v26.7.0, 6 CPUs, 12.5 GB RAM, 87 GB free,
   integrity ok with 13 migrations, 32 catalog partitions holding 92.4M rows and
   1.2 GB at `SOURCE_BID_ASK` fidelity.
+- ADR0055 restrictive security header policy: `apps/api/headers.py` defines one
+  testable `HEADER_POLICY` (nosniff, no-store, no-referrer, denied
+  geolocation/microphone/camera, same-origin COOP/CORP, `X-Frame-Options: DENY`)
+  plus the CSP, and adds `Strict-Transport-Security` only when the request is
+  HTTPS, since a transport header on plaintext HTTP is ignored by browsers and
+  would misrepresent the deployment. Applied uniformly to every response.
 
 ## Preserved
 
