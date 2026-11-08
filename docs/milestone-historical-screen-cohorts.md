@@ -238,6 +238,11 @@ the full historical and scientific acceptance remains open.
   propose the same spec, then asserts the second is recorded as `PRUNED` with
   reason `EXACT_DUPLICATE_SPEC`, that no job and no experiment exist, and that
   `exact_duplicates_skipped` is 1.
+- ADR0067 MFE/MAE path coverage: tests pin the immediate-stop (`FAST_STOP`),
+  near-miss threshold (93% of target tags `TARGET_NEAR_MISS`, 87% does not),
+  timeout (`TIMEOUT`), short stop-loss (negative MAE with `FAST_STOP`) and
+  missing-path (`INCONCLUSIVE` / `UNRESOLVED_PATH`, zero points) paths. T12
+  previously covered only favourable-then-stop.
 
 ## Preserved
 

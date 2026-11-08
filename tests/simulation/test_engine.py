@@ -194,3 +194,68 @@ def test_T09_timeout_quote_absence_is_flagged(profile, spec):
     assert len(r["trades"]) == 1, r
     assert "TIMEOUT" in r["trades"][0]["flags"]
     assert not r["integrity_errors"]
+
+
+def test_T12_immediate_stop_is_flagged(profile, spec):
+    from factory.diagnostics import diagnose_trade
+
+    q = quotes([(110000, 110010), (110000, 110010), (109900, 109910)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    assert len(r["trades"]) == 1, r
+    d = diagnose_trade(r["trades"][0], profile.tick_size)
+    assert d["status"] == "MEASURED"
+    assert "FAST_STOP" in d["tags"]
+    assert D(d["mfe"]) == 0
+
+
+def test_T12_near_miss_requires_ninety_percent_of_target(profile, spec):
+    from factory.diagnostics import diagnose_trade
+
+    near = quotes([(110000, 110010), (110000, 110010), (110320, 110330), (109900, 109910)])
+    r = replay(
+        near, profile, spec, [{"available_at": near[0].event_ts_utc_ns, "side": "BUY"}], True
+    )
+    d = diagnose_trade(r["trades"][0], profile.tick_size)
+    assert "TARGET_NEAR_MISS" in d["tags"]
+    assert "FAVORABLE_THEN_STOP" in d["tags"]
+
+    short = quotes([(110000, 110010), (110000, 110010), (110300, 110310), (109900, 109910)])
+    r = replay(
+        short, profile, spec, [{"available_at": short[0].event_ts_utc_ns, "side": "BUY"}], True
+    )
+    d = diagnose_trade(r["trades"][0], profile.tick_size)
+    assert "TARGET_NEAR_MISS" not in d["tags"]
+    assert "FAVORABLE_THEN_STOP" in d["tags"]
+
+
+def test_T12_timeout_and_short_paths(profile, spec):
+    from factory.diagnostics import diagnose_trade
+
+    q = quotes([(110000, 110010)] * 3, step=86400 * 10**9)
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    d = diagnose_trade(r["trades"][0], profile.tick_size)
+    assert d["status"] == "MEASURED" and "TIMEOUT" in d["tags"]
+
+    q = quotes([(110000, 110010), (110000, 110010), (110100, 110110), (110100, 110110)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "SELL"}], True)
+    d = diagnose_trade(r["trades"][0], profile.tick_size)
+    assert "FAST_STOP" in d["tags"] and D(d["mae"]) < 0
+
+
+def test_T12_missing_path_is_inconclusive(profile, spec):
+    from factory.diagnostics import diagnose_trade
+
+    d = diagnose_trade(
+        {
+            "entry_fill": {"price": "1.1", "ts": 0},
+            "side": "BUY",
+            "stop": "1.099",
+            "intended_stop_distance": "0.001",
+            "flags": [],
+            "path": [],
+        },
+        profile.tick_size,
+    )
+    assert d["status"] == "INCONCLUSIVE"
+    assert d["tags"] == ["UNRESOLVED_PATH"]
+    assert d["points"] == 0
