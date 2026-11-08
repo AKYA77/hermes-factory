@@ -112,6 +112,13 @@ the full historical and scientific acceptance remains open.
   `max_rss_bytes` (default 8 GiB) and `max_wall_seconds`, archiving peak RSS, peak
   swap, `within_limits`, `oom_detected` and `uncontrolled_swap`. Scope is
   `NOT VPS / NOT HISTORICAL / NOT MARKET VALIDATION`. CLI `soak`.
+- ADR0049 qualified ranking over independent evaluations:
+  `independent-qualified-ranking/v1` joins retained evaluation results to their
+  experiments, excludes synthetic evaluations, ranks by ending equity and applies
+  the same `(operator, timeframe)` diversity guard. Content-addressed and
+  immutable; `qualification_authorized` is always false. CLI
+  `independent-ranking` and authenticated API
+  `POST /api/v1/research/independent-ranking`.
 
 ## Preserved
 

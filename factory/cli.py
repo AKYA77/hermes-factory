@@ -59,6 +59,8 @@ def main():
     soak = subs.add_parser("soak")
     soak.add_argument("output", type=Path)
     soak.add_argument("--iterations", type=int, default=3)
+    independent = subs.add_parser("independent-ranking")
+    independent.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -327,6 +329,20 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "independent-ranking":
+        from factory.ranking.independent import IndependentRanking, IndependentRankingRequest
+
+        service = IndependentRanking(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("independent ranking request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    IndependentRankingRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command == "soak":
         from factory.operations.soak import run as soak_run
 
