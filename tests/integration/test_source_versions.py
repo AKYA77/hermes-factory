@@ -287,3 +287,50 @@ def test_source_diff_budget_preserves_incomplete_events_without_complete_receipt
     assert len(pending) == 1 and (pending[0] / "inputs.json").exists()
     assert not json.loads((pending[0] / "failure.json").read_text())["complete_comparison"]
     assert (pending[0] / "events.jsonl").stat().st_size > 0
+
+
+def test_source_coverage_reports_observed_selected_and_quarantined(tmp_path):
+    data = quotes([(110000, 110010)] * 4)
+    a = capture(tmp_path, data, b"generated capture A")
+    changed = [replace(q, bid_int=q.bid_int + 1) for q in data]
+    b = capture(tmp_path, changed, b"generated corrected capture B")
+    versions = SourceVersions(tmp_path, Catalog(tmp_path / "catalog"))
+    scope = slot(data)
+    versions.observe(scope, a["dataset_hash"])
+    second = versions.observe(scope, b["dataset_hash"])
+    chosen = versions.select(second, actor="test", reason="reviewed correction")
+
+    report = versions.coverage()
+    assert report["schema_version"] == "source-coverage/v1"
+    assert report["observed"] == 2
+    assert report["selected"] == 1
+    assert report["unresolved_quarantined"] == 0
+    entry = report["instruments"]["EURUSD"]
+    assert entry["observed"] == 2 and entry["selected"] == 1
+    assert len(entry["periods"]) == 2
+    selected = [p for p in entry["periods"] if p["selected"]]
+    assert len(selected) == 1 and selected[0]["observation_id"] == second
+    assert selected[0]["dataset_hash"] == b["dataset_hash"]
+    assert chosen
+
+    versions.quarantine(second, "test", "reviewed quarantine")
+    report = versions.coverage()
+    assert report["unresolved_quarantined"] == 1
+    assert report["instruments"]["EURUSD"]["unresolved_quarantined"] == 1
+    assert report["instruments"]["EURUSD"]["periods"][1]["unresolved_quarantined"] is True
+    assert report["instruments"]["EURUSD"]["selected"] == 1
+
+
+def test_resolved_quarantine_stops_blocking_coverage(tmp_path):
+    data = quotes([(110000, 110010)] * 4)
+    a = capture(tmp_path, data, b"generated capture A")
+    versions = SourceVersions(tmp_path, Catalog(tmp_path / "catalog"))
+    scope = slot(data)
+    observed = versions.observe(scope, a["dataset_hash"])
+    versions.select(observed, actor="test", reason="initial")
+    quarantine_id = versions.quarantine(observed, "test", "reviewed quarantine")
+    assert versions.coverage()["unresolved_quarantined"] == 1
+    versions.resolve(quarantine_id, "test", "reviewed restoration")
+    report = versions.coverage()
+    assert report["unresolved_quarantined"] == 0
+    assert report["instruments"]["EURUSD"]["unresolved_quarantined"] == 0

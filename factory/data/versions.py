@@ -249,6 +249,64 @@ class SourceVersions:
             )
         return fingerprint(body)
 
+    def coverage(self):
+        """Per-instrument source coverage from immutable observations and selections.
+
+        Reports observed, selected and unresolved-quarantined counts with the
+        period of each observation. A quarantine is only reflected once it is
+        unresolved; a resolved quarantine stops blocking selection.
+        """
+        observations = self.store.rows(
+            "SELECT observation_id, slot_hash, dataset_hash, body_json "
+            "FROM source_observations ORDER BY sequence"
+        )
+        selected = {
+            row["observation_id"]
+            for row in self.store.rows(
+                "SELECT s.observation_id FROM source_selections s JOIN "
+                "(SELECT slot_hash, max(sequence) sequence FROM source_selections "
+                "GROUP BY slot_hash) latest "
+                "ON latest.slot_hash=s.slot_hash AND latest.sequence=s.sequence"
+            )
+        }
+        quarantined = {
+            row["observation_id"]
+            for row in self.store.rows(
+                "SELECT q.observation_id FROM source_quarantines q "
+                "LEFT JOIN source_quarantine_resolutions r USING(quarantine_id) "
+                "WHERE r.quarantine_id IS NULL"
+            )
+        }
+        by_instrument = {}
+        for row in observations:
+            body = json.loads(row["body_json"])
+            slot = SourceSlot.model_validate(body["slot"])
+            entry = by_instrument.setdefault(
+                slot.instrument,
+                {"observed": 0, "selected": 0, "unresolved_quarantined": 0, "periods": []},
+            )
+            entry["observed"] += 1
+            entry["selected"] += 1 if row["observation_id"] in selected else 0
+            entry["unresolved_quarantined"] += 1 if row["observation_id"] in quarantined else 0
+            entry["periods"].append(
+                {
+                    "observation_id": row["observation_id"],
+                    "dataset_hash": row["dataset_hash"],
+                    "start_ns": slot.start_ns,
+                    "end_ns": slot.end_ns,
+                    "selected": row["observation_id"] in selected,
+                    "unresolved_quarantined": row["observation_id"] in quarantined,
+                }
+            )
+        return {
+            "schema_version": "source-coverage/v1",
+            "instruments": by_instrument,
+            "observed": len(observations),
+            "selected": len(selected & {row["observation_id"] for row in observations}),
+            "unresolved_quarantined": len(quarantined),
+            "scope": "immutable source coverage; not historical approval or complete market coverage",
+        }
+
     def snapshot(self, slots):
         if not 1 <= len(slots) <= 512:
             raise ValueError("snapshot requires 1..512 explicit source slots")

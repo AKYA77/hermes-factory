@@ -670,6 +670,13 @@ def create_app(root, dashboard=None):
     def coverage():
         return store.rows("SELECT * FROM research_coverage ORDER BY instrument,family,timeframe")
 
+    @app.get("/api/v1/source-coverage", dependencies=read)
+    def source_coverage():
+        from factory.data import Catalog
+        from factory.data.versions import SourceVersions
+
+        return SourceVersions(root, Catalog(root / "catalog")).coverage()
+
     @app.get("/api/v1/profiles", dependencies=read)
     def profiles():
         from factory.instruments.registry import registry

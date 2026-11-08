@@ -200,8 +200,15 @@ the full historical and scientific acceptance remains open.
   `FAILED_CHECKS`, `INSUFFICIENT_EVIDENCE`), because the leaderboard previously
   dropped non-pessimistic and mismatched-version rows without a trace. A poor
   training score stays visible; a failed out-of-sample run is not validated and
-  is not discarded. CLI `retained-candidates`; API
+  is not validated and is not discarded. CLI `retained-candidates`; API
   `POST /api/v1/research/retained-candidates`.
+- ADR0061 source coverage report: `SourceVersions.coverage()` reports per
+  instrument the observed, selected and unresolved-quarantined counts plus each
+  observation's period, dataset hash and states. `selected` follows the latest
+  selection per slot so a re-selection updates coverage; a quarantine is reflected
+  only while unresolved. API `GET /api/v1/source-coverage`; CLI
+  `source-coverage`. Live state root: EURUSD has 5 observed monthly periods, none
+  selected and none quarantined.
 
 ## Preserved
 

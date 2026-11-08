@@ -67,6 +67,7 @@ def main():
     subs.add_parser("refresh")
     subs.add_parser("profiles")
     subs.add_parser("profile-integrity")
+    subs.add_parser("source-coverage")
     retained = subs.add_parser("retained-candidates")
     retained.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
@@ -371,6 +372,11 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "source-coverage":
+        from factory.data import Catalog
+        from factory.data.versions import SourceVersions
+
+        print(json.dumps(SourceVersions(root, Catalog(root / "catalog")).coverage(), indent=2))
     elif args.command == "retained-candidates":
         from factory.ranking.retained import RetainedCandidates, RetainedCandidatesRequest
 

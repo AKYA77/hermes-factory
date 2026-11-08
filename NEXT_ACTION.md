@@ -126,8 +126,9 @@ state, hazards and continuation loop, and is linked from `docs/operator-guide.md
 T02 has begun: the bar/indicator cache identity now covers code and fill version
 (ADR0057), T11 has begun with calendar gap classification (ADR0058), and T03 has
 begun with completion idempotency after worker restart (ADR0059), and T14 has
-begun with retained rejected candidates (ADR0060). Do not stop at one milestone
-or repeat expensive campaigns merely to increase counts.
+begun with retained rejected candidates (ADR0060), and T05 has begun with a
+source coverage report (ADR0061). Do not stop at one milestone or repeat
+expensive campaigns merely to increase counts.
 
 ## Publication blocker
 
