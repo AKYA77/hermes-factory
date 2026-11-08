@@ -77,6 +77,11 @@ the full historical and scientific acceptance remains open.
   different canonical dataset. `qualification_authorized` is always false.
   CLI `improvement-confirmation` and authenticated API
   `POST /api/v1/research/improvement-confirmation`.
+- ADR0043 multiple-testing safeguards: `multiple-testing/v1` reports uncorrected,
+  Bonferroni and Benjamini-Hochberg pass counts for a supplied candidate family,
+  with the corrected threshold. Content-addressed and immutable;
+  `qualification_authorized` is always false. CLI `multiple-testing` and
+  authenticated API `POST /api/v1/research/multiple-testing`.
 
 ## Preserved
 

@@ -46,6 +46,8 @@ def main():
     lineage.add_argument("request_file", type=Path)
     confirmation = subs.add_parser("improvement-confirmation")
     confirmation.add_argument("request_file", type=Path)
+    multiple_testing = subs.add_parser("multiple-testing")
+    multiple_testing.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -314,6 +316,23 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "multiple-testing":
+        from factory.validation.multiple_testing import (
+            MultipleTesting,
+            MultipleTestingRequest,
+        )
+
+        service = MultipleTesting(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("multiple-testing request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    MultipleTestingRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command == "improvement-confirmation":
         from factory.improvement.confirmation import Confirmation, ConfirmationRequest
 
