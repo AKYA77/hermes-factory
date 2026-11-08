@@ -111,12 +111,13 @@ generation is provided by `improvement/v1`; global regime/source validation stay
 open under `scientific_selection`.
 
 Then continue the dependency-aware queue: `scientific_selection` has begun
-(ADR0043 multiple-testing safeguards). Remaining there: global candidate-selection
-controls, comparability contracts, qualified ranking and diversity-aware top-five
-reporting. Then source/profile/refresh/storage/data APIs, full dashboard,
-installed provenance/Ubuntu/systemd/update/rollback/backup/restore, security
-remediation and full source-to-restore/release/Hermes handoff. Do not stop at one
-milestone or repeat expensive campaigns merely to increase counts.
+(ADR0043 multiple-testing safeguards, ADR0044 diversity-aware qualified
+shortlist). Remaining there: global candidate-selection controls, comparability
+contracts and qualified ranking. Then source/profile/refresh/storage/data APIs,
+full dashboard, installed provenance/Ubuntu/systemd/update/rollback/backup/
+restore, security remediation and full source-to-restore/release/Hermes
+handoff. Do not stop at one milestone or repeat expensive campaigns merely to
+increase counts.
 
 ## Publication blocker
 

@@ -82,6 +82,12 @@ the full historical and scientific acceptance remains open.
   with the corrected threshold. Content-addressed and immutable;
   `qualification_authorized` is always false. CLI `multiple-testing` and
   authenticated API `POST /api/v1/research/multiple-testing`.
+- ADR0044 diversity-aware qualified shortlist: `qualified-ranking/v1` applies a
+  greedy `(operator, timeframe)` diversity guard over the tier-ranked candidate
+  list, reporting DIVERSITY_LIMIT and SLOT_LIMIT exclusions plus per-key counts.
+  Content-addressed and immutable; `qualification_authorized` is always false.
+  CLI `qualified-ranking` and authenticated API
+  `POST /api/v1/research/qualified-ranking`.
 
 ## Preserved
 
