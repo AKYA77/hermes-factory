@@ -146,6 +146,14 @@ the full historical and scientific acceptance remains open.
   `restore` and `rollback-plan`; `scripts/restore.sh` and
   `scripts/rollback-plan.sh`. `scripts/rollback.sh` remains a refusal stub
   because no production release exists yet.
+- ADR0054 installed-operations doctor report: `factory.cli doctor` now reports host
+  inventory, Python-against-3.12 and resolved Node version, database presence,
+  `PRAGMA integrity_check`, job/experiment counts and highest schema migration,
+  catalog partition/row/byte totals, source fidelity labels, and the standing
+  `operation_ready: false`. Read-only; still exits 1 as a pre-flight report.
+  Observed here: Python 3.12.3, Node v26.7.0, 6 CPUs, 12.5 GB RAM, 87 GB free,
+  integrity ok with 13 migrations, 32 catalog partitions holding 92.4M rows and
+  1.2 GB at `SOURCE_BID_ASK` fidelity.
 
 ## Preserved
 

@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import secrets
+from contextlib import closing
 from factory.data import atomic_bytes
 from factory.experiments import Store
 
@@ -288,15 +289,49 @@ def main():
         import platform
         import psutil
         import shutil
+        import sqlite3
+        import subprocess
 
+        from factory.data.sources import SourceRegistry
+
+        sources = SourceRegistry(root / "catalog").list()
+        storage = SourceRegistry(root / "catalog").storage()
+        database = {"present": (root / "factory.sqlite").exists()}
+        if database["present"]:
+            with closing(sqlite3.connect(root / "factory.sqlite")) as db:
+                database["integrity_check"] = db.execute("PRAGMA integrity_check").fetchone()[0]
+                database["jobs"] = db.execute("SELECT count(*) FROM jobs").fetchone()[0]
+                database["experiments"] = db.execute("SELECT count(*) FROM experiments").fetchone()[
+                    0
+                ]
+                database["migrations"] = db.execute(
+                    "SELECT max(version) FROM schema_migrations"
+                ).fetchone()[0]
+        try:
+            node = subprocess.run(["node", "--version"], capture_output=True, text=True, timeout=10)
+            node_version = node.stdout.strip() or None
+        except (OSError, subprocess.SubprocessError):
+            node_version = None
+        python_ok = platform.python_version().startswith("3.12")
         print(
             json.dumps(
                 {
                     "os": platform.platform(),
+                    "machine": platform.machine(),
                     "python": platform.python_version(),
+                    "python_required": "3.12",
+                    "python_ok": python_ok,
+                    "node_version": node_version,
                     "logical_cpu": os.cpu_count(),
                     "ram_bytes": psutil.virtual_memory().total,
                     "disk_free_bytes": shutil.disk_usage(".").free,
+                    "database": database,
+                    "catalog": {
+                        "partitions": storage["partitions"],
+                        "rows": storage["rows"],
+                        "bytes": storage["bytes"],
+                    },
+                    "source_fidelity": sorted({source["fidelity"] for source in sources}),
                     "operation_ready": False,
                     "reason": "Development checkpoint; release gates pending",
                 },
