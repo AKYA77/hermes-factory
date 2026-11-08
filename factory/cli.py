@@ -56,6 +56,9 @@ def main():
     funnel.add_argument("request_file", type=Path)
     comparability = subs.add_parser("comparability-contract")
     comparability.add_argument("request_file", type=Path)
+    soak = subs.add_parser("soak")
+    soak.add_argument("output", type=Path)
+    soak.add_argument("--iterations", type=int, default=3)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -324,6 +327,10 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "soak":
+        from factory.operations.soak import run as soak_run
+
+        soak_run(args.output, iterations=args.iterations)
     elif args.command == "comparability-contract":
         from factory.validation.comparability_contract import (
             ComparabilityContractRequest,

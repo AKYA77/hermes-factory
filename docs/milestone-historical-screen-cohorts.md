@@ -107,6 +107,11 @@ the full historical and scientific acceptance remains open.
   `artifacts/comparability-contracts/`; `qualification_authorized` is always false.
   CLI `comparability-contract` and authenticated API
   `POST /api/v1/research/comparability-contract`.
+- ADR0048 bounded synthetic soak: `factory/operations/soak.py` repeats a bounded
+  synthetic generation-plus-replay cycle, sampling RSS and swap against
+  `max_rss_bytes` (default 8 GiB) and `max_wall_seconds`, archiving peak RSS, peak
+  swap, `within_limits`, `oom_detected` and `uncontrolled_swap`. Scope is
+  `NOT VPS / NOT HISTORICAL / NOT MARKET VALIDATION`. CLI `soak`.
 
 ## Preserved
 
