@@ -463,3 +463,27 @@ def test_reclaim_all_frees_published_staging_and_preserves_canonical(tmp_path):
     assert list(staging.glob("*/checkpoint.json"))
     # A second pass removes nothing further.
     assert [r["reclaimed_payload_bytes"] for r in resume.reclaim_all(root)] == [0]
+
+
+def test_concurrent_imports_share_the_budget_lock(tmp_path):
+    import threading
+
+    first = archive_fixture(tmp_path, "EURUSD")
+    second = archive_fixture(tmp_path, "GBPUSD")
+    root = tmp_path / "catalog"
+    results, errors = [], []
+
+    def run(source):
+        try:
+            results.append(resume.import_archive(root, source, PROVENANCE, 4))
+        except Exception as exc:  # noqa: BLE001 - surfaced via assertions
+            errors.append(exc)
+
+    threads = [threading.Thread(target=run, args=(s,)) for s in (first, second)]
+    for thread in threads:
+        thread.start()
+    for thread in threads:
+        thread.join()
+    assert not errors
+    assert len(results) == 2
+    assert len({r[0]["dataset_hash"] for r in results}) == 2

@@ -173,7 +173,12 @@ def run(args):
             if shutil.disk_usage(catalog).free < DISK_RESERVE_BYTES:
                 print(json.dumps({"status": "PAUSED_DISK_RESERVE", "rounds": rounds}))
                 break
-            wave = todo[: args.workers]
+            # Prefer partitions that have never been attempted. A run of blocked
+            # partitions at the head of the queue must not consume the whole
+            # no-progress budget and stall the remaining work.
+            untried = [i for i in todo if i["key"] not in state["partitions"]]
+            retryable = [i for i in todo if i["key"] in state["partitions"]]
+            wave = (untried or retryable)[: args.workers]
             before = sum(
                 1
                 for item in requested
