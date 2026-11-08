@@ -221,6 +221,11 @@ the full historical and scientific acceptance remains open.
   than the stop level with the role recorded as `STOP_LOSS`, and that a trade
   still open at the deadline carries the `TIMEOUT` flag. T09 previously had no
   coverage despite the runner enforcing all three.
+- ADR0064 board cap, independence and retention coverage:
+  `tests/integration/test_boards.py` asserts the five-slot cap on a populated
+  board, that EURUSD and GBPUSD boards are disjoint, and that retention stays
+  strictly below 70% with eleven candidates. T16 previously covered only the
+  empty-board case.
 
 ## Preserved
 

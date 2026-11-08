@@ -129,8 +129,9 @@ begun with completion idempotency after worker restart (ADR0059), and T14 has
 begun with retained rejected candidates (ADR0060), and T05 has begun with a
 source coverage report (ADR0061), and T08 has begun with adverse fill coverage
 for entry and exit (ADR0062), and T09 has begun with order semantics coverage
-(ADR0063). Do not stop at one milestone or repeat expensive campaigns merely to
-increase counts.
+(ADR0063), and T16 has begun with board cap, independence and retention
+coverage (ADR0064). Do not stop at one milestone or repeat expensive campaigns
+merely to increase counts.
 
 ## Publication blocker
 
