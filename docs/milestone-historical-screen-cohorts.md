@@ -248,6 +248,12 @@ the full historical and scientific acceptance remains open.
   outcome for a discovered improvement edge, then asserts the parent experiment
   row is unchanged, the child's `parent_id`/`changed_fields`/`hypothesis` are
   intact, and the failed outcome is retained rather than rewritten.
+- ADR0069 purge/embargo fold geometry:
+  `test_T15_purge_and_embargo_shrink_every_fold` builds a protocol with
+  `purge_seconds=86400` and `embargo_seconds=3600`, then asserts every fold has
+  `train_end == oos_start - (purge + embargo)`, that consecutive folds meet
+  exactly at the embargo boundary, and that the holdout start equals the final
+  fold's out-of-sample end so purge/embargo never shrink the holdout.
 
 ## Preserved
 

@@ -197,3 +197,21 @@ def test_v2_requires_explicit_thresholds_and_v1_identity_remains_read_only(tmp_p
     )
     assert not store.rows("SELECT * FROM jobs")
     assert not store.rows("SELECT * FROM holdout_consumptions")
+
+
+def test_T15_purge_and_embargo_shrink_every_fold(tmp_path):
+    protocol = protocol_fixture(tmp_path, purpose="synthetic_software_rehearsal")
+    protocol = protocol.model_copy(update={"embargo_seconds": 3600})
+    folds = protocol.folds()
+    assert len(folds) >= 2
+    gap = (protocol.purge_seconds + protocol.embargo_seconds) * 10**9
+    for fold in folds:
+        assert fold["train_end"] == fold["oos_start"] - gap
+        assert fold["train_end"] > fold["train_start"]
+        assert fold["oos_end"] > fold["oos_start"]
+    # Folds are quarterly, ordered and non-overlapping: each out-of-sample start
+    # is the previous fold's out-of-sample end plus the embargo gap.
+    for previous, following in zip(folds, folds[1:]):
+        assert following["oos_start"] == previous["oos_end"] + protocol.embargo_seconds * 10**9
+    # The holdout window is never shrunk by purge or embargo.
+    assert protocol.holdout.window.start_ns == max(fold["oos_end"] for fold in folds)

@@ -133,8 +133,9 @@ for entry and exit (ADR0062), and T09 has begun with order semantics coverage
 coverage (ADR0064), and T18 has begun with search fairness across protocols
 (ADR0065), and T17 has begun with duplicate-skip accounting coverage (ADR0066),
 and T12 has begun with MFE/MAE path coverage (ADR0067), and T13 has begun with
-failed-child lineage preservation (ADR0068). Do not stop at one milestone or
-repeat expensive campaigns merely to increase counts.
+failed-child lineage preservation (ADR0068), and T15 has begun with purge/embargo
+fold geometry (ADR0069). Do not stop at one milestone or repeat expensive
+campaigns merely to increase counts.
 
 ## Publication blocker
 
