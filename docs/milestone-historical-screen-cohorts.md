@@ -194,6 +194,14 @@ the full historical and scientific acceptance remains open.
   completes it again with identical content. The experiment count and cost-label
   audit count are unchanged, exactly one additional attempt is recorded, and the
   job ends `COMPLETED` — covering the T03 window the fenced-restart test did not.
+- ADR0060 retained rejected candidates: `retained-rejected-candidates/v1` reports
+  every experiment row for an instrument with its status, metrics and exclusion
+  reasons (`EXECUTION_VERSION_MISMATCH`, `NON_PESSIMISTIC_SCENARIO`,
+  `FAILED_CHECKS`, `INSUFFICIENT_EVIDENCE`), because the leaderboard previously
+  dropped non-pessimistic and mismatched-version rows without a trace. A poor
+  training score stays visible; a failed out-of-sample run is not validated and
+  is not discarded. CLI `retained-candidates`; API
+  `POST /api/v1/research/retained-candidates`.
 
 ## Preserved
 

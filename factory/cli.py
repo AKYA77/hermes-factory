@@ -67,6 +67,8 @@ def main():
     subs.add_parser("refresh")
     subs.add_parser("profiles")
     subs.add_parser("profile-integrity")
+    retained = subs.add_parser("retained-candidates")
+    retained.add_argument("request_file", type=Path)
     quality = subs.add_parser("source-quality")
     quality.add_argument("dataset_hash")
     quality.add_argument("policy_file", type=Path)
@@ -369,6 +371,20 @@ def main():
             print(json.dumps({"cohort_id": identity, "paused": cohorts.store.paused()}))
         else:
             print(json.dumps(cohorts.report(args.cohort_id)))
+    elif args.command == "retained-candidates":
+        from factory.ranking.retained import RetainedCandidates, RetainedCandidatesRequest
+
+        service = RetainedCandidates(Store(root / "factory.sqlite"), root)
+        if args.request_file.stat().st_size > 65536:
+            raise ValueError("retained candidates request exceeds input budget")
+        print(
+            json.dumps(
+                service.report(
+                    RetainedCandidatesRequest.model_validate_json(args.request_file.read_text())
+                ),
+                indent=2,
+            )
+        )
     elif args.command in ("profiles", "profile-integrity"):
         from factory.instruments import registry as profiles_module
         from factory.instruments.registry import integrity

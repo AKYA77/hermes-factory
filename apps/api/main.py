@@ -36,6 +36,7 @@ from factory.validation.comparability_contract import (
     ComparabilityContracts,
 )
 from factory.ranking.independent import IndependentRanking, IndependentRankingRequest
+from factory.ranking.retained import RetainedCandidates, RetainedCandidatesRequest
 from factory.exploration.persistent import Search, SearchProtocol, status as research_status
 
 
@@ -313,6 +314,10 @@ def create_app(root, dashboard=None):
     @app.post("/api/v1/research/independent-ranking", dependencies=read)
     def independent_ranking(payload: IndependentRankingRequest):
         return IndependentRanking(store, root).report(payload)
+
+    @app.post("/api/v1/research/retained-candidates", dependencies=read)
+    def retained_candidates(payload: RetainedCandidatesRequest):
+        return RetainedCandidates(store, root).report(payload)
 
     @app.get("/api/v1/research/screen-cohorts", dependencies=read)
     def screen_cohorts(limit: int = Query(20, ge=1, le=100), offset: int = Query(0, ge=0)):
