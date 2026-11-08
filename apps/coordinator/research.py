@@ -36,7 +36,7 @@ def maintenance(store, root, max_queued=2):
     active = store.rows(
         "SELECT count(*) n FROM jobs WHERE state IN ('QUEUED','RUNNING','FAILED_RETRYABLE')"
     )[0]["n"]
-    for row in search.pending():
+    for row in search.fair_pending():
         if active >= max_queued:
             break
         if not search.ready_to_enqueue(row):

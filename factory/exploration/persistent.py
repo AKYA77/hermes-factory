@@ -422,6 +422,32 @@ class Search:
              LEFT JOIN search_outcomes o USING(trial_id) WHERE o.trial_id IS NULL
              ORDER BY t.created_at,t.trial_id""")
 
+    def fair_pending(self):
+        """Order pending trials so no eligible protocol is starved.
+
+        Trials are ordered by how much each protocol has already produced
+        (recorded outcomes), then by arrival. A protocol that has produced
+        little gets the next turn, so an eligible instrument is not starved
+        while the queue has work. This is scheduling fairness only; it never
+        changes what is searchable or what a trial may conclude.
+        """
+        rows = self.pending()
+        produced = {
+            row["protocol_hash"]: row["n"]
+            for row in self.store.rows(
+                "SELECT t.protocol_hash, count(*) n FROM search_outcomes o "
+                "JOIN search_trials t USING(trial_id) GROUP BY t.protocol_hash"
+            )
+        }
+        return sorted(
+            rows,
+            key=lambda row: (
+                produced.get(row["protocol_hash"], 0),
+                row["created_at"],
+                row["trial_id"],
+            ),
+        )
+
     def set_enabled(self, identity, enabled, actor="operator"):
         protocol = self.protocol(identity)
         if enabled:
@@ -472,7 +498,7 @@ class Search:
     def enqueue_pending(self):
         # Idempotent recovery if a coordinator died after durable ask, before enqueue.
         count = 0
-        for row in self.pending():
+        for row in self.fair_pending():
             if not self.ready_to_enqueue(row):
                 continue
             protocol = self.protocol(row["protocol_hash"])

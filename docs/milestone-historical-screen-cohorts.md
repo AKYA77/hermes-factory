@@ -226,6 +226,13 @@ the full historical and scientific acceptance remains open.
   board, that EURUSD and GBPUSD boards are disjoint, and that retention stays
   strictly below 70% with eleven candidates. T16 previously covered only the
   empty-board case.
+- ADR0065 search fairness across protocols: `Search.fair_pending()` orders pending
+  trials by how much each protocol has already produced (immutable
+  `search_outcomes` joined to `search_trials`), then by arrival, so a protocol
+  that generated trials quickly cannot starve an eligible instrument.
+  `enqueue_pending()` and the coordinator enqueue loop both use it. Scheduling
+  fairness only — it never changes what is searchable or what a trial may
+  conclude.
 
 ## Preserved
 
