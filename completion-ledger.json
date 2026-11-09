@@ -1,10 +1,10 @@
 {
-  "audited_head": "fa5ecf1d75791c7f0e057ca6c4d7314874412d74",
+  "audited_head": "a99c825b71ca6f0673b79a016040ddcad7251a93",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "fa5ecf1d75791c7f0e057ca6c4d7314874412d74",
+    "git_commit": "a99c825b71ca6f0673b79a016040ddcad7251a93",
     "source_sha256": "4757dd32aa1ff806ebe6d6617b315c8d4fd8cd7d4c21f51a9b1e85cb11824770",
     "working_tree_scientific_edits": false
   },
@@ -1085,10 +1085,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Rehearsal covers eleven stages over genuine data. Remaining: import, catalog and the dashboard stage, plus browser acceptance.",
+      "next_required_action": "Rehearsal covers twelve stages over genuine data. Remaining: import and catalog, plus browser acceptance of the dashboard.",
       "requirement_id": "T30",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Source-to-restore rehearsal over the genuine acquired catalog, now covering eleven stages in one chain: verify (deep Catalog.verify on sampled partitions), admit (reviewed profile, calendar and source-quality admission), feature_cache (closed M5 bars), generate (strategy signal compilation), screen (tier-0 screening receipt), native_replay (full tick stream with a monotonicity check), diagnose (native replay, completion and the shadow diagnostic), independent_evaluation (OOS evaluation), improve (search protocol registration, parent run, improvement policy, child discovery and feedback), rank, and backup_restore (backup plus the restore rehearsal). Receipt source-to-restore-rehearsal/v1 lists the stages that ran and, explicitly, the stages that did not: import, catalog and dashboard. Measured on this host over a 2,032,079-tick genuine partition: 6,333 M5 bars, 24,405 files backed up, 13 migrations re-applied, 129 catalog partitions re-verified, 345.6 s wall, 1.48 GB peak RSS. Real Forex through admission, screening, native replay, diagnosis, independent evaluation, controlled improvement and backup/restore is now exercised; the remaining stages stay open.",
+      "supporting_evidence_scope": "Source-to-restore rehearsal over the genuine acquired catalog, now covering twelve stages in one chain: verify (deep Catalog.verify on sampled partitions), admit (reviewed profile, calendar and source-quality admission), feature_cache (closed M5 bars), generate (strategy signal compilation), screen (tier-0 screening receipt), native_replay (full tick stream with a monotonicity check), diagnose (native replay, completion and the shadow diagnostic), independent_evaluation (OOS evaluation), improve (search protocol registration, parent run, improvement policy, child discovery and feedback), rank, dashboard (the API served over TestClient and read back), and backup_restore (backup plus the restore rehearsal). Receipt source-to-restore-rehearsal/v1 lists the stages that ran and, explicitly, the stages that did not: import and catalog. Measured on this host over a 2,032,079-tick genuine partition: 6,333 M5 bars, 24,405 files backed up, 13 migrations re-applied, 129 catalog partitions re-verified, 345.6 s wall, 1.48 GB peak RSS. Real Forex through admission, screening, native replay, diagnosis, independent evaluation, controlled improvement, the dashboard and backup/restore is now exercised; the remaining stages stay open.",
       "title": "Full vertical",
       "verification_command": "bash scripts/verify.sh"
     },
