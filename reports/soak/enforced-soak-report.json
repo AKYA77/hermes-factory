@@ -1,0 +1,95 @@
+{
+  "enforcement": {
+    "host": {
+      "kernel": "6.8.0-147-generic",
+      "memory_total_bytes": "12541485056",
+      "nproc": "6"
+    },
+    "mechanism": "systemd-run --scope",
+    "observed": {
+      "cgroup_path": "0::/system.slice/run-r497514bfdd714c988d93b94073318210.scope",
+      "cgroup_root": "/sys/fs/cgroup/system.slice/run-r497514bfdd714c988d93b94073318210.scope",
+      "cpu_max": "400000 100000",
+      "memory_high": "max",
+      "memory_max": "8589934592",
+      "swap_max": "0"
+    },
+    "requested": {
+      "CPUQuota": "400%",
+      "MemoryMax": "8G",
+      "MemorySwapMax": "0"
+    },
+    "wall_seconds_including_probe": 486.891986459028
+  },
+  "iterations_completed": 8,
+  "iterations_requested": 8,
+  "limitations": [
+    "Synthetic fixture only; no Forex/Gold corpus",
+    "Sampled RSS at 20ms may miss shorter peaks",
+    "Swap presence is reported, not treated as failure",
+    "No 8GB stress claim beyond the configured limit"
+  ],
+  "limits": {
+    "max_rss_bytes": 8589934592,
+    "max_wall_seconds": 3000
+  },
+  "oom_detected": false,
+  "peak_rss_bytes_sampled": 559689728,
+  "peak_swap_bytes": 0,
+  "records": [
+    {
+      "completed_trades": 2652,
+      "iteration": 0,
+      "status": "COMPLETE",
+      "wall_seconds": 56.32564471708611
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 1,
+      "status": "COMPLETE",
+      "wall_seconds": 55.10311049898155
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 2,
+      "status": "COMPLETE",
+      "wall_seconds": 61.509205023990944
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 3,
+      "status": "COMPLETE",
+      "wall_seconds": 60.95742245996371
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 4,
+      "status": "COMPLETE",
+      "wall_seconds": 60.15210516611114
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 5,
+      "status": "COMPLETE",
+      "wall_seconds": 58.49233677703887
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 6,
+      "status": "COMPLETE",
+      "wall_seconds": 55.25651663704775
+    },
+    {
+      "completed_trades": 2652,
+      "iteration": 7,
+      "status": "COMPLETE",
+      "wall_seconds": 55.88138515781611
+    }
+  ],
+  "rows_per_iteration": 50000,
+  "scope": "NOT VPS / NOT HISTORICAL / NOT MARKET VALIDATION",
+  "status": "BOUNDED_SYNTHETIC_SOAK",
+  "uncontrolled_swap": false,
+  "wall_seconds": 486.15502186096273,
+  "within_limits": true
+}

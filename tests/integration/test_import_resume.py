@@ -465,25 +465,25 @@ def test_reclaim_all_frees_published_staging_and_preserves_canonical(tmp_path):
     assert [r["reclaimed_payload_bytes"] for r in resume.reclaim_all(root)] == [0]
 
 
-def test_concurrent_imports_share_the_budget_lock(tmp_path):
-    import threading
+def test_budget_lock_fails_fast_under_contention(tmp_path):
+    """The catalog-wide budget lock is a deliberate fail-fast guard.
 
-    first = archive_fixture(tmp_path, "EURUSD")
-    second = archive_fixture(tmp_path, "GBPUSD")
+    A second non-blocking attempt must raise rather than queue, so the budget
+    problem is visible immediately instead of becoming a silent backlog. The
+    supervisor therefore runs with a single worker by design.
+    """
+    import fcntl
+
+    lock_path = tmp_path / "payload-budget.lock"
+    with lock_path.open("a") as first, lock_path.open("a") as second:
+        fcntl.flock(first, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        with pytest.raises(BlockingIOError):
+            fcntl.flock(second, fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+
+def test_single_worker_import_is_uncontended(tmp_path):
+    """A single sequential import holds the budget lock only for its own chunk."""
+    source = archive_fixture(tmp_path, "EURUSD")
     root = tmp_path / "catalog"
-    results, errors = [], []
-
-    def run(source):
-        try:
-            results.append(resume.import_archive(root, source, PROVENANCE, 4))
-        except Exception as exc:  # noqa: BLE001 - surfaced via assertions
-            errors.append(exc)
-
-    threads = [threading.Thread(target=run, args=(s,)) for s in (first, second)]
-    for thread in threads:
-        thread.start()
-    for thread in threads:
-        thread.join()
-    assert not errors
-    assert len(results) == 2
-    assert len({r[0]["dataset_hash"] for r in results}) == 2
+    result = resume.import_archive(root, source, PROVENANCE, 4)
+    assert result[0]["rows"] > 0

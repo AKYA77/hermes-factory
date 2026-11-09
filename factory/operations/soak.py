@@ -35,11 +35,14 @@ def run(
     iterations=3,
     max_rss_bytes=DEFAULT_MAX_RSS_BYTES,
     max_wall_seconds=DEFAULT_MAX_WALL_SECONDS,
+    rows=1200,
 ):
     if iterations < 1:
         raise ValueError("soak requires at least one iteration")
     if max_rss_bytes < 1 or max_wall_seconds < 1:
         raise ValueError("soak limits must be positive")
+    if rows < 1:
+        raise ValueError("soak requires at least one row")
     records = []
     peak_rss = 0
     peak_swap = 0
@@ -50,7 +53,7 @@ def run(
             break
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            payload = seed(root, 1200)
+            payload = seed(root, rows)
             inp = root / "input.json"
             inp.write_text(json.dumps(payload, sort_keys=True))
             out = root / "out.json"
@@ -100,6 +103,7 @@ def run(
         "scope": "NOT VPS / NOT HISTORICAL / NOT MARKET VALIDATION",
         "iterations_requested": iterations,
         "iterations_completed": sum(1 for r in records if r["status"] == "COMPLETE"),
+        "rows_per_iteration": rows,
         "peak_rss_bytes_sampled": peak_rss,
         "peak_swap_bytes": peak_swap,
         "wall_seconds": wall,
@@ -121,9 +125,14 @@ def run(
 
 if __name__ == "__main__":
     iterations = int(sys.argv[2]) if len(sys.argv) > 2 else 3
+    rows = int(sys.argv[3]) if len(sys.argv) > 3 else 1200
     print(
         json.dumps(
-            run(sys.argv[1] if len(sys.argv) > 1 else "reports/soak/soak-report.json", iterations),
+            run(
+                sys.argv[1] if len(sys.argv) > 1 else "reports/soak/soak-report.json",
+                iterations,
+                rows=rows,
+            ),
             indent=2,
         )
     )

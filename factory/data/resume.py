@@ -92,28 +92,12 @@ def _payload_bytes(root):
     return total
 
 
-def _acquire(lock, timeout=120.0):
-    """Take an exclusive flock, waiting rather than failing under contention.
-
-    A non-blocking attempt makes concurrent imports fail spuriously: the losing
-    worker raises BlockingIOError and its partition is blocked even though the
-    budget was never actually exhausted.
-    """
-    deadline = time.monotonic() + timeout
-    while True:
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-            return
-        except BlockingIOError:
-            if time.monotonic() >= deadline:
-                raise
-            time.sleep(0.05)
-
-
 def _budgeted_chunk(root, rows, budget):
     # Serialize payload admission across all import intents in this catalog.
+    # The non-blocking lock is a deliberate fail-fast guard: concurrent imports
+    # must fail rather than queue, so the budget problem is visible immediately.
     with (root.parent / "payload-budget.lock").open("a") as lock:
-        _acquire(lock)
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         sink = pa.BufferOutputStream()
         pq.write_table(
             pa.Table.from_pylist([q.__dict__ for q in rows], schema=SCHEMA),
@@ -216,7 +200,7 @@ def reclaim(catalog, checkpoint_id):
         _save(checkpoint, state)
         removed = 0
         with (root.parent / "payload-budget.lock").open("a") as budget_lock:
-            _acquire(budget_lock)
+            fcntl.flock(budget_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
             for path in paths:
                 removed += path.stat().st_size
                 path.unlink()

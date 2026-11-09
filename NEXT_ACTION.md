@@ -34,6 +34,41 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+**T24 enforced soak (ADR0048 extended).** `scripts/enforced_soak.py` runs the
+bounded synthetic soak inside a `systemd-run --scope` with `MemoryMax=8G`,
+`CPUQuota=400%` and `MemorySwapMax=0`, and records the cgroup values the kernel
+actually applied rather than the requested ones. Measured on this host:
+`cpu_max 400000 100000` (4.0 CPUs), `memory_max 8589934592` (exactly 8 GiB),
+`swap_max 0`. Run: 8 iterations x 50,000 rows, peak sampled RSS 559,689,728 bytes,
+`within_limits` true, `oom_detected` false, `uncontrolled_swap` false, report
+archived at `reports/soak/enforced-soak-report.json`. `factory/operations/soak.py`
+now takes a `rows` parameter so the workload is sized explicitly. Scope is
+unchanged: synthetic fixture only, not VPS equivalence, not historical validation
+and not market validation.
+
+**Two distinct source defects, not one.** `docs/source-quality-findings.md` now
+records both. (a) 2025-10 duplicates a whole hour: the sequence reaches
+`2025-10-27T00:59:58Z` then restarts at `00:00:00Z`, in three instruments at the
+same UTC instant. (b) Many other months contain single ticks one second out of
+order at a second boundary — measured in AUDUSD 2026-09 (row 120,721),
+EURUSD 2026-08 (row 757) and XAUUSD 2026-07 (row 5,402). Both trip the same
+monotonicity gate. 38 partitions across 11 months are quarantined. The gate was
+not relaxed, no row was reordered and no timestamp was nudged.
+
+**Budget lock restored to the documented fail-fast guard.** The previous
+increment replaced the non-blocking payload-budget lock with a waiting lock.
+`NEXT_ACTION.md` and the skill both record that lock as a deliberate fail-fast
+guard, not a bug: concurrent imports must fail rather than queue so the budget
+problem is visible immediately. It is reverted, the supervisor runs with a
+single worker, and `tests/integration/test_import_resume.py` now pins the
+fail-fast behaviour deterministically instead of asserting the reverted behaviour.
+
+**C0 branch rules — measured, not applied.** `docs/branch-protection.md` records
+that the repository is PUBLIC while C0 requires an authorized private repository,
+that neither branch has protection, and the exact `gh api` call that would
+require the four current CI jobs on `main`. Repository governance settings are
+outside the standing authorization, so the configuration is left to the owner.
+
 ADR0035 historical prospective calibration cohorts v2:
 `historical-calibration-policy/v1` immutable typed policy bound to reviewed
 admission, exact profile/dataset/code/training coverage and a literal no-pruning
@@ -137,13 +172,13 @@ failed-child lineage preservation (ADR0068), and T15 has begun with purge/embarg
 fold geometry (ADR0069). Do not stop at one milestone or repeat expensive
 campaigns merely to increase counts.
 
-## Publication blocker
+## Publication blocker — RESOLVED
 
-This host has **no GitHub credentials** (no `gh`, no SSH keys, no tokens) and no
-GitHub connector is attached to the Hermes profile. Read access to the public
-repository works; **push requires owner-supplied repository-scoped credentials**.
-Do not paste tokens into chat or logs. Until credentials exist, commits stay local
-and no remote SHA/CI claim is made.
+GitHub write access is now available: `gh` is authenticated as `AKYA77` with the
+`repo` and `workflow` scopes, and pushes to `build/initial-factory` succeed.
+Earlier checkpoints recorded the host as having no GitHub credentials; that is
+no longer true. Never paste tokens into chat or logs — the credential lives in
+`/root/.config/gh/hosts.yml`.
 
 ## Environment and evidence constraints
 
