@@ -34,6 +34,19 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+**Restore rehearsal added.** T22 records "migration/live process recovery
+pending" and T23 records "full source/state/board production rehearsal pending".
+`restore-test` only verified an isolated copy, so `factory.operations.rehearse_restore`
+now restores a verified backup into a fresh root, opens the store read-write so
+every migration applies, then reads every partition back out of the restored
+catalog with `Catalog.verify`. It refuses a workdir that already exists or sits
+inside the backup, cleans up after itself, and never touches the backup or any
+live state root. Wired as `restore-rehearsal` with a
+`scripts/restore-rehearsal.sh` wrapper; receipt `restore-rehearsal/v1`. Scope is
+an isolated development rehearsal over a fixture state root, not a production
+recovery claim — a production rehearsal over a genuine state root with stopped
+services remains separate work.
+
 **Staging budget is now operator-sized.** Nine partitions were blocked with
 `staging payload budget exceeded` even after `reclaim-staging` cleared published
 staging. Two causes were measured: published staging (reclaimable, 2.1 GB → under
