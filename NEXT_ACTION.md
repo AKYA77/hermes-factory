@@ -34,6 +34,18 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+**T03 process-kill recovery tested against a real kill.** T03 recorded
+"process-kill recovery pending". `test_T03_fenced_restart` rewound `lease_until`
+by hand and `test_supervision` covered the kernel parent-death binding, so
+neither killed a real process and then exercised recovery.
+`tests/recovery/test_process_kill_recovery.py` now starts a holder process that
+claims a job on a short lease, SIGKILLs it mid-job, waits for the lease to lapse
+and verifies the next claim expires the lease, re-claims the same job and
+records `LEASE_EXPIRED`. A second test asserts a claim while the recovered lease
+is live returns `None`, so recovery cannot duplicate live work. Note the actual
+design: **the lease does not self-transition on expiry** — expiry is evaluated
+by the next claim, which is how a coordinator crash presents itself.
+
 **Restore rehearsal added.** T22 records "migration/live process recovery
 pending" and T23 records "full source/state/board production rehearsal pending".
 `restore-test` only verified an isolated copy, so `factory.operations.rehearse_restore`
