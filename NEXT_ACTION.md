@@ -34,6 +34,19 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+**Staging budget is now operator-sized.** Nine partitions were blocked with
+`staging payload budget exceeded` even after `reclaim-staging` cleared published
+staging. Two causes were measured: published staging (reclaimable, 2.1 GB → under
+200 MB) and retained prefixes for partitions that cannot succeed — `reclaim_all`
+deliberately touches only published checkpoints, so 43 quarantined partitions
+keep the partial prefixes they decoded (193 staging dirs, 1.8 GB, five largest
+105–142 MB). That is resumability working as designed, not a leak, but it consumes
+the budget. `scripts/acquire_history.py` now exposes
+`--staging-budget-bytes` and forwards it to each import; the supervisor runs with
+17179869184 (16 GiB) on this host, which has 75 GB free. The guard still bounds
+growth and relaxes no data-quality check. `tests/integration/test_acquire_history.py`
+pins the passthrough.
+
 **T24 enforced soak (ADR0048 extended).** `scripts/enforced_soak.py` runs the
 bounded synthetic soak inside a `systemd-run --scope` with `MemoryMax=8G`,
 `CPUQuota=400%` and `MemorySwapMax=0`, and records the cgroup values the kernel
