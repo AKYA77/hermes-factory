@@ -34,6 +34,17 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+**Source-to-restore rehearsal added over genuine data.**
+`scripts/source_to_restore_rehearsal.py` runs the stages exercisable on this
+host against the real acquired catalog in one chain: verify (deep
+`Catalog.verify`), feature_cache (closed M5 bars), native_replay (full tick
+stream with a monotonicity check), rank, and backup_restore (backup plus the
+restore rehearsal). Measured over a genuine 2,032,079-tick partition: 6,333 M5
+bars, 24,405 files backed up, 13 migrations re-applied, 129 catalog partitions
+re-verified after restore, 345.6 s wall, 1.48 GB peak RSS. The receipt lists the
+nine stages it did **not** run — import, admit, catalog, generate, screen,
+diagnose, improve, independent_evaluation, dashboard — and never claims them.
+
 **T03 process-kill recovery tested against a real kill.** T03 recorded
 "process-kill recovery pending". `test_T03_fenced_restart` rewound `lease_until`
 by hand and `test_supervision` covered the kernel parent-death binding, so
