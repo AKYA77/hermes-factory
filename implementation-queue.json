@@ -55,7 +55,7 @@
         "integration",
         "verification"
       ],
-      "next_action": "Historical prospective policy/cohort v2, CLI/API and fenced-completion diagnostics are implemented (ADR0035). Remaining: authenticated dashboard workflow, screening comparability/selection safeguards, and worker-native prospective diagnostics for cohorts frozen before this increment. Keep approximation unauthorized to prune, then continue the remaining queue.",
+      "next_action": "Historical prospective policy/cohort v2, CLI/API, fenced-completion diagnostics, authenticated dashboard workflow and screening comparability/selection safeguards are implemented (ADR0035, ADR0036). Worker-native prospective diagnostics are measured: the prospective member of the cohort frozen before this increment was diagnosed by coordinator-fenced-historical-completion against an unmutated native artifact. Remaining: the full source-to-restore historical gate. Keep approximation unauthorized to prune, then continue the remaining queue.",
       "evidence": "docs/milestone-historical-screen-cohorts.md"
     },
     {

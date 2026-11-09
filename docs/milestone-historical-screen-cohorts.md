@@ -298,8 +298,19 @@ execution or independent strategy qualification.
 
 ## Remaining
 
-Worker-native prospective diagnostics for cohorts frozen before this increment,
-API/dashboard graphical workflow for v2, screening comparability and
-selection-bias safeguards, and the full source-to-restore historical gate.
-All three readiness flags stay false; no merge, visibility change or production
-deployment occurred.
+**Worker-native prospective diagnostics are implemented and measured.** For the
+v2 cohort frozen before this increment (browser fixture state
+`.local/historical-cohort-browser`, cohort `1012a821fa0e10`), the prospective
+member's diagnostic was produced by `coordinator-fenced-historical-completion`,
+not by the calibration path. Measured: the native artifact's sha256 still equals
+the store's `artifact_hash` (never mutated), the diagnostic is a separate
+content-addressed artifact bound to that same native hash, and
+`approximate_pruning_authorized` is false. The calibration member's diagnostic is
+bound to its own native artifact and was produced by the acceptance path, as
+designed.
+
+API/dashboard graphical workflow for v2 and screening comparability with
+selection-bias safeguards were completed in ADR0036 and browser-verified at
+1280x900 and 390x844. The remaining work is the full source-to-restore
+historical gate. All three readiness flags stay false; no merge, visibility
+change or production deployment occurred.
