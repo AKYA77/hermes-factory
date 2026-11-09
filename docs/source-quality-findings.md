@@ -65,16 +65,30 @@ an explicit, recorded correction policy, or accept the partitions with a
 documented owner decision and a dataset version that records the defect. Until
 then these partitions stay blocked and are reported as blocked.
 
-## 2. Staging payload budget (resolved)
+## 2. Staging payload budget (operational, managed)
 
 The cumulative staging footprint is bounded by `--staging-budget-bytes`
-(default 2 GiB). Staging was retained after publication, so the budget was
-eventually exhausted and further imports blocked with
+(default 2 GiB). Staging is retained after publication, so the budget is
+eventually exhausted and further imports block with
 `staging payload budget exceeded` even though their canonical data was already
-published. The fix is `python -m factory.operations.tools reclaim-staging
-<catalog>`, which reclaims staging for every published checkpoint while
-preserving canonical data and evidence. Measured effect on this host: 2.1 GB
-reduced to under 200 MB.
+published.
+
+Two distinct causes were measured:
+
+- **Published staging.** `reclaim-staging` reclaims it while preserving
+  canonical data and evidence. Measured effect: 2.1 GB reduced to under 200 MB.
+- **Retained prefixes for partitions that cannot succeed.** `reclaim_all`
+  deliberately touches only published checkpoints, so a quarantined partition
+  keeps the partial prefix it decoded. With 43 quarantined partitions that
+  dead weight accumulates: 193 staging directories totalling 1.8 GB, with the
+  five largest holding 105–142 MB each. This is resumability working as
+  designed, not a leak — but it does consume the budget.
+
+`scripts/acquire_history.py` now exposes `--staging-budget-bytes` so the
+operator can size the guard for the host instead of editing the default. The
+supervisor runs with 17179869184 (16 GiB) on this host, which has 75 GB free;
+the guard still bounds growth, it no longer blocks legitimate imports. Raising
+the budget does not relax any data-quality check.
 
 ## Disposition
 

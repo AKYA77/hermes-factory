@@ -79,7 +79,7 @@ def classify(item, catalog, state):
     return "NEW", None
 
 
-def import_one(item, archives, catalog, log_dir, timeout):
+def import_one(item, archives, catalog, log_dir, timeout, staging_budget_bytes=None):
     log = log_dir / f"{item['instrument']}-{item['year']}{item['month']:02}-{time.time_ns()}.log"
     command = [
         sys.executable,
@@ -96,6 +96,8 @@ def import_one(item, archives, catalog, log_dir, timeout):
         "--catalog",
         str(catalog),
     ]
+    if staging_budget_bytes:
+        command += ["--staging-budget-bytes", str(staging_budget_bytes)]
     env = os.environ.copy()
     started = time.time()
     try:
@@ -201,7 +203,8 @@ def run(args):
                 results = list(
                     pool.map(
                         lambda i: import_one(
-                            i, archives, catalog, log_dir, args.partition_timeout
+                            i, archives, catalog, log_dir, args.partition_timeout,
+                            args.staging_budget_bytes,
                         ),
                         wave,
                     )
@@ -322,6 +325,16 @@ def main():
     p.add_argument("--workers", type=int, default=3)
     p.add_argument("--pace-seconds", type=float, default=2.0)
     p.add_argument("--partition-timeout", type=int, default=3600)
+    p.add_argument(
+        "--staging-budget-bytes",
+        type=int,
+        default=None,
+        help=(
+            "Per-import staging payload budget. Defaults to the import's own "
+            "2 GiB guard. Raise it on a host with ample free disk when retained "
+            "prefixes for quarantined partitions legitimately accumulate."
+        ),
+    )
     p.add_argument("--max-rounds", type=int, default=400)
     p.add_argument("--max-wall-seconds", type=int, default=0)
     p.add_argument("--stop-on-no-progress", type=int, default=3)
