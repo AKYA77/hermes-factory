@@ -7,7 +7,7 @@ const path=require('path');
  const base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8096';
  if(!['localhost','127.0.0.1'].includes(new URL(base).hostname))throw Error('Loopback acceptance only');
  const token=fs.readFileSync(path.join(state,'operator-1.token'),'utf8').trim();
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1280,height:900}});const errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  try{
@@ -19,8 +19,11 @@ const path=require('path');
   await page.getByLabel('Instrument profile files').setInputFiles(path.join(state,'profile.json'));
   await page.getByLabel('Training starts (UTC)').fill('2025-01-01T00:00');
   await page.getByLabel('Training ends (UTC)').fill('2025-01-03T00:00');
-  await page.getByLabel('Authorized by',{exact:true}).fill('Generated browser acceptance');
-  const panel=page.getByRole('region',{name:'Automatic research discovery'});
+  // Two panels expose an "Authorized by" field (discovery and research reports),
+  // so a page-global locator is ambiguous under strict mode. Scope to the panel.
+  const discoveryPanel=page.getByRole('region',{name:'Automatic research discovery'});
+  await discoveryPanel.getByLabel('Authorized by',{exact:true}).fill('Generated browser acceptance');
+  const panel=discoveryPanel;
   for(const tf of ['M5','M15','M30','H1','H4','D1'])await panel.getByLabel(tf,{exact:true}).uncheck();
   await page.getByLabel('Explore strictly closed higher-timeframe confirmations').uncheck();
   await page.getByLabel('Region limit',{exact:true}).fill('2');

@@ -1,9 +1,9 @@
 // DEV ONLY: generated authorization-boundary fixture; never market validation.
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),crypto=require('crypto'),cp=require('child_process');
 (async()=>{
- const root=path.resolve(__dirname,'..'),state=root+'/.local/reviewed-inputs-browser',base='http://127.0.0.1:8110';
+ const root=path.resolve(__dirname,'..'),state=path.resolve(process.env.FACTORY_BROWSER_STATE||root+'/.local/reviewed-inputs-browser'),base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8110';
  const token=fs.readFileSync(state+'/operator-1.token','utf8').trim(),headers={Authorization:'Bearer '+token};
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1280,height:900},acceptDownloads:true}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base+'/');await page.getByLabel('Access token',{exact:true}).fill(token);
@@ -21,7 +21,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cry
  const artifact=await wait,exported=root+'/reports/runtime/reviewed-inputs-browser-export.json';await artifact.saveAs(exported);
  if(!fs.readFileSync(exported).equals(raw))throw Error('Export bytes differ');
  await page.screenshot({path:root+'/reports/runtime/reviewed-inputs-browser-desktop.png',fullPage:true});
- const revoke=cp.spawnSync(root+'/.venv/bin/python',['-m','factory.cli','--state',state,'input-revoke',profile.review_id,'--actor','TEST_ONLY browser','--reason','browser revocation check'],{cwd:root,encoding:'utf8'});
+ const revoke=cp.spawnSync(root+'/.venv/bin/python',['-m','factory.cli','--state',state,'input-revoke',profile.review_id,'--actor','TEST_ONLY browser','--reason','browser revocation check'],{cwd:root,encoding:'utf8',env:{...process.env,PYTHONPATH:''}});
  if(revoke.status!==0)throw Error('Revocation CLI failed');
  await page.getByRole('button',{name:'Refresh input reviews',exact:true}).click();
  await page.getByText('This review or a required reference was revoked.',{exact:false}).first().waitFor();

@@ -5,7 +5,7 @@ const fs=require('fs');const path=require('path');
  const base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8097';
  if(!['127.0.0.1','localhost'].includes(new URL(base).hostname))throw Error('Loopback only');
  const token=fs.readFileSync(path.join(state,'operator-1.token'),'utf8').trim();
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1280,height:900}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
  try{
   await page.goto(base);await page.getByLabel('Access token').fill(token);

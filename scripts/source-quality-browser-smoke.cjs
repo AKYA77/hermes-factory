@@ -5,7 +5,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cry
  const base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8105';
  if(!['127.0.0.1','localhost','[::1]'].includes(new URL(base).hostname))throw Error('Loopback QA only');
  const token=fs.readFileSync(state+'/operator-1.token','utf8').trim();
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1280,height:900},acceptDownloads:true});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base+'/');await page.getByLabel('Access token',{exact:true}).fill(token);

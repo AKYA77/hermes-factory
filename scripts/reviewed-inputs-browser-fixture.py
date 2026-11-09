@@ -1,4 +1,5 @@
 """DEV ONLY: generated admission-boundary browser fixture, NOT market evidence."""
+import argparse
 from pathlib import Path
 import sys
 import subprocess
@@ -8,7 +9,13 @@ root = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(root / "tests" / "integration"))
 from test_reviewed_inputs import prepared  # noqa: E402
 
-state = root / ".local" / "reviewed-inputs-browser"
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument("--state", type=Path, required=True)
+args = parser.parse_args()
+# Honour the caller's --state. This fixture accepted the flag but hardcoded a
+# path, so a wrapper passing a fresh isolated directory was silently ignored and
+# the fixture then refused because its hardcoded directory already existed.
+state = args.state
 if state.exists():
     raise SystemExit("Use a new isolated state; never overwrite earlier browser evidence")
 state.mkdir(parents=True)

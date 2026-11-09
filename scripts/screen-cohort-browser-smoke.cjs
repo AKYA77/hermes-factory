@@ -3,7 +3,7 @@ const {chromium}=require('playwright');const fs=require('fs');const path=require
  const root=path.resolve(__dirname,'..'),state=path.resolve(process.env.FACTORY_BROWSER_STATE),base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8098';
  if(!['localhost','127.0.0.1'].includes(new URL(base).hostname))throw Error('Loopback only');
  const token=fs.readFileSync(path.join(state,'operator-1.token'),'utf8').trim();
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1280,height:900}}),errors=[];page.on('pageerror',e=>errors.push(e.message));
  const headers={Authorization:'Bearer '+token};
  const get=async route=>{const r=await page.request.get(base+'/api/v1/'+route,{headers});if(!r.ok())throw Error('API '+r.status());return r.json();};
