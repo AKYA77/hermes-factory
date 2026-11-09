@@ -426,6 +426,25 @@ def improve(state_root, catalog, sample, payload=None):
     }
 
 
+def dashboard(state_root, catalog, sample):
+    """Stage: Dashboard. Serve the API and read back the rehearsal state."""
+    from fastapi.testclient import TestClient
+
+    from apps.api.main import create_app
+
+    client = TestClient(create_app(state_root))
+    overview = client.get("/api/v1/overview")
+    status = client.get("/api/v1/research/status")
+    return {
+        "stage": "dashboard",
+        "overview_status": overview.status_code,
+        "research_status": status.status_code,
+        "experiments_visible": len(status.json().get("experiments", []))
+        if status.status_code == 200
+        else None,
+    }
+
+
 def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
     started = time.perf_counter()
     base_rss = _rss()
@@ -446,6 +465,7 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         independent_evaluation(state_root, catalog, sample, admitted["_payload"]),
         improve(state_root, catalog, sample, admitted["_payload"]),
         rank(state_root),
+        dashboard(state_root, catalog, sample),
         backup_restore(state_root, workdir),
     ]
     wall = time.perf_counter() - started
@@ -474,7 +494,6 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         "stages_not_run": [
             "import",
             "catalog",
-            "dashboard",
         ],
         "measurements": {
             "wall_seconds": wall,

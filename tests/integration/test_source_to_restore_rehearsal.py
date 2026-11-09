@@ -54,11 +54,12 @@ def test_rehearsal_runs_the_chain_and_records_the_receipt(tmp_path):
         "independent_evaluation",
         "improve",
         "rank",
+        "dashboard",
         "backup_restore",
     ]
     # The receipt must be explicit about what it did not run.
-    assert "dashboard" in receipt["stages_not_run"]
     assert "import" in receipt["stages_not_run"]
+    assert "catalog" in receipt["stages_not_run"]
     assert receipt["scope"].startswith("Development rehearsal")
     archived = json.loads((workdir / "rehearsal-report.json").read_text())
     assert archived["stages_run"] == receipt["stages_run"]
