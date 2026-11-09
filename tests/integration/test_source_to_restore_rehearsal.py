@@ -50,11 +50,13 @@ def test_rehearsal_runs_the_chain_and_records_the_receipt(tmp_path):
         "generate",
         "screen",
         "native_replay",
+        "diagnose",
+        "independent_evaluation",
         "rank",
         "backup_restore",
     ]
     # The receipt must be explicit about what it did not run.
-    assert "diagnose" in receipt["stages_not_run"]
+    assert "improve" in receipt["stages_not_run"]
     assert "import" in receipt["stages_not_run"]
     assert receipt["scope"].startswith("Development rehearsal")
     archived = json.loads((workdir / "rehearsal-report.json").read_text())

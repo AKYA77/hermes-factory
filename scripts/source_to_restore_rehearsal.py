@@ -124,11 +124,15 @@ def admit(state_root, catalog, sample):
     from factory.instruments.calendar import CalendarSpec, SessionCalendar
     from factory.operations.fixtures import seed
 
-    cat = Catalog(catalog)
+    # The acquired partition is read from the source catalog; the admission
+    # fixture is committed into the state root's catalog, where the worker reads.
+    source_cat = Catalog(catalog)
+    fixture_root = Path(state_root) / "catalog"
+    cat = Catalog(fixture_root)
     payload = seed(state_root)
     # The quality scan has a bounded event budget, so the admission fixture uses
     # a window of the genuine acquired stream rather than the whole partition.
-    data = list(cat.read(sample[0]))
+    data = list(source_cat.read(sample[0]))
     window = Window.model_validate(payload["contract"]["windows"][0])
     span = window.end_ns - window.start_ns
     start = data[0].event_ts_utc_ns
@@ -164,7 +168,7 @@ def admit(state_root, catalog, sample):
         closures=(),
         ambiguous_boundary="reject",
     )
-    registry = InputRegistry(state_root, Catalog(catalog))
+    registry = InputRegistry(state_root, Catalog(fixture_root))
     base = {
         "effective_start_ns": window.start_ns,
         "effective_end_ns": window.end_ns,
@@ -190,7 +194,7 @@ def admit(state_root, catalog, sample):
         {doc_hash: document},
         tzif=tzif,
     )
-    quality = SourceQuality(state_root, Catalog(catalog)).run(
+    quality = SourceQuality(state_root, Catalog(fixture_root)).run(
         manifest["dataset_hash"],
         SourceQualityPolicy(
             gap_threshold_ns=61 * 10**9,
@@ -231,6 +235,7 @@ def admit(state_root, catalog, sample):
         "calendar_review_id": calendar_id,
         "quality_run_id": quality["run_id"],
         "dataset_hash": manifest["dataset_hash"],
+        "_payload": payload,
     }
 
 
@@ -287,6 +292,57 @@ def screen(state_root, catalog, sample):
     }
 
 
+def diagnose(state_root, catalog, sample, payload=None):
+    """Stage: Diagnose. Native replay, completion, then the shadow diagnostic."""
+    from apps.coordinator.worker import run
+    from factory.contracts import ExperimentContract, StrategySpec
+    from factory.experiments import Store
+    from factory.operations.fixtures import seed
+    from factory.screening.historical import HistoricalShadowRequest, diagnose
+
+    payload = payload or seed(state_root, 240)
+    contract = ExperimentContract.model_validate(payload["contract"])
+    result = run(payload, state_root)
+    spec = StrategySpec.model_validate(payload["strategy"])
+    store = Store(state_root / "factory.sqlite")
+    store.complete_experiment(contract, spec, result["result"], result["artifact_hash"])
+    body = diagnose(
+        state_root,
+        HistoricalShadowRequest(
+            experiment_hash=contract.experiment_hash,
+            profile=payload["profile"],
+            authorized_by="source-to-restore-rehearsal",
+            attestation=(
+                "Authorize training-only feature diagnostics and mandatory native "
+                "evidence; no approximate pruning"
+            ),
+        ),
+    )
+    return {
+        "stage": "diagnose",
+        "experiment_hash": contract.experiment_hash,
+        "trades": len(result["result"]["trades"]),
+        "diagnostic_id": body["diagnostic_id"],
+        "approximate_pruning_authorized": body["approximate_pruning_authorized"],
+    }
+
+
+def independent_evaluation(state_root, catalog, sample, payload=None):
+    """Stage: Independent evaluation. OOS evaluation of the same candidate."""
+    from factory.operations.fixtures import seed
+    from factory.validation.evaluate import evaluate
+
+    payload = payload or seed(state_root, 240)
+    payload["contract"]["windows"][0]["role"] = "selection_oos"
+    report = evaluate(Path(state_root) / "catalog", payload)
+    return {
+        "stage": "independent_evaluation",
+        "status": report["status"],
+        "synthetic": report["synthetic"],
+        "windows": len(report.get("windows", [])),
+    }
+
+
 def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
     started = time.perf_counter()
     base_rss = _rss()
@@ -295,13 +351,16 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         raise RuntimeError("no acquired partitions available for the rehearsal")
     workdir = Path(workdir) if workdir else state_root.parent / "rehearsal"
     workdir.mkdir(parents=True, exist_ok=True)
+    admitted = admit(state_root, catalog, sample)
     stages = [
         verify(catalog, sample),
-        admit(state_root, catalog, sample),
+        admitted,
         feature_cache(catalog, sample),
         generate(catalog, sample),
         screen(state_root, catalog, sample),
         native_replay(catalog, sample),
+        diagnose(state_root, catalog, sample, admitted["_payload"]),
+        independent_evaluation(state_root, catalog, sample, admitted["_payload"]),
         rank(state_root),
         backup_restore(state_root, workdir),
     ]
@@ -331,9 +390,7 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         "stages_not_run": [
             "import",
             "catalog",
-            "diagnose",
             "improve",
-            "independent_evaluation",
             "dashboard",
         ],
         "measurements": {
