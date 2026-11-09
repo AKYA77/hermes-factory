@@ -1,10 +1,10 @@
 {
-  "audited_head": "b82b0a00f4de0d98682aadd98c104d4fb545bd6d",
+  "audited_head": "87fb97ffa5fcc874b93d3a4e98a54113ae2b55d9",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "b82b0a00f4de0d98682aadd98c104d4fb545bd6d",
+    "git_commit": "87fb97ffa5fcc874b93d3a4e98a54113ae2b55d9",
     "source_sha256": "4757dd32aa1ff806ebe6d6617b315c8d4fd8cd7d4c21f51a9b1e85cb11824770",
     "working_tree_scientific_edits": false
   },
@@ -66,7 +66,9 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "tests/recovery/test_process_kill_recovery.py",
+        "tests/recovery/test_supervision.py"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -118,10 +120,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Fenced lease expiry/idempotent completion tested; process-kill recovery pending",
+      "next_required_action": "Process-kill recovery and idempotent completion are both tested. A live coordinator kill against the full service with a genuine worker remains separate work.",
       "requirement_id": "T03",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Fenced lease expiry/idempotent completion tested; process-kill recovery pending",
+      "supporting_evidence_scope": "Process-kill recovery added: a real holder process claims a job on a short lease, is SIGKILLed mid-job, and the next claim expires the lease and re-claims the same job with LEASE_EXPIRED recorded. A second claim while the recovered lease is live returns None, so recovery cannot duplicate live work. Together with the existing lease-expiry and stale-lease tests this covers the process-kill recovery gap. Idempotent completion itself was already covered by tests/integration/test_completion_idempotency.py.",
       "title": "Unique restart completion",
       "verification_command": "bash scripts/verify.sh"
     },
