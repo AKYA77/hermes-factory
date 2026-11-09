@@ -5,8 +5,6 @@ import json
 from pathlib import Path
 
 from factory.contracts import ExperimentContract
-from factory.data.histdata import parse_line as parse_tick
-from factory.data.streaming import StreamingCatalog
 from factory.experiments import Store
 from factory.operations.fixtures import seed
 
@@ -20,23 +18,8 @@ def _load_script():
 
 
 def _catalog(tmp_path):
-    root = tmp_path / "catalog"
-    root.mkdir()
-    source = tmp_path / "source.csv"
-    line = "20250102 010000001,1.123450,1.123460,0"
-    source.write_text((line + "\n") * 8)
-
-    def stream():
-        for i in range(8):
-            yield parse_tick(line, "EURUSD", i, "raw")
-
-    StreamingCatalog(root).commit(
-        stream(),
-        source,
-        {"source": "synthetic rehearsal fixture", "license": "test only", "synthetic": True},
-        batch_rows=4,
-    )
-    return root
+    seed(tmp_path, 240)
+    return tmp_path / "catalog"
 
 
 def _state_root(tmp_path):
@@ -62,13 +45,16 @@ def test_rehearsal_runs_the_chain_and_records_the_receipt(tmp_path):
     assert receipt["schema"] == "source-to-restore-rehearsal/v1"
     assert receipt["stages_run"] == [
         "verify",
+        "admit",
         "feature_cache",
+        "generate",
+        "screen",
         "native_replay",
         "rank",
         "backup_restore",
     ]
     # The receipt must be explicit about what it did not run.
-    assert "screen" in receipt["stages_not_run"]
+    assert "diagnose" in receipt["stages_not_run"]
     assert "import" in receipt["stages_not_run"]
     assert receipt["scope"].startswith("Development rehearsal")
     archived = json.loads((workdir / "rehearsal-report.json").read_text())
@@ -87,7 +73,7 @@ def test_rehearsal_reports_a_monotonic_source(tmp_path):
     )
     replay = next(s for s in receipt["stages"] if s["stage"] == "native_replay")
     assert replay["monotonic"] is True
-    assert replay["ticks"] == 8
+    assert replay["ticks"] == 240
 
 
 def test_rehearsal_refuses_to_run_without_partitions(tmp_path):

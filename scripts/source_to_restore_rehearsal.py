@@ -105,6 +105,188 @@ def backup_restore(state_root, workdir):
     }
 
 
+def admit(state_root, catalog, sample):
+    """Stage: Admit. Reviewed admission over a genuine acquired dataset."""
+    import hashlib
+
+    from factory.contracts import InstrumentSpec, Window, fingerprint
+    from factory.data import Catalog
+    from factory.data.admission import (
+        CALENDAR_FIELDS,
+        POLICY_PREFIX,
+        PROFILE_FIELDS,
+        AdmissionSpec,
+        Citation,
+        InputRegistry,
+        ReferenceReview,
+    )
+    from factory.data.source_quality import SourceQuality, SourceQualityPolicy
+    from factory.instruments.calendar import CalendarSpec, SessionCalendar
+    from factory.operations.fixtures import seed
+
+    cat = Catalog(catalog)
+    payload = seed(state_root)
+    # The quality scan has a bounded event budget, so the admission fixture uses
+    # a window of the genuine acquired stream rather than the whole partition.
+    data = list(cat.read(sample[0]))
+    window = Window.model_validate(payload["contract"]["windows"][0])
+    span = window.end_ns - window.start_ns
+    start = data[0].event_ts_utc_ns
+    data = [q for q in data if start <= q.event_ts_utc_ns < start + span]
+    manifest = cat.commit(
+        data,
+        b"TEST ONLY source-to-restore rehearsal authorization fixture",
+        {
+            "source": "TEST ONLY rehearsal; not historical observations",
+            "license": "project-generated test fixture",
+            "synthetic": False,
+        },
+    )
+    profile = InstrumentSpec.model_validate(payload["profile"]).model_copy(
+        update={
+            "synthetic": False,
+            "source": "TEST ONLY rehearsal profile reference; not approved broker facts",
+        }
+    )
+    document = b"TEST ONLY rehearsal research assumptions, not financial reference evidence"
+    doc_hash = hashlib.sha256(document).hexdigest()
+    tzif = Path("/usr/share/zoneinfo/UTC").read_bytes()
+    calendar = CalendarSpec(
+        instrument="EURUSD",
+        version="TEST_ONLY/v1",
+        timezone="UTC",
+        tzif_sha256=hashlib.sha256(tzif).hexdigest(),
+        source_document_sha256=doc_hash,
+        source_citation="TEST ONLY 24/7 rehearsal calendar",
+        effective_start_ns=window.start_ns,
+        effective_end_ns=window.end_ns,
+        weekly_sessions=({"start_second": 0, "end_second": 604800},),
+        closures=(),
+        ambiguous_boundary="reject",
+    )
+    registry = InputRegistry(state_root, Catalog(catalog))
+    base = {
+        "effective_start_ns": window.start_ns,
+        "effective_end_ns": window.end_ns,
+        "reviewed_at_ns": 1793750400 * 10**9,
+        "reviewer": "TEST_ONLY rehearsal reviewer",
+        "attestation": "I reviewed the captured references and their dated research scope",
+    }
+    citation = Citation(
+        document_sha256=doc_hash,
+        source="rehearsal fixture",
+        locator="TEST ONLY",
+        interpretation="rehearsal only",
+        basis="explicit_research_assumption",
+    )
+    profile_id = registry.register_reference(
+        ReferenceReview(profile=profile, citations={k: citation for k in PROFILE_FIELDS}, **base),
+        {doc_hash: document},
+    )
+    calendar_id = registry.register_reference(
+        ReferenceReview(
+            calendar=calendar, citations={k: citation for k in CALENDAR_FIELDS}, **base
+        ),
+        {doc_hash: document},
+        tzif=tzif,
+    )
+    quality = SourceQuality(state_root, Catalog(catalog)).run(
+        manifest["dataset_hash"],
+        SourceQualityPolicy(
+            gap_threshold_ns=61 * 10**9,
+            unchanged_threshold_ns=600 * 10**9,
+            timestamp_quantum_ns=10**9,
+            max_examples=8,
+            max_events_bytes=64 * 1024**2,
+            expected_start_ns=window.start_ns,
+            expected_end_ns=window.end_ns,
+        ),
+        profile=profile,
+        calendar=SessionCalendar(calendar, tzif),
+    )
+    spec = AdmissionSpec(
+        quality_run_id=quality["run_id"],
+        profile_review_id=profile_id,
+        calendar_review_id=calendar_id,
+        accepted_events_sha256=quality["events_sha256"],
+        window=window,
+        reviewer="TEST_ONLY rehearsal reviewer",
+        reviewed_at_ns=base["reviewed_at_ns"],
+        source_acceptance_notes="Rehearsal authorization fixture, NOT historical verification",
+        attestation="I reviewed all source QA events and accept this research input scope",
+    )
+    identity = registry.register_admission(spec)
+    payload["profile"] = profile.model_dump(mode="json")
+    payload["contract"].update(
+        {
+            "instrument_hash": fingerprint(profile),
+            "dataset_hash": manifest["dataset_hash"],
+            "evaluation_policy": POLICY_PREFIX + identity,
+        }
+    )
+    return {
+        "stage": "admit",
+        "admission_id": identity,
+        "profile_review_id": profile_id,
+        "calendar_review_id": calendar_id,
+        "quality_run_id": quality["run_id"],
+        "dataset_hash": manifest["dataset_hash"],
+    }
+
+
+def generate(catalog, sample):
+    """Stage: Generate. Compile strategy signals over genuine acquired quotes."""
+    from factory.contracts import Signal, StrategySpec
+    from factory.data import Catalog
+    from factory.strategies import compile_signals
+
+    cat = Catalog(catalog)
+    quotes = list(cat.read(sample[0]))
+    spec = StrategySpec(
+        instrument="EURUSD",
+        timeframe="M1",
+        signal=Signal(operator="momentum", lookback=3, threshold="1"),
+        stop_ticks=60,
+    )
+    signals = compile_signals(quotes, spec)
+    return {
+        "stage": "generate",
+        "dataset_hash": sample[0],
+        "strategy_id": spec.strategy_hash,
+        "quotes": len(quotes),
+        "signals": len(signals),
+    }
+
+
+def screen(state_root, catalog, sample):
+    """Stage: Screen. Produce a persisted screening receipt."""
+    from factory.contracts import ExperimentContract, Signal, StrategySpec
+    from factory.data import Catalog
+    from factory.operations.fixtures import seed
+    from factory.screening import persist, screen
+    from factory.strategies import compile_signals
+
+    cat = Catalog(catalog)
+    quotes = list(cat.read(sample[0]))
+    strategy = StrategySpec(
+        instrument="EURUSD",
+        timeframe="M1",
+        signal=Signal(operator="momentum", lookback=3, threshold="1"),
+        stop_ticks=60,
+    )
+    signals = compile_signals(quotes, strategy)
+    payload = seed(state_root)
+    contract = ExperimentContract.model_validate(payload["contract"])
+    receipt = screen(signals, contract)
+    return {
+        "stage": "screen",
+        "signals": len(signals),
+        "signal_sha256": receipt.signal_sha256,
+        "signal_count": receipt.signal_count,
+        "decision": receipt.decision,
+    }
+
+
 def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
     started = time.perf_counter()
     base_rss = _rss()
@@ -115,7 +297,10 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
     workdir.mkdir(parents=True, exist_ok=True)
     stages = [
         verify(catalog, sample),
+        admit(state_root, catalog, sample),
         feature_cache(catalog, sample),
+        generate(catalog, sample),
+        screen(state_root, catalog, sample),
         native_replay(catalog, sample),
         rank(state_root),
         backup_restore(state_root, workdir),
@@ -145,10 +330,7 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         "stages_run": [s["stage"] for s in stages],
         "stages_not_run": [
             "import",
-            "admit",
             "catalog",
-            "generate",
-            "screen",
             "diagnose",
             "improve",
             "independent_evaluation",
