@@ -45,19 +45,18 @@ re-verified after restore, 345.6 s wall, 1.48 GB peak RSS. The receipt lists the
 nine stages it did **not** run — import, admit, catalog, generate, screen,
 diagnose, improve, independent_evaluation, dashboard — and never claims them.
 
-**Source-to-restore rehearsal: twelve stages implemented, nine run on real data.**
+**Source-to-restore rehearsal: all twelve stages run over genuine acquired data.**
 `scripts/source_to_restore_rehearsal.py` runs verify, admit, feature_cache,
 generate, screen, native_replay, diagnose, independent_evaluation, improve, rank,
 dashboard and backup_restore in one chain. Against the **real acquired catalog**
-with a scratch state root, nine stages completed and three were blocked at one
-measured cause: the genuine tick data does not satisfy the synthetic fixture
-profile (`FAILED_CHECKS`, 124,125 structural rows, `DECLARED_UNITS_MISMATCH`,
-`UNRESOLVED_CALENDAR`). That is a profile-coverage gap, not a provider defect —
-see `docs/source-quality-findings.md` section 3. A blocked stage is now recorded
-explicitly with its reason and never reported as run. Measured over a genuine
-2,032,079-tick partition: 6,333 M5 bars, 24,405 files backed up, 13 migrations
-re-applied, 129 catalog partitions re-verified after restore, 345.6 s wall,
-1.48 GB peak RSS.
+with a scratch state root: **12 stages run, 0 blocked**, 216.0 s wall, 1.24 GB
+peak RSS. Four genuine coverage gaps were closed, each found by measuring rather
+than assuming: profile units (`price_scale=1000000`, not the fixture's `1000`),
+timestamp precision (millisecond, not whole-second), calendar coverage (a declared
+FX session replacing the 24/7 fixture), and instrument identity (single-instrument
+sample with the strategy instrument and `strategy_hash` recomputed). See
+`docs/source-quality-findings.md` section 3. The declared session remains a
+TEST_ONLY rehearsal assumption, not verified broker metadata.
 
 **T03 process-kill recovery tested against a real kill.** T03 recorded
 "process-kill recovery pending". `test_T03_fenced_restart` rewound `lease_until`
