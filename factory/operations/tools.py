@@ -17,7 +17,15 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument(
         "action",
-        choices=["seed", "backup", "restore-test", "restore", "rollback-plan", "reclaim-staging"],
+        choices=[
+            "seed",
+            "backup",
+            "restore-test",
+            "restore",
+            "restore-rehearsal",
+            "rollback-plan",
+            "reclaim-staging",
+        ],
     )
     p.add_argument("path")
     p.add_argument("destination", nargs="?")
@@ -59,6 +67,12 @@ def main():
             p.error("destination required")
         receipt = restore(args.path, args.destination)
         print(json.dumps(receipt))
+    elif args.action == "restore-rehearsal":
+        if not args.destination:
+            p.error("destination required")
+        from factory.operations import rehearse_restore
+
+        print(json.dumps(rehearse_restore(args.path, args.destination), indent=2))
     elif args.action == "rollback-plan":
         if not args.destination:
             p.error("destination required")

@@ -57,6 +57,61 @@ def restore(backup_path, state_root):
     }
 
 
+def rehearse_restore(backup_path, workdir):
+    """Prove a backup restores into a state root that is actually usable.
+
+    `restore-test` verifies an isolated copy; this goes further and exercises the
+    recovery path a live process would take: restore into a fresh root, open the
+    store read-write so every migration applies, then read a partition back out of
+    the restored catalog. It never touches the backup or any live state root.
+
+    Returns a receipt describing what was exercised. Scope is a development
+    rehearsal over a fixture state root, not a production recovery claim.
+    """
+    source = Path(backup_path).resolve()
+    manifest = verify_backup(source)
+    work = Path(workdir).resolve()
+    if work.exists():
+        raise ValueError("rehearsal workdir must not exist")
+    if work == source or source in work.parents or work in source.parents:
+        raise ValueError("rehearsal workdir must be outside the backup")
+    work.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copytree(source, work)
+    verify_backup(work)
+    receipt = {
+        "schema": "restore-rehearsal/v1",
+        "backup": str(source),
+        "restored_to": str(work),
+        "files": len(manifest["files"]),
+        "migrations_applied": None,
+        "catalog_partitions": None,
+        "scope": "isolated rehearsal; backup and live state unchanged",
+    }
+    from factory.experiments import Store
+
+    store = Store(work / "factory.sqlite")
+    try:
+        receipt["migrations_applied"] = store.rows("SELECT COUNT(*) AS n FROM schema_migrations")[
+            0
+        ]["n"]
+        jobs = store.rows("SELECT COUNT(*) AS n FROM jobs")[0]["n"]
+        experiments = store.rows("SELECT COUNT(*) AS n FROM experiments")[0]["n"]
+        receipt["jobs"] = jobs
+        receipt["experiments"] = experiments
+        catalog = work / "catalog"
+        if catalog.exists():
+            from factory.data import Catalog
+
+            cat = Catalog(catalog)
+            identities = [p.name for p in cat.root.iterdir() if (p / "manifest.json").exists()]
+            receipt["catalog_partitions"] = len(identities)
+            for identity in identities:
+                cat.verify(identity)
+    finally:
+        shutil.rmtree(work, ignore_errors=True)
+    return receipt
+
+
 def rollback_plan(backup_path, state_root, services_stopped, previous_release_verified):
     """Describe a rollback without performing it.
 
