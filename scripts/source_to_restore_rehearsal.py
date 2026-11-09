@@ -90,9 +90,15 @@ def rank(store_root):
 
 
 def backup_restore(state_root, workdir):
-    """Stages: Backup, Restore, Restart."""
+    """Stages: Backup, Restore, Restart.
+
+    Each run gets its own workdir. A leftover directory from an earlier run must
+    not fail the rehearsal, and must never be deleted behind the caller's back.
+    """
     from factory.operations import backup, rehearse_restore
 
+    workdir = Path(workdir) / f"run-{time.time_ns()}"
+    workdir.mkdir(parents=True, exist_ok=True)
     archive = workdir / "backup"
     backup(state_root, archive)
     receipt = rehearse_restore(archive, workdir / "restored")
@@ -121,6 +127,7 @@ def admit(state_root, catalog, sample):
         ReferenceReview,
     )
     from factory.data.source_quality import SourceQuality, SourceQualityPolicy
+    from factory.instruments import declared_tick_profile
     from factory.instruments.calendar import CalendarSpec, SessionCalendar
     from factory.operations.fixtures import seed
 
@@ -155,11 +162,11 @@ def admit(state_root, catalog, sample):
             "synthetic": False,
         },
     )
-    profile = InstrumentSpec.model_validate(payload["profile"]).model_copy(
-        update={
-            "synthetic": False,
-            "source": "TEST ONLY rehearsal profile reference; not approved broker facts",
-        }
+    profile = declared_tick_profile(
+        data[0].instrument_id,
+        data[0].price_scale,
+        data[0].source_precision,
+        version="measured-ticks/v1",
     )
     document = b"TEST ONLY rehearsal research assumptions, not financial reference evidence"
     doc_hash = hashlib.sha256(document).hexdigest()
@@ -208,7 +215,9 @@ def admit(state_root, catalog, sample):
         SourceQualityPolicy(
             gap_threshold_ns=61 * 10**9,
             unchanged_threshold_ns=600 * 10**9,
-            timestamp_quantum_ns=10**9,
+            # The declared precision is measured from the stream: genuine ticks
+            # are millisecond-precision, not whole seconds.
+            timestamp_quantum_ns=10**6 if data[0].source_precision == "millisecond" else 10**9,
             max_examples=8,
             max_events_bytes=64 * 1024**2,
             expected_start_ns=window.start_ns,
