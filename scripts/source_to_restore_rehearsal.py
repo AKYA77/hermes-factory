@@ -137,6 +137,15 @@ def admit(state_root, catalog, sample):
     span = window.end_ns - window.start_ns
     start = data[0].event_ts_utc_ns
     data = [q for q in data if start <= q.event_ts_utc_ns < start + span]
+    if not data:
+        raise RuntimeError("acquired partition has no rows inside the reviewed window")
+    # The reviewed window must match the fixture's real bounds, not the seed's.
+    window = Window(
+        start_ns=data[0].event_ts_utc_ns,
+        end_ns=data[-1].event_ts_utc_ns + 1,
+        role="train_only",
+    )
+    payload["contract"]["windows"] = [window.model_dump(mode="json")]
     manifest = cat.commit(
         data,
         b"TEST ONLY source-to-restore rehearsal authorization fixture",
@@ -333,6 +342,11 @@ def independent_evaluation(state_root, catalog, sample, payload=None):
     from factory.validation.evaluate import evaluate
 
     payload = payload or seed(state_root, 240)
+    # Non-destructive: later stages reuse this payload and must still see the
+    # original training window.
+    import copy
+
+    payload = copy.deepcopy(payload)
     payload["contract"]["windows"][0]["role"] = "selection_oos"
     report = evaluate(Path(state_root) / "catalog", payload)
     return {
@@ -340,6 +354,75 @@ def independent_evaluation(state_root, catalog, sample, payload=None):
         "status": report["status"],
         "synthetic": report["synthetic"],
         "windows": len(report.get("windows", [])),
+    }
+
+
+def improve(state_root, catalog, sample, payload=None):
+    """Stage: Improve. Register a policy, discover children, collect feedback."""
+    from decimal import Decimal as D
+
+    from apps.coordinator.service import cycle
+    from factory.experiments import Store
+    from factory.data.admission import POLICY_PREFIX
+    from factory.exploration.persistent import Search, SearchProtocol, rebuild_study
+    from factory.improvement.service import Improvement, ImprovementPolicy
+    from factory.operations.fixtures import seed
+
+    payload = payload or seed(state_root, 240)
+    store = Store(state_root / "factory.sqlite")
+    search = Search(store, state_root)
+    protocol = None
+    for seed_value in range(128):
+        candidate = SearchProtocol(
+            schema_version="search/v4",
+            dataset_hash=payload["contract"]["dataset_hash"],
+            profile=payload["profile"],
+            window=payload["contract"]["windows"][0],
+            family="momentum",
+            timeframe="M1",
+            code_revision=payload["contract"]["code_revision"],
+            research_kind="historical-training/v1",
+            admission_id=payload["contract"]["evaluation_policy"].removeprefix(POLICY_PREFIX),
+            seed=seed_value,
+            max_trials=1,
+        )
+        params = (
+            rebuild_study(candidate, [], 0)
+            .ask(fixed_distributions=candidate.distributions())
+            .params
+        )
+        if params["stop_ticks"] >= 60 and params["lookback"] <= 20:
+            protocol = candidate
+            break
+    if protocol is None:
+        raise RuntimeError("no admissible search protocol for the improve stage")
+    identity = search.register(protocol)
+    search.ask(identity)
+    search.enqueue_pending()
+    store.pause(False, "rehearsal")
+    cycle(store, state_root)
+    service = Improvement(store, state_root)
+    policy_hash = service.register(
+        ImprovementPolicy(
+            search_protocol_hash=identity,
+            max_parent_plans=1,
+            max_children=2,
+            min_comparison_trades=50,
+            max_trade_count_reduction=D(".5"),
+        )
+    )
+    discovered = service.discover()
+    service.feedback()
+    plans = store.rows("SELECT * FROM improvement_plans")
+    edges = store.rows("SELECT * FROM improvement_edges")
+    outcomes = store.rows("SELECT * FROM improvement_outcomes")
+    return {
+        "stage": "improve",
+        "policy_hash": policy_hash,
+        "plans": len(plans),
+        "edges": len(edges),
+        "outcomes": len(outcomes),
+        "discovered": discovered,
     }
 
 
@@ -361,6 +444,7 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         native_replay(catalog, sample),
         diagnose(state_root, catalog, sample, admitted["_payload"]),
         independent_evaluation(state_root, catalog, sample, admitted["_payload"]),
+        improve(state_root, catalog, sample, admitted["_payload"]),
         rank(state_root),
         backup_restore(state_root, workdir),
     ]
@@ -390,7 +474,6 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         "stages_not_run": [
             "import",
             "catalog",
-            "improve",
             "dashboard",
         ],
         "measurements": {
