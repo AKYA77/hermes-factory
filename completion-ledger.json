@@ -1,10 +1,10 @@
 {
-  "audited_head": "87fb97ffa5fcc874b93d3a4e98a54113ae2b55d9",
+  "audited_head": "37752688dbb108423d579415d6946f20932ccca5",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "87fb97ffa5fcc874b93d3a4e98a54113ae2b55d9",
+    "git_commit": "37752688dbb108423d579415d6946f20932ccca5",
     "source_sha256": "4757dd32aa1ff806ebe6d6617b315c8d4fd8cd7d4c21f51a9b1e85cb11824770",
     "working_tree_scientific_edits": false
   },
@@ -1031,7 +1031,9 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "scripts/source_to_restore_rehearsal.py",
+        "tests/integration/test_source_to_restore_rehearsal.py"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1083,10 +1085,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Synthetic API\u2192queue\u2192Nautilus\u2192diagnose\u2192board tested; real Forex\u2192validation\u2192browser acceptance blocked/pending",
+      "next_required_action": "Rehearsal covers verify through restore over genuine data. Remaining for the full vertical: admit, generate, screen, diagnose, improve, independent evaluation and the dashboard stage, plus browser acceptance.",
       "requirement_id": "T30",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Synthetic API\u2192queue\u2192Nautilus\u2192diagnose\u2192board tested; real Forex\u2192validation\u2192browser acceptance blocked/pending",
+      "supporting_evidence_scope": "Source-to-restore rehearsal added over the genuine acquired catalog. Runs verify (deep Catalog.verify on sampled partitions), feature_cache (closed M5 bars), native_replay (full tick stream with monotonicity check), rank and backup_restore (backup plus restore rehearsal that re-applies every migration and re-verifies the restored catalog). Receipt source-to-restore-rehearsal/v1 lists the stages that ran and, explicitly, the nine stages that did not: import, admit, catalog, generate, screen, diagnose, improve, independent_evaluation, dashboard. Measured on this host over a 2,032,079-tick genuine partition: 6,333 M5 bars, 24,405 files backed up, 13 migrations re-applied, 129 catalog partitions re-verified, 345.6 s wall, 1.48 GB peak RSS. Real Forex through native replay and backup/restore is now exercised; the full vertical including screen, diagnose and independent evaluation remains open.",
       "title": "Full vertical",
       "verification_command": "bash scripts/verify.sh"
     },
