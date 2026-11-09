@@ -45,11 +45,11 @@ re-verified after restore, 345.6 s wall, 1.48 GB peak RSS. The receipt lists the
 nine stages it did **not** run — import, admit, catalog, generate, screen,
 diagnose, improve, independent_evaluation, dashboard — and never claims them.
 
-**Source-to-restore rehearsal now covers eleven stages over genuine data.**
+**Source-to-restore rehearsal now covers twelve stages over genuine data.**
 `scripts/source_to_restore_rehearsal.py` runs verify, admit, feature_cache,
-generate, screen, native_replay, diagnose, independent_evaluation, improve, rank
-and backup_restore in one chain against the real acquired catalog. The receipt
-lists only three stages as not run: import, catalog, dashboard. Measured over a
+generate, screen, native_replay, diagnose, independent_evaluation, improve, rank,
+dashboard and backup_restore in one chain against the real acquired catalog. The
+receipt lists only two stages as not run: import, catalog. Measured over a
 genuine 2,032,079-tick partition: 6,333 M5 bars, 24,405 files backed up, 13
 migrations re-applied, 129 catalog partitions re-verified after restore, 345.6 s
 wall, 1.48 GB peak RSS.
