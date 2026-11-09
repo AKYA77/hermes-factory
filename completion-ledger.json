@@ -1,11 +1,11 @@
 {
-  "audited_head": "212b912c7296e9075210148922380d03ea007a89",
+  "audited_head": "0534cb31092506d333cbe0ca837c517267de0a69",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "212b912c7296e9075210148922380d03ea007a89",
-    "source_sha256": "4757dd32aa1ff806ebe6d6617b315c8d4fd8cd7d4c21f51a9b1e85cb11824770",
+    "git_commit": "0534cb31092506d333cbe0ca837c517267de0a69",
+    "source_sha256": "06fb024db27b64159b6b83b0abac7eec1b6faedd6913e2d41cc8042818e0319d",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -1085,10 +1085,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Rehearsal covers twelve stages and reports real-catalog blockers explicitly. Remaining: a reviewed instrument profile for genuine tick data (ADR0051) so admit, diagnose and improve can run over acquired data, then import and catalog, plus browser acceptance.",
+      "next_required_action": "All twelve rehearsal stages run over genuine acquired data with zero blocked. Remaining: import and catalog stages, browser acceptance, and the ADR0051 reviewed instrument profile registry to replace the TEST_ONLY declared session.",
       "requirement_id": "T30",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Source-to-restore rehearsal over the genuine acquired catalog. Twelve stages are implemented in one chain: verify, admit, feature_cache, generate, screen, native_replay, diagnose, independent_evaluation, improve, rank, dashboard and backup_restore. Run against the real acquired catalog with a scratch state root: nine stages completed (verify, feature_cache, generate, screen, native_replay, independent_evaluation, rank, dashboard, backup_restore) and three were blocked at a single measured cause \u2014 the genuine tick data does not satisfy the synthetic fixture profile (source_structural_status FAILED_CHECKS with 124,125 structural issue rows, profile_status DECLARED_UNITS_MISMATCH, calendar_status UNRESOLVED_CALENDAR with 124,215 unknown rows). The rehearsal records blocked stages explicitly with their reason rather than aborting. Measured over a 2,032,079-tick genuine partition: 6,333 M5 bars, 24,405 files backed up, 13 migrations re-applied, 129 catalog partitions re-verified. Profile-bound stages need a reviewed instrument profile matching genuine tick units, which is the ADR0051 registry work.",
+      "supporting_evidence_scope": "Source-to-restore rehearsal over the genuine acquired catalog, run with a scratch state root so the production catalog and store are untouched. All twelve stages complete with zero blocked: verify, admit, feature_cache, generate, screen, native_replay, diagnose, independent_evaluation, improve, rank, dashboard, backup_restore. Measured: 216.0 s wall, 1.24 GB peak RSS. Four genuine coverage gaps were closed to get there, each found by measuring rather than assuming: (1) profile units - the synthetic fixture declared price_scale=1000 while the genuine stream carries 1000000, now derived via factory.instruments.declared_tick_profile(); (2) timestamp precision - a hardcoded whole-second quantum flagged 124,125 millisecond rows as structural issues, now derived from the observed source_precision; (3) calendar coverage - a 24/7 fixture cannot classify real weekend gaps, now a declared session for the sampled instrument; (4) instrument identity - a mixed-instrument sample could never satisfy a per-instrument calendar or profile, now sampled from one instrument with the strategy instrument and strategy_hash recomputed. The declared session remains a TEST_ONLY rehearsal assumption, not verified broker metadata, so the ADR0051 profile registry work remains open. Earlier measurements over a 2,032,079-tick genuine partition: 6,333 M5 bars, 24,405 files backed up, 13 migrations re-applied, 129 catalog partitions re-verified after restore.",
       "title": "Full vertical",
       "verification_command": "bash scripts/verify.sh"
     },
