@@ -1,11 +1,11 @@
 {
-  "audited_head": "c7b0988322e0719fdf923c905c4991931ec40c20",
+  "audited_head": "b82b0a00f4de0d98682aadd98c104d4fb545bd6d",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "c7b0988322e0719fdf923c905c4991931ec40c20",
-    "source_sha256": "8f3fa54490221fb5cf4d41bc9293d5993b3acc093eedf8aa3c42c4b111e374c3",
+    "git_commit": "b82b0a00f4de0d98682aadd98c104d4fb545bd6d",
+    "source_sha256": "4757dd32aa1ff806ebe6d6617b315c8d4fd8cd7d4c21f51a9b1e85cb11824770",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -686,7 +686,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "tests/recovery/test_restore_rehearsal.py"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -738,10 +739,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Synthetic atomic pointer health-failure test only; migration/live process recovery pending",
+      "next_required_action": "Rehearsal is implemented and tested. A production rehearsal over a genuine state root with stopped services remains separate work.",
       "requirement_id": "T22",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Synthetic atomic pointer health-failure test only; migration/live process recovery pending",
+      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim.",
       "title": "Rollback",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -750,7 +751,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "tests/recovery/test_restore_rehearsal.py"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -802,10 +804,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending",
+      "next_required_action": "Rehearsal is implemented and tested. A production rehearsal over a genuine state root with stopped services remains separate work.",
       "requirement_id": "T23",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "SQLite + artifact copy/checksum corruption tested; full source/state/board production rehearsal pending",
+      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim.",
       "title": "Backup recovery",
       "verification_command": "bash scripts/verify.sh"
     },
