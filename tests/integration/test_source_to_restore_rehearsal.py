@@ -80,6 +80,26 @@ def test_rehearsal_reports_a_monotonic_source(tmp_path):
     assert replay["ticks"] == 240
 
 
+def test_rehearsal_records_a_blocked_stage_instead_of_aborting(tmp_path, monkeypatch):
+    rehearsal = _load_script()
+    catalog = _catalog(tmp_path)
+    state_root = _state_root(tmp_path)
+
+    def boom(state_root, catalog, sample):
+        raise ValueError("SOURCE_QUALITY_NOT_ACCEPTABLE")
+
+    monkeypatch.setattr(rehearsal, "admit", boom)
+    receipt = rehearsal.run(
+        catalog=catalog, state_root=state_root, sample_size=1, workdir=tmp_path / "reh"
+    )
+    blocked = {s["stage"]: s.get("reason") for s in receipt["stages_blocked"]}
+    assert "admit" in blocked
+    assert "SOURCE_QUALITY_NOT_ACCEPTABLE" in blocked["admit"]
+    # A blocked stage must never be reported as run.
+    assert "admit" not in receipt["stages_run"]
+    assert "verify" in receipt["stages_run"]
+
+
 def test_rehearsal_refuses_to_run_without_partitions(tmp_path):
     rehearsal = _load_script()
     empty = tmp_path / "empty-catalog"

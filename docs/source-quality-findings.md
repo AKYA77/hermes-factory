@@ -90,6 +90,42 @@ supervisor runs with 17179869184 (16 GiB) on this host, which has 75 GB free;
 the guard still bounds growth, it no longer blocks legitimate imports. Raising
 the budget does not relax any data-quality check.
 
+## 3. Genuine tick data does not satisfy the synthetic fixture profile
+
+Measured by running the twelve-stage source-to-restore rehearsal against the
+real acquired catalog (`/var/lib/hermes-factory/catalog`) with a scratch state
+root. Nine stages completed: verify, feature_cache, generate, screen,
+native_replay, independent_evaluation, rank, dashboard, backup_restore. Three
+were blocked, all at the same underlying cause:
+
+| Stage | Blocked reason |
+|---|---|
+| admit | `SOURCE_QUALITY_NOT_ACCEPTABLE` |
+| diagnose | `historical admission required; generated evidence cannot be relabeled` |
+| improve | `SearchProtocol` validation: `admission_id` pattern |
+
+The measured quality result for a 124,215-row genuine partition:
+
+- `source_structural_status = FAILED_CHECKS` — 124,125 structural issue rows
+- `profile_status = DECLARED_UNITS_MISMATCH`
+- `calendar_status = UNRESOLVED_CALENDAR` — 124,215 `calendar_rows_UNKNOWN`
+
+**Interpretation.** The rehearsal's admission path builds a profile from the
+project's synthetic minute-fixture, which declares units that genuine tick data
+does not satisfy. This is not a data defect in the provider's stream and not a
+parser fault — it is a profile-coverage gap. Genuine tick data needs a reviewed
+instrument profile whose declared units, tick grid and calendar match it, which
+is the instrument profile registry work recorded under ADR0051.
+
+**Consequence for the rehearsal.** Profile-bound stages (admit, diagnose,
+improve) cannot run over genuine data until such a profile exists. The rehearsal
+now records a blocked stage explicitly with its reason instead of aborting, so
+the receipt distinguishes "did not run by design" from "could not run, and why".
+
+**Also note.** With admit blocked, `independent_evaluation` falls back to the
+synthetic fixture rather than the genuine partition, so that stage's result in
+this run is not evidence about the acquired data.
+
 ## Disposition
 
 `DATA_READY` remains false. These findings are exactly the class of defect the

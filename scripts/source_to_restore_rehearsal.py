@@ -453,21 +453,50 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         raise RuntimeError("no acquired partitions available for the rehearsal")
     workdir = Path(workdir) if workdir else state_root.parent / "rehearsal"
     workdir.mkdir(parents=True, exist_ok=True)
-    admitted = admit(state_root, catalog, sample)
-    stages = [
-        verify(catalog, sample),
-        admitted,
-        feature_cache(catalog, sample),
-        generate(catalog, sample),
-        screen(state_root, catalog, sample),
-        native_replay(catalog, sample),
-        diagnose(state_root, catalog, sample, admitted["_payload"]),
-        independent_evaluation(state_root, catalog, sample, admitted["_payload"]),
-        improve(state_root, catalog, sample, admitted["_payload"]),
-        rank(state_root),
-        dashboard(state_root, catalog, sample),
-        backup_restore(state_root, workdir),
+    admitted = {}
+
+    def _admit():
+        nonlocal admitted
+        admitted = admit(state_root, catalog, sample)
+        return admitted
+
+    plan = [
+        ("verify", lambda: verify(catalog, sample)),
+        ("admit", _admit),
+        ("feature_cache", lambda: feature_cache(catalog, sample)),
+        ("generate", lambda: generate(catalog, sample)),
+        ("screen", lambda: screen(state_root, catalog, sample)),
+        ("native_replay", lambda: native_replay(catalog, sample)),
+        (
+            "diagnose",
+            lambda: diagnose(state_root, catalog, sample, admitted.get("_payload")),
+        ),
+        (
+            "independent_evaluation",
+            lambda: independent_evaluation(
+                state_root, catalog, sample, admitted.get("_payload")
+            ),
+        ),
+        (
+            "improve",
+            lambda: improve(state_root, catalog, sample, admitted.get("_payload")),
+        ),
+        ("rank", lambda: rank(state_root)),
+        ("dashboard", lambda: dashboard(state_root, catalog, sample)),
+        ("backup_restore", lambda: backup_restore(state_root, workdir)),
     ]
+    stages = []
+    for name, step in plan:
+        try:
+            stages.append(step())
+        except Exception as exc:  # noqa: BLE001 - recorded, never hidden
+            stages.append(
+                {
+                    "stage": name,
+                    "status": "BLOCKED",
+                    "reason": f"{type(exc).__name__}: {str(exc)[:400]}",
+                }
+            )
     wall = time.perf_counter() - started
     receipt = {
         "schema": "source-to-restore-rehearsal/v1",
@@ -490,7 +519,12 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
             "backup",
             "restore",
         ],
-        "stages_run": [s["stage"] for s in stages],
+        "stages_run": [
+            s["stage"] for s in stages if s.get("status") != "BLOCKED"
+        ],
+        "stages_blocked": [
+            {"stage": s["stage"], "reason": s.get("reason")} for s in stages if s.get("status") == "BLOCKED"
+        ],
         "stages_not_run": [
             "import",
             "catalog",
