@@ -112,6 +112,6 @@ def test_rehearsal_refuses_to_run_without_partitions(tmp_path):
             workdir=tmp_path / "rehearsal",
         )
     except RuntimeError as exc:
-        assert "no acquired partitions" in str(exc)
+        assert "no acquired partitions" in str(exc) or "no single instrument" in str(exc)
     else:
         raise AssertionError("expected RuntimeError for an empty catalog")

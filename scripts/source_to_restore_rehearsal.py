@@ -28,8 +28,28 @@ def _rss():
 
 
 def _catalog_partitions(catalog, limit):
-    ids = [p.name for p in catalog.iterdir() if (p / "manifest.json").exists()]
-    return sorted(ids)[:limit]
+    """Sample partitions belonging to ONE instrument.
+
+    Admission requires the declared calendar and profile to match the data, so a
+    mixed-instrument sample can never pass: the calendar is declared per
+    instrument. Sampling one instrument keeps the rehearsal honest about what it
+    exercised.
+    """
+    by_instrument = {}
+    for path in catalog.iterdir():
+        manifest = path / "manifest.json"
+        if not manifest.exists():
+            continue
+        record = json.loads(manifest.read_text())
+        instrument = record.get("instrument_id") or record.get("instrument")
+        by_instrument.setdefault(instrument, []).append(path.name)
+    for instrument in sorted(by_instrument):
+        ids = sorted(by_instrument[instrument])
+        if len(ids) >= limit:
+            return ids[:limit]
+    raise RuntimeError(
+        "no single instrument has enough partitions for the rehearsal sample"
+    )
 
 
 def verify(catalog, sample):
@@ -115,7 +135,7 @@ def admit(state_root, catalog, sample):
     """Stage: Admit. Reviewed admission over a genuine acquired dataset."""
     import hashlib
 
-    from factory.contracts import InstrumentSpec, Window, fingerprint
+    from factory.contracts import InstrumentSpec, StrategySpec, Window, fingerprint
     from factory.data import Catalog
     from factory.data.admission import (
         CALENDAR_FIELDS,
@@ -153,6 +173,15 @@ def admit(state_root, catalog, sample):
         role="train_only",
     )
     payload["contract"]["windows"] = [window.model_dump(mode="json")]
+    # The seed's strategy names the fixture instrument. Admission is over the
+    # sampled acquired instrument, so the payload must name the same one or the
+    # native replay rejects it as an instrument identity mismatch.
+    payload["strategy"]["instrument"] = data[0].instrument_id
+    # Changing the instrument changes the strategy hash, which the contract
+    # pins. Recompute it or the runner rejects the contract as mismatched.
+    payload["contract"]["strategy_hash"] = StrategySpec.model_validate(
+        payload["strategy"]
+    ).strategy_hash
     manifest = cat.commit(
         data,
         b"TEST ONLY source-to-restore rehearsal authorization fixture",
@@ -171,16 +200,27 @@ def admit(state_root, catalog, sample):
     document = b"TEST ONLY rehearsal research assumptions, not financial reference evidence"
     doc_hash = hashlib.sha256(document).hexdigest()
     tzif = Path("/usr/share/zoneinfo/UTC").read_bytes()
+    # Declared FX session: opens Sunday 22:00 UTC, closes Friday 22:00 UTC.
+    # A 24/7 fixture cannot classify real weekend gaps, which is why genuine
+    # data failed admission with UNRESOLVED_CALENDAR. This is a declared
+    # rehearsal assumption, not verified broker metadata.
+    SUNDAY_2200 = 6 * 86400 + 22 * 3600
+    FRIDAY_2200 = 4 * 86400 + 22 * 3600
     calendar = CalendarSpec(
-        instrument="EURUSD",
+        instrument=data[0].instrument_id,
         version="TEST_ONLY/v1",
         timezone="UTC",
         tzif_sha256=hashlib.sha256(tzif).hexdigest(),
         source_document_sha256=doc_hash,
-        source_citation="TEST ONLY 24/7 rehearsal calendar",
+        source_citation=(
+            "TEST ONLY declared FX session Sun 22:00 UTC to Fri 22:00 UTC; "
+            "not verified broker metadata"
+        ),
         effective_start_ns=window.start_ns,
         effective_end_ns=window.end_ns,
-        weekly_sessions=({"start_second": 0, "end_second": 604800},),
+        weekly_sessions=(
+            {"start_second": SUNDAY_2200, "end_second": FRIDAY_2200},
+        ),
         closures=(),
         ambiguous_boundary="reject",
     )
@@ -266,7 +306,7 @@ def generate(catalog, sample):
     cat = Catalog(catalog)
     quotes = list(cat.read(sample[0]))
     spec = StrategySpec(
-        instrument="EURUSD",
+        instrument=quotes[0].instrument_id,
         timeframe="M1",
         signal=Signal(operator="momentum", lookback=3, threshold="1"),
         stop_ticks=60,

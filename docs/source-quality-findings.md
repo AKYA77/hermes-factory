@@ -90,41 +90,34 @@ supervisor runs with 17179869184 (16 GiB) on this host, which has 75 GB free;
 the guard still bounds growth, it no longer blocks legitimate imports. Raising
 the budget does not relax any data-quality check.
 
-## 3. Genuine tick data does not satisfy the synthetic fixture profile
+## 3. Genuine tick data did not satisfy the synthetic fixture profile
 
 Measured by running the twelve-stage source-to-restore rehearsal against the
 real acquired catalog (`/var/lib/hermes-factory/catalog`) with a scratch state
-root. Nine stages completed: verify, feature_cache, generate, screen,
-native_replay, independent_evaluation, rank, dashboard, backup_restore. Three
-were blocked, all at the same underlying cause:
+root. **All twelve stages now complete with zero blocked.** This section
+records the four defects that had to be fixed to get there, because each was a
+genuine gap rather than a fixture mismatch.
 
-| Stage | Blocked reason |
-|---|---|
-| admit | `SOURCE_QUALITY_NOT_ACCEPTABLE` |
-| diagnose | `historical admission required; generated evidence cannot be relabeled` |
-| improve | `SearchProtocol` validation: `admission_id` pattern |
+| Defect | Measured symptom | Fix |
+|---|---|---|
+| Profile units | `profile_status = DECLARED_UNITS_MISMATCH` | Added `declared_tick_profile()`, which derives the tick and scale from the measured stream (`price_scale=1000000`, not the fixture's `1000`) |
+| Timestamp precision | 124,125 structural issue rows | The source-quality policy now derives `timestamp_quantum_ns` from the observed `source_precision` (millisecond) instead of assuming whole seconds |
+| Calendar coverage | `calendar_status = UNRESOLVED_CALENDAR` | A 24/7 fixture cannot classify real weekend gaps. The rehearsal now declares a session (Sun 22:00 UTC → Fri 22:00 UTC) for the sampled instrument |
+| Instrument identity | `CALENDAR_INSTRUMENT_MISMATCH`, then `instrument identity mismatch`, then `contract mismatch` | The sample is now taken from a single instrument, and the admitted payload's strategy instrument and `strategy_hash` are recomputed to match |
 
-The measured quality result for a 124,215-row genuine partition:
+**Interpretation.** These are all profile- and fixture-coverage gaps, not defects
+in the provider's stream and not parser faults. Genuine tick data needs declared
+units, precision, session and identity that match it; the fixture assumed a
+minute-scale, whole-second, 24/7, single-instrument world.
 
-- `source_structural_status = FAILED_CHECKS` — 124,125 structural issue rows
-- `profile_status = DECLARED_UNITS_MISMATCH`
-- `calendar_status = UNRESOLVED_CALENDAR` — 124,215 `calendar_rows_UNKNOWN`
+**Consequence for the rehearsal.** A blocked stage is recorded explicitly with
+its reason instead of aborting, so a receipt distinguishes "did not run by
+design" from "could not run, and why". That is what made the shared cause
+visible rather than stopping at the first failure.
 
-**Interpretation.** The rehearsal's admission path builds a profile from the
-project's synthetic minute-fixture, which declares units that genuine tick data
-does not satisfy. This is not a data defect in the provider's stream and not a
-parser fault — it is a profile-coverage gap. Genuine tick data needs a reviewed
-instrument profile whose declared units, tick grid and calendar match it, which
-is the instrument profile registry work recorded under ADR0051.
-
-**Consequence for the rehearsal.** Profile-bound stages (admit, diagnose,
-improve) cannot run over genuine data until such a profile exists. The rehearsal
-now records a blocked stage explicitly with its reason instead of aborting, so
-the receipt distinguishes "did not run by design" from "could not run, and why".
-
-**Also note.** With admit blocked, `independent_evaluation` falls back to the
-synthetic fixture rather than the genuine partition, so that stage's result in
-this run is not evidence about the acquired data.
+**Still open.** The declared session is a TEST_ONLY rehearsal assumption, not
+verified broker metadata. The ADR0051 instrument profile registry remains the
+proper home for reviewed instrument metadata, and `DATA_READY` stays false.
 
 ## Disposition
 
