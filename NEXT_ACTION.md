@@ -45,6 +45,22 @@ re-verified after restore, 345.6 s wall, 1.48 GB peak RSS. The receipt lists the
 nine stages it did **not** run — import, admit, catalog, generate, screen,
 diagnose, improve, independent_evaluation, dashboard — and never claims them.
 
+**All six dashboard browser-acceptance smokes pass.** `scripts/run-browser-smoke.sh`
+starts the dashboard **and** a coordinator against one isolated TEST_ONLY state,
+waits for the API, runs a smoke in real Chromium, and tears both down. All six
+pass with zero page errors and no mobile overflow: discovery, historical screen
+cohort, reviewed inputs, screen cohort, screen fallback and validation. Eight
+harness defects were found and fixed first — five smokes pointed at a nonexistent
+`/usr/bin/chromium`; `serve` started no coordinator so job-driven workflows never
+completed; the historical smoke polled at 250 ms against a 120 req/60 s limiter and
+always tripped 429; the discovery smoke used an ambiguous page-global
+`Authorized by` locator; the reviewed-inputs fixture accepted `--state` but
+hardcoded its path; its smoke hardcoded both the state path and URL; its
+revocation step inherited an ambient `PYTHONPATH` that broke `pydantic_core`; and
+the wrapper pre-created a state directory some fixtures require to be absent. See
+`docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
+not market data.
+
 **Source-to-restore rehearsal: all twelve stages run over genuine acquired data.**
 `scripts/source_to_restore_rehearsal.py` runs verify, admit, feature_cache,
 generate, screen, native_replay, diagnose, independent_evaluation, improve, rank,
