@@ -7,12 +7,19 @@
  type Ranking={evaluations_considered:number;selected:{strategy_id:string;ending_equity:string}[];descriptive_only:boolean};
  type Storage={partitions:number;rows:number;bytes:number;by_instrument:Record<string,{partitions:number;rows:number;bytes:number}>};
  let {request}:{request:(path:string,method?:string,body?:unknown)=>Promise<any>}=$props();
- const ATTESTATION='Report descriptive research aggregates only; no qualification, ranking or promotion';
+ // Each report endpoint pins its own attestation literal, so the panel must send
+ // the matching one per action. A single generic attestation was rejected by all
+ // three endpoints with 422, which surfaced only as an alert after clicking.
+ const ATTESTATIONS={
+  funnel:'Report a descriptive global candidate-selection funnel only; no qualification, ranking or promotion',
+  annual:'Report descriptive annual and pooled aggregates over retained independent evaluations only; no qualification, ranking or promotion',
+  ranking:'Rank retained non-synthetic independent evaluations descriptively only; no qualification or promotion',
+ };
  let actor=$state(''),attest=$state(false),error=$state(''),busy=$state(false);
  let profiles=$state<Profile[]>([]),sources=$state<Source[]>([]),storage=$state<Storage|null>(null);
  let funnel=$state<Funnel|null>(null),annual=$state<Annual|null>(null),ranking=$state<Ranking|null>(null);
  async function get(path:string){busy=true;try{return await request(path);}catch(e){error=String(e);return null;}finally{busy=false;}}
- async function post(path:string){busy=true;try{return await request(path,'POST',{authorized_by:actor,attestation:ATTESTATION});}catch(e){error=String(e);return null;}finally{busy=false;}}
+ async function post(path:string,attestation:string){busy=true;try{return await request(path,'POST',{authorized_by:actor,attestation});}catch(e){error=String(e);return null;}finally{busy=false;}}
  onMount(async()=>{const [p,s]=await Promise.all([get('profiles'),get('sources')]);if(p)profiles=p.profiles;if(s)sources=s.sources;storage=await get('storage');});
 </script>
 <section class="reports" aria-label="Research reports">
@@ -20,11 +27,11 @@
  <p>Descriptive aggregates over retained evidence. None of these reports qualifies, ranks or promotes a strategy.</p>
  {#if error}<p role="alert">{error}</p>{/if}
  <div class="fields"><label>Authorized by <input bind:value={actor} maxlength="200" required/></label>
-  <label class="choice"><input type="checkbox" bind:checked={attest}/><span>{ATTESTATION}</span></label></div>
+  <label class="choice"><input type="checkbox" bind:checked={attest}/><span>I authorize descriptive research aggregates only; no qualification, ranking or promotion</span></label></div>
  <div class="actions">
-  <button disabled={busy||!attest} onclick={async()=>{funnel=await post('research/selection-funnel');}}>Selection funnel</button>
-  <button disabled={busy||!attest} onclick={async()=>{annual=await post('research/annual-reporting');}}>Annual reporting</button>
-  <button disabled={busy||!attest} onclick={async()=>{ranking=await post('research/independent-ranking');}}>Independent ranking</button>
+  <button disabled={busy||!attest} onclick={async()=>{funnel=await post('research/selection-funnel',ATTESTATIONS.funnel);}}>Selection funnel</button>
+  <button disabled={busy||!attest} onclick={async()=>{annual=await post('research/annual-reporting',ATTESTATIONS.annual);}}>Annual reporting</button>
+  <button disabled={busy||!attest} onclick={async()=>{ranking=await post('research/independent-ranking',ATTESTATIONS.ranking);}}>Independent ranking</button>
  </div>
  {#if funnel}<article><h3>Selection funnel</h3>
   <div class="metrics"><p><strong>{funnel.distinct_effective_cohort_candidates}</strong> distinct effective candidates</p><p><strong>{funnel.selected_for_native_audit}</strong> selected for audit</p><p><strong>{funnel.selected_and_observed}</strong> selected and observed</p><p><strong>{funnel.training_promotions}</strong> training promotions</p></div>
