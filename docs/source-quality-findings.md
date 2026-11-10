@@ -200,23 +200,46 @@ by `test_event_budget_retains_incomplete_attempt_and_never_registers_complete_re
 ## 7. Provider source-order defects and their lossless correction
 
 The 47 blocked partitions were all recorded as `import exit 1`, which said nothing
-about cause. Reproducing two of them from the immutable archives
+about cause. Reproducing them from the immutable archives
 (`sha256`-verified before parsing) showed **two distinct provider defects**, not
-one.
+one: eight partitions carry a duplicated hour and the other 39 carry isolated
+out-of-order rows.
 
-### 7.1 Exact duplicate block — EURUSD October 2025
+### 7.1 Exact duplicate block — all eight instruments, October 2025
 
-One backward jump of **−3,598.189 s**. The block after the jump is a verbatim
-re-emission of an earlier block: the first 50 rows of each are identical on
-timestamp, bid and ask, and the block is **1,494 rows** long. The duplicate carries
-no information.
+A duplicated hour affects **every instrument for October 2025** — eight
+partitions, not a subset. Each shows exactly one backward jump:
 
-### 7.2 Isolated out-of-order rows — AUDUSD June 2026
+| Partition | Backward jump |
+|---|---|
+| EURUSD 2025-10 | −3,598.2 s |
+| GBPUSD 2025-10 | −3,599.1 s |
+| NZDUSD 2025-10 | −3,599.2 s |
+| USDCAD 2025-10 | −3,599.2 s |
+| USDCHF 2025-10 | −3,597.8 s |
+| USDJPY 2025-10 | −3,599.4 s |
+| XAUUSD 2025-10 | −3,599.9 s |
+| AUDUSD 2025-10 | same class |
 
-Ten backward jumps in 1,723,025 rows, each exactly **−1.000 s**. The raw CSV shows
-why: a row stamped `20260628 172222000` appears *after* one stamped
-`20260628 172223000`. The provider's timestamp records when the tick occurred; the
-file order is an assembly artifact.
+The block after the jump is a verbatim re-emission of an earlier block: the first
+50 rows of each are identical on timestamp, bid and ask, and the EURUSD block is
+**1,494 rows** long. The duplicate carries no information.
+
+The uniformity across all eight instruments on the same UTC instant is itself
+evidence that this is a provider-side archive-assembly defect, not eight
+independent market events.
+
+### 7.2 Isolated out-of-order rows — every other blocked partition
+
+The remaining 39 blocked partitions carry isolated out-of-order rows rather than
+a duplicated block. AUDUSD June 2026 has 10 backward jumps in 1,723,025 rows, each
+exactly **−1.000 s**; the raw CSV shows why, with a row stamped `20260628 172222000`
+appearing *after* one stamped `20260628 172223000`. The provider's timestamp
+records when the tick occurred; the file order is an assembly artifact.
+
+Measured counts range from 2 rows (EURUSD 2026-06, NZDUSD 2026-06) to 15,084 rows
+(XAUUSD 2026-10). Gold shows the largest counts by a wide margin, consistent with
+its higher tick rate.
 
 ### Correction policy `source-order-correction/v1`
 
