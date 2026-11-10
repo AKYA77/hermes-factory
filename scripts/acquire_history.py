@@ -245,11 +245,18 @@ def run(args):
             # Staging is cumulative: without reclamation the payload budget is
             # eventually exhausted and further imports block even though their
             # canonical data is already published. Reclaim only published
-            # checkpoints; failed and in-progress intents are left untouched.
+            # checkpoints, and only when staging is actually pressing on the
+            # budget -- reclaim_all re-verifies every retained chunk, so
+            # calling it unconditionally after each wave stalls the supervisor.
             try:
-                from factory.data.resume import reclaim_all
+                from factory.data.resume import _payload_bytes, reclaim_all
 
-                reclaimed = reclaim_all(catalog)
+                staging_root = Path(catalog) / ".imports"
+                pressure = _payload_bytes(staging_root) / max(
+                    args.staging_budget_bytes or 2**31, 1
+                )
+                if pressure >= 0.5:
+                    reclaimed = reclaim_all(catalog)
             except Exception:
                 reclaimed = []
             save_state(checkpoint, state)
