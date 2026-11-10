@@ -324,7 +324,13 @@ class SourceQuality:
                         )
                     if not policy.expected_start_ns <= ref["ts"] < policy.expected_end_ns:
                         counts["outside_requested_period_rows"] += 1
-                        emit("REQUESTED_PERIOD_MISMATCH", {"quote": ref})
+                        # A window narrower than the dataset is a property of the
+                        # request, not of each row. Emitting one event per row
+                        # exhausts the event budget on a systematic condition and
+                        # fails the whole scan; emit a bounded number of examples
+                        # and let the count carry the magnitude.
+                        if counts["outside_requested_period_rows"] <= policy.max_examples:
+                            emit("REQUESTED_PERIOD_MISMATCH", {"quote": ref})
                 if q.instrument_id != manifest["instrument"] or q.price_scale != scale:
                     reasons.append("CANONICAL_UNITS_MISMATCH")
                 if q.bid_int <= 0 or q.ask_int < q.bid_int or q.quality_flags:

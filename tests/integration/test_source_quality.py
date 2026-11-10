@@ -138,6 +138,42 @@ def test_cached_receipt_does_not_rescan_and_tampering_or_metric_writes_fail(tmp_
         scanner.verify(result["run_id"])
 
 
+def test_window_narrower_than_dataset_reports_count_without_exhausting_budget(tmp_path):
+    """A requested window narrower than the data is a property of the request.
+
+    Every row used to emit a REQUESTED_PERIOD_MISMATCH event, so a window that
+    barely overlaps a partition exhausted the event budget on a systematic
+    condition and failed the whole scan. The count must carry the magnitude while
+    the events stay bounded.
+    """
+    # Step inside the gap threshold so the only systematic condition is the
+    # out-of-window mismatch, isolating it from budget consumed by gaps.
+    data = quotes([(110000, 110010)] * 32, step=10**9)
+    manifest = commit(tmp_path, data)
+    scanner = SourceQuality(tmp_path, Catalog(tmp_path / "catalog"))
+    first = data[0].event_ts_utc_ns
+    narrow = policy().model_copy(
+        update={
+            "max_examples": 2,
+            "max_events_bytes": 1024,
+            "expected_start_ns": first,
+            "expected_end_ns": first + 1000,
+        }
+    )
+    receipt = scanner.run(manifest["dataset_hash"], narrow)
+    assert receipt["counts"]["rows_scanned"] == 32
+    assert receipt["counts"]["outside_requested_period_rows"] == 31
+    assert receipt["requested_period_status"] == "OBSERVED_OUTSIDE_REQUESTED_PERIOD"
+    events = [
+        json.loads(line)
+        for line in (scanner.directory / receipt["run_id"] / "events.jsonl")
+        .read_text()
+        .splitlines()
+    ]
+    # Bounded by max_examples, not one per out-of-window row.
+    assert len([e for e in events if e["type"] == "REQUESTED_PERIOD_MISMATCH"]) <= 2
+
+
 def test_event_budget_retains_incomplete_attempt_and_never_registers_complete_receipt(tmp_path):
     manifest = commit(tmp_path, quotes([(110000, 110010)] * 32, step=121 * 10**9))
     scanner = SourceQuality(tmp_path, Catalog(tmp_path / "catalog"))

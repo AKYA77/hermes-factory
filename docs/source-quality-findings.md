@@ -169,6 +169,34 @@ operator to distrust the receipt, and a real missing partition would then be
 dismissed as the known false positive. The test pins both directions — a view over
 intact leaves passes, and a view whose leaf is deleted still fails.
 
+## 6. A narrow requested window failed the whole source scan
+
+A completed source-quality attempt on this host failed with
+`SOURCE_QUALITY_EVENT_BUDGET` after scanning 2,495 rows. The policy asked for a
+38-hour window; the dataset is a monthly partition. `REQUESTED_PERIOD_MISMATCH`
+was emitted **once per out-of-window row** — 2,494 of them — so a condition that
+is a property of the request exhausted the event budget and aborted the scan.
+
+Measured from the retained partial artifact:
+`{REQUESTED_PERIOD_MISMATCH: 2494, ROW_ISSUE: 2494, LEADING_UNQUOTED_INTERVAL: 1}`,
+1,048,486 bytes of events, `complete_source_scan: false`.
+
+**Interpretation.** The window mismatch is a relationship between the request and
+the dataset, not a defect in each row. Reporting it per row is disproportionate:
+the magnitude is already carried by `counts.outside_requested_period_rows`, which
+also drives `requested_period_status`.
+
+**Fix.** Per-row `REQUESTED_PERIOD_MISMATCH` events are now bounded by
+`max_examples`; the count carries the magnitude. A test pins both directions —
+the scan completes with `outside_requested_period_rows == 31` on a 32-row fixture
+under a 1 KB budget, and the emitted mismatch events stay within `max_examples`.
+
+**Consequence.** A scan whose window does not match its data now completes and
+reports the mismatch as a status plus a count, instead of failing outright. A
+genuine per-row defect (a bad quote, an off-grid tick) still emits per row and can
+still exhaust a deliberately tiny budget — that behaviour is unchanged and covered
+by `test_event_budget_retains_incomplete_attempt_and_never_registers_complete_receipt`.
+
 ## Disposition
 
 `DATA_READY` remains false. These findings are exactly the class of defect the
