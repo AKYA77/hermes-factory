@@ -8,7 +8,53 @@
       "reported_peak_rss_bytes": 390066176,
       "wall_seconds": 100.01175545599835
     },
-    "source_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+    "bounded_genuine_native_rehearsal": {
+      "cgroup_cpu_max": "400000 100000",
+      "cgroup_memory_max": "34359738368",
+      "children_cpu_seconds": 76.457602,
+      "parent_cpu_seconds": 2.704852895,
+      "parent_peak_rss_bytes": 223346688,
+      "parent_wall_seconds": 78.57425270500062,
+      "source_rows": 4336496,
+      "window_quotes": {
+        "exploratory_oos": 31761,
+        "scope": "Unmodified retained quote rows in two frozen four-hour windows; full source QA scans both months. No whole-tick-backtest throughput extrapolation.",
+        "training": 37752
+      }
+    },
+    "real_february_import": {
+      "cpu_seconds": 63.943652672000006,
+      "peak_rss_bytes": 195887104,
+      "wall_seconds": 65.26287403299648
+    },
+    "real_multiperiod_source_probe": {
+      "cache_reuse_metrics": {
+        "cpu_seconds": 1.0105696029999933,
+        "wall_seconds": 0.981662101999973
+      },
+      "cache_stats": {
+        "evictions": 0,
+        "hits": 2,
+        "misses": 2,
+        "quote_passes": 1
+      },
+      "cpu_seconds": 81.252809225,
+      "first_build_metrics": {
+        "cpu_seconds": 47.41920925,
+        "wall_seconds": 46.534765943011735
+      },
+      "process_peak_rss_bytes": 236957696,
+      "state_disk_bytes": 1902917,
+      "total_quotes": 4336496,
+      "wall_seconds": 79.36937545800174
+    },
+    "real_source_qa": {
+      "cpu_seconds": 175.53692999999998,
+      "disk_state_bytes": 1935328,
+      "process_peak_rss_bytes": 184852480,
+      "wall_seconds": 171.80964462200063
+    },
+    "source_commit": "4ea36e40d781c9dec555d42a1e919e027792a818",
     "synthetic_1000": {
       "all_jobs_completed": true,
       "assertion_failures": 0,
@@ -16,53 +62,7 @@
       "peak_worker_rss_bytes": 302280704,
       "wall_seconds": 197.4601130059964
     },
-    "target_host_verified": false,
-    "real_source_qa": {
-      "cpu_seconds": 175.53692999999998,
-      "process_peak_rss_bytes": 184852480,
-      "disk_state_bytes": 1935328,
-      "wall_seconds": 171.80964462200063
-    },
-    "real_february_import": {
-      "wall_seconds": 65.26287403299648,
-      "cpu_seconds": 63.943652672000006,
-      "peak_rss_bytes": 195887104
-    },
-    "real_multiperiod_source_probe": {
-      "total_quotes": 4336496,
-      "wall_seconds": 79.36937545800174,
-      "cpu_seconds": 81.252809225,
-      "process_peak_rss_bytes": 236957696,
-      "state_disk_bytes": 1902917,
-      "first_build_metrics": {
-        "wall_seconds": 46.534765943011735,
-        "cpu_seconds": 47.41920925
-      },
-      "cache_reuse_metrics": {
-        "wall_seconds": 0.981662101999973,
-        "cpu_seconds": 1.0105696029999933
-      },
-      "cache_stats": {
-        "hits": 2,
-        "misses": 2,
-        "evictions": 0,
-        "quote_passes": 1
-      }
-    },
-    "bounded_genuine_native_rehearsal": {
-      "parent_wall_seconds": 78.57425270500062,
-      "parent_cpu_seconds": 2.704852895,
-      "children_cpu_seconds": 76.457602,
-      "parent_peak_rss_bytes": 223346688,
-      "source_rows": 4336496,
-      "cgroup_cpu_max": "400000 100000",
-      "cgroup_memory_max": "34359738368",
-      "window_quotes": {
-        "training": 37752,
-        "exploratory_oos": 31761,
-        "scope": "Unmodified retained quote rows in two frozen four-hour windows; full source QA scans both months. No whole-tick-backtest throughput extrapolation."
-      }
-    }
+    "target_host_verified": false
   },
   "completed_local_increments": [
     "migration005 protected input/holdout ledgers and supervised fixed-window native evaluation",
@@ -97,28 +97,84 @@
     "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification",
     "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification"
   ],
+  "completion_ledger": "completion-ledger.json",
+  "continuation": {
+    "controller": "scripts/completion-queue.py",
+    "current_task": "safe_screening",
+    "publication_identity": "Resolve git HEAD and verify the authorized remote branch; last_remote_commit records the last independently observed remote before this checkpoint was committed.",
+    "runtime": "4 CPU quota / 32GiB environment, not the target 8GiB host. API/full pytest requires unsandboxed execution because TestClient hangs under sandbox networking.",
+    "services": "Only isolated generated loopback development fixtures. Latest cohort fixture .local/screen-cohort-browser-final API8099 and coordinator remain paused after browser verification. Grants are source-revision-bound and become stale on commit.",
+    "state": "IMPLEMENTING",
+    "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume."
+  },
+  "goal_source": "docs/source/Continuous_Autonomous_Completion_Loop.md",
+  "implementation_queue": "implementation-queue.json",
   "last_remote_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
   "last_verification": {
-    "passed": 684,
-    "warnings": 0,
-    "pytest_seconds": 1305.452,
     "failed": 0,
-    "skipped": 0,
-    "lint": "PASS",
     "format": "PASS",
-    "frontend_check": "PASS",
     "frontend_build": "PASS",
-    "log": "reports/runtime/test-results.xml"
+    "frontend_check": "PASS",
+    "lint": "PASS",
+    "log": "reports/runtime/test-results.xml",
+    "passed": 684,
+    "pytest_seconds": 1305.452,
+    "skipped": 0,
+    "warnings": 0
   },
   "latest_evidence_manifest": "reports/milestones/historical-screen-cohorts/manifest.json",
   "latest_milestone": "docs/milestone-historical-screen-cohorts.md",
   "latest_scientific_code_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
+  "latest_verification": {
+    "failed": 0,
+    "format": "PASS",
+    "frontend_build": "PASS",
+    "frontend_check": "PASS",
+    "lint": "PASS",
+    "log": "reports/milestones/historical-shadow/historical-shadow-full.log",
+    "passed": 566,
+    "pytest_seconds": 188.3,
+    "skipped": 0,
+    "warnings": 430
+  },
+  "network_requirements": {
+    "applied_or_published": false,
+    "confirmed_denied": [
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ],
+    "draft_additions_saved": [
+      "histdata.com",
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ]
+  },
   "next_unfinished": "Continue the dependency-aware queue from safe_screening: the full source-to-restore historical rehearsal over genuine acquired data, then recursive diagnostics, global qualification, source/profile/refresh/storage/data APIs, full dashboard, installed provenance/systemd/update/rollback/backup/restore, security remediation and release/Hermes handoff. Worker-native prospective diagnostics, screening comparability and selection safeguards are implemented. Historical acquisition is running under owner authorization and is blocked only by the quarantined non-monotonic partitions, which need an owner correction policy.",
   "observed_at_utc": "2026-11-10T14:43:34.050156+00:00",
+  "publication": {
+    "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
+    "branch": "build/initial-factory",
+    "latest_verified_development_ci": "reports/milestones/frozen-screen-cohorts/prior-screen-fallback-publication.json",
+    "latest_verified_development_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
+    "new_implementation_performed": false,
+    "observed_at_utc": "2026-11-04T17:41:50.059690+00:00",
+    "previous_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
+    "previously_local_commits_published": 18,
+    "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
+    "remote": "https://github.com/AKYA77/hermes-factory.git",
+    "scope": "This receipt observes the source push; the following metadata-only commit records its recovery.",
+    "status": "COMPLETED_SOURCE_PUSHED_AND_VERIFIED",
+    "verification": "git ls-remote, GitHub git-ref API and PR head all match",
+    "verified_completed_source_commit": "4ea36e40d781c9dec555d42a1e919e027792a818"
+  },
   "readiness": {
-    "SOFTWARE_VERIFIED": false,
     "DATA_READY": false,
-    "OPERATION_READY": false
+    "OPERATION_READY": false,
+    "SOFTWARE_VERIFIED": false
   },
   "remaining_mandate_sections": [
     4,
@@ -138,35 +194,36 @@
     18,
     19
   ],
+  "resume_instructions": "NEXT_ACTION.md",
   "security": {
-    "disposition_document": "docs/security-advisories-2026-11-07.md",
-    "status": "DISPOSITION_DOCUMENTED_RESIDUAL_LOW",
-    "fsspec": {
-      "advisory": "GHSA-27vj-qcqg-25rc",
-      "installed": "2026.2.0",
-      "constraint": "nautilus_trader==1.231.0 exact pin fsspec==2026.2.0",
-      "compatible_fix": "none without overriding the upstream pin",
-      "reachable": false,
-      "evidence": "nautilus_trader never imports fsspec.implementations.reference; not loaded at runtime",
-      "residual_review": "re-run the reachability test on every Nautilus upgrade"
-    },
+    "auditing_disabled": false,
     "deepmerge": {
       "advisory": "GHSA-gcqx-w48m-w2h4",
       "ecosystem": "npm",
+      "evidence": "build-time dev dependency only; absent from the built dashboard bundle",
       "installed": "4.3.1 (latest, inside the affected range)",
       "path": "@sveltejs/vite-plugin-svelte -> @sveltejs/kit -> @sveltejs/adapter-static",
       "reachable": false,
-      "evidence": "build-time dev dependency only; absent from the built dashboard bundle",
       "residual_review": "re-run npm audit on every dashboard dependency update"
     },
+    "disposition_document": "docs/security-advisories-2026-11-07.md",
+    "fsspec": {
+      "advisory": "GHSA-27vj-qcqg-25rc",
+      "compatible_fix": "none without overriding the upstream pin",
+      "constraint": "nautilus_trader==1.231.0 exact pin fsspec==2026.2.0",
+      "evidence": "nautilus_trader never imports fsspec.implementations.reference; not loaded at runtime",
+      "installed": "2026.2.0",
+      "reachable": false,
+      "residual_review": "re-run the reachability test on every Nautilus upgrade"
+    },
     "regression_tests": "tests/security/test_dependency_advisories.py",
-    "auditing_disabled": false,
+    "status": "DISPOSITION_DOCUMENTED_RESIDUAL_LOW",
     "updated_utc": "2026-11-07"
   },
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
+    "git_commit": "4ea36e40d781c9dec555d42a1e919e027792a818",
     "source_sha256": "da12e322ed56ae57af9c0ef3f3a3afce2c4eb2f5617a152d4d832c120581a858"
   },
   "visibility": {
@@ -176,62 +233,5 @@
     "owner_decision_pending": true,
     "private_claim_superseded": true,
     "push_authorization": "Latest owner directive explicitly authorizes each tested milestone push; no merge, visibility change or production deployment."
-  },
-  "goal_source": "docs/source/Continuous_Autonomous_Completion_Loop.md",
-  "completion_ledger": "completion-ledger.json",
-  "resume_instructions": "NEXT_ACTION.md",
-  "publication": {
-    "status": "COMPLETED_SOURCE_PUSHED_AND_VERIFIED",
-    "observed_at_utc": "2026-11-04T17:41:50.059690+00:00",
-    "remote": "https://github.com/AKYA77/hermes-factory.git",
-    "branch": "build/initial-factory",
-    "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
-    "previous_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
-    "verified_completed_source_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
-    "previously_local_commits_published": 18,
-    "verification": "git ls-remote, GitHub git-ref API and PR head all match",
-    "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
-    "scope": "This receipt observes the source push; the following metadata-only commit records its recovery.",
-    "new_implementation_performed": false,
-    "latest_verified_development_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
-    "latest_verified_development_ci": "reports/milestones/frozen-screen-cohorts/prior-screen-fallback-publication.json"
-  },
-  "latest_verification": {
-    "passed": 566,
-    "warnings": 430,
-    "pytest_seconds": 188.3,
-    "failed": 0,
-    "skipped": 0,
-    "lint": "PASS",
-    "format": "PASS",
-    "frontend_check": "PASS",
-    "frontend_build": "PASS",
-    "log": "reports/milestones/historical-shadow/historical-shadow-full.log"
-  },
-  "network_requirements": {
-    "confirmed_denied": [
-      "www.histdata.com",
-      "www.oanda.com",
-      "www.six-group.com",
-      "api.github.com"
-    ],
-    "draft_additions_saved": [
-      "histdata.com",
-      "www.histdata.com",
-      "www.oanda.com",
-      "www.six-group.com",
-      "api.github.com"
-    ],
-    "applied_or_published": false
-  },
-  "implementation_queue": "implementation-queue.json",
-  "continuation": {
-    "controller": "scripts/completion-queue.py",
-    "current_task": "safe_screening",
-    "state": "IMPLEMENTING",
-    "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume.",
-    "publication_identity": "Resolve git HEAD and verify the authorized remote branch; last_remote_commit records the last independently observed remote before this checkpoint was committed.",
-    "runtime": "4 CPU quota / 32GiB environment, not the target 8GiB host. API/full pytest requires unsandboxed execution because TestClient hangs under sandbox networking.",
-    "services": "Only isolated generated loopback development fixtures. Latest cohort fixture .local/screen-cohort-browser-final API8099 and coordinator remain paused after browser verification. Grants are source-revision-bound and become stale on commit."
   }
 }
