@@ -54,6 +54,27 @@ All six pass with zero page errors and no mobile overflow:
 - `validation-browser` — live validation list, exact nanosecond download,
   protected window state, typed UTC prospective registration, disable stages.
 
+## Attestation literals
+
+Every report and action endpoint pins its own attestation literal. A panel that
+sends a different string fails at runtime with `422` and surfaces only as an alert
+after the user clicks — which is exactly how the Research reports panel shipped
+broken: one generic attestation for three endpoints that each pin their own.
+
+`scripts/check-dashboard-attestations.py` compares the literals declared in
+`apps/dashboard/src/lib/*.svelte` against every attestation literal defined under
+`factory/`, catching the mismatch before it reaches a browser. It reports backend
+literals with no panel separately, since those endpoints are reached through the
+CLI or API rather than the dashboard.
+
+Current result: **7 panel literals, 19 backend literals, 0 unmatched.**
+
+`tests/integration/test_dashboard_attestations.py` runs the check and also proves
+it fails on a deliberately mismatched panel, so it cannot pass vacuously.
+
+Note that the project's Ruff scope is `factory apps tests`; `scripts/` is not
+linted, so the check script is excluded from that gate by design.
+
 ## Scope
 
 Every one of these runs against **generated TEST_ONLY fixtures**, not market
