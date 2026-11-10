@@ -119,6 +119,31 @@ visible rather than stopping at the first failure.
 verified broker metadata. The ADR0051 instrument profile registry remains the
 proper home for reviewed instrument metadata, and `DATA_READY` stays false.
 
+## 4. The rehearsal was not idempotent against a reused state root
+
+Found while adding the `catalog` stage. A second run against the same state root
+failed its own `diagnose` stage with `DISCOVERY_EVALUATION_WINDOW_EXCLUDED`.
+
+The cause is a feedback loop between two stages:
+
+1. `independent_evaluation` records a `research_input_uses` row with purpose
+   `evaluation-with-past-only-warmup` for the sampled window.
+2. Discovery's `excluded_intervals` treats that purpose as an excluded evaluation
+   interval, so the next run's `diagnose` refuses the same window.
+
+The first run therefore silently poisons the state root for the second. Measured:
+14 accumulated `research_input_uses` rows for one instrument and one identical
+window, across repeated runs.
+
+**Fix.** The rehearsal now refuses a state root that already has an
+`evaluation-with-past-only-warmup` use for the sampled instrument, with a message
+naming the cause and the remedy. A test pins it. Only that purpose is checked: a
+`training-enqueue` use is legitimate prior state and does not cause exclusion.
+
+**Consequence.** Run the rehearsal against a fresh `--state-root` each time, as
+the browser smokes do. The guard turns a confusing downstream failure into an
+immediate, accurate one.
+
 ## Disposition
 
 `DATA_READY` remains false. These findings are exactly the class of defect the

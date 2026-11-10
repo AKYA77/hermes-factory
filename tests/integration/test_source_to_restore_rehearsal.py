@@ -4,6 +4,8 @@ import importlib.util
 import json
 from pathlib import Path
 
+import pytest
+
 from factory.contracts import ExperimentContract
 from factory.experiments import Store
 from factory.operations.fixtures import seed
@@ -45,6 +47,7 @@ def test_rehearsal_runs_the_chain_and_records_the_receipt(tmp_path):
     assert receipt["schema"] == "source-to-restore-rehearsal/v1"
     assert receipt["stages_run"] == [
         "verify",
+        "catalog",
         "admit",
         "feature_cache",
         "generate",
@@ -59,7 +62,7 @@ def test_rehearsal_runs_the_chain_and_records_the_receipt(tmp_path):
     ]
     # The receipt must be explicit about what it did not run.
     assert "import" in receipt["stages_not_run"]
-    assert "catalog" in receipt["stages_not_run"]
+    assert "catalog" not in receipt["stages_not_run"]
     assert receipt["scope"].startswith("Development rehearsal")
     archived = json.loads((workdir / "rehearsal-report.json").read_text())
     assert archived["stages_run"] == receipt["stages_run"]
@@ -98,6 +101,49 @@ def test_rehearsal_records_a_blocked_stage_instead_of_aborting(tmp_path, monkeyp
     # A blocked stage must never be reported as run.
     assert "admit" not in receipt["stages_run"]
     assert "verify" in receipt["stages_run"]
+
+
+def test_rehearsal_refuses_a_state_root_it_would_pollute(tmp_path):
+    """A second run against the same state root must be refused, not misreported.
+
+    The independent-evaluation stage records an evaluation-with-past-only-warmup
+    use for the sampled window. Discovery treats that window as excluded, so a
+    reused state root makes the next run's diagnose stage fail with
+    DISCOVERY_EVALUATION_WINDOW_EXCLUDED. That is state pollution, not a data
+    finding, so it must be refused loudly.
+    """
+    import sqlite3
+
+    rehearsal = _load_script()
+    catalog = _catalog(tmp_path)
+    state_root = _state_root(tmp_path)
+    db = sqlite3.connect(state_root / "factory.sqlite")
+    db.execute(
+        """CREATE TABLE IF NOT EXISTS research_input_uses (
+            use_id TEXT PRIMARY KEY, instrument TEXT, evidence_kind TEXT,
+            dataset_hash TEXT, start_ns INTEGER, end_ns INTEGER,
+            purpose TEXT, owner_id TEXT, created_at TEXT)"""
+    )
+    db.execute(
+        "INSERT INTO research_input_uses VALUES (?,?,?,?,?,?,?,?,?)",
+        (
+            "u1",
+            "EURUSD",
+            "synthetic",
+            "d" * 64,
+            1,
+            2,
+            "evaluation-with-past-only-warmup",
+            "o1",
+            "2026-01-01T00:00:00Z",
+        ),
+    )
+    db.commit()
+    db.close()
+    with pytest.raises(RuntimeError, match="not idempotent"):
+        rehearsal.run(
+            catalog=catalog, state_root=state_root, sample_size=1, workdir=tmp_path / "reh"
+        )
 
 
 def test_rehearsal_refuses_to_run_without_partitions(tmp_path):

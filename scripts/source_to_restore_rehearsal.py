@@ -19,12 +19,45 @@ from pathlib import Path
 import resource
 import time
 
+from factory.data.views import VIEW_SCHEMA
+
 CATALOG = Path("/var/lib/hermes-factory/catalog")
 STATE = Path("/var/lib/hermes-factory")
 
 
 def _rss():
     return resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * 1024
+
+
+def _require_fresh_state(state_root, instrument):
+    """Refuse a state root that already recorded uses for this instrument.
+
+    The rehearsal registers a research-input use for the sampled window in its
+    independent-evaluation stage. Discovery then treats that window as an
+    excluded evaluation interval, so a second run against the same state root
+    fails its own diagnose stage with DISCOVERY_EVALUATION_WINDOW_EXCLUDED. That
+    is state pollution, not a data finding, so refuse it loudly instead.
+    """
+    db = state_root / "factory.sqlite"
+    if not db.exists():
+        return
+    import sqlite3
+
+    conn = sqlite3.connect(db)
+    try:
+        rows = conn.execute(
+            "SELECT DISTINCT start_ns, end_ns FROM research_input_uses "
+            "WHERE instrument=? AND purpose='evaluation-with-past-only-warmup'",
+            (instrument,),
+        ).fetchall()
+    finally:
+        conn.close()
+    if rows:
+        raise RuntimeError(
+            f"state root {state_root} already has {len(rows)} recorded research-input "
+            f"use interval(s) for {instrument}; the rehearsal is not idempotent against "
+            "a reused state root. Pass a fresh --state-root."
+        )
 
 
 def _catalog_partitions(catalog, limit):
@@ -41,10 +74,19 @@ def _catalog_partitions(catalog, limit):
         if not manifest.exists():
             continue
         record = json.loads(manifest.read_text())
+        # A composed view is not a leaf: catalog-compose rejects nested views, so
+        # sampling one would make the catalog stage fail for a reason that says
+        # nothing about the acquired data.
+        if record.get("schema_version") == VIEW_SCHEMA:
+            continue
         instrument = record.get("instrument_id") or record.get("instrument")
-        by_instrument.setdefault(instrument, []).append(path.name)
+        by_instrument.setdefault(instrument, []).append(
+            (record.get("first_ns", 0), path.name)
+        )
     for instrument in sorted(by_instrument):
-        ids = sorted(by_instrument[instrument])
+        # Sort by time, not by hash: catalog-compose requires chronological
+        # non-overlapping leaves, and a hash order is meaningless here.
+        ids = [name for _, name in sorted(by_instrument[instrument])]
         if len(ids) >= limit:
             return ids[:limit]
     raise RuntimeError(
@@ -62,6 +104,30 @@ def verify(catalog, sample):
         proof = cat.verify(identity, deep=True)
         verified.append({"dataset_hash": identity, "rows": proof["rows"]})
     return {"stage": "verify", "partitions": len(verified), "sample": verified}
+
+
+def compose_catalog(catalog, sample):
+    """Stage: Catalog. Compose the sampled partitions into one ordered view.
+
+    `catalog-compose` is the command the acquisition pipeline uses to present
+    many monthly partitions as a single contiguous dataset. It requires every
+    leaf to share instrument, price scale, source and precision, and to be
+    non-overlapping and chronologically ordered, so it is a real integrity check
+    rather than a concatenation.
+    """
+    from factory.data import Catalog
+
+    cat = Catalog(catalog)
+    view = cat.compose(list(sample))
+    return {
+        "stage": "catalog",
+        "instrument": view["instrument"],
+        "rows": view["rows"],
+        "parts": len(view["parts"]),
+        "first_ns": view["first_ns"],
+        "latest_verified_ns": view["latest_verified_ns"],
+        "synthetic": view["provenance"]["synthetic"],
+    }
 
 
 def feature_cache(catalog, sample):
@@ -498,6 +564,10 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
     started = time.perf_counter()
     base_rss = _rss()
     sample = _catalog_partitions(Path(catalog), sample_size)
+    instrument = json.loads(
+        (Path(catalog) / sample[0] / "manifest.json").read_text()
+    )["instrument"]
+    _require_fresh_state(Path(state_root), instrument)
     if not sample:
         raise RuntimeError("no acquired partitions available for the rehearsal")
     workdir = Path(workdir) if workdir else state_root.parent / "rehearsal"
@@ -511,6 +581,7 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
 
     plan = [
         ("verify", lambda: verify(catalog, sample)),
+        ("catalog", lambda: compose_catalog(catalog, sample)),
         ("admit", _admit),
         ("feature_cache", lambda: feature_cache(catalog, sample)),
         ("generate", lambda: generate(catalog, sample)),
@@ -576,7 +647,6 @@ def run(catalog=CATALOG, state_root=STATE, sample_size=8, workdir=None):
         ],
         "stages_not_run": [
             "import",
-            "catalog",
         ],
         "measurements": {
             "wall_seconds": wall,
