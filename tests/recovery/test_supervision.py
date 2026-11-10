@@ -41,13 +41,20 @@ signal.pause()
         os.kill(parent.pid, signal.SIGKILL)
         parent.wait(timeout=5)
         deadline = time.monotonic() + 5
-        while (
-            child.is_running()
-            and child.status() != psutil.STATUS_ZOMBIE
-            and time.monotonic() < deadline
-        ):
+        while time.monotonic() < deadline:
+            # The child can exit between the liveness check and the status read,
+            # which raises NoSuchProcess. That is the expected outcome here, not a
+            # failure: a process that no longer exists has died with its parent.
+            try:
+                if not child.is_running() or child.status() == psutil.STATUS_ZOMBIE:
+                    break
+            except psutil.NoSuchProcess:
+                break
             time.sleep(0.02)
-        assert not child.is_running() or child.status() == psutil.STATUS_ZOMBIE
+        try:
+            assert not child.is_running() or child.status() == psutil.STATUS_ZOMBIE
+        except psutil.NoSuchProcess:
+            pass
     finally:
         if parent.poll() is None:
             parent.kill()
