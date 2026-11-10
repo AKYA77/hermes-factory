@@ -1,10 +1,10 @@
 {
-  "audited_head": "4dacba7ee082da14bd4dc7936020b075136fae93",
+  "audited_head": "7706cba9bb9b17afa3edcd2bad0b87d6cb593b54",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "4dacba7ee082da14bd4dc7936020b075136fae93",
+    "git_commit": "7706cba9bb9b17afa3edcd2bad0b87d6cb593b54",
     "source_sha256": "2f4f99897bfa4afd6fe1a3ba0697afd594e58577c667760b51b36c0ba913c3e4",
     "working_tree_scientific_edits": false
   },
