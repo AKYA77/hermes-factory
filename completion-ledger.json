@@ -1,11 +1,11 @@
 {
-  "audited_head": "49897894fafae96fbfd7e2abeed27219f08fdede",
+  "audited_head": "48e7351f8be36e67bbb844b4d9ad7aff1f4fa8ff",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "49897894fafae96fbfd7e2abeed27219f08fdede",
-    "source_sha256": "da12e322ed56ae57af9c0ef3f3a3afce2c4eb2f5617a152d4d832c120581a858",
+    "git_commit": "48e7351f8be36e67bbb844b4d9ad7aff1f4fa8ff",
+    "source_sha256": "872f59cc99b353d1b571c24b199aef7d29e9d6d718e163996b1062b97eac83cd",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -174,7 +174,7 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Correction policy implemented, tested and applied during import; a previously blocked partition now imports cleanly. Remaining: re-run the 47 blocked partitions through the corrected importer, verify the October duplicate-block partitions, and complete historical admission pending reviewed metadata and full coverage.",
+      "next_required_action": "COMPLETE as to structural acquisition: all 176 planned partitions are imported and verified (182 datasets verified, 0 missing, 0 mismatched, catalog consistent). Three further provider defects were found and handled rather than left as 'import exit 1': a duplicated hour across all eight October 2025 partitions, isolated out-of-order rows (2 to 15,084 per partition), and 353 crossed quotes in USDCAD 2026-07 (0.029%, 1-7 pips) which are quarantined lossily with a receipt. A fourth defect was operational: the acquisition driver never called reclaim_all, so 3.38 GiB of published staging accumulated and starved the largest partitions; the driver now reclaims when staging exceeds half the budget. Remaining for historical admission: reviewed metadata, source revisions, calendar/source completeness approval and independent-source reconciliation. Structural acquisition is not calendar acceptance or strategy validation.",
       "requirement_id": "T05",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
@@ -1314,7 +1314,7 @@
         "factory/instruments/__init__.py",
         "factory/instruments/calendar.py"
       ],
-      "next_required_action": "Correction policy implemented, tested and applied during import; a previously blocked partition now imports cleanly. Remaining: re-run the 47 blocked partitions through the corrected importer, verify the October duplicate-block partitions, and complete historical admission pending reviewed metadata and full coverage.",
+      "next_required_action": "COMPLETE as to structural acquisition: all 176 planned partitions are imported and verified (182 datasets verified, 0 missing, 0 mismatched, catalog consistent). Three further provider defects were found and handled rather than left as 'import exit 1': a duplicated hour across all eight October 2025 partitions, isolated out-of-order rows (2 to 15,084 per partition), and 353 crossed quotes in USDCAD 2026-07 (0.029%, 1-7 pips) which are quarantined lossily with a receipt. A fourth defect was operational: the acquisition driver never called reclaim_all, so 3.38 GiB of published staging accumulated and starved the largest partitions; the driver now reclaims when staging exceeds half the budget. Remaining for historical admission: reviewed metadata, source revisions, calendar/source completeness approval and independent-source reconciliation. Structural acquisition is not calendar acceptance or strategy validation.",
       "requirement_id": "T37",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
@@ -2905,7 +2905,7 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Correction policy implemented, tested and applied during import; a previously blocked partition now imports cleanly. Remaining: re-run the 47 blocked partitions through the corrected importer, verify the October duplicate-block partitions, and complete historical admission pending reviewed metadata and full coverage.",
+      "next_required_action": "COMPLETE as to structural acquisition: all 176 planned partitions are imported and verified (182 datasets verified, 0 missing, 0 mismatched, catalog consistent). Three further provider defects were found and handled rather than left as 'import exit 1': a duplicated hour across all eight October 2025 partitions, isolated out-of-order rows (2 to 15,084 per partition), and 353 crossed quotes in USDCAD 2026-07 (0.029%, 1-7 pips) which are quarantined lossily with a receipt. A fourth defect was operational: the acquisition driver never called reclaim_all, so 3.38 GiB of published staging accumulated and starved the largest partitions; the driver now reclaims when staging exceeds half the budget. Remaining for historical admission: reviewed metadata, source revisions, calendar/source completeness approval and independent-source reconciliation. Structural acquisition is not calendar acceptance or strategy validation.",
       "requirement_id": "T55",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
