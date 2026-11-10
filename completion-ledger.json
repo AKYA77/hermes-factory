@@ -1,11 +1,11 @@
 {
-  "audited_head": "6391584204a361a0d6c143caa4924782ec988b08",
+  "audited_head": "4dacba7ee082da14bd4dc7936020b075136fae93",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "6391584204a361a0d6c143caa4924782ec988b08",
-    "source_sha256": "06fb024db27b64159b6b83b0abac7eec1b6faedd6913e2d41cc8042818e0319d",
+    "git_commit": "4dacba7ee082da14bd4dc7936020b075136fae93",
+    "source_sha256": "2f4f99897bfa4afd6fe1a3ba0697afd594e58577c667760b51b36c0ba913c3e4",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -174,10 +174,10 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Quarantine/corruption/checkpoint/retry/capture recovery tested; sessions/current-month recapture/revisions pending",
+      "next_required_action": "refresh and storage inventory are consistent over the real catalog. Remaining: scheduled source refresh, canonical quotas/retention/compaction, and recovery from the 47 quarantined partitions once the correction policy is decided.",
       "requirement_id": "T05",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Quarantine/corruption/checkpoint/retry/capture recovery tested; sessions/current-month recapture/revisions pending; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2.; ADR0028 catalog-wide staging payload budget and explicit deeply verified duplicate-chunk reclamation/interrupt recovery pass. Does not complete canonical retention/compaction, scheduled source refresh, off-host backup or source UI.",
+      "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
       "title": "Gaps and updates",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -2905,10 +2905,10 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Finish scheduled refresh, source operation APIs/UI, canonical retention/compaction and representative profile/provider fidelity. Retained-ZIP import recovery and duplicate staging payload budget/reclamation are implemented; HTTP byte-range resume remains unsupported.",
+      "next_required_action": "refresh and storage inventory are consistent over the real catalog. Remaining: scheduled source refresh, canonical quotas/retention/compaction, and recovery from the 47 quarantined partitions once the correction policy is decided.",
       "requirement_id": "T55",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Generated revision/recovery/native fixtures pass; genuine additional-period integration and full source operations pending.; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2.; ADR0028 catalog-wide staging payload budget and explicit deeply verified duplicate-chunk reclamation/interrupt recovery pass. Does not complete canonical retention/compaction, scheduled source refresh, off-host backup or source UI.",
+      "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
       "title": "Source versions and recovery",
       "verification_command": ".venv/bin/pytest tests/integration/test_source_versions.py -q; bash scripts/verify.sh"
     },
