@@ -61,18 +61,23 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
-**Source-to-restore rehearsal: all twelve stages run over genuine acquired data.**
-`scripts/source_to_restore_rehearsal.py` runs verify, admit, feature_cache,
+**Source-to-restore rehearsal: all thirteen stages run over genuine acquired data.**
+`scripts/source_to_restore_rehearsal.py` runs verify, catalog, admit, feature_cache,
 generate, screen, native_replay, diagnose, independent_evaluation, improve, rank,
 dashboard and backup_restore in one chain. Against the **real acquired catalog**
-with a scratch state root: **12 stages run, 0 blocked**, 216.0 s wall, 1.24 GB
-peak RSS. Four genuine coverage gaps were closed, each found by measuring rather
+with a fresh scratch state root: **13 stages run, 0 blocked**, 318.4 s wall, 1.30 GB
+peak RSS. The catalog stage composes 4 AUDUSD partitions into one 7,456,481-row
+ordered view. Five genuine coverage gaps were closed, each found by measuring rather
 than assuming: profile units (`price_scale=1000000`, not the fixture's `1000`),
 timestamp precision (millisecond, not whole-second), calendar coverage (a declared
-FX session replacing the 24/7 fixture), and instrument identity (single-instrument
-sample with the strategy instrument and `strategy_hash` recomputed). See
-`docs/source-quality-findings.md` section 3. The declared session remains a
-TEST_ONLY rehearsal assumption, not verified broker metadata.
+FX session replacing the 24/7 fixture), instrument identity (single-instrument
+sample with the strategy instrument and `strategy_hash` recomputed), and
+**idempotency** — `independent_evaluation` recorded an
+`evaluation-with-past-only-warmup` use for the sampled window, which discovery then
+treated as an excluded interval, so a second run failed its own diagnose stage; the
+rehearsal now refuses a state root it would pollute. Only the **import** stage
+remains unrun, blocked on the quarantine correction policy. See
+`docs/source-quality-findings.md` section 4.
 
 **T03 process-kill recovery tested against a real kill.** T03 recorded
 "process-kill recovery pending". `test_T03_fenced_restart` rewound `lease_until`
