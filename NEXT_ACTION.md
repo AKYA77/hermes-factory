@@ -61,6 +61,24 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**C0 closed; `verify.sh` runs on this host; `main` is protected.** Three changes:
+
+- **`PYTHONPATH` guard.** All 14 shell scripts that invoke the venv now clear
+  `PYTHONPATH` first. `verify.sh` previously could not run on this host at all — it
+  passed ruff check and format, then died loading the pytest conftest with
+  `ModuleNotFoundError: No module named 'pydantic_core._pydantic_core'`, because the
+  ambient `PYTHONPATH` points at a Python 3.14 site-packages tree and shadows the
+  venv's Python 3.12. CI is green because runners don't set it. `verify.sh` now runs
+  bare end to end: ruff check, ruff format check, **679 tests passing**, Svelte check
+  and the dashboard build.
+- **Branch protection applied to `main`** (owner-authorized). Strict status checks
+  on the four measured CI contexts (`audit`, `dashboard`, `python`, `verify`);
+  force-pushes and deletions disallowed; `enforce_admins` false and no review or
+  push restrictions, so owner maintenance is not blocked.
+- **ADR 0070** records the owner's PUBLIC-repository decision, superseding C0's
+  original private-repository expectation. The original blueprint text is preserved
+  unchanged. **The ledger now shows 6 PASS / 61 NOT_TESTED / 0 FAIL.**
+
 **Dashboard attestation check added.** Every report and action endpoint pins its own
 attestation literal, and a panel sending a different string fails at runtime with
 `422`, surfacing only as an alert after the user clicks — how the Research reports
