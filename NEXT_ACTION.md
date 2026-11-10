@@ -61,6 +61,15 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**`refresh` no longer reports a consistent catalog as inconsistent.** `factory.cli
+refresh` re-verifies every partition's parquet digest against its manifest. It
+reported `consistent: false` with three partitions "missing" — they were composed
+views (`data/view-v1`), which by design have no `quotes.parquet` of their own.
+`refresh` treated every manifest as a leaf. It now verifies a view through its
+leaves and still reports a view with no parts or with a missing/mismatched leaf.
+Real catalog: `verified: 134`, `mismatched: []`, `missing: []`, `consistent: true`.
+See `docs/source-quality-findings.md` section 5.
+
 **Source-to-restore rehearsal: all thirteen stages run over genuine acquired data.**
 `scripts/source_to_restore_rehearsal.py` runs verify, catalog, admit, feature_cache,
 generate, screen, native_replay, diagnose, independent_evaluation, improve, rank,

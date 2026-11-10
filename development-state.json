@@ -97,11 +97,11 @@
     "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification",
     "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification"
   ],
-  "last_remote_commit": "b4e99f93f745176ef767376d51fe422ba63f70fb",
+  "last_remote_commit": "e78a78bbaf01b8c5ce95c59f2561ab3d83c0ef13",
   "last_verification": {
-    "passed": 674,
+    "passed": 675,
     "warnings": 0,
-    "pytest_seconds": 884.369,
+    "pytest_seconds": 757.779,
     "failed": 0,
     "skipped": 0,
     "lint": "PASS",
@@ -112,9 +112,9 @@
   },
   "latest_evidence_manifest": "reports/milestones/historical-screen-cohorts/manifest.json",
   "latest_milestone": "docs/milestone-historical-screen-cohorts.md",
-  "latest_scientific_code_commit": "b4e99f93f745176ef767376d51fe422ba63f70fb",
+  "latest_scientific_code_commit": "e78a78bbaf01b8c5ce95c59f2561ab3d83c0ef13",
   "next_unfinished": "Continue the dependency-aware queue from safe_screening: the full source-to-restore historical rehearsal over genuine acquired data, then recursive diagnostics, global qualification, source/profile/refresh/storage/data APIs, full dashboard, installed provenance/systemd/update/rollback/backup/restore, security remediation and release/Hermes handoff. Worker-native prospective diagnostics, screening comparability and selection safeguards are implemented. Historical acquisition is running under owner authorization and is blocked only by the quarantined non-monotonic partitions, which need an owner correction policy.",
-  "observed_at_utc": "2026-11-10T00:15:45.079777+00:00",
+  "observed_at_utc": "2026-11-10T00:49:14.746088+00:00",
   "readiness": {
     "SOFTWARE_VERIFIED": false,
     "DATA_READY": false,
@@ -166,8 +166,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Full SOFTWARE_VERIFIED completion mandate",
   "verified_source_tree": {
-    "git_commit": "b4e99f93f745176ef767376d51fe422ba63f70fb",
-    "source_sha256": "06fb024db27b64159b6b83b0abac7eec1b6faedd6913e2d41cc8042818e0319d"
+    "git_commit": "e78a78bbaf01b8c5ce95c59f2561ab3d83c0ef13",
+    "source_sha256": "2f4f99897bfa4afd6fe1a3ba0697afd594e58577c667760b51b36c0ba913c3e4"
   },
   "visibility": {
     "current": "PUBLIC",
@@ -187,7 +187,7 @@
     "branch": "build/initial-factory",
     "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
     "previous_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
-    "verified_completed_source_commit": "b4e99f93f745176ef767376d51fe422ba63f70fb",
+    "verified_completed_source_commit": "e78a78bbaf01b8c5ce95c59f2561ab3d83c0ef13",
     "previously_local_commits_published": 18,
     "verification": "git ls-remote, GitHub git-ref API and PR head all match",
     "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
