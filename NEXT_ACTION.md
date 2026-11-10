@@ -61,6 +61,17 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**Source scans no longer abort on a narrow requested window.** A retained
+source-quality attempt failed with `SOURCE_QUALITY_EVENT_BUDGET` after 2,495 rows:
+the policy asked for a 38-hour window over a monthly partition, and
+`REQUESTED_PERIOD_MISMATCH` was emitted **once per out-of-window row** — 2,494 of
+them, 1,048,486 bytes of events. The window mismatch is a property of the request,
+not of each row, and its magnitude was already carried by
+`counts.outside_requested_period_rows`. Per-row mismatch events are now bounded by
+`max_examples`; the scan completes and reports the mismatch as a status plus a
+count. Genuine per-row defects still emit per row and can still exhaust a
+deliberately tiny budget. See `docs/source-quality-findings.md` section 6.
+
 **Research reports panel fixed; seventh browser smoke added.** The panel rendered
 and its controls worked, but **all three report actions returned 422** — each
 endpoint pins its own attestation literal while the panel sent one generic string,
