@@ -1,10 +1,10 @@
 {
-  "audited_head": "7706cba9bb9b17afa3edcd2bad0b87d6cb593b54",
+  "audited_head": "e25b5c95ee5e5befcad0ef142587852f3455f88a",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "7706cba9bb9b17afa3edcd2bad0b87d6cb593b54",
+    "git_commit": "e25b5c95ee5e5befcad0ef142587852f3455f88a",
     "source_sha256": "2f4f99897bfa4afd6fe1a3ba0697afd594e58577c667760b51b36c0ba913c3e4",
     "working_tree_scientific_edits": false
   },
@@ -1262,10 +1262,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "PASS scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests; real 8-GB reboot/soak NOT_TESTED",
+      "next_required_action": "Supervision flake fixed. Remaining: real target-host 8-GB reboot/soak, which needs the host rather than a scoped test.",
       "requirement_id": "T35",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "PASS scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests; real 8-GB reboot/soak NOT_TESTED",
+      "supporting_evidence_scope": "Scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests. The known wall-time flake in test_bound_worker_dies_with_coordinator is fixed rather than worked around: the test polled child.is_running() and child.status(), and the child could exit between the two calls, raising psutil.NoSuchProcess. Both the poll loop and the final assertion now treat NoSuchProcess as the terminal state it is, since a process that no longer exists has died with its parent. Verified five consecutive local runs plus the other known flake three times in isolation. Real 8-GB reboot/soak remains NOT_TESTED.",
       "title": "Worker supervision/resources",
       "verification_command": "bash scripts/verify.sh"
     },
