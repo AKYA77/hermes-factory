@@ -10,6 +10,7 @@ from collections import defaultdict
 from pathlib import Path
 
 from factory.data import sha256
+from factory.data.views import VIEW_SCHEMA
 
 
 class SourceRegistry:
@@ -63,10 +64,41 @@ class SourceRegistry:
         }
 
     def refresh(self):
-        """Re-verify every partition parquet digest against its manifest."""
+        """Re-verify every partition parquet digest against its manifest.
+
+        A composed view (``data/view-v1``) has no parquet of its own: it is a
+        descriptor over leaf partitions. Verifying it means checking that every
+        leaf it references still exists and still matches its recorded digest.
+        Treating a view as a missing leaf would report a false inconsistency on a
+        fully consistent catalog.
+        """
         verified, mismatched, missing = [], [], []
         for path, manifest in self._manifests():
             identity = manifest.get("dataset_hash")
+            if manifest.get("schema_version") == VIEW_SCHEMA:
+                parts = manifest.get("parts") or []
+                if not parts:
+                    missing.append(identity)
+                    continue
+                leaves_ok = True
+                for part in parts:
+                    leaf = self.root / part.get("dataset_hash", "") / "quotes.parquet"
+                    if not leaf.exists():
+                        leaves_ok = False
+                        missing.append(part.get("dataset_hash"))
+                        continue
+                    if sha256(leaf) != part.get("parquet_sha256"):
+                        leaves_ok = False
+                        mismatched.append(
+                            {
+                                "dataset_hash": part.get("dataset_hash"),
+                                "manifest": part.get("parquet_sha256"),
+                                "actual": sha256(leaf),
+                            }
+                        )
+                if leaves_ok:
+                    verified.append(identity)
+                continue
             parquet = path.parent / "quotes.parquet"
             if not parquet.exists():
                 missing.append(identity)

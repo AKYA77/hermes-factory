@@ -144,6 +144,31 @@ naming the cause and the remedy. A test pins it. Only that purpose is checked: a
 the browser smokes do. The guard turns a confusing downstream failure into an
 immediate, accurate one.
 
+## 5. `refresh` reported a consistent catalog as inconsistent
+
+`factory.cli refresh` re-verifies every partition's parquet digest against its
+manifest. On this host it reported `consistent: false` with three partitions
+listed as `missing`, which reads as data loss.
+
+The three were not missing. They were **composed views** (`data/view-v1`), which
+by design have no `quotes.parquet` of their own — a view is a descriptor over
+leaf partitions. `refresh` treated every manifest as a leaf, so it looked for a
+parquet beside each view, found none, and reported the view as missing.
+
+Measured on the real catalog: 129 `data/v2` leaves with parquet, 3 `data/view-v1`
+without, 2 `data/v1` leaves with parquet, plus 14 working directories
+(`.pending-*`, `.imports`) that carry no manifest and are correctly skipped.
+
+**Fix.** `refresh` now verifies a view through its leaves: each referenced leaf
+must exist and match its recorded `parquet_sha256`. A view with no parts, or with
+a missing or mismatched leaf, is still reported. Result on the real catalog:
+`verified: 134`, `mismatched: []`, `missing: []`, `consistent: true`.
+
+**Why it matters.** A false integrity alarm is worse than no alarm: it trains the
+operator to distrust the receipt, and a real missing partition would then be
+dismissed as the known false positive. The test pins both directions — a view over
+intact leaves passes, and a view whose leaf is deleted still fails.
+
 ## Disposition
 
 `DATA_READY` remains false. These findings are exactly the class of defect the
