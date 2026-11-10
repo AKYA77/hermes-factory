@@ -84,11 +84,23 @@ Two distinct causes were measured:
   five largest holding 105–142 MB each. This is resumability working as
   designed, not a leak — but it does consume the budget.
 
-`scripts/acquire_history.py` now exposes `--staging-budget-bytes` so the
-operator can size the guard for the host instead of editing the default. The
-supervisor runs with 17179869184 (16 GiB) on this host, which has 75 GB free;
-the guard still bounds growth, it no longer blocks legitimate imports. Raising
-the budget does not relax any data-quality check.
+`scripts/acquire_history.py` exposes `--staging-budget-bytes` so the operator can
+size the guard for the host. The supervisor runs with 17179869184 (16 GiB) on
+this host, which has 63 GB free.
+
+**Root cause of the final three blocks.** The budget was not a sizing problem.
+`reclaim_all` existed, was tested and was exposed through the tools CLI, but the
+acquisition driver never called it — so *published* staging was never reclaimed.
+Measured after 173 partitions were published: **3.38 GiB retained across 269
+intents**, of which **zero** were reclaimable by inspection at the time the
+reclamation finally ran, because the published checkpoints were still present
+and verifiable. The largest partitions then had less headroom than they needed
+and failed with `staging payload budget exceeded`.
+
+The driver now calls `reclaim_all` after each wave. It touches only published
+checkpoints with verified chunks; failed and in-progress intents are left
+untouched, so resumability is preserved. Raising the budget alone would have
+only delayed the same failure.
 
 ## 3. Genuine tick data did not satisfy the synthetic fixture profile
 
@@ -240,6 +252,39 @@ records when the tick occurred; the file order is an assembly artifact.
 Measured counts range from 2 rows (EURUSD 2026-06, NZDUSD 2026-06) to 15,084 rows
 (XAUUSD 2026-10). Gold shows the largest counts by a wide margin, consistent with
 its higher tick rate.
+
+### 7.3 Crossed quotes — USDCAD July 2026
+
+A third defect is a **crossed quote**: `bid > ask`, an arbitrage that cannot
+persist in a real market. Measured in USDCAD July 2026: **353 crossed quotes in
+1,226,412 rows (0.029%)**, crossing by 1-7 pips at the provider's 1e5 scale.
+
+| Crossing | Rows |
+|---|---|
+| 10 units (0.00010) | 179 |
+| 20 units (0.00020) | 83 |
+| 30 units (0.00030) | 50 |
+| 40 units (0.00040) | 19 |
+| 50 units (0.00050) | 16 |
+| 60 units (0.00060) | 4 |
+| 70 units (0.00070) | 2 |
+
+This defect is handled differently from the other two because it is **lossy**.
+`source-order-correction/v1` is lossless: it reorders or drops exact duplicates,
+so no observation is lost. A crossed quote cannot be repaired — the value is
+wrong — so the choices are to drop the row or to drop the partition.
+
+Dropping the partition was the previous behaviour, and it withheld 1,226,059 good
+rows because of 353 bad ones. `source-quality-quarantine/v1` removes the crossed
+row whole and records the count, the magnitude histogram and bounded positions.
+The receipt states plainly that the policy is lossy.
+
+Nothing is rewritten: no price, timestamp, scale or instrument field is
+adjusted, `original_record_order` survives on every retained row, and the raw
+archive is untouched. The post-hoc scanner already reports crossed quotes as
+`INVALID_QUOTE`, so a quarantined partition remains visible in QA.
+
+A non-positive price remains an immediate failure; that is a different defect.
 
 ### Correction policy `source-order-correction/v1`
 
