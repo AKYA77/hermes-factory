@@ -197,6 +197,54 @@ genuine per-row defect (a bad quote, an off-grid tick) still emits per row and c
 still exhaust a deliberately tiny budget — that behaviour is unchanged and covered
 by `test_event_budget_retains_incomplete_attempt_and_never_registers_complete_receipt`.
 
+## 7. Provider source-order defects and their lossless correction
+
+The 47 blocked partitions were all recorded as `import exit 1`, which said nothing
+about cause. Reproducing two of them from the immutable archives
+(`sha256`-verified before parsing) showed **two distinct provider defects**, not
+one.
+
+### 7.1 Exact duplicate block — EURUSD October 2025
+
+One backward jump of **−3,598.189 s**. The block after the jump is a verbatim
+re-emission of an earlier block: the first 50 rows of each are identical on
+timestamp, bid and ask, and the block is **1,494 rows** long. The duplicate carries
+no information.
+
+### 7.2 Isolated out-of-order rows — AUDUSD June 2026
+
+Ten backward jumps in 1,723,025 rows, each exactly **−1.000 s**. The raw CSV shows
+why: a row stamped `20260628 172222000` appears *after* one stamped
+`20260628 172223000`. The provider's timestamp records when the tick occurred; the
+file order is an assembly artifact.
+
+### Correction policy `source-order-correction/v1`
+
+`factory/data/source_order.py` applies both corrections. Neither rewrites a
+timestamp, price, scale or instrument field.
+
+| Defect | Correction | Lossless because |
+|---|---|---|
+| Exact duplicate block | drop the later block | every dropped row is byte-identical to a retained row |
+| Isolated out-of-order row | stable sort by timestamp | the timestamp is unchanged; only sequence changes |
+
+`original_record_order` is preserved on every retained row, so the mapping back
+to the source archive stays exact, and the receipt records each removed block's
+extent and the duplicate's original position. The raw archive is never modified.
+
+A repeated timestamp with *different* prices is a genuine re-quote, not a
+duplicate, and is explicitly preserved — `test_a_repeated_timestamp_with_different_prices_is_not_collapsed`.
+
+Measured on the real archives:
+
+| Partition | Rows in | Rows out | Duplicate block | Rows reordered | Residual disorder |
+|---|---|---|---|---|---|
+| EURUSD 2025-10 | 1,483,175 | 1,481,681 | 1,494 at idx 1,185,416 | 0 | none |
+| AUDUSD 2026-06 | 1,723,025 | 1,723,025 | none | 26 | none |
+
+Both corrected streams are monotonic. Anything the module cannot correct
+losslessly is left in place and reported rather than asserted away.
+
 ## Disposition
 
 `DATA_READY` remains false. These findings are exactly the class of defect the
