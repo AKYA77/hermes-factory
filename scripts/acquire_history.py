@@ -242,6 +242,16 @@ def run(args):
                         "retry_after_utc": time.time() + RETRY_COOLDOWN_SECONDS,
                     }
                     attempts.append({"key": item["key"], "state": f"BLOCKED_{code}"})
+            # Staging is cumulative: without reclamation the payload budget is
+            # eventually exhausted and further imports block even though their
+            # canonical data is already published. Reclaim only published
+            # checkpoints; failed and in-progress intents are left untouched.
+            try:
+                from factory.data.resume import reclaim_all
+
+                reclaimed = reclaim_all(catalog)
+            except Exception:
+                reclaimed = []
             save_state(checkpoint, state)
             after = sum(
                 1

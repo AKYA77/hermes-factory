@@ -20,7 +20,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from factory.contracts import fingerprint, serialize
-from factory.data import source_order
+from factory.data import source_order, source_quarantine
 from factory.data import Quote, SCHEMA, atomic_bytes, sha256
 from factory.data import histdata
 from factory.data.streaming import StreamingCatalog
@@ -328,10 +328,10 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                     ):
                         raise ValueError("import raw prefix mismatch")
                     for q in _chunk_rows(root / (digest + ".parquet"), digest, count, reused):
-                        # Ordering is corrected losslessly at commit time; a corrupt
-                        # quote is still an immediate failure.
-                        if q.bid_int > q.ask_int:
-                            raise ValueError("staged import corrupt quote")
+                        # A crossed quote is quarantined at commit time by
+                        # source_quarantine, not failed here: dropping the whole
+                        # partition would withhold the good rows around it.
+                        pass
                     reused += count
                 if state["complete"] and source.tell() != member_size:
                     raise ValueError("incomplete import marked complete")
@@ -348,8 +348,8 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                             manifest["sha256"],
                             (manifest["year"], manifest["month"]),
                         )
-                        if q.bid_int > q.ask_int:
-                            raise ValueError("QUARANTINED source spread")
+                        if q.bid_int <= 0 or q.ask_int <= 0:
+                            raise ValueError("staged import non-positive quote")
                         raw_hash.update(line)
                         rows.append(q)
                     if rows:
@@ -384,9 +384,15 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
             corrected, correction = source_order.apply(list(staged_quotes()))
             if correction.uncorrectable:
                 raise ValueError("uncorrectable source ordering remains after policy")
+            # Crossed quotes are quarantined after ordering: the timeline is
+            # repaired first, then unusable rows are removed from it. This is
+            # lossy and the receipt says so.
+            quarantined, quarantine = source_quarantine.apply(corrected)
+            if quarantine.uncorrectable:
+                raise ValueError("crossed quote survived quarantine policy")
 
             result = cat.commit(
-                iter(corrected),
+                iter(quarantined),
                 path,
                 provenance,
                 batch_rows,
@@ -406,7 +412,9 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                 "staging_payload_budget_bytes": staging_budget_bytes,
                 "http_range_resume": False,
                 "source_order_correction": correction.receipt(),
+                "source_quality_quarantine": quarantine.receipt(),
                 "corrected_content_sha256": source_order.fingerprint(corrected),
+                "published_content_sha256": source_quarantine.fingerprint(quarantined),
             }
         except BaseException as exc:
             atomic_bytes(
