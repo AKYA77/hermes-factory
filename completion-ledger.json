@@ -1,11 +1,11 @@
 {
-  "audited_head": "0980844592580dabc60eec32170b240b1b8b0016",
+  "audited_head": "4d4ff882174a1afe8641e820f4cf80c8187a0dc5",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "0980844592580dabc60eec32170b240b1b8b0016",
-    "source_sha256": "2f4f99897bfa4afd6fe1a3ba0697afd594e58577c667760b51b36c0ba913c3e4",
+    "git_commit": "4d4ff882174a1afe8641e820f4cf80c8187a0dc5",
+    "source_sha256": "a195e28fd770de146f5334c0b31709653836bf91d99526dac10fe702fe18e7b3",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -1752,10 +1752,10 @@
         "factory/instruments/__init__.py",
         "factory/instruments/calendar.py"
       ],
-      "next_required_action": "Scoped all-gap/view/tie/reference/precision/order/byte/cache/budget/restart/captured-input/API/CLI tests pass; Actual clean df70 scan of 21,345,746 real rows and authenticated browser/export/mobile pass; historical admission remains false pending reviewed metadata/revisions and full coverage",
+      "next_required_action": "Window-mismatch events bounded; scan completes and reports the mismatch as a status plus count. Remaining: the clean df70 scan of 21,345,746 real rows, authenticated browser/export/mobile pass, and historical admission pending reviewed metadata and full coverage.",
       "requirement_id": "T51",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Scoped all-gap/view/tie/reference/precision/order/byte/cache/budget/restart/captured-input/API/CLI tests pass; Actual clean df70 scan of 21,345,746 real rows and authenticated browser/export/mobile pass; historical admission remains false pending reviewed metadata/revisions and full coverage",
+      "supporting_evidence_scope": "Scoped all-gap/view/tie/reference/precision/order/byte/cache/budget/restart/captured-input/API/CLI tests pass. A real defect was found and fixed in the scan itself: a requested window narrower than the dataset emitted one REQUESTED_PERIOD_MISMATCH event per out-of-window row, so a 38-hour window over a monthly partition produced 2,494 events, exhausted the event budget and aborted the scan after 2,495 rows. Per-row mismatch events are now bounded by max_examples and the count carries the magnitude, which requested_period_status already reported. Genuine per-row defects still emit per row and can still exhaust a deliberately tiny budget. The clean df70 scan of 21,345,746 real rows and authenticated browser/export/mobile pass remain open, and historical admission stays false pending reviewed metadata, revisions and full coverage.",
       "title": "Lossless full-event source QA",
       "verification_command": "bash scripts/verify.sh"
     },
