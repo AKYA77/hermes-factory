@@ -1,10 +1,10 @@
 {
-  "audited_head": "e25b5c95ee5e5befcad0ef142587852f3455f88a",
+  "audited_head": "0980844592580dabc60eec32170b240b1b8b0016",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "e25b5c95ee5e5befcad0ef142587852f3455f88a",
+    "git_commit": "0980844592580dabc60eec32170b240b1b8b0016",
     "source_sha256": "2f4f99897bfa4afd6fe1a3ba0697afd594e58577c667760b51b36c0ba913c3e4",
     "working_tree_scientific_edits": false
   },
@@ -1459,7 +1459,7 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "All six browser smokes pass over generated TEST_ONLY fixtures. Remaining: full C7 workflow acceptance, and these workflows driven against genuine reviewed inputs rather than generated authorization fixtures.",
+      "next_required_action": "Seven browser smokes pass over generated TEST_ONLY fixtures. A real defect was found and fixed in the Research reports panel: all three report actions returned 422 because the panel sent one generic attestation while each endpoint pins its own literal. Remaining: full C7 workflow acceptance, the existing source-quality smoke which expects eight real historical scans against a state directory absent on this host, and these workflows driven against genuine reviewed inputs.",
       "requirement_id": "T41",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Real Chromium browser acceptance over the served dashboard, driven by scripts/run-browser-smoke.sh with an authenticated operator token. All six smokes now pass end to end with zero page errors and no mobile overflow: discovery (authenticated registration, pause preserved, region created only after resume, exact export), historical screen cohort (frozen before outcomes, fenced native feedback with native_observed=1 and approximate_pruning=false, exact-byte export), reviewed inputs (registry summaries, exact-byte export, revoked dependency refusal, mobile layout), screen cohort (supervised native feedback, prospective false negative, exact export), screen fallback (native fault injection, disabled alert, pause preserved) and validation (live validation list, exact nanosecond download, protected window state, typed UTC prospective registration, disable stages). Eight harness defects were found and fixed first: five smokes hardcoded a nonexistent /usr/bin/chromium; serve started no coordinator so job-driven workflows never completed; the historical smoke polled at 250 ms against a 120 requests/60 s limiter and always tripped 429; the discovery smoke used an ambiguous page-global Authorized-by locator; the reviewed-inputs fixture accepted --state but hardcoded its path; its smoke hardcoded both the state path and URL, bypassing isolation; its revocation step spawned the venv python with an ambient PYTHONPATH that broke pydantic_core; and the wrapper pre-created a state directory some fixtures require to be absent. Every run is against generated TEST_ONLY fixtures, not market data, so this is not full C7 acceptance.",
@@ -1680,7 +1680,7 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "All six browser smokes pass over generated TEST_ONLY fixtures. Remaining: full C7 workflow acceptance, and these workflows driven against genuine reviewed inputs rather than generated authorization fixtures.",
+      "next_required_action": "Seven browser smokes pass over generated TEST_ONLY fixtures. A real defect was found and fixed in the Research reports panel: all three report actions returned 422 because the panel sent one generic attestation while each endpoint pins its own literal. Remaining: full C7 workflow acceptance, the existing source-quality smoke which expects eight real historical scans against a state directory absent on this host, and these workflows driven against genuine reviewed inputs.",
       "requirement_id": "T48",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Real Chromium browser acceptance over the served dashboard, driven by scripts/run-browser-smoke.sh with an authenticated operator token. All six smokes now pass end to end with zero page errors and no mobile overflow: discovery (authenticated registration, pause preserved, region created only after resume, exact export), historical screen cohort (frozen before outcomes, fenced native feedback with native_observed=1 and approximate_pruning=false, exact-byte export), reviewed inputs (registry summaries, exact-byte export, revoked dependency refusal, mobile layout), screen cohort (supervised native feedback, prospective false negative, exact export), screen fallback (native fault injection, disabled alert, pause preserved) and validation (live validation list, exact nanosecond download, protected window state, typed UTC prospective registration, disable stages). Eight harness defects were found and fixed first: five smokes hardcoded a nonexistent /usr/bin/chromium; serve started no coordinator so job-driven workflows never completed; the historical smoke polled at 250 ms against a 120 requests/60 s limiter and always tripped 429; the discovery smoke used an ambiguous page-global Authorized-by locator; the reviewed-inputs fixture accepted --state but hardcoded its path; its smoke hardcoded both the state path and URL, bypassing isolation; its revocation step spawned the venv python with an ambient PYTHONPATH that broke pydantic_core; and the wrapper pre-created a state directory some fixtures require to be absent. Every run is against generated TEST_ONLY fixtures, not market data, so this is not full C7 acceptance.",
