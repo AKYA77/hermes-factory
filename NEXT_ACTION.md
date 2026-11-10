@@ -61,6 +61,19 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**Research reports panel fixed; seventh browser smoke added.** The panel rendered
+and its controls worked, but **all three report actions returned 422** — each
+endpoint pins its own attestation literal while the panel sent one generic string,
+so every click surfaced only as an alert. Measured in real Chromium before the fix:
+`Error: 422 ... Input should be 'Report a descriptive global candidate-selection
+funnel only; ...'`. The panel now sends the matching attestation per action. The new
+`research-reports-browser-smoke.cjs` asserts the actions are attestation-gated, all
+three reports render, the funnel counts match the API, and the receipt records that
+these are descriptive aggregates which do not qualify, rank or promote a strategy.
+The Screen comparability panel's attestation was verified to already match its
+endpoint. The existing source-quality smoke expects eight real historical scans
+against a state directory absent on this host, so it cannot run here.
+
 **`refresh` no longer reports a consistent catalog as inconsistent.** `factory.cli
 refresh` re-verifies every partition's parquet digest against its manifest. It
 reported `consistent: false` with three partitions "missing" — they were composed
