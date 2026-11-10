@@ -195,7 +195,14 @@ def test_exclusive_import_lock_and_scope_separation(tmp_path):
     assert len(list((root / ".imports").glob("*/checkpoint.json"))) == 2
 
 
-def test_invalid_rows_cannot_be_checkpointed_or_published(tmp_path):
+def test_crossed_rows_are_quarantined_not_published(tmp_path):
+    """A crossed quote is removed whole; the good rows around it are published.
+
+    This replaces an earlier contract in which one crossed row failed the whole
+    partition. Measured against the real archives, that withheld 1,226,059 good
+    USDCAD rows because of 353 crossed ones (0.029%), so the partition is now
+    published with a quarantine receipt instead of being blocked.
+    """
     source = archive_fixture(tmp_path)
     with zipfile.ZipFile(source["archive"], "w") as z:
         z.writestr(
@@ -204,10 +211,32 @@ def test_invalid_rows_cannot_be_checkpointed_or_published(tmp_path):
         )
     source["sha256"] = sha256(source["archive"])
     root = tmp_path / "catalog"
-    with pytest.raises(ValueError, match="QUARANTINED"):
+    result, info = resume.import_archive(root, source, PROVENANCE, 4)
+
+    quarantine = info["source_quality_quarantine"]
+    assert quarantine["crossed_quotes_removed"] == 1
+    assert quarantine["rows_in"] == 5 and quarantine["rows_out"] == 4
+    # The receipt must state that this policy is lossy.
+    assert quarantine["lossy"] is True
+
+    # The crossed row must not reach the published dataset.
+    published = list(Catalog(root).read(result["dataset_hash"]))
+    assert len(published) == 4
+    assert all(q.bid_int < q.ask_int for q in published)
+
+
+def test_non_positive_rows_still_fail_the_import(tmp_path):
+    """A zero price is a different defect and is still an immediate failure."""
+    source = archive_fixture(tmp_path)
+    with zipfile.ZipFile(source["archive"], "w") as z:
+        z.writestr(
+            "DAT_ASCII_EURUSD_T_202501.csv",
+            "20250102 010000001,1.2,1.3,0\n" * 4 + "20250102 010000002,0,1.3,0\n",
+        )
+    source["sha256"] = sha256(source["archive"])
+    root = tmp_path / "catalog"
+    with pytest.raises(ValueError, match="invalid price"):
         resume.import_archive(root, source, PROVENANCE, 4)
-    state = json.loads(checkpoint(root).read_text())["payload"]
-    assert sum(c["rows"] for c in state["chunks"]) == 4 and not state["complete"]
     assert not list(root.glob("*/manifest.json"))
 
 
