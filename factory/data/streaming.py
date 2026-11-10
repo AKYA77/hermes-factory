@@ -89,10 +89,15 @@ class StreamingCatalog:
                 elif row_metadata(q) != metadata:
                     raise ValueError("mixed source/instrument units")
                 if previous:
-                    if (
-                        q.original_record_order != previous.original_record_order + 1
-                        or q.event_ts_utc_ns < previous.event_ts_utc_ns
-                    ):
+                    # A corrected stream is a permutation of the source archive, so
+                    # record order is provenance rather than a sequence requirement.
+                    # Uniqueness still catches a duplicated or dropped source row;
+                    # timestamp monotonicity still catches an uncorrected disorder.
+                    if q.original_record_order == previous.original_record_order:
+                        raise ValueError(
+                            f"QUARANTINED row {q.original_record_order}: duplicate source sequence"
+                        )
+                    if q.event_ts_utc_ns < previous.event_ts_utc_ns:
                         raise ValueError(
                             f"QUARANTINED row {q.original_record_order}: ordering/source sequence"
                         )

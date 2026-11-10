@@ -20,6 +20,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from factory.contracts import fingerprint, serialize
+from factory.data import source_order
 from factory.data import Quote, SCHEMA, atomic_bytes, sha256
 from factory.data import histdata
 from factory.data.streaming import StreamingCatalog
@@ -301,7 +302,6 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                 }
             with zipfile.ZipFile(path) as archive, archive.open(member) as source:
                 member_size = archive.getinfo(member).file_size
-                previous = None
                 for chunk in state["chunks"]:
                     count = chunk["rows"]
                     end = chunk["end_offset"]
@@ -328,9 +328,10 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                     ):
                         raise ValueError("import raw prefix mismatch")
                     for q in _chunk_rows(root / (digest + ".parquet"), digest, count, reused):
-                        if previous and q.event_ts_utc_ns < previous.event_ts_utc_ns:
-                            raise ValueError("staged import timestamp ordering mismatch")
-                        previous = q
+                        # Ordering is corrected losslessly at commit time; a corrupt
+                        # quote is still an immediate failure.
+                        if q.bid_int > q.ask_int:
+                            raise ValueError("staged import corrupt quote")
                     reused += count
                 if state["complete"] and source.tell() != member_size:
                     raise ValueError("incomplete import marked complete")
@@ -347,13 +348,10 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                             manifest["sha256"],
                             (manifest["year"], manifest["month"]),
                         )
-                        if q.bid_int > q.ask_int or (
-                            previous and q.event_ts_utc_ns < previous.event_ts_utc_ns
-                        ):
-                            raise ValueError("QUARANTINED source spread/order")
+                        if q.bid_int > q.ask_int:
+                            raise ValueError("QUARANTINED source spread")
                         raw_hash.update(line)
                         rows.append(q)
-                        previous = q
                     if rows:
                         digest = _budgeted_chunk(root, rows, staging_budget_bytes)
                         state["chunks"].append(
@@ -379,8 +377,16 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                     )
                     start += chunk["rows"]
 
+            # Provider source-order defects (an exact duplicate block, or isolated
+            # rows written out of timestamp order) are corrected losslessly here,
+            # before publication. Anything the policy cannot correct is left in
+            # place and reported rather than asserted away.
+            corrected, correction = source_order.apply(list(staged_quotes()))
+            if correction.uncorrectable:
+                raise ValueError("uncorrectable source ordering remains after policy")
+
             result = cat.commit(
-                staged_quotes(),
+                iter(corrected),
                 path,
                 provenance,
                 batch_rows,
@@ -399,6 +405,8 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                 "raw_prefix_rechecked": True,
                 "staging_payload_budget_bytes": staging_budget_bytes,
                 "http_range_resume": False,
+                "source_order_correction": correction.receipt(),
+                "corrected_content_sha256": source_order.fingerprint(corrected),
             }
         except BaseException as exc:
             atomic_bytes(
