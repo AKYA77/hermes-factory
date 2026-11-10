@@ -61,6 +61,31 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**The 47 blocked partitions can now be imported.** All 47 were recorded as
+`import exit 1` with no diagnosis. Reproducing two of them from the immutable
+archives, sha256-verified before parsing, showed **two distinct provider defects**:
+
+- **Exact duplicate block** — EURUSD October 2025: 1,494 rows re-emitted verbatim,
+  one backward jump of −3,598.189 s. The duplicate carries no information.
+- **Isolated out-of-order rows** — AUDUSD June 2026: 10 rows each exactly −1.000 s,
+  visible in the raw CSV as a row stamped `172222000` appearing after one stamped
+  `172223000`. The provider's timestamp is the record; the file order is an
+  assembly artifact.
+
+`factory/data/source_order.py` (`source-order-correction/v1`) corrects both
+losslessly: an exact duplicate is dropped, out-of-order rows are stable-sorted by
+the provider's own timestamp. **No timestamp, price, scale or instrument field is
+rewritten**, `original_record_order` is preserved on every retained row, the raw
+archive is untouched, and the receipt records each removed block's extent and the
+duplicate's original position. A repeated timestamp with *different* prices is a
+genuine re-quote and is preserved.
+
+Wired into the checkpointed import path, with `original_record_order` uniqueness
+replacing the consecutive-sequence requirement (a corrected stream is a
+permutation). Verified end to end: **AUDUSD 2026-06 now imports with
+`STRUCTURAL_IMPORT_PASS`, 1,723,025 rows, `readback_exact` true, 26 rows
+reordered, no residual disorder.** See `docs/source-quality-findings.md` §7.
+
 **C0 closed; `verify.sh` runs on this host; `main` is protected.** Three changes:
 
 - **`PYTHONPATH` guard.** All 14 shell scripts that invoke the venv now clear
