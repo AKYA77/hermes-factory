@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+# The project venv is self-contained. An ambient PYTHONPATH (for example a
+# host-wide Python 3.14 site-packages) shadows the venv interpreter and breaks
+# imports such as pydantic_core, so clear it for every venv invocation.
+unset PYTHONPATH
 : "${1:?Usage: update.sh STAGED_RELEASE_DIRECTORY}"
 # Current development checkpoint cannot deploy. A real release's own verifier must
 # pass before an administrator can stage or activate it; no mutable remote script.

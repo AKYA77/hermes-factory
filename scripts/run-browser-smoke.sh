@@ -14,6 +14,11 @@ set -euo pipefail
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$root"
 
+# The project venv is self-contained. An ambient PYTHONPATH (for example a
+# host-wide Python 3.14 site-packages) shadows the venv interpreter and breaks
+# imports such as pydantic_core, so clear it for every venv invocation.
+unset PYTHONPATH
+
 fixture="${1:?fixture script required}"
 smoke="${2:?smoke script required}"
 state="${3:-/var/lib/browser-smoke-state}"
