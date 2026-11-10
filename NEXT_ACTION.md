@@ -61,6 +61,16 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**Dashboard attestation check added.** Every report and action endpoint pins its own
+attestation literal, and a panel sending a different string fails at runtime with
+`422`, surfacing only as an alert after the user clicks — how the Research reports
+panel shipped broken. `scripts/check-dashboard-attestations.py` compares the
+literals in `apps/dashboard/src/lib/*.svelte` against every literal defined under
+`factory/`, including inline `Literal[...]` definitions. Current result: **7 panel
+literals, 19 backend literals, 0 unmatched.** `tests/integration/test_dashboard_attestations.py`
+runs it and proves it fails on a deliberately mismatched panel, so it cannot pass
+vacuously.
+
 **Source scans no longer abort on a narrow requested window.** A retained
 source-quality attempt failed with `SOURCE_QUALITY_EVENT_BUDGET` after 2,495 rows:
 the policy asked for a 38-hour window over a monthly partition, and
