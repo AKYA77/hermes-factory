@@ -8,7 +8,7 @@ const fs=require('fs');
  if(!['127.0.0.1','localhost','[::1]'].includes(new URL(base).hostname)) throw Error('Browser QA permits loopback only');
  const token=fs.readFileSync(stateDir+'/operator-1.token','utf8').trim();
  const qa=JSON.parse(fs.readFileSync(stateDir+'/qa.json','utf8'));
- const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
  const page=await browser.newPage({viewport:{width:1280,height:900}});
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base+'/');

@@ -4,6 +4,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cry
  const root=path.resolve(__dirname,'..'),state=path.resolve(process.env.FACTORY_BROWSER_STATE||root+'/.local/reviewed-inputs-browser'),base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8110';
  const token=fs.readFileSync(state+'/operator-1.token','utf8').trim(),headers={Authorization:'Bearer '+token};
  const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
+ const browserVersion=await browser.version();
  const page=await browser.newPage({viewport:{width:1280,height:900},acceptDownloads:true}),errors=[];
  page.on('pageerror',e=>errors.push(e.message));
  await page.goto(base+'/');await page.getByLabel('Access token',{exact:true}).fill(token);
@@ -31,6 +32,6 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path'),cry
  if(widths.document>widths.viewport||errors.length)throw Error('Page errors/overflow '+JSON.stringify({errors,widths}));
  await page.screenshot({path:root+'/reports/runtime/reviewed-inputs-browser-mobile.png',fullPage:true});
  await browser.close();
- const report={status:'PASS',scope:'TEST_ONLY generated authorization fixtures; actual authenticated Chromium registry/exact export/revocation/mobile. NOT historical market validation or full C7.',browser:'Chromium /usr/bin/chromium',records:3,source_commit:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),exported_sha256:crypto.createHash('sha256').update(raw).digest('hex'),checks:['actual registry summaries','explicit assumption fields','exact-byte export','revoked dependency refusal','mobile layout','zero page errors'],widths};
+ const report={status:'PASS',scope:'TEST_ONLY generated authorization fixtures; actual authenticated Chromium registry/exact export/revocation/mobile. NOT historical market validation or full C7.',browser:'Chromium '+browserVersion,records:3,source_commit:cp.execFileSync('git',['rev-parse','HEAD'],{cwd:root,encoding:'utf8'}).trim(),exported_sha256:crypto.createHash('sha256').update(raw).digest('hex'),checks:['actual registry summaries','explicit assumption fields','exact-byte export','revoked dependency refusal','mobile layout','zero page errors'],widths};
  fs.writeFileSync(root+'/reports/runtime/reviewed-inputs-browser.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
 })().catch(e=>{console.error(e.message);process.exit(1)});
