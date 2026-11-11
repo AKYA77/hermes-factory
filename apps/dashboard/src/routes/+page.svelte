@@ -6,6 +6,10 @@
  import StatisticalSafeguardsPanel from '../lib/StatisticalSafeguardsPanel.svelte';
  import InstrumentStatusPanel from '../lib/InstrumentStatusPanel.svelte';
  import IndependentRankingPanel from '../lib/IndependentRankingPanel.svelte';
+ import QualifiedRankingPanel from '../lib/QualifiedRankingPanel.svelte';
+ import ValidationEvaluationsPanel from '../lib/ValidationEvaluationsPanel.svelte';
+ import StrategyDetailPanel from '../lib/StrategyDetailPanel.svelte';
+ import ResearchTrialsPanel from '../lib/ResearchTrialsPanel.svelte';
  import SourceQualityPanel from '../lib/SourceQualityPanel.svelte';
  import InputReviews from '../lib/InputReviews.svelte';
  import DiscoveryPanel from '../lib/DiscoveryPanel.svelte';
@@ -87,6 +91,10 @@
   {#if view==='Research' && research && data!==null}
    <DiscoveryPanel {request} {download}/>
    <IndependentRankingPanel {request}/>
+   <QualifiedRankingPanel {request}/>
+   <ValidationEvaluationsPanel {request}/>
+   <StrategyDetailPanel {request}/>
+   <ResearchTrialsPanel {request}/>
    <StatisticalSafeguardsPanel {request}/>
    <ScreenCohortsPanel {request} {download}/>
    <HistoricalScreenCohortsPanel {request} {download}/>
