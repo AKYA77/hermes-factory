@@ -1,11 +1,11 @@
 {
-  "audited_head": "4f8f519a32888047f30229dd96582590361f407f",
+  "audited_head": "2dd6afa61ecc4d88ee13ec8e357c5f7c1b342bd0",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "4f8f519a32888047f30229dd96582590361f407f",
-    "source_sha256": "ab2d1b1933542229d3c682c3ef8d0540b05912f287aa588a57c1024d8ed4ed1c",
+    "git_commit": "2dd6afa61ecc4d88ee13ec8e357c5f7c1b342bd0",
+    "source_sha256": "caaf998f482b4d9f461cabfef7e6d3afec36e400ef042b5993ef068611b253de",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -2651,10 +2651,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Partial; full blueprint dashboard/charts/actions/exports pending",
+      "next_required_action": "Nine smokes pass in real Chromium, two over real acquired data. Remaining: wire the remaining uncalled API routes (leaderboards, profiles, strategies, source registry, validation evaluations, audit), run the other smokes against real data where the workflow supports it, and complete full C7 blueprint coverage.",
       "requirement_id": "C7",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.",
+      "supporting_evidence_scope": "Nine browser smokes now pass. A new SourceCoveragePanel reports observed/selected/quarantined counts, first and last period and a per-instrument gap count for all eight instruments, plus canonical partitions, rows and GiB, over the genuine observation ledger and real catalog: 8 instruments, 22 periods each, 0 gaps, 0 selected, 182 partitions, 437,056,502 rows, 4.97 GiB. The panel reports coverage for review and never implies selection or admission. Two harness defects were found on the way: the dashboard smoke had never run (hardcoded Chromium path) and run-browser-smoke.sh never rebuilt the dashboard, so every smoke silently tested the previous build. The wrapper now builds first. 42 of 76 API routes still had no dashboard caller before this work; source-coverage and storage are now wired. Remaining: the other seven smokes still run on generated fixtures, and full C7 blueprint coverage (charts, actions, exports) is incomplete.",
       "title": "Dashboard completion",
       "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
     },
