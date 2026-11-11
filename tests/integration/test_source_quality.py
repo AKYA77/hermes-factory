@@ -262,20 +262,47 @@ def test_declared_off_grid_profile_does_not_round_source_or_grant_admission(tmp_
     ] * 3
 
 
-def test_source_record_sequence_gap_is_an_issue_not_silently_repaired(tmp_path):
-    # quotes/v1 accepts a sparse supplied source order; the new scanner diagnoses it.
+def test_duplicate_source_record_sequence_is_an_issue_not_silently_repaired(tmp_path):
+    """A repeated source position means one source row was published twice.
+
+    This previously also flagged a *sparse* order, on the assumption that
+    published order equals source order. That assumption no longer holds: the
+    lossless source-order correction publishes a permutation, and quarantine
+    removes rows, so gaps in `original_record_order` are expected and correct.
+    A repeated position is still a defect and is still diagnosed here.
+    """
+    data = quotes([(110000, 110010)] * 3)
+    data[2] = replace(data[2], original_record_order=1)
+    catalog = Catalog(tmp_path / "catalog")
+    manifest = catalog.commit(
+        data,
+        b"explicitly synthetic duplicate-order reference",
+        {"source": "synthetic QA fault fixture", "license": "project test", "synthetic": True},
+    )
+    result = SourceQuality(tmp_path, catalog).run(manifest["dataset_hash"], policy())
+    assert result["complete_source_scan"] and result["source_structural_status"] == "FAILED_CHECKS"
+    assert result["counts"]["structural_issue_rows"] == 1
+    assert result["historical_admission"] is False
+
+
+def test_sparse_source_order_from_lossless_reorder_is_not_a_defect(tmp_path):
+    """A permutation of source positions is the intended result, not damage.
+
+    Measured on the real archives: after correction the published timeline is
+    monotonic while `original_record_order` is a permutation, so a gap carries
+    no information about a lost row. Only a repeated position does.
+    """
     data = quotes([(110000, 110010)] * 3)
     data[1] = replace(data[1], original_record_order=4)
     catalog = Catalog(tmp_path / "catalog")
     manifest = catalog.commit(
         data,
-        b"explicitly synthetic malformed-order reference",
+        b"explicitly synthetic reordered reference",
         {"source": "synthetic QA fault fixture", "license": "project test", "synthetic": True},
     )
     result = SourceQuality(tmp_path, catalog).run(manifest["dataset_hash"], policy())
-    assert result["complete_source_scan"] and result["source_structural_status"] == "FAILED_CHECKS"
-    assert result["counts"]["structural_issue_rows"] == 2
-    assert result["historical_admission"] is False
+    assert result["source_structural_status"] == "PASS"
+    assert result["counts"]["structural_issue_rows"] == 0
 
 
 def test_captured_calendar_and_profile_inputs_are_required_for_reproducible_receipt(tmp_path):
