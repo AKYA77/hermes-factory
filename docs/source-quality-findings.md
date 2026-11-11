@@ -286,6 +286,42 @@ archive is untouched. The post-hoc scanner already reports crossed quotes as
 
 A non-positive price remains an immediate failure; that is a different defect.
 
+### 7.4 The scanner reported its own correction as a defect
+
+Once the partitions imported, the source-quality scanner was run over the real
+archives for the first time. Every instrument came back `FAILED_CHECKS`:
+
+| Reason | Rows |
+|---|---|
+| `SOURCE_RECORD_SEQUENCE_GAP` | 48,065 |
+| `SOURCE_CHRONOLOGY_MISMATCH` | 15,533 |
+
+Both were false positives with one cause. The lossless source-order correction
+publishes a **permutation** of the source rows: the timeline becomes monotonic
+while `original_record_order` stops being consecutive. The scanner still
+assumed published order equals source order.
+
+Measured directly on the published EURUSD partition: **0 timestamp inversions**
+and 331 sequence gaps in 1,805,682 rows. The timeline is correct; the 331 gaps
+are the reordered rows.
+
+The fix separates two different questions:
+
+- **Chronology** now compares timestamps only. A source-position comparison
+  there conflated "reordered" with "out of order".
+- **Sequence** now detects a *repeated* `original_record_order`, which is the
+  real defect: one source row published twice.
+
+A gap is no longer treated as a defect, and that is a deliberate limitation
+rather than an oversight: after reordering and quarantine, a gap is
+indistinguishable from a correctly removed row unless the source row count is
+known, and the manifest does not record one. A duplicated row is detectable
+without it.
+
+All eight instruments now scan `PASS` over 20,163,841 real rows, with
+`synthetic=false` and `historical_admission=false` throughout and calendar and
+instrument metadata still `UNKNOWN`.
+
 ### Correction policy `source-order-correction/v1`
 
 `factory/data/source_order.py` applies both corrections. Neither rewrites a
