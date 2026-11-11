@@ -3,6 +3,7 @@
  import SourceCoveragePanel from '../lib/SourceCoveragePanel.svelte';
  import InstrumentProfilesPanel from '../lib/InstrumentProfilesPanel.svelte';
  import SourceRegistryPanel from '../lib/SourceRegistryPanel.svelte';
+ import StatisticalSafeguardsPanel from '../lib/StatisticalSafeguardsPanel.svelte';
  import SourceQualityPanel from '../lib/SourceQualityPanel.svelte';
  import InputReviews from '../lib/InputReviews.svelte';
  import DiscoveryPanel from '../lib/DiscoveryPanel.svelte';
@@ -83,6 +84,7 @@
   {#if view==='Leaderboards'}<label>Instrument <select bind:value={symbol} onchange={()=>load()}>{#each symbols as s}<option>{s}</option>{/each}</select></label><p>Five maximum per instrument. Empty slots stay empty. Synthetic runs are labeled; validation is separate.</p>{/if}
   {#if view==='Research' && research && data!==null}
    <DiscoveryPanel {request} {download}/>
+   <StatisticalSafeguardsPanel {request}/>
    <ScreenCohortsPanel {request} {download}/>
    <HistoricalScreenCohortsPanel {request} {download}/>
    <ScreenComparabilityPanel {request}/>
