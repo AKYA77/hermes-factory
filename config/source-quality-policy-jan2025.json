@@ -1,0 +1,10 @@
+{
+  "schema_version": "source-quality-policy/v1",
+  "gap_threshold_ns": "60000000000",
+  "unchanged_threshold_ns": "600000000000",
+  "timestamp_quantum_ns": "1000000",
+  "max_examples": 100,
+  "max_events_bytes": 268435456,
+  "expected_start_ns": 1735768814647000000,
+  "expected_end_ns": 1738360797318000000
+}
