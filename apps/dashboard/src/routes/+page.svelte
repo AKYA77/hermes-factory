@@ -10,6 +10,7 @@
  import ValidationEvaluationsPanel from '../lib/ValidationEvaluationsPanel.svelte';
  import StrategyDetailPanel from '../lib/StrategyDetailPanel.svelte';
  import ResearchTrialsPanel from '../lib/ResearchTrialsPanel.svelte';
+ import ResearchActionsPanel from '../lib/ResearchActionsPanel.svelte';
  import SourceQualityPanel from '../lib/SourceQualityPanel.svelte';
  import InputReviews from '../lib/InputReviews.svelte';
  import DiscoveryPanel from '../lib/DiscoveryPanel.svelte';
@@ -95,6 +96,7 @@
    <ValidationEvaluationsPanel {request}/>
    <StrategyDetailPanel {request}/>
    <ResearchTrialsPanel {request}/>
+   <ResearchActionsPanel {request}/>
    <StatisticalSafeguardsPanel {request}/>
    <ScreenCohortsPanel {request} {download}/>
    <HistoricalScreenCohortsPanel {request} {download}/>

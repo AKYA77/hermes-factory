@@ -9,6 +9,7 @@ evidence and not a qualification, ranking or promotion claim.
 
 import argparse
 import json
+from contextlib import closing
 from pathlib import Path
 import subprocess
 import sys
@@ -71,6 +72,72 @@ subprocess.run(
     check=True,
     stdout=subprocess.DEVNULL,
 )
+
+# An improvement policy, plan, edge and outcome, so the improvement-lineage,
+# improvement-sensitivity and improvement-confirmation routes have retained
+# records to report over. Built through the real service so the hashes are the
+# ones the reporting endpoints look up.
+from decimal import Decimal  # noqa: E402
+
+from factory.contracts import fingerprint  # noqa: E402
+from factory.improvement.service import Improvement, ImprovementPolicy  # noqa: E402
+
+policy = ImprovementPolicy(
+    search_protocol_hash=protocol_hash,
+    max_parent_plans=8,
+    max_children=4,
+    cpu_budget_seconds=300.0,
+    min_comparison_trades=50,
+    max_trade_count_reduction=Decimal("0.5"),
+    reserve_fraction_of_search_cpu=Decimal("0.25"),
+)
+policy_hash = policy.policy_hash
+improvement = Improvement(store, state)
+improvement.register(policy)
+experiment_hash = row["experiment_hash"]
+plan_hash = fingerprint({"policy_hash": policy_hash, "parent_run_id": experiment_hash})
+edge_id = fingerprint({"plan_hash": plan_hash, "child_experiment_hash": experiment_hash})
+# improvement-confirmation validates the edge payload's embedded contract, so
+# the edge must carry a real one. Use the parent contract shifted well outside
+# its windows, which is what makes the later evaluation non-overlapping.
+parent_contract = contract.model_copy(deep=True)
+shift = parent_contract.windows[-1].end_ns + 86_400 * 10**9
+child_contract = parent_contract.model_copy(
+    update={
+        "windows": tuple(
+            window.model_copy(update={"start_ns": window.start_ns + shift, "end_ns": window.end_ns + shift})
+            for window in parent_contract.windows
+        )
+    }
+)
+with closing(store.connect()) as db:
+    db.execute(
+        "INSERT INTO improvement_plans"
+        "(plan_hash,policy_hash,parent_run_id,evidence_json,generation_cpu_seconds,created_at)"
+        " VALUES(?,?,?,?,?,?)",
+        (plan_hash, policy_hash, experiment_hash, json.dumps({"synthetic": True}), 1.0, 1.0),
+    )
+    db.execute(
+        "INSERT INTO improvement_edges"
+        "(edge_id,plan_hash,child_strategy_hash,child_experiment_hash,payload_json,hypothesis,"
+        " changed_fields_json,created_at) VALUES(?,?,?,?,?,?,?,?)",
+        (
+            edge_id,
+            plan_hash,
+            child.strategy_hash,
+            experiment_hash,
+            json.dumps({"contract": child_contract.model_dump(mode="json")}),
+            "Widen the stop; training diagnostic only.",
+            json.dumps(["stop_ticks"]),
+            1.0,
+        ),
+    )
+    db.execute(
+        "INSERT INTO improvement_outcomes"
+        "(edge_id,status,evidence_json,cpu_seconds,created_at) VALUES(?,?,?,?,?)",
+        (edge_id, "TRAIN_IMPROVED_ONLY", json.dumps({"synthetic": True}), 1.0, 1.0),
+    )
+    db.commit()
 counts = {
     table: store.rows(f"SELECT count(*) n FROM {table}")[0]["n"]
     for table in (
@@ -79,6 +146,9 @@ counts = {
         "evaluation_results",
         "search_trials",
         "search_outcomes",
+        "improvement_plans",
+        "improvement_edges",
+        "improvement_outcomes",
     )
 }
 print(
@@ -100,8 +170,12 @@ Path(state / "qa.json").write_text(
     json.dumps(
         {
             "protocol_hash": protocol_hash,
+            "experiment_hash": experiment_hash,
             "parent_strategy_id": parent_id,
             "child_strategy_id": child.strategy_hash,
+            "policy_hash": policy_hash,
+            "plan_hash": plan_hash,
+            "edge_id": edge_id,
             "counts": counts,
             "fixture": "generated synthetic; not market evidence",
         },
