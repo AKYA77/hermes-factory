@@ -41,6 +41,16 @@ trap cleanup EXIT
 export PATH="/root/.hermes/tools/node-26.7.0-linux-x64/bin:$PATH"
 export NODE_PATH="$root/apps/dashboard/node_modules"
 
+# `serve` serves the static build, so a source change is invisible until the
+# dashboard is rebuilt. Without this the smokes silently test the previous
+# build, which is how a new panel can appear to do nothing.
+if [ "${FACTORY_BROWSER_SKIP_BUILD:-}" != "1" ]; then
+  (cd "$root/apps/dashboard" && npm run build >/dev/null) || {
+    echo "dashboard build failed" >&2
+    exit 1
+  }
+fi
+
 env -u PYTHONPATH .venv/bin/python "scripts/$fixture" --state "$state"
 
 env -u PYTHONPATH .venv/bin/python -m factory.cli --state "$state" serve --port "$port" &
