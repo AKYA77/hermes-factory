@@ -20,6 +20,7 @@
  let policyHash=$state(''),protocolHash=$state(''),experimentHash=$state('');
  let edgeId=$state(''),evaluationId=$state('');
  let instrument=$state('EURUSD'),datasetHash=$state('');
+ let evaluationStart=$state(''),evaluationEnd=$state('');
 
  const TASKS=[
   {id:'improvement-sensitivity',label:'Improvement sensitivity',needs:['policyHash'],attest:ATTEST.sensitivity},
@@ -28,10 +29,12 @@
   {id:'improvement-confirmation',label:'Improvement confirmation',needs:['edgeId','evaluationId'],attest:ATTEST.confirmation},
   {id:'diagnostic-cohorts',label:'Diagnostic cohorts',needs:['experimentHash'],attest:ATTEST.cohorts},
   {id:'annual-reporting',label:'Annual reporting',needs:[],attest:ATTEST.annual},
+  {id:'comparability-contract',label:'Comparability contract',needs:['instrument','datasetHash','evaluationStart','evaluationEnd'],attest:ATTEST.comparability},
  ];
 
  function hasValue(name:string):boolean{
-  const map:Record<string,string>={policyHash,protocolHash,experimentHash,edgeId,evaluationId};
+  const map:Record<string,string>={policyHash,protocolHash,experimentHash,edgeId,evaluationId,
+   instrument,datasetHash,evaluationStart,evaluationEnd};
   return !!map[name].trim();
  }
  function ready(t:any):boolean{
@@ -45,6 +48,12 @@
   if(t.id==='improvement-lineage')b.policy_hash=policyHash.trim();
   if(t.id==='improvement-confirmation'){b.edge_id=edgeId.trim();b.evaluation_id=evaluationId.trim();}
   if(t.id==='diagnostic-cohorts')b.experiment_hash=experimentHash.trim();
+  if(t.id==='comparability-contract'){
+   b.instrument=instrument.trim();
+   b.dataset_hash=datasetHash.trim();
+   b.evaluation_start_ns=Number(evaluationStart.trim());
+   b.evaluation_end_ns=Number(evaluationEnd.trim());
+  }
   return b;
  }
  async function run(t:any){busy=true;error='';result=null;
@@ -67,6 +76,10 @@
   <label>Experiment hash <input aria-label="Experiment hash" bind:value={experimentHash} maxlength="200"/></label>
   <label>Edge id <input aria-label="Edge identity" bind:value={edgeId} maxlength="200"/></label>
   <label>Evaluation id <input aria-label="Evaluation identity" bind:value={evaluationId} maxlength="200"/></label>
+  <label>Instrument <input aria-label="Instrument" bind:value={instrument} maxlength="32"/></label>
+  <label>Dataset hash <input aria-label="Dataset hash" bind:value={datasetHash} maxlength="200" placeholder="verified canonical dataset"/></label>
+  <label>Evaluation start (ns) <input aria-label="Evaluation start nanoseconds" bind:value={evaluationStart} inputmode="numeric" placeholder="1717200000000000000"/></label>
+  <label>Evaluation end (ns) <input aria-label="Evaluation end nanoseconds" bind:value={evaluationEnd} inputmode="numeric" placeholder="1717286400000000000"/></label>
  </div>
 
  <div class="buttons">

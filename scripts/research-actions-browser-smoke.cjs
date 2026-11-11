@@ -76,6 +76,18 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
  if(planRows!==plans.length)throw Error(`Rendered ${planRows} plan rows for ${plans.length} plans`);
  checks.push(`improvement plans rendered (${planRows})`);
 
+ // comparability-contract needs an instrument, a verified dataset and a window
+ // that does not overlap the retained protected training window.
+ await page.locator(section+' input[aria-label="Instrument"]').fill('EURUSD');
+ await page.locator(section+' input[aria-label="Dataset hash"]').fill(fixture.dataset_hash);
+ const afterTraining=BigInt(fixture.window_end_ns)+86_400n*1000000000n;
+ await page.locator(section+' input[aria-label="Evaluation start nanoseconds"]').fill(afterTraining.toString());
+ await page.locator(section+' input[aria-label="Evaluation end nanoseconds"]')
+  .fill((afterTraining+86_400n*1000000000n).toString());
+ const comparability=await call('Comparability contract');
+ if(!comparability.includes(fixture.dataset_hash))throw Error('Comparability report does not name the dataset');
+ checks.push('comparability contract retained for a verified dataset and a disjoint window');
+
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:root+'/reports/runtime/research-actions-browser-mobile.png',fullPage:true});
  const overflow=await page.evaluate(()=>({document:document.documentElement.scrollWidth,viewport:innerWidth}));
