@@ -48,6 +48,11 @@ Needs the target host rather than a scoped test.
 
 T03, T21, T22, T23, T31, T35, C1, C8
 
+C8 spans this category and category 7: its remaining work is "actual
+VPS/fault/soak/CI/security release gates". It is listed once here rather than
+twice, and its security-release element is routed through category 7 below.
+Splitting one requirement across two buckets would misreport the ledger.
+
 ## Category 6 — Missing external authoritative reference
 
 Cannot be self-certified; needs a reviewed external source.
@@ -56,7 +61,19 @@ T05, T08, T10, T26, T32, T37, T44, T46, T50, T54, T55, C2
 
 ## Category 7 — Missing release or security evidence
 
-T29, C9, C8
+T29, C9
+
+C8's security-release element is routed here; the requirement itself is counted
+once, in category 5.
+
+## Dependent requirement — not independently actionable
+
+**T38 (Independent readiness states)** was omitted from the first classification.
+It is the meta-gate: `SOFTWARE_VERIFIED`, `DATA_READY` and `OPERATION_READY`
+must all be true, each established by its own requirements above. It has no
+independent work item and cannot be worked in parallel with its dependencies —
+it is satisfied when they are. Counting it as a separate workstream would
+overstate the actionable backlog by one.
 
 ## Routing
 
