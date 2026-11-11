@@ -206,6 +206,12 @@ class SourceQuality:
         digests = {}
         metadata = {}
         leaf_counts = Counter()
+        # Seen source positions per leaf, not the last one. Provider source order
+        # is corrected losslessly before publication, so the published stream is
+        # a permutation of the source rows and `original_record_order` is no
+        # longer consecutive. Consecutiveness is therefore not a defect; a
+        # repeated position is, because it means one source row was published
+        # twice.
         leaf_orders = {}
         calendar_error = None
         coverage = None
@@ -337,14 +343,17 @@ class SourceQuality:
                     reasons.append("INVALID_QUOTE")
                 if q.original_record_order < 0:
                     reasons.append("INVALID_SOURCE_ORDER")
-                if key in leaf_orders and q.original_record_order != leaf_orders[key] + 1:
-                    reasons.append("SOURCE_RECORD_SEQUENCE_GAP")
-                leaf_orders[key] = q.original_record_order
+                seen = leaf_orders.setdefault(key, set())
+                if q.original_record_order in seen:
+                    reasons.append("SOURCE_RECORD_SEQUENCE_DUPLICATE")
+                seen.add(q.original_record_order)
                 if q.event_ts_utc_ns % policy.timestamp_quantum_ns:
                     reasons.append("SOURCE_TIMESTAMP_PRECISION_MISMATCH")
-                if previous and (
-                    ref["ts"] < previous["ts"] or ref["sequence"] <= previous["sequence"]
-                ):
+                # Chronology is about time. Comparing source positions here would
+                # report the lossless reorder as a defect: after correction the
+                # timestamps are monotonic while `original_record_order` is a
+                # permutation by design.
+                if previous and ref["ts"] < previous["ts"]:
                     reasons.append("SOURCE_CHRONOLOGY_MISMATCH")
                 if tick_int is not None and (D(q.bid_int) % tick_int or D(q.ask_int) % tick_int):
                     counts["off_declared_tick_grid"] += 1
