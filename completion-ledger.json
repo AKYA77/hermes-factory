@@ -1,11 +1,11 @@
 {
-  "audited_head": "48e7351f8be36e67bbb844b4d9ad7aff1f4fa8ff",
+  "audited_head": "00eed8dee824b2329b7caf4a3f0201dbed024ce5",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "48e7351f8be36e67bbb844b4d9ad7aff1f4fa8ff",
-    "source_sha256": "872f59cc99b353d1b571c24b199aef7d29e9d6d718e163996b1062b97eac83cd",
+    "git_commit": "00eed8dee824b2329b7caf4a3f0201dbed024ce5",
+    "source_sha256": "ab2d1b1933542229d3c682c3ef8d0540b05912f287aa588a57c1024d8ed4ed1c",
     "working_tree_scientific_edits": false
   },
   "readiness": {
@@ -1680,10 +1680,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Seven browser smokes pass over generated TEST_ONLY fixtures. A real defect was found and fixed in the Research reports panel: all three report actions returned 422 because the panel sent one generic attestation while each endpoint pins its own literal. Remaining: full C7 workflow acceptance, the existing source-quality smoke which expects eight real historical scans against a state directory absent on this host, and these workflows driven against genuine reviewed inputs.",
+      "next_required_action": "Source quality panel verified against real historical receipts in an actual browser. Remaining: run the other seven browser smokes against real acquired data where the underlying workflows support it, and complete full C7 blueprint coverage.",
       "requirement_id": "T48",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Real Chromium browser acceptance over the served dashboard, driven by scripts/run-browser-smoke.sh with an authenticated operator token. All six smokes now pass end to end with zero page errors and no mobile overflow: discovery (authenticated registration, pause preserved, region created only after resume, exact export), historical screen cohort (frozen before outcomes, fenced native feedback with native_observed=1 and approximate_pruning=false, exact-byte export), reviewed inputs (registry summaries, exact-byte export, revoked dependency refusal, mobile layout), screen cohort (supervised native feedback, prospective false negative, exact export), screen fallback (native fault injection, disabled alert, pause preserved) and validation (live validation list, exact nanosecond download, protected window state, typed UTC prospective registration, disable stages). Eight harness defects were found and fixed first: five smokes hardcoded a nonexistent /usr/bin/chromium; serve started no coordinator so job-driven workflows never completed; the historical smoke polled at 250 ms against a 120 requests/60 s limiter and always tripped 429; the discovery smoke used an ambiguous page-global Authorized-by locator; the reviewed-inputs fixture accepted --state but hardcoded its path; its smoke hardcoded both the state path and URL, bypassing isolation; its revocation step spawned the venv python with an ambient PYTHONPATH that broke pydantic_core; and the wrapper pre-created a state directory some fixtures require to be absent. Every run is against generated TEST_ONLY fixtures, not market data, so this is not full C7 acceptance.",
+      "supporting_evidence_scope": "Eight browser smokes now pass, and the Source quality panel has been exercised against REAL acquired archives for the first time. A new fixture (scripts/source-quality-browser-fixture.py) runs the source-quality scanner over one genuine partition per instrument from the real catalog; the browser smoke then drives authenticated loopback Chromium against the served dashboard. Receipt: status PASS, 8 source receipts, 20,165,841 real rows scanned, XAUUSD inspected, source_metadata_blocked true (calendar UNKNOWN_CALENDAR and profile UNKNOWN_SPEC throughout), exact full-event export byte-identical to the API response, no page errors, and no mobile document overflow at 390px. Two defects were found and fixed on the way: the scanner reported the lossless source-order correction as 48,065 sequence gaps and 15,533 chronology mismatches (both false positives, now distinguished from a real duplicate), and the fixture did not exist at all. Earlier smoke coverage used generated TEST_ONLY fixtures; the panel had never seen a real provider archive. Remaining: the other seven smokes still run on generated fixtures, and full C7 blueprint coverage is incomplete.",
       "title": "Connected validation laboratory",
       "verification_command": "bash scripts/verify.sh"
     },
