@@ -49,7 +49,13 @@ def test_rehearse_restore_exercises_the_recovery_path(tmp_path):
     workdir = tmp_path / "rehearsal" / "restored"
     receipt = rehearse_restore(archive, workdir)
     assert receipt["schema"] == "restore-rehearsal/v1"
-    assert receipt["migrations_applied"] > 0
+    # Store opens re-run every migration idempotently, so the restored schema
+    # already carries all of them. Assert what is actually true: the schema is
+    # present and current, and nothing was applied by this rehearsal itself.
+    assert receipt["migrations_present"] > 0
+    assert receipt["schema_current"] is True
+    assert receipt["migrations_applied_this_rehearsal"] == 0
+    assert receipt["migrations_applied"] == receipt["migrations_present"]
     assert receipt["jobs"] == 1
     assert receipt["experiments"] == 0
     assert receipt["catalog_partitions"] >= 1

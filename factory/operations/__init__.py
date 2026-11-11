@@ -91,9 +91,20 @@ def rehearse_restore(backup_path, workdir):
 
     store = Store(work / "factory.sqlite")
     try:
-        receipt["migrations_applied"] = store.rows("SELECT COUNT(*) AS n FROM schema_migrations")[
-            0
-        ]["n"]
+        # Store opens run every migration idempotently, so a restored store
+        # already carries all of them. The count is therefore how many
+        # migrations the schema is at, not how many this rehearsal applied --
+        # reporting it as "applied" would overstate what was exercised.
+        present = store.rows("SELECT COUNT(*) AS n FROM schema_migrations")[0]["n"]
+        latest = store.rows("SELECT MAX(version) AS v FROM schema_migrations")[0]["v"]
+        receipt["migrations_present"] = present
+        receipt["schema_version"] = latest
+        receipt["schema_current"] = present == latest
+        # Retained for older readers. Store opens re-run every migration
+        # idempotently, so this counts migrations the schema is AT, not how
+        # many this rehearsal applied. New readers should use the fields above.
+        receipt["migrations_applied"] = present
+        receipt["migrations_applied_this_rehearsal"] = 0
         jobs = store.rows("SELECT COUNT(*) AS n FROM jobs")[0]["n"]
         experiments = store.rows("SELECT COUNT(*) AS n FROM experiments")[0]["n"]
         receipt["jobs"] = jobs
