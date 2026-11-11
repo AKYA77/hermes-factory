@@ -328,6 +328,8 @@ def main():
                     "logical_cpu": os.cpu_count(),
                     "ram_bytes": psutil.virtual_memory().total,
                     "disk_free_bytes": shutil.disk_usage(".").free,
+                    "state_root": str(root),
+                    "catalog_root": str(root / "catalog"),
                     "database": database,
                     "catalog": {
                         "partitions": storage["partitions"],
