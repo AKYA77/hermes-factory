@@ -14,6 +14,7 @@ from factory.validation.multiple_testing import (
     benjamini_hochberg,
     bonferroni,
 )
+from factory.validation.statistics import holm
 
 
 def test_corrections_shrink_the_pass_set():
@@ -82,3 +83,15 @@ def test_misaligned_duplicate_or_out_of_range_input_is_refused(tmp_path):
                 attestation=ATTESTATION,
             )
         )
+
+
+def test_empty_family_rejects_nothing_consistently():
+    """The three corrections must agree on an empty family.
+
+    bonferroni divided by the family size and raised a bare
+    decimal.DivisionByZero, while its siblings returned an empty result. The
+    inconsistency was a trap for any caller that reached the helpers directly.
+    """
+    assert bonferroni([], D("0.05")) == set()
+    assert benjamini_hochberg([], D("0.10")) == set()
+    assert holm([], 0.05) == []

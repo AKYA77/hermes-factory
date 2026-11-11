@@ -55,7 +55,14 @@ def benjamini_hochberg(p_values, q):
 
 
 def bonferroni(p_values, alpha):
-    """Indices rejected under a Bonferroni family-wise correction."""
+    """Indices rejected under a Bonferroni family-wise correction.
+
+    An empty family rejects nothing. Dividing by a zero family size would raise
+    a bare decimal.DivisionByZero, while the sibling corrections return an empty
+    result for the same input; the three now agree.
+    """
+    if not p_values:
+        return set()
     limit = alpha / D(len(p_values))
     return {index for index, value in enumerate(p_values) if value <= limit}
 
