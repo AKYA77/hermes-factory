@@ -34,6 +34,55 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+**All 176 partitions are imported and the catalog is consistent.** Structural
+acquisition went from 129 to **176 of 176**; `refresh` reports 182 datasets
+verified, 0 missing, 0 mismatched, consistent. The final three blocks were three
+different causes, found by reading the recorded failure files rather than
+re-running the importer:
+
+- **Crossed quotes** (USDCAD 2026-07) — 353 rows where `bid > ask`, an arbitrage
+  that cannot persist, crossing by 1-7 pips. Blocking the partition withheld
+  1,226,059 good rows for 353 bad ones (0.029%), so
+  `source-quality-quarantine/v1` removes them whole and records the count,
+  magnitude histogram and bounded positions. The receipt states plainly that
+  this policy is **lossy**, unlike the lossless ordering correction.
+- **Lock contention** (AUDUSD 2026-10, XAUUSD 2026-09) — the non-blocking budget
+  lock fails fast when two workers collide. Running one worker at a time clears
+  it; the fail-fast guard itself is intentional.
+- **Staging never reclaimed** (AUDUSD 2026-10) — `reclaim_all` existed, was
+  tested and was exposed via the tools CLI, but the acquisition driver never
+  called it. Its own docstring predicted exactly this: *"without reclamation the
+  payload budget is eventually exhausted and further imports block even though
+  their canonical data is already published."* 3.38 GiB had accumulated across
+  269 intents. The driver now reclaims, but only when staging exceeds half the
+  budget — calling it unconditionally re-verifies every chunk and stalled the
+  supervisor for 15 minutes with no import running.
+
+**The Source quality panel has been verified against real archives in a real
+browser.** A new fixture (`scripts/source-quality-browser-fixture.py`) runs the
+scanner over one genuine partition per instrument from the real catalog; the
+existing smoke then drives authenticated loopback Chromium against the served
+dashboard. Receipt: **PASS**, 8 source receipts, **20,165,841 real rows**, XAUUSD
+inspected, `source_metadata_blocked` true (calendar `UNKNOWN_CALENDAR`, profile
+`UNKNOWN_SPEC` throughout), exact full-event export byte-identical to the API
+response, no page errors, no mobile overflow at 390 px. Until now the panel had
+only ever been exercised against generated TEST_ONLY fixtures.
+
+Two defects surfaced on the way, both worth recording:
+
+- **The scanner reported its own correction as damage.** It flagged 48,065
+  `SOURCE_RECORD_SEQUENCE_GAP` and 15,533 `SOURCE_CHRONOLOGY_MISMATCH` across the
+  eight instruments. Both were false positives: the lossless correction publishes
+  a *permutation*, so the timeline is monotonic while `original_record_order`
+  stops being consecutive. Measured directly, the published EURUSD partition has
+  **0 timestamp inversions** and 331 sequence gaps in 1,805,682 rows — the gaps
+  are the reordered rows. Chronology now compares timestamps only, and sequence
+  now detects a *repeated* position, which is the real defect.
+- **A gap is no longer treated as a defect, and that is a limitation.** After
+  reordering and quarantine a gap is indistinguishable from a correctly removed
+  row unless the source row count is known, and the manifest records none. A
+  duplicated row is detectable without it.
+
 **Source-to-restore rehearsal added over genuine data.**
 `scripts/source_to_restore_rehearsal.py` runs the stages exercisable on this
 host against the real acquired catalog in one chain: verify (deep
