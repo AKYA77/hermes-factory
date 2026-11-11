@@ -64,7 +64,8 @@ class SourceQuality:
         source_quality_receipts both come back empty for it.
         """
         known_attempts = {
-            row["attempt_id"] for row in self.store.rows("SELECT attempt_id FROM source_quality_attempts")
+            row["attempt_id"]
+            for row in self.store.rows("SELECT attempt_id FROM source_quality_attempts")
         }
         known_runs = {
             row["run_id"] for row in self.store.rows("SELECT run_id FROM source_quality_receipts")

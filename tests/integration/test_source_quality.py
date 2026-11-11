@@ -386,7 +386,14 @@ def test_source_quality_cli_and_status_share_the_documented_receipt_interface(tm
     assert result["historical_admission"] is False and result["profile_status"] == "UNKNOWN_SPEC"
     status = json.loads(
         subprocess.run(
-            [sys.executable, "-m", "factory.cli", "--state", str(tmp_path), "source-quality-status"],
+            [
+                sys.executable,
+                "-m",
+                "factory.cli",
+                "--state",
+                str(tmp_path),
+                "source-quality-status",
+            ],
             text=True,
             capture_output=True,
             check=True,
