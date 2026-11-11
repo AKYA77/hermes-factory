@@ -110,6 +110,18 @@ the wrapper pre-created a state directory some fixtures require to be absent. Se
 `docs/browser-acceptance-findings.md`. All runs use generated TEST_ONLY fixtures,
 not market data.
 
+**Correction: the dashboard smoke was missed.** The paragraph above recorded the
+hardcoded-Chromium defect as fixed in five smokes, but `dashboard-smoke.cjs`
+still launched `/usr/bin/chromium` and so could never run — it had been silently
+failing. It now uses the same resolver as the other seven. A second defect sat
+next to it: `reviewed-inputs-browser-smoke.cjs` wrote
+`browser: 'Chromium /usr/bin/chromium'` into its receipt even though it launched
+through the resolver, a false statement in an evidence artifact. It now records
+the real version.
+
+All eight smokes now pass: the six above, the dashboard smoke, and the Source
+quality smoke over real acquired archives.
+
 **The 47 blocked partitions can now be imported.** All 47 were recorded as
 `import exit 1` with no diagnosis. Reproducing two of them from the immutable
 archives, sha256-verified before parsing, showed **two distinct provider defects**:

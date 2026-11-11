@@ -75,9 +75,30 @@ it fails on a deliberately mismatched panel, so it cannot pass vacuously.
 Note that the project's Ruff scope is `factory apps tests`; `scripts/` is not
 linted, so the check script is excluded from that gate by design.
 
+## The dashboard smoke was silently broken
+
+The section above recorded the hardcoded-Chromium defect as fixed in five
+smokes. `scripts/dashboard-smoke.cjs` was a sixth and was missed: it still
+launched `executablePath:'/usr/bin/chromium'`, which does not exist on this host,
+so the smoke could never run. Because the wrapper reports a non-zero exit and the
+dashboard smoke produced no receipt, the failure was invisible in the artifact
+record — only running it directly exposed it. It now uses the same
+`lib/chromium-path.cjs` resolver as the other seven.
+
+A second defect sat immediately next to it. `reviewed-inputs-browser-smoke.cjs`
+did launch through the resolver, but wrote `browser: 'Chromium /usr/bin/chromium'`
+into its receipt. The launch was correct and the evidence was false — the receipt
+now records the actual browser version, captured before `browser.close()`.
+
+All eight smokes now pass: the six listed above, the dashboard smoke, and the
+Source quality smoke over real acquired archives.
+
 ## Scope
 
 Every one of these runs against **generated TEST_ONLY fixtures**, not market
-data. They prove the dashboard's controls, authentication, exact-byte export and
-mobile layout work in a real browser. They do not validate market behaviour, and
-they do not make `SOFTWARE_VERIFIED`, `DATA_READY` or `OPERATION_READY` true.
+data — with one exception: the Source quality smoke runs over genuine acquired
+partitions, but its receipts still carry `synthetic=false` only for the source
+and `historical_admission=false` for the conclusion. They prove the dashboard's
+controls, authentication, exact-byte export and mobile layout work in a real
+browser. They do not validate market behaviour, and they do not make
+`SOFTWARE_VERIFIED`, `DATA_READY` or `OPERATION_READY` true.
