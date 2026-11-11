@@ -1,10 +1,10 @@
 {
-  "audited_head": "8618ca456012fec5f23913921f994a9d12c3c963",
+  "audited_head": "616019141e4c55defbdec2ab4b084d24ad52d4fd",
   "authority_sha256": "d955d06e4c5e72c56241f27da728b645ea95490c6c4681cbab1d17fe8676cf61",
   "goal": "Final Software Completion & Hermes Handoff Directive 2026-11-04",
   "latest_checkpoint": "docs/milestone-historical-screen-cohorts.md",
   "latest_verified_source": {
-    "git_commit": "8618ca456012fec5f23913921f994a9d12c3c963",
+    "git_commit": "616019141e4c55defbdec2ab4b084d24ad52d4fd",
     "source_sha256": "caaf998f482b4d9f461cabfef7e6d3afec36e400ef042b5993ef068611b253de",
     "working_tree_scientific_edits": false
   },
@@ -1000,7 +1000,7 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Three reference panels added and verified over real data. Remaining: build the action panels for the uncalled POST routes, wire strategy and evaluation detail, and run the remaining smokes against real data where the workflow supports it.",
+      "next_required_action": "Four panels added and verified over real data: source coverage, instrument profiles, source registry, and statistical safeguards (selection funnel, retained candidates, and uncorrected/Bonferroni/Benjamini-Hochberg pass counts with a mandatory descriptive-only declaration). Twelve browser smokes now pass, four of them over real acquired data. Remaining: the action endpoints for propose, pause, resume, refresh, qualified-ranking, independent-ranking, improvement lineage/sensitivity/confirmation, diagnostic-cohorts, comparability-contract, annual-reporting and candidate-diversity still have no caller, as do the strategy and evaluation detail routes and the instruments route.",
       "requirement_id": "T28",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Eleven browser smokes now pass, three of them over real acquired data. The dashboard API coverage gap was measured rather than assumed: of 76 API routes, 26 had no caller anywhere in the dashboard. Three panels were added for the highest-value gaps: SourceCoveragePanel (observed/selected/quarantined counts, period range and a per-instrument gap count, plus canonical partitions, rows and GiB), InstrumentProfilesPanel (declared tick/pip/base/quote/multiplier/min-stop geometry, every profile hash, and the synthetic versus verified distinction with an explicit Gold caveat), and SourceRegistryPanel (all 182 datasets with provider, fidelity, parser version and declared limitations). The registry panel also fixed a mislabelling found while building it: a TEST ONLY rehearsal dataset was being bucketed as provider-sourced because it carries real ticks; it is now classified as a test fixture from its declared provenance. Remaining: 23 routes still have no caller, including the action endpoints (propose, pause, resume, refresh, multiple-testing, qualified-ranking, independent-ranking, selection-funnel, improvement lineage and sensitivity, retained-candidates, diagnostic-cohorts, comparability-contract, annual-reporting, candidate-diversity), the strategy and evaluation detail routes, and the instruments route.",
