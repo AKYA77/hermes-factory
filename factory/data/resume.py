@@ -293,6 +293,7 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                     "checkpoint_id": root.name,
                     "rows_reused": result["rows"],
                     "rows_decoded": 0,
+                    "source_rows_read": result["rows"],
                     "chunks": len(state["chunks"]),
                     "staging_reclaimed": True,
                     "raw_prefix_rechecked": False,
@@ -407,6 +408,10 @@ def import_archive(catalog, manifest, provenance, batch_rows=8192, *, staging_bu
                 "checkpoint_id": root.name,
                 "rows_reused": reused,
                 "rows_decoded": decoded,
+                # `rows_decoded` counts only rows decoded in this run; a resumable
+                # import reuses earlier checkpointed chunks, so it is NOT the
+                # archive total. Reconcile with source_rows_read, which is.
+                "source_rows_read": reused + decoded,
                 "chunks": len(state["chunks"]),
                 "raw_prefix_rechecked": True,
                 "staging_payload_budget_bytes": staging_budget_bytes,
