@@ -1,6 +1,7 @@
 <script lang="ts">
  import ValidationLab from '../lib/ValidationLab.svelte';
  import SourceCoveragePanel from '../lib/SourceCoveragePanel.svelte';
+ import InstrumentProfilesPanel from '../lib/InstrumentProfilesPanel.svelte';
  import SourceQualityPanel from '../lib/SourceQualityPanel.svelte';
  import InputReviews from '../lib/InputReviews.svelte';
  import DiscoveryPanel from '../lib/DiscoveryPanel.svelte';
@@ -99,7 +100,7 @@
    <section class="panel"><h2>Improvement policies</h2>{#if improvement.policies.length===0}<p>No policies registered.</p>{/if}{#each improvement.policies as policy}<div class="row"><span>{policy.policy_hash.slice(0,12)} · {policy.enabled?'enabled':'disabled'}</span>{#if policy.enabled}<button disabled={pending} onclick={()=>stop('improvement/policies/'+policy.policy_hash+'/disable')}>Stop new children</button>{/if}</div>{/each}</section>
    <section class="panel"><h2>Children and paired comparisons</h2>{#if children.length===0}<p>No controlled children have been planned.</p>{/if}{#each children as child}<article><h3>{child.status??'Awaiting execution or budget'}</h3><p>{child.hypothesis}</p><button onclick={()=>{view='Experiments';inspect(child.child_experiment_hash);}} disabled={pending||!nativeChildRun(child)}>Inspect native run</button><details><summary>Paired evidence</summary><pre>{child.evidence_json?JSON.stringify(JSON.parse(child.evidence_json),null,2):'No completed comparison yet.'}</pre></details></article>{/each}</section>
   {/if}
-  {#if view==='Market data' && data!==null}<SourceCoveragePanel {request}/><SourceQualityPanel {request} {download}/><InputReviews {request} {download}/>{/if}
+  {#if view==='Market data' && data!==null}<SourceCoveragePanel {request}/><InstrumentProfilesPanel {request}/><SourceQualityPanel {request} {download}/><InputReviews {request} {download}/>{/if}
   {#if view==='Validation' && data!==null}<ValidationLab {request} {download}/>{/if}
   {#if view==='Queue' && Array.isArray(data)}<section class="panel"><h2>Jobs</h2>{#if data.length===0}<p>No queued jobs.</p>{/if}{#each data as job}<div class="row"><span>{job.job_id.slice(0,12)} · {job.state}</span>{#if ['QUEUED','RUNNING','FAILED_RETRYABLE'].includes(job.state)}<button disabled={pending} onclick={()=>stop('jobs/'+job.job_id+'/cancel')}>Cancel job</button>{/if}</div>{/each}</section>{/if}
   {#if view==='Experiments' && Array.isArray(data)}<ul>{#each data as run}<li><button onclick={()=>inspect(run.run_id)}>{run.instrument} · {run.status} · {run.run_id.slice(0,12)}</button></li>{/each}</ul>{/if}
