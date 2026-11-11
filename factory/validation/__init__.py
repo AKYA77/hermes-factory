@@ -15,6 +15,16 @@ def wilson(wins, n, z=1.959963984540054):
 
 
 def quarter_folds(start_ns, end_ns):
+    """Quarterly walk-forward folds with an expanding (anchored) training window.
+
+    Every fold trains from the same origin `start_ns`, so the training set grows
+    as the OOS window advances; `train_start` is therefore identical across
+    folds by construction. This is deliberate: an anchored window avoids the
+    recency bias of a rolling one, at the cost of older data carrying equal
+    weight. Callers that want a rolling window must impose their own bound.
+
+    The final fold is marked `partial` when its quarter extends past `end_ns`.
+    """
     dt = datetime.fromtimestamp(start_ns // 10**9, timezone.utc)
     quarter = (dt.month - 1) // 3 * 3 + 1
     boundary = datetime(dt.year, quarter, 1, tzinfo=timezone.utc)
