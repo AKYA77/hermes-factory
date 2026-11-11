@@ -384,13 +384,18 @@ def test_source_quality_cli_and_status_share_the_documented_receipt_interface(tm
     result = json.loads(completed.stdout)
     assert result["complete_source_scan"] and result["counts"]["rows_scanned"] == 3
     assert result["historical_admission"] is False and result["profile_status"] == "UNKNOWN_SPEC"
-    status = subprocess.run(
-        [sys.executable, "-m", "factory.cli", "--state", str(tmp_path), "source-quality-status"],
-        text=True,
-        capture_output=True,
-        check=True,
+    status = json.loads(
+        subprocess.run(
+            [sys.executable, "-m", "factory.cli", "--state", str(tmp_path), "source-quality-status"],
+            text=True,
+            capture_output=True,
+            check=True,
+        ).stdout
     )
-    assert json.loads(status.stdout)[0]["run_id"] == result["run_id"]
+    # status reports receipts, attempts and orphaned partial scans separately,
+    # so a retained failure is visible even when no receipt exists.
+    assert status["receipts"][0]["run_id"] == result["run_id"]
+    assert status["attempts"][0]["run_id"] == result["run_id"]
     wrong = policy(
         expected_start_ns=manifest["first_ns"] + 1,
         expected_end_ns=manifest["latest_verified_ns"] + 1,

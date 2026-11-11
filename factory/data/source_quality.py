@@ -54,6 +54,54 @@ class SourceQuality:
         self.directory = self.root / "artifacts" / "source-quality"
         self.directory.mkdir(parents=True, exist_ok=True)
 
+    def orphans(self):
+        """Partial scans with no attempt row and no receipt.
+
+        A scan stages into a .pending-* directory and only records an attempt
+        once it has something to record. An uncatchable kill between those
+        points, or a store that was re-created afterwards, leaves a directory
+        that no command could previously find: source_quality_attempts and
+        source_quality_receipts both come back empty for it.
+        """
+        known_attempts = {
+            row["attempt_id"] for row in self.store.rows("SELECT attempt_id FROM source_quality_attempts")
+        }
+        known_runs = {
+            row["run_id"] for row in self.store.rows("SELECT run_id FROM source_quality_receipts")
+        }
+        found = []
+        for path in sorted(self.directory.glob(".pending-*")):
+            if not path.is_dir():
+                continue
+            identity = None
+            failure = None
+            attempt = path / "attempt.json"
+            if attempt.exists():
+                try:
+                    identity = json.loads(attempt.read_text()).get("attempt_id")
+                except (OSError, ValueError):
+                    identity = None
+            failed = path / "failure.json"
+            if failed.exists():
+                try:
+                    failure = json.loads(failed.read_text()).get("error")
+                except (OSError, ValueError):
+                    failure = None
+            # attempt.json records the attempt_id; the store keys attempts by
+            # attempt_id and receipts by run_id, so both namespaces must be
+            # checked or a recorded failure is misreported as an orphan.
+            found.append(
+                {
+                    "directory": path.name,
+                    "attempt_id": identity,
+                    "recorded": bool(identity) and identity in known_attempts,
+                    "receipt": bool(identity) and identity in known_runs,
+                    "failure": failure,
+                    "bytes": sum(f.stat().st_size for f in path.iterdir() if f.is_file()),
+                }
+            )
+        return found
+
     def verify(self, identity):
         if len(identity) != 64 or any(c not in "0123456789abcdef" for c in identity):
             raise ValueError("invalid source quality identity")

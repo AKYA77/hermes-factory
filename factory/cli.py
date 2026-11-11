@@ -267,11 +267,24 @@ def main():
             raise SystemExit(1)
         return
     if args.command == "source-quality-status":
+        store = Store(root / "factory.sqlite")
+        from factory.data import Catalog
+        from factory.data.source_quality import SourceQuality
+
+        quality = SourceQuality(root, Catalog(root / "catalog"))
         print(
             json.dumps(
-                Store(root / "factory.sqlite").rows(
-                    "SELECT run_id,report_sha256,events_sha256,created_at FROM source_quality_receipts ORDER BY created_at DESC"
-                ),
+                {
+                    "receipts": store.rows(
+                        "SELECT run_id,report_sha256,events_sha256,created_at"
+                        " FROM source_quality_receipts ORDER BY created_at DESC"
+                    ),
+                    "attempts": store.rows(
+                        "SELECT attempt_id,run_id,outcome,rows_scanned,artifact_directory,error,created_at"
+                        " FROM source_quality_attempts ORDER BY created_at DESC"
+                    ),
+                    "orphaned_partial_scans": quality.orphans(),
+                },
                 indent=2,
             )
         )
