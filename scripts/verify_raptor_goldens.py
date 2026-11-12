@@ -34,11 +34,13 @@ def main():
     failures = []
     for entry in cases:
         instrument = rng.choice(harness.INSTRUMENTS)
-        profile, spec, quotes, signals = harness.generate_case(rng, instrument)
+        profile, spec, quotes, signals, partial, fill_model = harness.generate_case(
+            rng, instrument
+        )
         if "rejected" in entry:
             continue
         scale = profile.price_scale
-        request = harness.build_request(profile, spec, quotes, signals, True)
+        request = harness.build_request(profile, spec, quotes, signals, True, partial)
         rs = harness.run_rust(request)
         payload = json.dumps(rs, sort_keys=True, separators=(",", ":"))
         import hashlib

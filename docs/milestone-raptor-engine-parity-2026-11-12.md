@@ -29,9 +29,10 @@ counts and open trades.
 |---|---|---|
 | 100 cases, EURUSD, seed 20261112 | **100 / 100 exact** | — |
 | 240 cases, all 8 instruments, seed 20261112 | **240 / 240 exact** | — |
+| 240 cases, all 8 instruments, seed 20261112, finite eligible book | **240 / 240 exact** | — |
 | 800 cases, all 8 instruments, seed 777 | **800 / 800 exact** | 29 s |
 | 30 genuine acquired catalog partitions | **30 / 30 exact** | 29 s |
-| Frozen Nautilus goldens incl. order states | **240 / 240** | — |
+| Frozen Nautilus goldens incl. order states and partial fills | **240 / 240** | — |
 
 The last row reads real published partitions through the production catalog
 API (`Catalog.read`) over a bounded quote window, using the project's
@@ -68,6 +69,17 @@ an earlier revision:
    the same quote.
 6. **The reference rounds equity to 28 significant digits after every fill**,
    and that rounded value is what sizing uses.
+7. **Order quantities are rounded to the size increment with Python's
+   `round(binary64, precision)`** — banker's rounding on the binary64 value, not
+   decimal half-even — before a finite book cap is applied, and the capped
+   quantity is rounded again.
+8. **A short fill cancels its remainder and its bracket siblings.** A partial
+   entry cancels the attached protection and forces a `SAFETY_CLOSE`; a partial
+   protection or timeout exit leaves the position open and is re-submitted at a
+   later quote. Cancelled protection never triggers.
+9. **A multi-fill exit is reported as a quantity-weighted average price** with
+   the last exit's timestamp and quote index; a position that never closed
+   reports no exit price.
 
 ## Defects found and fixed in the Rust engine
 

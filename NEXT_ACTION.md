@@ -118,6 +118,36 @@ matches `git ls-remote origin refs/heads/build/initial-factory`). CI contexts
 Full local suite: **709 passed, 0 failed** in 1375 s. CI contexts `audit`,
 `dashboard`, `python` and `rust` all pass for this commit.
 
+### Phase 1c — order states and partial fills
+
+The Rust engine now emits the order state machine (ENTRY/STOP_LOSS/TAKE_PROFIT/
+TIMEOUT registration and terminal transitions, with the filling order `FILLED`
+and the sibling protection `CANCELED`), and reproduces partial fills against a
+finite eligible book:
+
+| Behaviour | Reference detail reproduced |
+|---|---|
+| Size-increment rounding | The order quantity is rounded before the book cap and the capped quantity again, using Python `round(binary64, precision)` — banker's rounding on the binary64 value, not decimal half-even |
+| Partial entry | The IOC remainder is cancelled; cancelling the parent cancels the attached protection → `PROTECTION_LOST` and a `SAFETY_CLOSE` at a later quote |
+| Partial protection/timeout exit | Only the remainder is cancelled; the position stays open and the exit is re-submitted, so a thin book shrinks it geometrically |
+| Cancelled protection | No longer triggers in the matching phase |
+| Multi-fill exit | Quantity-weighted average exit price and the last exit's timestamp/quote index; no exit price for a position that never closed |
+
+Verified exact: **240/240** finite-book fixtures (seed 20261112, ≈35% inject a
+half-depth book), **800/800** unbounded fixtures (seed 777), **30/30** genuine
+acquired partitions, and the refrozen goldens (**240/240**, artifact sha256
+`29e0f43417d71c6921df38cc333da989cae784f39a318715bcf8b791489fad0a`).
+Twelve discrepancies were root-caused and fixed; none remains open.
+
+**R02 remains `NOT_TESTED`.** Verified broker profiles and genuine-period
+restart/batch evidence are still missing, so NautilusTrader stays installed and
+remains the reference. Full detail:
+`docs/milestone-raptor-migration-parity-2026-11-12.md` (§3 discrepancy table,
+§4a partial fills).
+
+**Next action:** obtain verified broker profiles and record restart/batch
+equivalence evidence. Only then may the NautilusTrader removal begin.
+
 ## Environment change observed this session
 
 The prior checkpoint recorded histdata.com/oanda.com/six-group.com as proxy-denied

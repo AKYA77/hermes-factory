@@ -42,10 +42,12 @@ def main():
     cases = []
     for case in range(args.cases):
         instrument = rng.choice(harness.INSTRUMENTS)
-        profile, spec, quotes, signals = harness.generate_case(rng, instrument)
+        profile, spec, quotes, signals, partial, fill_model = harness.generate_case(
+            rng, instrument
+        )
         scale = profile.price_scale
         try:
-            result = harness.replay(quotes, profile, spec, signals, True)
+            result = harness.replay(quotes, profile, spec, signals, True, fill_model=fill_model)
         except Exception as exc:
             cases.append({"case": case, "instrument": instrument, "rejected": str(exc)})
             continue

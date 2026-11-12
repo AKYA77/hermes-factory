@@ -1,3 +1,14 @@
+## Unreleased
+
+### Fixed
+
+- The Rust execution engine now reproduces partial fills against a finite eligible
+  book, including the reference's partial-entry bracket cancellation and safety
+  close, repeated timeout re-submission, size-increment rounding before and after
+  the book cap, and quantity-weighted multi-fill exit prices. Order states and
+  exit reasons are emitted. Verified exact on 240/240 finite-book fixtures,
+  800/800 unbounded fixtures and 30/30 genuine acquired partitions.
+
 # Development log
 
 ## 0.1.0.dev0 — unreleased

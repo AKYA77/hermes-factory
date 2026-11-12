@@ -136,9 +136,9 @@ and `docs/inventory-2026-11-12.md`.
 
 | ID | Requirement | Current evidence / remaining work |
 |---|---|---|
-| R01 | RaptorBT-based Rust execution engine | NOT_TESTED — no Rust execution subsystem exists at the directive commit; matching is Nautilus-owned |
-| R02 | NautilusTrader migration parity | NOT_TESTED — NautilusTrader 1.231.0 remains the matching engine in 27 files; no parity report exists |
-| R03 | Pessimistic cost semantics preserved | NOT_TESTED in Rust — Python semantics implemented and tested; exact 2-pip floor plus separate 2-pip slippage must be reproduced and verified |
+| R01 | RaptorBT-based Rust execution engine | NOT_TESTED — `rust/raptor-engine` exists and reproduces the reference exactly (240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions); the gate is not claimed passed |
+| R02 | NautilusTrader migration parity | NOT_TESTED — `docs/milestone-raptor-migration-parity-2026-11-12.md` records 12 root-caused defects, all fixed; verified broker profiles and genuine-period restart/batch evidence still missing |
+| R03 | Pessimistic cost semantics preserved | NOT_TESTED in Rust — the exact 2-pip spread floor plus separate 2-pip adverse slippage is reproduced and verified exactly on every corpus measured |
 | R04 | TickFirstHitIndex exact equivalence | NOT_TESTED — no first-crossing index exists |
 | R05 | Dynamic M1–D1 signal selection | NOT_TESTED — shared closed-bar operators exist; per-strategy smallest-timeframe selection is not implemented |
 | R06 | One accurate testing pipeline | NOT_TESTED — an approximate screen cohort path still exists and must be demoted to a non-pruning screen |

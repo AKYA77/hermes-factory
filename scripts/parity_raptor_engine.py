@@ -20,7 +20,65 @@ from pathlib import Path
 from factory.contracts import Signal, StrategySpec
 from factory.data import Quote
 from factory.instruments import synthetic_profile
+from factory.simulation.nautilus import AdverseFillModel
 from factory.simulation.runner import replay
+from nautilus_trader.model.book import OrderBook
+from nautilus_trader.model.data import BookOrder
+from nautilus_trader.model.enums import BookType, OrderSide, OrderType
+
+
+class FiniteEligibleBook(AdverseFillModel):
+    """Mirrors the reference test's finite eligible book.
+
+    For the configured order type (and, for MARKET, the configured side) the
+    simulated book only supplies half the order quantity, so the order fills
+    partially and its remainder is cancelled. Other orders keep the reference
+    adverse fill model, including its conservative slippage.
+    """
+
+    def __init__(self, profile, limited_type, entry_side=None):
+        super().__init__(profile, True)
+        self.limited_type = limited_type
+        self.entry_side = entry_side
+
+    def get_orderbook_for_fill_simulation(self, instrument, order, best_bid, best_ask):
+        if order.order_type != self.limited_type or (
+            order.order_type == OrderType.MARKET and order.side != self.entry_side
+        ):
+            return super().get_orderbook_for_fill_simulation(
+                instrument, order, best_bid, best_ask
+            )
+        book = OrderBook(instrument.id, BookType.L2_MBP)
+        quantity = instrument.make_qty(order.quantity.as_decimal() / 2)
+        slip = 2 * self.profile.pip_size
+        book.add(
+            BookOrder(
+                OrderSide.BUY, instrument.make_price(best_bid.as_decimal() - slip), quantity, 1
+            ),
+            0,
+            0,
+        )
+        book.add(
+            BookOrder(
+                OrderSide.SELL, instrument.make_price(best_ask.as_decimal() + slip), quantity, 2
+            ),
+            0,
+            0,
+        )
+        self.trace.append(
+            {
+                "order_id": str(order.client_order_id),
+                "order_type": str(order.order_type),
+                "side": str(order.side),
+                "bid": str(best_bid),
+                "ask": str(best_ask),
+                "slippage": str(slip),
+                "quantity": str(quantity),
+                "model": "finite-eligible-book/v1",
+            }
+        )
+        return book
+
 
 ROOT = Path(__file__).resolve().parents[1]
 BINARY = ROOT / "rust/raptor-engine/target/release/raptor-engine"
@@ -41,13 +99,16 @@ def fraction_parts(value):
 
 
 def normalize_order_states(order_states):
-    """Role -> terminal, sorted, independent of generated order ids."""
-    out = [
-        {"role": state["role"], "terminal": state.get("terminal")}
-        for state in order_states.values()
-    ]
-    out.sort(key=lambda item: item["role"])
-    return out
+    """Role -> terminal (last submission of a role wins), sorted, id-independent.
+
+    The reference issues a fresh order each time a timeout exit is re-submitted,
+    so the same role can appear several times; the engine models one logical
+    order per role, so the last state is the one that matters.
+    """
+    merged = {}
+    for state in order_states.values():
+        merged[state["role"]] = state.get("terminal")
+    return [{"role": role, "terminal": merged[role]} for role in sorted(merged)]
 
 
 def normalize_python(result, scale):
@@ -81,6 +142,7 @@ def normalize_python(result, scale):
                 "target_int": int(D(t["target"]) * scale),
                 "flags": t["flags"],
                 "exit_reason": t["exit_reason"],
+                "exit_reasons": t["exit_reasons"],
                 "order_states": normalize_order_states(t.get("order_states") or {}),
                 "pnl_num": int(exact.get("numerator", 0)),
                 "pnl_den": int(exact.get("denominator", 1)),
@@ -106,6 +168,7 @@ def normalize_python(result, scale):
             "target_int": int(D(ot["target"]) * scale),
             "flags": ot["flags"],
             "exit_reason": None,
+            "exit_reasons": [],
             "order_states": normalize_order_states(ot.get("order_states") or {}),
             "pnl_num": int(exact.get("numerator", 0)),
             "pnl_den": int(exact.get("denominator", 1)),
@@ -124,7 +187,7 @@ def normalize_python(result, scale):
     }
 
 
-def build_request(profile, spec, quotes, signals, conservative):
+def build_request(profile, spec, quotes, signals, conservative, partial=None):
     return {
         "profile": {
             "instrument": profile.instrument,
@@ -145,6 +208,7 @@ def build_request(profile, spec, quotes, signals, conservative):
             "target_rr": spec.target_rr,
             "max_hold_seconds": spec.max_hold_seconds,
             "direction": spec.direction,
+            "partial": partial,
         },
         "conservative": conservative,
         "quotes": [
@@ -229,7 +293,21 @@ def generate_case(rng, instrument):
         # available_at strictly before a quote timestamp so it becomes eligible
         signals.append({"available_at": start + idx * step, "side": side})
     signals.sort(key=lambda s: s["available_at"])
-    return profile, spec, quotes, signals
+
+    # Optionally inject a finite eligible book so orders fill partially.
+    partial = None
+    fill_model = None
+    if rng.random() < 0.35:
+        if rng.random() < 0.5:
+            limited_side = rng.choice(["BUY", "SELL"])
+            partial = {"order_type": "MARKET", "side": limited_side, "divisor": 2}
+            fill_model = FiniteEligibleBook(
+                profile, OrderType.MARKET, OrderSide.BUY if limited_side == "BUY" else OrderSide.SELL
+            )
+        else:
+            partial = {"order_type": "STOP_MARKET", "side": None, "divisor": 2}
+            fill_model = FiniteEligibleBook(profile, OrderType.STOP_MARKET)
+    return profile, spec, quotes, signals, partial, fill_model
 
 
 def main():
@@ -248,16 +326,16 @@ def main():
     failures = []
     for case in range(args.cases):
         instrument = args.instrument if args.instrument != "all" else rng.choice(INSTRUMENTS)
-        profile, spec, quotes, signals = generate_case(rng, instrument)
+        profile, spec, quotes, signals, partial, fill_model = generate_case(rng, instrument)
         scale = profile.price_scale
         conservative = True
         try:
-            py_raw = replay(quotes, profile, spec, signals, conservative)
+            py_raw = replay(quotes, profile, spec, signals, conservative, fill_model=fill_model)
         except Exception as exc:  # reference rejected the stream
             print(f"case {case}: python rejected: {exc}")
             continue
         py = normalize_python(py_raw, scale)
-        request = build_request(profile, spec, quotes, signals, conservative)
+        request = build_request(profile, spec, quotes, signals, conservative, partial)
         try:
             rs = run_rust(request)
         except Exception as exc:

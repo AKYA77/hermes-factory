@@ -102,7 +102,8 @@
     "Phase 1 pushed and CI-verified at 62182c21bf58901deb3de1b22536a02fed98dd3a: audit, dashboard, python and the new rust context all pass; the rust job ran cargo test (2 passed) and scripts/parity_raptor_engine.py (200/200).",
     "R02 migration parity report: NautilusTrader 1.231.0 goldens frozen over a fixed 240-case corpus and reproduced exactly by the Rust engine (240/240); docs/milestone-raptor-migration-parity-2026-11-12.md records the discrepancy report and the remaining migration-gate gaps.",
     "Frozen-golden migration evidence pushed and CI-verified at 4b119feb0a2490ea35f4fd98ee1469b9f7319561: audit, dashboard, python and rust all pass.",
-    "Rust engine order-state machine: ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions, verified by the parity harness (240/240, 800/800, 30/30 genuine partitions) and the refrozen goldens (240/240)."
+    "Rust engine order-state machine: ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions, verified by the parity harness (240/240, 800/800, 30/30 genuine partitions) and the refrozen goldens (240/240).",
+    "Rust engine partial fills against a finite eligible book: size-increment rounding before and after the book cap (Python round(binary64, precision) semantics), partial-entry bracket cancellation with safety close, repeated timeout re-submission, cancelled protection no longer triggering, quantity-weighted multi-fill exit price. Verified exact 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {

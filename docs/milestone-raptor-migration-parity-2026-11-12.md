@@ -18,7 +18,7 @@ output over a fixed deterministic corpus.
 | fill model | `adverse-fill/v4` |
 | corpus | 240 cases, seed 20261112, all eight instruments |
 | rejected cases | 0 |
-| artifact sha256 | `86f069fb5aa9c5501587b2cfcd73783ed1f8cac6096f361a6c4accc60dee23ee` |
+| artifact sha256 | `29e0f43417d71c6921df38cc333da989cae784f39a318715bcf8b791489fad0a` |
 
 Each case records the sha256 of the exact normalized result: fills, trades,
 open trade, skips and quote count, with prices in integer tick units, sizes and
@@ -33,6 +33,7 @@ P&L as exact rationals. Regenerate with
 | Frozen goldens reproduced by the Rust engine | **240 / 240** |
 | Generated fixtures, direct comparison (seed 20261112) | **240 / 240 exact** |
 | Generated fixtures (seed 777) | **800 / 800 exact** |
+| Generated fixtures with a finite eligible book | **240 / 240 exact** (≈35% of cases inject a half-depth book) |
 | Genuine acquired catalog partitions (`Catalog.read`) | **30 / 30 exact** |
 | Rust unit tests | 2 passed |
 | Full Python suite | 709 passed, 0 failed (1375 s) |
@@ -56,6 +57,11 @@ remains open.
 | 5 | Same-quote re-entries dropped | Signals were skipped on a quote where a position closed | Reordered to matching phase → deadline close → signal loop |
 | 6 | JPY/CHF/CAD conversion rates ~10^5 too small | `conversion_rate` divided by the raw integer price instead of the decimal price | Divide by the scaled decimal price |
 | 7 | Order-state metadata absent from the Rust engine | The engine tracked fills but not the order state machine | Added ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions; verified by extending the parity harness and refreezing the goldens |
+| 8 | Partial fills unmodelled | The engine assumed unbounded L1 depth | Added a finite eligible book: the order quantity is rounded to the size increment, capped, and rounded again; a shortfall cancels the remainder |
+| 9 | Partial entry left the protection live | Cancelling the parent must cancel the attached bracket | A partial entry cancels the entry remainder and both protection orders, raises PROTECTION_LOST and forces a safety close |
+| 10 | Cancelled protection could still fill | The matching phase tested prices without checking order state | Protection now only triggers while its order is still resting |
+| 11 | Timeout exit always closed the position | The deadline path ignored the fill cap | A short timeout exit cancels its remainder and the position stays open; a later quote re-submits the exit |
+| 12 | Exit price was the last fill | The reference aggregates a multi-fill exit into a quantity-weighted average | The engine now reports the weighted average, and no exit price at all for a position that never closed |
 
 Two further reference behaviours were recovered empirically and are now
 reproduced: orders submitted in the strategy callback fill synchronously
@@ -68,6 +74,36 @@ The Rust engine is a single deterministic pass with no randomness, no clock and
 no batching; identical input bytes produce identical output bytes. The
 reference's batch-size independence is already covered by the existing suite
 (T31: full results equal at batches 1/2/3/8192 versus materialized delivery).
+
+## 4a. Partial fills against a finite eligible book
+
+The production fill model supplies unbounded L1 depth, so partial fills only
+arise when the caller injects a finite book. The parity harness mirrors the
+reference's `FiniteEligibleBook`: for a configured order type (and, for MARKET,
+a configured side) the simulated book carries half the order quantity, so the
+order fills short and its remainder is cancelled.
+
+Reproducing this required five reference behaviours that the unbounded model
+never exposes:
+
+- The order quantity is rounded to the instrument's size increment *before* the
+  book cap is applied, and the capped quantity is rounded again. The reference
+  rounds with Python's `round(binary64, precision)` — banker's rounding on the
+  binary64 value — not decimal half-even; the engine reproduces that exactly.
+- A short entry fill cancels the entry remainder, and cancelling the parent
+  cancels the attached protection. The position stays open with the partial
+  size and is closed by a `SAFETY_CLOSE` market exit at a later quote.
+- A short protection or timeout exit cancels only its remainder; the position
+  stays open and a later quote re-submits the exit, so a persistently thin book
+  shrinks the position geometrically instead of closing it.
+- Cancelled protection must not trigger: the matching phase now consults order
+  state, not just price.
+- A trade closed by several exit fills reports the quantity-weighted average
+  exit price and the last exit's timestamp/quote index; a position that never
+  closed reports no exit price at all.
+
+Verified exact on the 240-case corpus (seed 20261112), of which roughly 35%
+inject a finite book, and on the 800-case corpus (seed 777).
 
 ## 5. Remaining gaps before NautilusTrader may be removed
 
@@ -84,10 +120,11 @@ done; the rest are open.
    (ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions),
    verified by the parity harness and the frozen goldens.
 5. **Verify gaps, spreads, slippage, partial fills, timeout, Gold, JPY and
-   cross-currency cases** — gaps, spreads, slippage, timeout, Gold, JPY and
-   cross-currency are verified; **partial fills are not** (the production fill
-   model supplies unbounded L1 depth, so they only arise with a test-injected
-   finite book).
+   cross-currency cases** — done. Gaps, spreads, slippage, timeout, Gold, JPY and
+   cross-currency were already verified; partial fills are now reproduced
+   against a finite eligible book (§4a), including the reference's
+   partial-entry bracket cancellation, safety close, repeated timeout re-submission
+   and quantity-weighted multi-fill exit price.
 6. **Verify results across genuine historical periods** — 30 acquired
    partitions verified under *declared* source-measured profiles, not verified
    broker profiles.
@@ -102,7 +139,6 @@ done; the rest are open.
 
 The Rust engine is a faithful reproduction of the reference execution semantics
 on every workload measured, with no open discrepancies. The migration gate is
-not satisfied: order-state emission, partial fills, verified broker profiles,
-genuine-period restart/batch evidence and an explicit NautilusTrader removal
-remain. NautilusTrader therefore stays in the dependency set and remains the
-reference.
+not satisfied: verified broker profiles, genuine-period restart/batch evidence
+and an explicit NautilusTrader removal remain. NautilusTrader therefore stays in
+the dependency set and remains the reference.

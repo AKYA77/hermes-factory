@@ -3057,10 +3057,10 @@
         "scripts/freeze_nautilus_goldens.py",
         "scripts/verify_raptor_goldens.py"
       ],
-      "next_required_action": "Implement and verify partial fills against a finite eligible book, then re-verify against verified broker profiles and record restart/batch evidence before removing NautilusTrader.",
+      "next_required_action": "Re-verify against verified broker profiles and record restart/batch evidence before removing NautilusTrader.",
       "requirement_id": "R02",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240), now including the order state machine. Direct parity passes 240/240 and 800/800 on generated fixtures and 30/30 on genuine acquired partitions. Seven discrepancies were root-caused and fixed; none remains open. Open before removal: partial fills, verified broker profiles, genuine-period restart/batch evidence. NautilusTrader remains installed.",
+      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240), including order states and partial fills. Direct parity: 240/240 with a finite eligible book (seed 20261112), 800/800 unbounded (seed 777), 30/30 genuine acquired partitions. Twelve discrepancies root-caused and fixed; none open. Open before removal: verified broker profiles, genuine-period restart/batch evidence. NautilusTrader remains installed.",
       "title": "NautilusTrader migration parity",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
@@ -3210,10 +3210,10 @@
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [],
-      "next_required_action": "Not started: the Rust toolchain was installed 2026-11-12 and no crate exists.",
+      "next_required_action": "Run the target-envelope benchmark (4 vCPU / 8 GiB enforced limits) and pin the toolchain to the verified envelope before claiming R12.",
       "requirement_id": "R12",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Not started: the Rust toolchain was installed 2026-11-12 and no crate exists.",
+      "supporting_evidence_scope": "rustc 1.100.0 / cargo 1.100.0 installed 2026-11-12; rust/raptor-engine builds with a committed Cargo.lock and rust-toolchain.toml, and the CI rust job runs cargo test --release --locked plus parity_raptor_engine.py. Not yet claimed passed: the toolchain is not yet pinned to the target envelope and no target-envelope benchmark has been run.",
       "title": "Rust build reproducibility",
       "verification_command": ".venv/bin/pytest tests/parity"
     }
