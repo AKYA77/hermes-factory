@@ -18,7 +18,7 @@ output over a fixed deterministic corpus.
 | fill model | `adverse-fill/v4` |
 | corpus | 240 cases, seed 20261112, all eight instruments |
 | rejected cases | 0 |
-| artifact sha256 | `5bc9a4bed123b347633b1440…` (full value in the artifact) |
+| artifact sha256 | `86f069fb5aa9c5501587b2cfcd73783ed1f8cac6096f361a6c4accc60dee23ee` |
 
 Each case records the sha256 of the exact normalized result: fills, trades,
 open trade, skips and quote count, with prices in integer tick units, sizes and
@@ -55,6 +55,7 @@ remains open.
 | 4 | Second and later positions sized on initial equity | Equity was never updated after a closed trade | Track and round equity after every fill |
 | 5 | Same-quote re-entries dropped | Signals were skipped on a quote where a position closed | Reordered to matching phase → deadline close → signal loop |
 | 6 | JPY/CHF/CAD conversion rates ~10^5 too small | `conversion_rate` divided by the raw integer price instead of the decimal price | Divide by the scaled decimal price |
+| 7 | Order-state metadata absent from the Rust engine | The engine tracked fills but not the order state machine | Added ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions; verified by extending the parity harness and refreezing the goldens |
 
 Two further reference behaviours were recovered empirically and are now
 reproduced: orders submitted in the strategy callback fill synchronously
@@ -79,8 +80,9 @@ done; the rest are open.
 3. ~~Reproduce supported orders and fills in the Rust engine.~~ Done for the
    production fill model (§2).
 4. **Verify prices, quantities, timestamps, order states and P&L** — done for
-   the production path; order-state metadata (`order_states`) is not yet emitted
-   by the Rust engine.
+   the production path; the Rust engine now emits the order state machine
+   (ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions),
+   verified by the parity harness and the frozen goldens.
 5. **Verify gaps, spreads, slippage, partial fills, timeout, Gold, JPY and
    cross-currency cases** — gaps, spreads, slippage, timeout, Gold, JPY and
    cross-currency are verified; **partial fills are not** (the production fill

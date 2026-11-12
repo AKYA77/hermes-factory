@@ -31,6 +31,7 @@ counts and open trades.
 | 240 cases, all 8 instruments, seed 20261112 | **240 / 240 exact** | — |
 | 800 cases, all 8 instruments, seed 777 | **800 / 800 exact** | 29 s |
 | 30 genuine acquired catalog partitions | **30 / 30 exact** | 29 s |
+| Frozen Nautilus goldens incl. order states | **240 / 240** | — |
 
 The last row reads real published partitions through the production catalog
 API (`Catalog.read`) over a bounded quote window, using the project's

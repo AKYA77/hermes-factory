@@ -1,5 +1,5 @@
 {
-  "artifact_sha256": "5bc9a4bed123b347633b144005f2f452fe2337dd83e17b7b8b61bf1dab62c777",
+  "artifact_sha256": "86f069fb5aa9c5501587b2cfcd73783ed1f8cac6096f361a6c4accc60dee23ee",
   "cases": [
     {
       "case": 0,
@@ -20,7 +20,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 16,
-      "result_sha256": "6cdff2fc466343549324591101f0d20daf56ca88076354af3b0b065bd1d9270d",
+      "result_sha256": "6a3da5d60f527a55e111af10a17c55bd593bc8c0d6a32b655ac089fa1415e0ed",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 2
@@ -44,7 +44,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 3600,
       "quote_count": 8,
-      "result_sha256": "ff5ddd4d8abf700eaf9e3a2eac2a57062d0dd1fe41479661c0fc83917df99473",
+      "result_sha256": "9769aeebf13ccf51ee3a9e98b092cd9b3a6f99c23e614c62b00435c609065502",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -56,7 +56,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 24,
-      "result_sha256": "86426bb43a949a9e8f710421135c437ca81205c22f40eeb74ec0ddccbdcb3ca4",
+      "result_sha256": "44940770df9f26f816908c8c5a0d2fa36f13d87b093f8d5d2de6e158302efc91",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 0
@@ -68,7 +68,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 7,
-      "result_sha256": "d8a2b82d1b02cd944b15e76c27e0cd8af888589635f4461d93922a6041147824",
+      "result_sha256": "41e6ce7d3c26529e68877ce2217dc1a87e41cd08957b414eb2bc0c3f12ddb0f0",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -92,7 +92,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 43200,
       "quote_count": 24,
-      "result_sha256": "5cf11b7a8fb20a74730d276a5fd1e9e8fccd88020e306d52778050633e81077c",
+      "result_sha256": "bd84111a65bdeb26ead90c860c20a1aed693e2556a14423e8b3b9c95683bc7be",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -104,7 +104,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 5,
-      "result_sha256": "f7847e32bc7bda403c792c9b22f4607fd34df223b94355ffc0576a40684ef1cb",
+      "result_sha256": "f5521f186355d081ad44711bb422581461a08a47e40e0d6e54970c4bf6277729",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -140,7 +140,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 6,
-      "result_sha256": "9c3f8c738b6bfb7ed735964917eef9d56a448f187771b2c78ee022daaf8c2a35",
+      "result_sha256": "23a98422c40f236532dad6a6ab1575168b0cceceea0c08729283f30d67f0fc8f",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 3
@@ -152,7 +152,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 3600,
       "quote_count": 20,
-      "result_sha256": "56fa26014be45fa9e38fc8be4d80d76c180a6f416a544e24f2517f58980b6d64",
+      "result_sha256": "d7b9a1584d3eb5ac63443334157af958565b237e957bb958c222af3dbdf66243",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 2
@@ -164,7 +164,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 18,
-      "result_sha256": "ff7ff6e7aabec3a79b4d6b6b547fb10c6d97e8b60054d9a34f19acbc53d88daf",
+      "result_sha256": "f986fd3e1fcf90a72ac1626eff7885084e20f7a5a6a950579eac48ebe94af886",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -176,7 +176,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 3600,
       "quote_count": 12,
-      "result_sha256": "15fa2ce09ff8ed799b9de0f9f4ede4b12157e9ca6df167c7455f6cec2ffce4f5",
+      "result_sha256": "eb454b67cff35181dd7ef3888968ea163d38088840e2d92096580330710f48d3",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -212,7 +212,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 6,
-      "result_sha256": "c43dcb17b10d014f590c4566efece22b3931b39cf9b2b15f2aaae0416cdfe685",
+      "result_sha256": "611637abf54ef19c4b393f447f9c792278e4f84333020434078124b56fb9b39c",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 0
@@ -236,7 +236,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 15,
-      "result_sha256": "b061098545c1dfe7059fb6e62e50452ae484663989a27b67db14c451ff96e858",
+      "result_sha256": "f44ba2a4a2152886d00a5686c51a0b7e5cb9ef146f676295965efedd44499841",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 0
@@ -248,7 +248,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 12,
-      "result_sha256": "5bdd8c01a9966c9463e4fbff2c7b32013468ba3d4a42b7ccfcfc36c90bccc55a",
+      "result_sha256": "407792cd6f836369d987b7751f38764ee6695584d7b578e86e8e8a1528b8347e",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 1
@@ -260,7 +260,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 18,
-      "result_sha256": "93fe816a91738105425f7dd3a904d59c999c66b56a10d058f6b26a4a5c11e22f",
+      "result_sha256": "1bbb1b012ee668904979c34e23f7c50818813be5c9f3d1ec27353698eedb7495",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -272,7 +272,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 3600,
       "quote_count": 8,
-      "result_sha256": "69afb033f54e99c6f5fcd6beb71ac72d3ea5bdc97d3be7d18345b2f2fbc19fd0",
+      "result_sha256": "b197f873895cd5e2d682808e13fcb1bf780be6540fb3917668c46527847f8618",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 2
@@ -284,7 +284,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 3600,
       "quote_count": 19,
-      "result_sha256": "7e8336217b3400b56bcbab2677278909f9427e906497003bb416a6aea9255322",
+      "result_sha256": "15d90aa91ee764af6008e7e1c9c16780870c4c5513093f800b17b0fe27be9c74",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 1
@@ -308,7 +308,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 6,
-      "result_sha256": "0822018ef783389d970a89bf34cc45a28d33903a63315f6393aecbeb93cad82b",
+      "result_sha256": "8efbd956285d6c5f37b7906ffd855775e4e7d68c54c091a7aaa0784a40d50045",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -320,7 +320,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 11,
-      "result_sha256": "79ee48362fd34ca049481e78f6df307658bc258c61e16e580f34bd4e047ac16b",
+      "result_sha256": "53a25b718216ecd784467f459873b2e6ad4c2f883dbdcfb6b66eaad858127c0f",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 0
@@ -332,7 +332,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 23,
-      "result_sha256": "f0a2acb1e3db1e0fc7bedee2934df57fddf16bd831efe10ec6616796663de2f3",
+      "result_sha256": "1cbfa454270c84d7fae8654d8839b9122944965b5268dae00715462ddaff2fcb",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -356,7 +356,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 10,
-      "result_sha256": "caeeccbf06fae1a27bcb590e5ab6d96d2af93e1d89da2cee9f999772c133d6a2",
+      "result_sha256": "3d51041b4f5809e322c243821562ba4c6c0d3e43a9e92e380dfb5255214df694",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 2
@@ -392,7 +392,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 18,
-      "result_sha256": "93ad0d0d08528b5a0a317699a69e028f9360405e98bb3365be78889add2c5f4d",
+      "result_sha256": "c63d4f692bd7572e484e1b4d587d90f5fa0eb032f947f4f3cd0f0c5bdc73da5a",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 0
@@ -404,7 +404,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 11,
-      "result_sha256": "b0a32b8fe2579f71ac6dcc645a1a22c917775ea1ef4aa5b20393dff211d41b26",
+      "result_sha256": "b27620196c0f051d3f2f5cf114abae83401e1181af4a4beefa289cea990bd09a",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -416,7 +416,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 24,
-      "result_sha256": "b29e3ade9cdba01868a343b3feb502342ebb6c574ff9ef6eddb2c209c0b36dbe",
+      "result_sha256": "e157e2cc392c0387c15f69f0b77c61fd2719e727a680016f2ca2ce24a7a54e41",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 0
@@ -428,7 +428,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 18,
-      "result_sha256": "0ef735719cd9eb4d411f32f873cc541cf5b69214eb25315ddce7085a1aa66fd4",
+      "result_sha256": "93ab8d28d792beac8645dd29a5006b92b25fac4a35a5d5f84afba53163b65b0d",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -452,7 +452,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 18,
-      "result_sha256": "39eb16952fffed43bdacc1e19ad8eafbcce4f85e5c2c6a54dca9250b68171d05",
+      "result_sha256": "276793d5e0b149177ed24a3ab72496f3e9626aeb5e22b939a0eb44b0c673bca7",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -488,7 +488,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 24,
-      "result_sha256": "cee62a9c8d79d3b12533341fcd0c4b2e18544f881e05df94f274e8b4287bcc50",
+      "result_sha256": "60cdd0a6b345efa3a4d4e98ce5da63ae483da36682fdb6320cf5e4fcaf043403",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -512,7 +512,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 43200,
       "quote_count": 7,
-      "result_sha256": "54618effc55a06dbf8f236b4d3955161eb2a2071f768d334109739f8fa6e46fa",
+      "result_sha256": "d7965281448518a65b579f427ad34f7f37e3000b464e0845f9ea917ecfb91915",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -524,7 +524,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 4,
-      "result_sha256": "cb99b3db1e8075c05931d3664ac429d9c427ea57cd1b2ff1a88705c8ad97baed",
+      "result_sha256": "5534408280c9b7931bdccf82aee5af82b8dd0961d31c9cc1718db5a91d911094",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -536,7 +536,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 23,
-      "result_sha256": "b3106ac5297d73a8ae1fa1fef7ca3ab4c82fd9640788152ecca103ea19ff59a5",
+      "result_sha256": "fd2eb4f358640ff9c14ad4f9a400dfaae4db261733ecf31ec6eebac910e879c4",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -548,7 +548,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 5,
-      "result_sha256": "40a1c7df0342d56496d499789f1bc2264161c9c03113ffc6d0971aae932d8fc5",
+      "result_sha256": "f5c73bb8b4b42878b6aebc4d5ee25a427f1a98b8dedd4ca0a7aafb3b930eab08",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -560,7 +560,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 17,
-      "result_sha256": "fcfcdd626e0018d08300c154943d4112a519e5b2d8dbc7335b18c2384c413312",
+      "result_sha256": "a822762b8750f8c33fc9fbfafcaa10a3c609442eaf821d44d3a3832d21f71836",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -572,7 +572,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 13,
-      "result_sha256": "ab98cf25d4921e3c2d51cd534e3d8a7e0b36ed9718f8c15305c2b367674c6440",
+      "result_sha256": "fcb335b1f94c79ff60466d9b18c9412894b0b4dd635933f6221cd9fd9084820d",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -584,7 +584,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 43200,
       "quote_count": 8,
-      "result_sha256": "c6f8a59afffe5efa8a51cbe9e8140dd636be7042398499107e6eb0161c6edbaf",
+      "result_sha256": "bc547010ec4c67617d30eede9422f19f72906353bebf6d077ebfaf428b4e415f",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 0
@@ -596,7 +596,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 17,
-      "result_sha256": "6e85dfec2c555fe2d72c5375180408dc13c1b58a6d599afedc10697375b61394",
+      "result_sha256": "d89437dc67233b9491d277abae5bcc059e85bfbf4a9a6e22a05edcb7737dd130",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -620,7 +620,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 13,
-      "result_sha256": "db3d782d8fe4af99ca74c5fe42de54b35a4638f530dbe81b03d78e1217d90480",
+      "result_sha256": "bab1241c110f92bf6be94c9f05a7866a1606ff5d22923277c2d1f93dd0a60fd2",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 2
@@ -632,7 +632,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 43200,
       "quote_count": 18,
-      "result_sha256": "b140c710c0524560946e2d3c069d8503216d8000213904d565dc80ca987884c7",
+      "result_sha256": "7197aa8b5243db770fab58a56ff91fc258093c56d8bd820bed7254cdb265c97b",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -644,7 +644,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 5,
-      "result_sha256": "9c34e93b436809f82902fe68742ea98957e285075f480a57bb101b8f258643d9",
+      "result_sha256": "dbee14e250d65d99e977ad2ca3141f2365c574dbd1a0dd26c00993b77d61952c",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -680,7 +680,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 24,
-      "result_sha256": "e96bcc2867a5010fc72720cd01548603d8f8a67bcdcf8ce5ce07efb57d054b04",
+      "result_sha256": "252f3d5ed00dd9a98cdb7fafc2c72b6fb46bc8437e598bfd8f588e5630d58f0c",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 2
@@ -692,7 +692,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 23,
-      "result_sha256": "580514bef2c11382c62df03d20c8d4e0e3fa0d4b1ce09d7d86472009b344fa5c",
+      "result_sha256": "602da61c1d1972fb19f1c1688478b00ca9e8d0b24ccc4cf1238d192fd8546a45",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -716,7 +716,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 15,
-      "result_sha256": "d3eb1edef547cd1b947d3b4fddf8088797cf85a4859bfb011e48e96b8b75835c",
+      "result_sha256": "241e57b335f1cc31130f48bd5566c7ef6014f94a2c80f6fe4b5bf6025c831182",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -728,7 +728,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 18,
-      "result_sha256": "da6421296aeab18dd6fdbbc47c83ae06a23cd213811f4e458eb7f02854412c64",
+      "result_sha256": "372319337f579a4b1337b8ea373ebcd808020604c8bd58c902aba93aa03a82ea",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 2
@@ -740,7 +740,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 9,
-      "result_sha256": "d2282899a25e7770d6b41375a00c499807cffde0eca4ce78696b4169cd1969aa",
+      "result_sha256": "8618b63dc4d05ca287b3eb36e822717c45c3cd9e480e122d3fed978227e179ea",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -764,7 +764,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 10,
-      "result_sha256": "d6ed8c13ef7109c773dff9b8984a6d720c20681a3c855d36056e553f6154f698",
+      "result_sha256": "08e038dee84bad1253e11342e6f6272ddec79e436e8af697abef8c571bfd8349",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 1
@@ -788,7 +788,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 10,
-      "result_sha256": "7ec13f07821756fdd2091381c38d10c4164817486b036b02f5477defc8b658cf",
+      "result_sha256": "d2721f55be5929547b384dc8520147d650f7be9da21381b97c8a913973fd0fca",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -800,7 +800,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 24,
-      "result_sha256": "df0bc20a607c91613202cad330ef5c8f0eae9736139d715e7048c0adce2de975",
+      "result_sha256": "1ce5192ad892dab948dcd142e233aa65acc9f4d59dafd1af6489bc93501dbfde",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 3
@@ -812,7 +812,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 3600,
       "quote_count": 11,
-      "result_sha256": "20f86693e04780a9e84e86b0bf3728fcd01f5f6bee3152011daeeb10cb4b7c08",
+      "result_sha256": "07856e7c4cd2d02cb2437ee4795b8480642aca45491599b3500870d5be172f69",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -824,7 +824,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 16,
-      "result_sha256": "b9864d329e454f1d5bedf38d71c8d0287bb0c7019ba808d1e36db34146696879",
+      "result_sha256": "bca91b8fabd71cab48f7cc2dd96e198d84c68c2ba90932b81f1b7e787c858e59",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 0
@@ -836,7 +836,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 21,
-      "result_sha256": "81d1d75e043bd5ebbeae1508aa3b78226eb9453f8271bf4bb104ceedbb5de8ac",
+      "result_sha256": "b54f1010680a98affc3329b2ec6d5482b49938bb6085a3d18f4c4eb4ff0fd742",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 1
@@ -848,7 +848,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 21,
-      "result_sha256": "dfea4e6cd099640ff5b45529d059aeecdde2b8c419d7e44c2fec411cc76d4b9f",
+      "result_sha256": "b93c356f2480715d1255270ce980bbfa755da4bb4ebad29d28dac938b1594f62",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 3
@@ -860,7 +860,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 16,
-      "result_sha256": "5534e81a871f343830b56a69abcf0fe952e812f7e35eb5d5fd8ad2a40daa14a7",
+      "result_sha256": "cdf52f357b350d4546b1f39583e182dbba64ffb98fa85bb7cc26ec611a84f403",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -896,7 +896,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 43200,
       "quote_count": 23,
-      "result_sha256": "826d28b3a8e8f800e657c34905c9b1d7babe810dada5c43db5ced4700bbdcd75",
+      "result_sha256": "7ff8a8f66f5bcfcb576ae8700cc474c2ac780ce1fb8d5d89b624cbf75bddc10d",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 0
@@ -908,7 +908,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 9,
-      "result_sha256": "05e86aae97611d36a31598771588ec422bf743f826f22b814114e1319062b060",
+      "result_sha256": "5c347a8c45ceadb600a73192a00ce0256b6cc45ae12739df2b242ba262270860",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -920,7 +920,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 19,
-      "result_sha256": "b47ce2e6b524ea01c0b59dca58d8e0f15e34896a2764ddf9673ca257042a2799",
+      "result_sha256": "41a2984b6e2297f7bd5bd09a4b041a4c4344c10c2ef74c30aa04ac34a4975a19",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 0
@@ -932,7 +932,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 20,
-      "result_sha256": "6ba4795d575e41eb3f119651d5a0b9eed0f380b56f1c9a3706a5982c43199926",
+      "result_sha256": "3027c339476c99add88d50b13e22241c8d4d03f789568c34da3031108edb0e36",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 2
@@ -944,7 +944,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 3600,
       "quote_count": 11,
-      "result_sha256": "bb9340438b64596a5c44e58747f870af730d30d522878450bb4eca4bd1cca694",
+      "result_sha256": "6629705cd383446a263a2ec8b9cc2e9fc0aa2e1c60e53a58cd4a47b79d49d7d7",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 3
@@ -956,7 +956,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 8,
-      "result_sha256": "d3329b69d01309b495b1a0092ee048c56d9be1810fc11e298bbc44e61e66245b",
+      "result_sha256": "a912fd84ca6c960057ed5fa327b798ce27b0b35472b2d2322cc9b3abf1ad1f8d",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 2
@@ -968,7 +968,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 16,
-      "result_sha256": "240b6b34f1507e6fdb3f3ef8f6b3a645f05fe325f49bb27c76bcf37e59a41708",
+      "result_sha256": "7bbd47e1935fbd68bd1faa68d31a0e0284545d5f69385984deeec55f065882af",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -980,7 +980,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 20,
-      "result_sha256": "6408f65b7ef32c2767f514446748cf72139c6fc1a2adb520a15847d68ea941d1",
+      "result_sha256": "2576d297348310aaee21850858a9a36be36d01d808ee1adab387ae09053a9b94",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1016,7 +1016,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 21,
-      "result_sha256": "03338c30a552a966b8d37c1f052e236c8ed4f339ae233049b572a60bb8f3cea5",
+      "result_sha256": "f0486fce438c62322c6cfdbe3187d8128871ca32c470c8b99e29a90c17edafb9",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1028,7 +1028,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 43200,
       "quote_count": 7,
-      "result_sha256": "4ff9ffc2bc057101df883221c6e701236802bfc4c800c4af98ecb3cc13c104a0",
+      "result_sha256": "e74153cbdff91df85718d78e9aa7f09926d670481a860f0f5d126c89573a41df",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1052,7 +1052,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 43200,
       "quote_count": 18,
-      "result_sha256": "f271a3de378618170a1cd5c2a42ff1d858ecd6ef99c9f6ec8df160b591b72e49",
+      "result_sha256": "cd1609415be54fd2514b0dec74f137c3293de7b5d475f13eafe98da401fe773f",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1064,7 +1064,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 43200,
       "quote_count": 18,
-      "result_sha256": "8efab43c8f0e9d3619ecb5728fac726d56c920fffa6d4e055dd478591f314a3c",
+      "result_sha256": "baf52874a1701502c2a99280b9d459f7178023e6ef11e2919d6c7480e0ecc224",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1088,7 +1088,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 3600,
       "quote_count": 7,
-      "result_sha256": "07add653d5a8ad505dce764b65206277956b9cb684dcb8629baa7fe78e89fdec",
+      "result_sha256": "c5bc4f1dd5af88023df05f2f5f4ead978090b1c253a29bb98af06a3052a19e0f",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1136,7 +1136,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 17,
-      "result_sha256": "cb2048529348a79132a2790c026a3ac2cd08d3e7483d06012c7a7eb35d770ea3",
+      "result_sha256": "123c32015a9f34c4f1a2725ef4e9051727e0042c3a42d9fe5855303fbb717a79",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1148,7 +1148,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 19,
-      "result_sha256": "29cfe7344a1ddea6be37195ed69b2a85af4ff6b27b873f77f97416041c117cdc",
+      "result_sha256": "67b44851569ad17da336c48f22d75803ed60c82028eb7867e3bd742bacb2f9ac",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 2
@@ -1172,7 +1172,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 19,
-      "result_sha256": "91fd30e4bc9232c33f5af904d6be611fc3971d7a7fa21c04f1f1958996a9709e",
+      "result_sha256": "57949d5eff1cfd2a929602fca8db817edda7827f07ef02ca00c03dba8d54d279",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1196,7 +1196,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 10,
-      "result_sha256": "f6b5c91615f4c336473715b06ad3bc4b84f4dc24532c2b6849a1c86057a7f347",
+      "result_sha256": "84763616bb11d3f0ad73332e605ed2a5b48cca1936f81a7bbefce4718843b55d",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1208,7 +1208,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 17,
-      "result_sha256": "de3f257650914b1ca75ef1ac5eae26ea0559299367f554a5ab33c883cd9062aa",
+      "result_sha256": "4ea90329a822fd56e373a734006f9412f4f3b563412232651c86a6e681cf7aca",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1220,7 +1220,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 14,
-      "result_sha256": "1cb40b59c08f80c06d03f43f5f7ec0a529ee4c6a511bc72eaca72b5fe924b279",
+      "result_sha256": "85f7c0ce9199fab239b1d60925f1bbd90a6513e2b7d04392c08982d1dc1ee267",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 2
@@ -1232,7 +1232,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 11,
-      "result_sha256": "c2b3e4326583b436f8cc7227cb2dff4e05dceb7d3b6ab55ebeba8480011a1922",
+      "result_sha256": "e5e7dec4a542f4ac3604e308cd952970701c1a204866382da356e70a977f58c6",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 0
@@ -1244,7 +1244,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 3600,
       "quote_count": 21,
-      "result_sha256": "9f319ea5df0cf0bea3a7b90dd8e3a4d04023425210e068b4652a3c5f15ef8669",
+      "result_sha256": "9c05b2108226a5731728c7b24023c3cb332618d4d9f36e1294f874608153dcb7",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1268,7 +1268,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 4,
-      "result_sha256": "0ba5ae9979c49b849a85d473005414abab123aac9907fa237abfe48d200110eb",
+      "result_sha256": "97d01b645cec074abab2600e1cd3798a23bac8ecc8f66e62139043d526ebf54a",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 0
@@ -1280,7 +1280,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 3600,
       "quote_count": 19,
-      "result_sha256": "58f09e6de557fbffb315794b8a2b5dc8e759b6d9a4a872e8e1aee80480f16e6f",
+      "result_sha256": "de027cfe604c497d10f601a7ee286d4adbfe7488b9066b03a976310e405df880",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1292,7 +1292,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 14,
-      "result_sha256": "915af5bfec246ed847f61e929aac2de7d59ec21399a08b0883cbd340964ce168",
+      "result_sha256": "e8191584478279b991cfea72a028ffc0cabdb1b944b09a3f2d573ae63d1c5fd0",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1316,7 +1316,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 5,
-      "result_sha256": "41c2677dd5dbe4680313a5c14e216124963431c0f26054724e22b110641bf891",
+      "result_sha256": "d2f96646f9a79cb371f03198b5a7cfa38544bf1298dda2f82d05c96a161a1b34",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 1
@@ -1328,7 +1328,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 13,
-      "result_sha256": "3153b9a92b7eccddb7f2f16791710931d43c2cfc4e721254b7b54109947dd99e",
+      "result_sha256": "5eec67a1b15bf1d878d2cfdac58b4f7f0a1755374cd9a84a1ea0c651e5f85cdc",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 2
@@ -1340,7 +1340,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 12,
-      "result_sha256": "e08ff3f8a7af373a7644d3c29fbc49f4b82be7ca59c57e0eb1d0004d3ab74fda",
+      "result_sha256": "15cc91c2e5811709c0cb6875b5e33985b9a6e1415eae77742b52fef2380356c1",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 2
@@ -1352,7 +1352,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 24,
-      "result_sha256": "5a2a7a69b40fc529f8e3d96e3147159894feb9f008d09d82c986850c113afd49",
+      "result_sha256": "6052a892fc7a32a1db5550374d4d6fd0ee134e45f4a9205559b0cc3abfde99b0",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1376,7 +1376,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 12,
-      "result_sha256": "bdf7970eae3586be1c8b8bc2183944516ead6a4f7ad76f4936bd601cafc15f2a",
+      "result_sha256": "02f4ab614443b2bef3730b9579945dae2af51f16358600f710337535eb0566b2",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1388,7 +1388,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 18,
-      "result_sha256": "08ed66cf0ed21b24cb429627faefb363a218d34e9c10b1c481b0ec4652d7d3ed",
+      "result_sha256": "fa0f2a9c960107f27e8a6698bf032e58e36c62401ccac13083289b4042537c04",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1412,7 +1412,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 15,
-      "result_sha256": "ced383e2d4f7ce9272e59449e3b483774a0c738eb6171eb9df4d6745ce68b02b",
+      "result_sha256": "a6984a5fb5632496f039eccac1e0d660c1e11180a09370e842c1b50e11265285",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1448,7 +1448,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 9,
-      "result_sha256": "11a64739173efd24546068c48a7cfb95bb954ae0e81e427900c118b6a5e959ac",
+      "result_sha256": "06c072b1954a32ae428b364bae08e73c8ba44fdfc7c5b807375c1c576485286e",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1460,7 +1460,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 15,
-      "result_sha256": "95a3a4c1801459952b23ac6219d2bc1798d8618c23dda4ec4303022dbc5c2d6b",
+      "result_sha256": "356897a86ba8ecbff0f2cc1575dc8f316748fc6b9bc2b0b21b6c987c222b441a",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1496,7 +1496,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 43200,
       "quote_count": 23,
-      "result_sha256": "65f03e51bca8057a515f630cdd78702a74d81c39035589931a3c113b89ba3c31",
+      "result_sha256": "249358c207f5a50dddc301db005b53400b5f0f6d59965ae667cac58888b0edd9",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1508,7 +1508,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 21,
-      "result_sha256": "4f3b1c25192d64074c8a0a58e73efee19b0feea22d571713770232b890b552b9",
+      "result_sha256": "7051643c7ed40d90f7cd76b2fc7601522ac3ce283c5ff5a2bb815242766edd50",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1520,7 +1520,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 21,
-      "result_sha256": "278db22344b2060d30ec32675287f0e7c311e3907bc5a359317ff0c27341d285",
+      "result_sha256": "0d2a5b508525998db37cc68df46923028faebb23ab99406512203519a6721b76",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 1
@@ -1532,7 +1532,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 15,
-      "result_sha256": "1ee42bf46a22a39ba4cc76ee0db961f22cb9a51c327602a07327a59088d63e7b",
+      "result_sha256": "15f3ebd24c6f6b76d89d08e8a0f8db20ecfae83eb8472bdb37f3cc55d01667a8",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1544,7 +1544,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 20,
-      "result_sha256": "69ffc6c4514ce44947e653505a4c5418a747c3c591efe54abe9d0fd2be5eb60d",
+      "result_sha256": "a2feb4a6557fa98bd52c201158fa8a3304bd68e590869d35e62077ead0f77461",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 1
@@ -1556,7 +1556,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 3600,
       "quote_count": 5,
-      "result_sha256": "e561ce43a79dddda115b9c3327113a466e45d5769483d68b23e5bbe2183bc45e",
+      "result_sha256": "af98a22b749613ff658d375459746edc6efee9e82f55ba81a410a12d8e869ba7",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1580,7 +1580,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 18,
-      "result_sha256": "62ff24a6d71687364a37773101a09776249404cdb9685654dab4b381ce6fb16c",
+      "result_sha256": "51ad90f2d9fa4ef75c96f91a99282b68c7347af58ea378bed4fe767f77124c3c",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1652,7 +1652,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 15,
-      "result_sha256": "249775c1745efdc4d2c5cedc5acf6b58b40127cd2f74295923ab4626f62a1276",
+      "result_sha256": "2aab6e5c48a6819db0348174cbe63d098420f918b1728ab625457e94adffa26c",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -1664,7 +1664,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 5,
-      "result_sha256": "33d95e711ad30dd3acfa9075e767ed87445f03b087ad40be8f4c60afded494b4",
+      "result_sha256": "fc6349a045a9476de6e475b2a088bcdc15c17f45dfe19b42ffd0dade8a358e27",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 0
@@ -1676,7 +1676,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 15,
-      "result_sha256": "29c804d8a02e07f2876bd634dcceb2115e7c452a9c578090d10866f6b0d688cc",
+      "result_sha256": "a301ee0339e0305864c298bb68d6dcc6ac73ecabe6fb224e80b8bc3c416b233c",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1688,7 +1688,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 3600,
       "quote_count": 19,
-      "result_sha256": "426853097e74d87c535e7985586512f4df755494d22cfb35078e8e8f2a672acb",
+      "result_sha256": "a550ef11edb3db1a18d8076fd86967c7dd56dbc8097227c941cf091c794c8cfd",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -1712,7 +1712,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 22,
-      "result_sha256": "7d4dacb40759982edc71c7fd260bc11b0df556b2ff00b3f6a53f54e2ab41a3a6",
+      "result_sha256": "cb4397156ca21be5d3555789d0b5dffaae2a7568732bf266111274dadf1c54c0",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1724,7 +1724,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 16,
-      "result_sha256": "d3e25168d85146101c162fbd1dd2b4c4e2813fc984e2dc8d7c08d176bc08bff4",
+      "result_sha256": "0b5b66cde29400ec29711650290cb8299de8647296b6bd43a43e7ed21e203727",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 1
@@ -1736,7 +1736,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 12,
-      "result_sha256": "84171ce7b6fd4956c0c62ab989ad6b6ecd3042dcca6fd6166aa5b0dc3aece1d6",
+      "result_sha256": "51e0167e95fad965da929c08b6afc5934d8334a2a970cf5a3c3ebb1dd8f8fbb0",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1772,7 +1772,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 12,
-      "result_sha256": "a5c89e93fd20f96d49290516772f5b7348cbd0695291c54cc7a29513c5d97bbe",
+      "result_sha256": "13d87d1b1fcccb965650c1db0f38d8296fd4ad62d9d6f6b03daa12bdbbf26b95",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 2
@@ -1784,7 +1784,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 43200,
       "quote_count": 6,
-      "result_sha256": "d4adf48a535737f3118c12c99d5b6facc79770d4a2c299ca75290f5bbe9710c5",
+      "result_sha256": "32a2d2b50a27e3215e4e0a573fb9eb88cffc7a8fc916764bccfd6c7c7bb0edf0",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 2
@@ -1808,7 +1808,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 3600,
       "quote_count": 17,
-      "result_sha256": "49407a32a106afd6607caa9edebb5e29da5f80fd1c572c8fd930071348ae6a36",
+      "result_sha256": "09c17291c50f04c4c0683bc5ac26897d8eb1c121f78f7b5316cbce195ea9733f",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1820,7 +1820,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 7,
-      "result_sha256": "7dd466222bd9985a2cc3373aedfe8c843ee7a6ba03a6b6ce920ba582eaaada63",
+      "result_sha256": "a5143614b9ddebe39405df48f64ab03fe2f671694d6e3c2b857d9b7b774f1e35",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1832,7 +1832,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 8,
-      "result_sha256": "a6e6ef0d56dbc248925859e59550311c28c340fe6630784b2e6a38b581cc0c95",
+      "result_sha256": "c9b4550376eea1d58c8c35dd048f2ba3a0e9bde57ecd978110bda2818e34bcc2",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 1
@@ -1844,7 +1844,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 8,
-      "result_sha256": "2de81a767f8b3049b6469cf0473028287a1082dcc44a14474f4ed19b084026c3",
+      "result_sha256": "98901a83eb2603c4b8fb4d701cc725bc5071c82c4374f5f6cbe9962126e5d52a",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 1
@@ -1856,7 +1856,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 24,
-      "result_sha256": "452bb88c7dc126abc91213624c82761616f056ba1851f41196d3d7428e5d2789",
+      "result_sha256": "ce6dbd538bd9b3cd5ed9ed91d5ca51c887d8225a1045f8ebfbc2c109b2fddd56",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1868,7 +1868,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 43200,
       "quote_count": 6,
-      "result_sha256": "8bc4e47bbd5352d7dc8b323b007c5c24fabe00d2fddb0a71a742bae3f154692a",
+      "result_sha256": "96c87b973da717f5017c683b8c3df1f1a9e3234b8da0d21bf8627032a8b8ba87",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -1880,7 +1880,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 19,
-      "result_sha256": "a66c4415de86d4e37c38e611ea673ed91aba7a24f131bad2dd07a7db0f35f39a",
+      "result_sha256": "af103b4270612bf99e7720e3457438e18c6012ad7271ae50b9970121327258c5",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 3
@@ -1904,7 +1904,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 10,
-      "result_sha256": "7d4db9c9b98ab30271e79ddd82eade3c0d33911e90a75ef3e5e9a87b1577d18e",
+      "result_sha256": "8cb140da9acefc821a5e9721429dd4f33ff22ab4f8278baaf8b4723b5e17ad74",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1928,7 +1928,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 5,
-      "result_sha256": "0d7a453b301f6b7ee6349b5e8e4a1ba3a4311b8bc32c7add489f543bfe82a761",
+      "result_sha256": "f501745e9c1e69e09193d843b7b27b440958a17cbeecd1be1426a9bae745251b",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 0
@@ -1940,7 +1940,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 12,
-      "result_sha256": "31cedc254005091019720b2f23ebdcb022a396203e80cc35071926388a2686b1",
+      "result_sha256": "8cfa170c24d4f6472357ea7b02e5256ebc23b375e4a19fc86407bae1c703150c",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 2
@@ -1952,7 +1952,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 3600,
       "quote_count": 19,
-      "result_sha256": "7d5e7bab26583fa134db8f4fad502d5c528ddb7338c28acc1aa3cda16c1d61ad",
+      "result_sha256": "8213abbefd88d5b8452542d916281b454f19c66c1212d82ee11a08275a891bf9",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -1976,7 +1976,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 10,
-      "result_sha256": "01d277ccf49974a08314fdc5c752dfebf0f8e114bbb12471ff9abb15d0643067",
+      "result_sha256": "9c89211c612788ea1e6e72be41aaf7baeb67851b7a02383a41cc730f6942e76c",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2012,7 +2012,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 11,
-      "result_sha256": "4fcc166fa6115466124ed2c993c6e1b4c3a70ada7442f1416325cb157fe70a44",
+      "result_sha256": "1394208d18c463edecc9c61a1a5c4549b9fe52d0e32de11562b455cb777f361a",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2024,7 +2024,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 43200,
       "quote_count": 20,
-      "result_sha256": "85ce88befbf758b1dc728b4d50c1bae71a4e2612defb35db3f5d734c88c405fc",
+      "result_sha256": "7b38f5b832a8986531c9d6f70a0b28faee8d1cc7cd26228b01e7fad8fa8bd669",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2036,7 +2036,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 20,
-      "result_sha256": "59a33ad7aac25a27108988c88068585354d512fad6d4d314b661116949ed05fa",
+      "result_sha256": "d827dfe2beab0521d61123733bdc47bb4d42537370f894dd69239921af286904",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -2048,7 +2048,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 3600,
       "quote_count": 21,
-      "result_sha256": "2f9e5dd30e7bf2a8f35037ad1adf51057f5d7ccca9050606b9b6267fc9ebc03e",
+      "result_sha256": "7ba9efcb432afbbec79ab85233ee80b35b88f9a2b23326e3dd55735d22da8d86",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2060,7 +2060,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 15,
-      "result_sha256": "1ebc546173c7c156e4674922ded17aec5f90733f0da0c5270d5bbcb831e18db8",
+      "result_sha256": "1cf148e656917437bed46de7f632610d3cbe323aa92ffcf4b3620050606538e4",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2084,7 +2084,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 3600,
       "quote_count": 20,
-      "result_sha256": "243faba73e0d33be8a3ffd85ef1d992e2a58719d432f53061cc299dc2b566daf",
+      "result_sha256": "e196f1bbb7034300264fec12954fc3a0b7bb9a92d693bc7ad12999079d63a1f3",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 1
@@ -2096,7 +2096,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 9,
-      "result_sha256": "138f37c2aed2961a5dc23c53c0f8623306bdc20d2ddc01d9a52f0bd89995bcc9",
+      "result_sha256": "4a96559d386afbde448348d1d99259cd100fad13b4ab086821f93fc9558f5ccf",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2108,7 +2108,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 3600,
       "quote_count": 18,
-      "result_sha256": "3e4abb99dadaef0223bf6b79c58e16b8675d7ee8e51e14885dd516a1a8e27ce2",
+      "result_sha256": "f6fa910378f49311874af40770cf3300277e6dfe97b1bbc83e1c8bdd91a48064",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 2
@@ -2156,7 +2156,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 43200,
       "quote_count": 5,
-      "result_sha256": "b6d4d7dd14014520e55f5743ce992a2fcf640350e5cdee68c8ca4422d90fff38",
+      "result_sha256": "3051410c3fe1674abd9c655b3b4254e6a702f2188b77ea76e0f9c924830ed857",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2168,7 +2168,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 6,
-      "result_sha256": "6e847de2ed854cc41decfa6f0875b88c453ae9014559c0a2d8644bb9c85bb163",
+      "result_sha256": "34dddbdbd64f0fec5479516943aec632c1b2d3d549cb636743129432eed7cf80",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2180,7 +2180,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 6,
-      "result_sha256": "439e15b71cb792075632c920589620dbbd97911edbf30b2596c53370f3de1566",
+      "result_sha256": "0942bcaa0d621559ae43f294bc369fba4d50b20211719c68cb666ba089d3eea1",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 2
@@ -2192,7 +2192,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 20,
-      "result_sha256": "d711c0acc07ff9164419241ace4d5a18d8592b0fec1b267c93ab8f51f73ebc65",
+      "result_sha256": "d7797526aa460f526c42903b326165f2c71d46c93f6e9b3c3e7fd35392542da8",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 1
@@ -2204,7 +2204,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 12,
-      "result_sha256": "2ad707177848fd20bba863620f5e3a013e7b4b9c06fbcb24bcbb86f4eab774db",
+      "result_sha256": "476907d947897e1d6c1b8d9975aa9847e3cd2de11e968d180b1cc40853ea4856",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2216,7 +2216,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 20,
-      "result_sha256": "b0f93916ad510daf3f162b313f23a2c7e4eaf63c99b1e354b62fc12872122d6e",
+      "result_sha256": "4b2985599d418611091bbc826ccde40cc9d80a89e01e40d6546e8d02345f4604",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2252,7 +2252,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 12,
-      "result_sha256": "be8bb7c25ce256c9d99016492589a5b0e7c6f01d987d32f4ca6b3ac5da8f603f",
+      "result_sha256": "149bcb4c0caa387d0f681d9f86a77ffab9248ab40db47d4a2a94b30ec766d6ea",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2276,7 +2276,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 13,
-      "result_sha256": "99d0b67005461ec13cfe48a3d525fd59022510e6ccce117da898fe8c53f0f6e5",
+      "result_sha256": "98cffc9b1c91a46e4facd860e0d31ffed60c621efe412a100f403574c13fc061",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 1
@@ -2300,7 +2300,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 23,
-      "result_sha256": "a52474684a5f1100ab5679bfff09b158db2fd81e5d47d56698bbabb5df12c02a",
+      "result_sha256": "8f71d869b08ca46ece6d13e2bc10f01af6b8230dddf810eac4cb0629af129fb7",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2312,7 +2312,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 86400,
       "quote_count": 14,
-      "result_sha256": "de7f65c820626d950729cafac9f5b2055026108efd2fdd0195054e2ae2b40508",
+      "result_sha256": "6e1f8a993d082cfb4aa46d2d2b8ef3f8082ec5d177361e8018c01e5f70280be9",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -2324,7 +2324,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 14,
-      "result_sha256": "0491fae51b8d11288ddb7d02ceaf01bfaa14effb7893a495be01166fd4eb327a",
+      "result_sha256": "fb2a5ec85d938d9879007137d029d7a6fd06270243464faa710ebc4ea90fe2f1",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -2336,7 +2336,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 14,
-      "result_sha256": "cb635d4fd0ae82a2365398e272fe17412c121dc33f4a6d886c0657662a6a6368",
+      "result_sha256": "983ebcc1b9a10a081f0e7dbd3e88f5b068e1f7911be663a22f32aae3f204a4ac",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2360,7 +2360,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 21,
-      "result_sha256": "ca631aa6ebbd19b654acd2a12ef3f9e11bb2e470b0b7b14c1a696348bbbd4e05",
+      "result_sha256": "090b6ed14a0214961c54f42b1b13c9a22f265e11a0a69d9c48cea61b87db08bc",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2372,7 +2372,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 14,
-      "result_sha256": "89f479b7f4779a963191ca4ab2f8235f388552dd46ac6442915b758eec3f11c9",
+      "result_sha256": "9b5fd8742d767d750346d60983be8558c884f8bd075aab5ef4b33fb949d4a595",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2384,7 +2384,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 10,
-      "result_sha256": "6fef87f7e12b62071b1705641c40ff8b2a2b7c24703f5e8f6b3d746b3569e03c",
+      "result_sha256": "b73afbc58841370f035512a6b2b5412e0e48ff0f054ad731fe9c1a4f1f9a26a9",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 2
@@ -2396,7 +2396,7 @@
       "instrument": "NZDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 20,
-      "result_sha256": "670ba32717f8613cf245c5088ab64177c5349b5508908713a7930e3e25149bb2",
+      "result_sha256": "3e8e7f919bc9be9eb52296627e4b9b71e229fc0932f3a51ed9b53142f80785fa",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2408,7 +2408,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 16,
-      "result_sha256": "1f12374babe7b5fe77c7eb41a22b6a2d2cf4953f8f69cc9d1db8c7e819ee1835",
+      "result_sha256": "5f012ddf5f485dbca2cd8f84d1759fce72b4f7ef236970b9b85f68ba053be65d",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 2
@@ -2420,7 +2420,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 43200,
       "quote_count": 6,
-      "result_sha256": "25f765dd5e90ece8382133cf3676e70ea99efefd32ac55306709c2ab4c561282",
+      "result_sha256": "b17f87cd9689c82c55b2e596e00dad899012f5417f76a16898944548e182e617",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 0
@@ -2432,7 +2432,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 13,
-      "result_sha256": "920513d900f072bc00decd6750e08c50be22abb55aa4825b3b15188e0b506379",
+      "result_sha256": "284dbc393ba24f451dfa4ddb99d2cb8487d0d9537628e938cf861a86fba061bd",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -2444,7 +2444,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 24,
-      "result_sha256": "6a0e38c6c8011cac270d5e1e3550f626efd46eee3c9646374e2bc2ecce3a8895",
+      "result_sha256": "32c5818cc746ab109e45c4d7fd21e24100092c79170558b788558f5b0573517e",
       "signal_count": 2,
       "stop_ticks": 100,
       "trade_count": 2
@@ -2456,7 +2456,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 8,
-      "result_sha256": "e5630a6928df2d170202a54d1cb10f158272d40d7f66ea8fa7a5a2cec8a30075",
+      "result_sha256": "d8da67afcae6c30d9b525951d00ec5d000f393ab0b549360daba13efe59878bd",
       "signal_count": 2,
       "stop_ticks": 400,
       "trade_count": 2
@@ -2468,7 +2468,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 43200,
       "quote_count": 13,
-      "result_sha256": "cea50dda13b8e0157700cf2c229e2f98a2f6004acea18dda2a5cd5b3a84a5888",
+      "result_sha256": "8380c277e7ee1164ee3aa6b45b617df3ad872112b1622c3f7425be9b5d536569",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2492,7 +2492,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 13,
-      "result_sha256": "e14b832a0cb799eed3522361c918944131f4789a66d275959deb60213c6c830c",
+      "result_sha256": "31f5ef638cbaf8e2d82238328a3a9dc65e3b36e630b8d343adb0782d4ce95eda",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -2504,7 +2504,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 8,
-      "result_sha256": "afa055e773dec9e433d1200ed09d2c8d74d1dd5a36d05fc9e92a448d6edc7f50",
+      "result_sha256": "5a3aa217fd2cc80c6a79ff8556b4bc962dc4c33650f94b98bfdfc2df8058f8d8",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2540,7 +2540,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 43200,
       "quote_count": 18,
-      "result_sha256": "d4cfda355862862967c97552daaf7e10ef039d06a80aa7192085e54a56f67364",
+      "result_sha256": "ff01f1363f2ad4187212f1d9b10801b4c596514c6414cca8f97c319d4a7fcad5",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 0
@@ -2564,7 +2564,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 14,
-      "result_sha256": "a6780b231f7898f4e0d71995460f8fbccf5a2ec1ead079eff9e2cc13c107dba0",
+      "result_sha256": "46112e71d09fab8da199a1efb6b0b272918c49dec755900830c973432d25eca6",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -2576,7 +2576,7 @@
       "instrument": "GBPUSD",
       "max_hold_seconds": 86400,
       "quote_count": 20,
-      "result_sha256": "dfba8b3fbcafae617be79403311d80f07a4f98e08cc960c4c3fe7c31e033badc",
+      "result_sha256": "2f51d875289a22a37de649d91eb616f6d3f48de922fa0b819a58631f6d6a8c1a",
       "signal_count": 3,
       "stop_ticks": 400,
       "trade_count": 0
@@ -2588,7 +2588,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 8,
-      "result_sha256": "52cb8bc16958dd6c120638ea9df0356b4e0a85b69edc5d9a1ca9f1678b37e9d8",
+      "result_sha256": "3a2b4045a5630a42967053ca921dd94f0bfa874b4ff74ba1bc12328e8a2915d8",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -2600,7 +2600,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 7,
-      "result_sha256": "ad006b52630341bf86f953c90403fc32d127a31b4c7b97a91186d32bf3dbdc15",
+      "result_sha256": "21e003b3ff47894afa6d984436f01552e7e167fed88afdd3d7534dae3914feac",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 0
@@ -2612,7 +2612,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 3600,
       "quote_count": 8,
-      "result_sha256": "b488aad7778e8e3b5f50f1ded6e3f772a102cb0d749870df23d62e3b50d2fe95",
+      "result_sha256": "b6fa5280b1676ab50e8ce5561a6e2e1a596b25b02ffebe9c1397b7e44768cad8",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 1
@@ -2624,7 +2624,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 43200,
       "quote_count": 17,
-      "result_sha256": "3c668dc837b8dae71909a869ee6ec2019bbb9522235a794a711e19d3dc2ba959",
+      "result_sha256": "643f34d15874800298db93df1a8ed43c7d18bdcc2b6ca4d0410cf4699fae77b5",
       "signal_count": 1,
       "stop_ticks": 50,
       "trade_count": 1
@@ -2648,7 +2648,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 19,
-      "result_sha256": "6988980e3ada2d11691e12c73557ef9a4721cf4ae71fa2952d14c446c172a35c",
+      "result_sha256": "db7713a54784176a501549310840db7e0b3776763feb28b2ed0052ba6ef20875",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 1
@@ -2672,7 +2672,7 @@
       "instrument": "USDJPY",
       "max_hold_seconds": 86400,
       "quote_count": 20,
-      "result_sha256": "e0a515c5ecf80aef5f39e929b4bcff4c7043f797f7fd8ab442ebd12a87f52513",
+      "result_sha256": "fb2c8de60516624c0a43b7d67410b185eb38c11936337f4a9f46ad927719d7ce",
       "signal_count": 1,
       "stop_ticks": 400,
       "trade_count": 0
@@ -2696,7 +2696,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 43200,
       "quote_count": 20,
-      "result_sha256": "caca6c894215c76c1adf8f2f9a83b3727e9e4edccdaf5a5987d16ddd0b9cacb3",
+      "result_sha256": "31dbd7bd8883016b6e71c928872a075ae6a4896a0b0e2506c62410afe7c47b2a",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 2
@@ -2720,7 +2720,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 15,
-      "result_sha256": "e277ad710fd05ef636b07f1f7c5a1474c752d4d851dd0f0e6605d5b18f5e82d4",
+      "result_sha256": "4b78386d867470747e17fab46c37e63b5028995c8bd99e9f24a03698328dca74",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2732,7 +2732,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 43200,
       "quote_count": 8,
-      "result_sha256": "005da24b9a60cdd42034914f03b35802cd2c11a8fe91e689aba7b34dd1f6c923",
+      "result_sha256": "3ba99d1e9bb012dd723f1365042a36e29e255daed71b4775dba5aa6dd323a14f",
       "signal_count": 2,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2744,7 +2744,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 23,
-      "result_sha256": "7b72859a7672af0374450453368eb525643a0bc9f2c24b3c7c5b3b9af24ea3f5",
+      "result_sha256": "0f4f97b0d6c43b3d17b7ec37af8fbb02b9991e3d0f8b0f5f703ab62fe7898e38",
       "signal_count": 3,
       "stop_ticks": 50,
       "trade_count": 0
@@ -2756,7 +2756,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 3600,
       "quote_count": 15,
-      "result_sha256": "718a1c14726598508309905fdd74b75b3f8ef273840c66b429085f83656c71fe",
+      "result_sha256": "e686167ba5219b1dbefd73753c895439530ee26ca3e8644e955c0277e291cd66",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 1
@@ -2768,7 +2768,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 86400,
       "quote_count": 15,
-      "result_sha256": "45132ea96cc1954e41426ca6c3c98135f983a3b65228d53596a7b6edf6a4472d",
+      "result_sha256": "f86b65beb8cc60f9cf3cdc6b3a7df850f94c47483393ae23cb337aa12acd3826",
       "signal_count": 1,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2792,7 +2792,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 24,
-      "result_sha256": "2d982add02de20e4291f1aff6442a848f819bd4557cc466a2507f5f276e969d8",
+      "result_sha256": "eefcc5519db57a7ceb20e40cd6394549f533c4b8adeaa4eeb296e704e4fcd893",
       "signal_count": 2,
       "stop_ticks": 50,
       "trade_count": 2
@@ -2804,7 +2804,7 @@
       "instrument": "AUDUSD",
       "max_hold_seconds": 86400,
       "quote_count": 7,
-      "result_sha256": "2ad707e5f80f6506a257c1fa13d63226891871b3eb0eb968bda54cc0f06bed53",
+      "result_sha256": "72a30f7155f5d1f58db2d03f54d438a983d423d24abc6041b8d81dee33e55307",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2828,7 +2828,7 @@
       "instrument": "USDCHF",
       "max_hold_seconds": 3600,
       "quote_count": 9,
-      "result_sha256": "a05a62c3459c38b829055eb6ee19cc4630f397ab640d5c7c1486ef15e75ab66c",
+      "result_sha256": "6b873274a50a3aef616b12222da87f13adc992ef4c6bde98d12e2323db5ecb1c",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2852,7 +2852,7 @@
       "instrument": "EURUSD",
       "max_hold_seconds": 43200,
       "quote_count": 21,
-      "result_sha256": "ef0c1c555c52488d679f927682d21964929289637cc132f405a58c32cbf712a3",
+      "result_sha256": "2da4b28cf367dc9176216ab54596b833b68c9acaf4c4de2962fc6f5bd8cf3412",
       "signal_count": 3,
       "stop_ticks": 200,
       "trade_count": 0
@@ -2864,7 +2864,7 @@
       "instrument": "XAUUSD",
       "max_hold_seconds": 86400,
       "quote_count": 12,
-      "result_sha256": "d6e4843964bf3277b6f15090d7ce70395f0e52ea406e379b7d7c20d2bec5c441",
+      "result_sha256": "05bf4339dc2fd0ff12f541e9e3523ee724624aacb03eb65709b650b34d7b68c9",
       "signal_count": 3,
       "stop_ticks": 100,
       "trade_count": 0
@@ -2876,7 +2876,7 @@
       "instrument": "USDCAD",
       "max_hold_seconds": 86400,
       "quote_count": 21,
-      "result_sha256": "16e079d245c925e7f50b3b5b2da55042c1338a8efd2f64c633f50f41455b67cc",
+      "result_sha256": "d0e31cbcfad5af7afdfb82c45e46bfa8362d8bb6c9c4364634ea45a249e0b991",
       "signal_count": 1,
       "stop_ticks": 200,
       "trade_count": 0

@@ -633,6 +633,12 @@ pub struct FillOut {
 }
 
 #[derive(Clone, Debug, Serialize)]
+pub struct OrderStateOut {
+    pub role: String,
+    pub terminal: Option<String>,
+}
+
+#[derive(Clone, Debug, Serialize)]
 pub struct TradeOut {
     pub side: String,
     pub entry_ts: i64,
@@ -645,6 +651,7 @@ pub struct TradeOut {
     pub target_int: i64,
     pub flags: Vec<String>,
     pub exit_reason: Option<String>,
+    pub order_states: Vec<OrderStateOut>,
     pub pnl_num: String,
     pub pnl_den: String,
     pub entered_num: String,
@@ -688,6 +695,35 @@ struct Position {
 impl Position {
     fn quantity(&self) -> Rat {
         self.entered.sub(&self.exited)
+    }
+
+    /// Set the terminal state of the order with the given role.
+    fn terminate(&mut self, role: &str, status: &str) {
+        for order in self.order_states.iter_mut() {
+            if order.1 == role {
+                order.2 = Some(status.to_string());
+            }
+        }
+    }
+
+    /// Register a resting order for the given role.
+    fn register(&mut self, role: &str) {
+        if !self.order_states.iter().any(|o| o.1 == role) {
+            self.order_states.push((format!("{role}-{}", self.order_states.len()), role.to_string(), None));
+        }
+    }
+
+    fn order_states_out(&self) -> Vec<OrderStateOut> {
+        let mut out: Vec<OrderStateOut> = self
+            .order_states
+            .iter()
+            .map(|(_, role, terminal)| OrderStateOut {
+                role: role.clone(),
+                terminal: terminal.clone(),
+            })
+            .collect();
+        out.sort_by(|a, b| a.role.cmp(&b.role));
+        out
     }
 
     fn apply_fill(&mut self, price: i64, size: &Rat, _order_side: Side, conv: Rat, role: &str) -> Rat {
@@ -738,6 +774,7 @@ impl Position {
             target_int: self.target,
             flags: self.flags.clone(),
             exit_reason: reason,
+            order_states: self.order_states_out(),
             pnl_num: "0".to_string(),
             pnl_den: "1".to_string(),
             entered_num: self.entered.n.to_string(),
@@ -801,11 +838,11 @@ pub fn replay(
                 let qty = pos.quantity();
                 let delta = pos.apply_fill(price, &qty, exit_side, conv, role);
                 equity = equity.add(&delta).round_sig28();
-                pos.order_states.push((
-                    format!("order-{role}-{i}"),
-                    role.into(),
-                    Some("FILLED".into()),
-                ));
+                pos.terminate(role, "FILLED");
+                pos.terminate(
+                    if role == "STOP_LOSS" { "TAKE_PROFIT" } else { "STOP_LOSS" },
+                    "CANCELED",
+                );
                 fills.push(FillOut {
                     role: role.into(),
                     ts: q.ts,
@@ -838,11 +875,10 @@ pub fn replay(
                 let qty = pos.quantity();
                 let delta = pos.apply_fill(price, &qty, exit_side, conv, "TIMEOUT");
                 equity = equity.add(&delta).round_sig28();
-                pos.order_states.push((
-                    format!("order-timeout-{i}"),
-                    "TIMEOUT".into(),
-                    Some("FILLED".into()),
-                ));
+                pos.terminate("STOP_LOSS", "CANCELED");
+                pos.terminate("TAKE_PROFIT", "CANCELED");
+                pos.register("TIMEOUT");
+                pos.terminate("TIMEOUT", "FILLED");
                 let flag = if q.ts == deadline {
                     "TIMEOUT"
                 } else {
@@ -942,12 +978,12 @@ pub fn replay(
                 exited: Rat::zero(),
                 realized_exact: Rat::zero(),
                 flags: Vec::new(),
-                order_states: vec![(
-                    format!("order-entry-{i}"),
-                    "ENTRY".into(),
-                    Some("FILLED".into()),
-                )],
+                order_states: Vec::new(),
             };
+            pos.register("ENTRY");
+            pos.terminate("ENTRY", "FILLED");
+            pos.register("STOP_LOSS");
+            pos.register("TAKE_PROFIT");
             pos.apply_fill(entry, &native_size, sig_side, conv, "ENTRY");
             fills.push(FillOut {
                 role: "ENTRY".into(),

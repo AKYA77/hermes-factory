@@ -40,6 +40,16 @@ def fraction_parts(value):
     return int(f.numerator), int(f.denominator)
 
 
+def normalize_order_states(order_states):
+    """Role -> terminal, sorted, independent of generated order ids."""
+    out = [
+        {"role": state["role"], "terminal": state.get("terminal")}
+        for state in order_states.values()
+    ]
+    out.sort(key=lambda item: item["role"])
+    return out
+
+
 def normalize_python(result, scale):
     fills = []
     for f in result["fills"]:
@@ -71,6 +81,7 @@ def normalize_python(result, scale):
                 "target_int": int(D(t["target"]) * scale),
                 "flags": t["flags"],
                 "exit_reason": t["exit_reason"],
+                "order_states": normalize_order_states(t.get("order_states") or {}),
                 "pnl_num": int(exact.get("numerator", 0)),
                 "pnl_den": int(exact.get("denominator", 1)),
                 "entered_num": int(Fraction(D(t["entered_quantity"])).numerator),
@@ -95,6 +106,7 @@ def normalize_python(result, scale):
             "target_int": int(D(ot["target"]) * scale),
             "flags": ot["flags"],
             "exit_reason": None,
+            "order_states": normalize_order_states(ot.get("order_states") or {}),
             "pnl_num": int(exact.get("numerator", 0)),
             "pnl_den": int(exact.get("denominator", 1)),
             "entered_num": int(Fraction(D(ot["entered_quantity"])).numerator),

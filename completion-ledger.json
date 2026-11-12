@@ -3057,10 +3057,10 @@
         "scripts/freeze_nautilus_goldens.py",
         "scripts/verify_raptor_goldens.py"
       ],
-      "next_required_action": "Emit order-state metadata from the Rust engine, implement and verify partial fills, then re-verify against verified broker profiles and record restart/batch evidence before removing NautilusTrader.",
+      "next_required_action": "Implement and verify partial fills against a finite eligible book, then re-verify against verified broker profiles and record restart/batch evidence before removing NautilusTrader.",
       "requirement_id": "R02",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240). Direct parity also passes 240/240 and 800/800 on generated fixtures and 30/30 on genuine acquired partitions. Six discrepancies were root-caused and fixed; none remains open. Open before removal: order-state emission, partial fills, verified broker profiles, genuine-period restart/batch evidence. NautilusTrader remains installed.",
+      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240), now including the order state machine. Direct parity passes 240/240 and 800/800 on generated fixtures and 30/30 on genuine acquired partitions. Seven discrepancies were root-caused and fixed; none remains open. Open before removal: partial fills, verified broker profiles, genuine-period restart/batch evidence. NautilusTrader remains installed.",
       "title": "NautilusTrader migration parity",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
