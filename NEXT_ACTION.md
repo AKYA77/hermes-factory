@@ -94,6 +94,19 @@ reference. Full detail and the reproduction commands:
 implement partial fills, cancellation races, safety closes and fee accounting.
 After that, freeze the Nautilus goldens and write the migration parity report.
 
+### Phase 1b — migration parity report and frozen goldens
+
+`reports/raptor-migration-goldens.json` freezes the NautilusTrader 1.231.0 /
+adverse-fill v4 reference output over a fixed 240-case all-instrument corpus,
+and `scripts/verify_raptor_goldens.py` confirms the Rust engine reproduces every
+golden digest exactly (**240/240**).
+
+`docs/milestone-raptor-migration-parity-2026-11-12.md` records the discrepancy
+report (six root-caused defects, none open), the determinism argument, and the
+remaining migration-gate gaps: order-state emission, partial fills, verified
+broker profiles and genuine-period restart/batch evidence. **NautilusTrader is not
+removed and R02 remains `NOT_TESTED`.**
+
 ### Phase 1 publication record
 
 Pushed at `62182c21bf58901deb3de1b22536a02fed98dd3a` (local `git rev-parse HEAD`

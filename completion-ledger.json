@@ -2,7 +2,7 @@
   "audited_head": "62182c21bf58901deb3de1b22536a02fed98dd3a",
   "authority_sha256": "33d51494869462c9cfd54b9c1dbb267316a169e268fde9a1aa1f8f7328bc384e",
   "goal": "Lean RaptorBT strategy research factory - Owner Final Directive 2026-11-12",
-  "latest_checkpoint": "docs/milestone-raptor-engine-parity-2026-11-12.md",
+  "latest_checkpoint": "docs/milestone-raptor-migration-parity-2026-11-12.md",
   "latest_verified_source": {
     "git_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
     "source_sha256": "e62800548028fe7049db1fb0bd0c9fb3c97ca64e009855816a1745773e2ef3a0",
@@ -3044,17 +3044,23 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
       "evidence": [
-        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+        "docs/milestone-raptor-engine-parity-2026-11-12.md",
+        "docs/milestone-raptor-migration-parity-2026-11-12.md",
+        "reports/raptor-migration-goldens.json"
       ],
       "implementation_files": [
         "scripts/parity_raptor_engine.py",
         "docs/milestone-raptor-engine-parity-2026-11-12.md",
-        "scripts/parity_raptor_genuine.py"
+        "scripts/parity_raptor_genuine.py",
+        "docs/milestone-raptor-migration-parity-2026-11-12.md",
+        "reports/raptor-migration-goldens.json",
+        "scripts/freeze_nautilus_goldens.py",
+        "scripts/verify_raptor_goldens.py"
       ],
-      "next_required_action": "Freeze the Nautilus golden results, run parity across restart and batch sizes and against verified broker profiles, then write the complete parity and discrepancy report.",
+      "next_required_action": "Emit order-state metadata from the Rust engine, implement and verify partial fills, then re-verify against verified broker profiles and record restart/batch evidence before removing NautilusTrader.",
       "requirement_id": "R02",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Parity harness passing on generated fixtures (240/240 and 800/800 exact, all eight instruments, two seeds) and on 30 genuine acquired catalog partitions. Not the required migration report: Nautilus goldens are not frozen, verified broker profiles are not used, determinism across restart and batch sizes is untested, and NautilusTrader remains installed.",
+      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240). Direct parity also passes 240/240 and 800/800 on generated fixtures and 30/30 on genuine acquired partitions. Six discrepancies were root-caused and fixed; none remains open. Open before removal: order-state emission, partial fills, verified broker profiles, genuine-period restart/batch evidence. NautilusTrader remains installed.",
       "title": "NautilusTrader migration parity",
       "verification_command": ".venv/bin/pytest tests/parity"
     },

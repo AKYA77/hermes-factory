@@ -99,7 +99,8 @@
     "ADR0071 owner Lean RaptorBT directive 2026-11-12: versioned amendment, measured VPS/repository inventory, twelve new acceptance gates R01-R12 (79 total, 6 PASS / 73 NOT_TESTED), queue task raptorbt_execution, architecture/handoff updates. No gate claimed passed; readiness states unchanged.",
     "RaptorBT-derived Rust execution engine (rust/raptor-engine/) with exact rational arithmetic and sequential bracket replay; parity harness scripts/parity_raptor_engine.py reproduces the Python reference exactly on 100/100 EURUSD, 240/240 and 800/800 all-instrument generated fixtures. R01-R03 gain scoped evidence and remain NOT_TESTED; NautilusTrader not removed.",
     "Phase 1 Rust engine: 30/30 genuine acquired catalog partitions exact parity; full suite 709 passed / 0 failed in 1375 s. Pinned rust-toolchain.toml (1.100.0) and a CI rust job building with --locked, running cargo test and the parity harness.",
-    "Phase 1 pushed and CI-verified at 62182c21bf58901deb3de1b22536a02fed98dd3a: audit, dashboard, python and the new rust context all pass; the rust job ran cargo test (2 passed) and scripts/parity_raptor_engine.py (200/200)."
+    "Phase 1 pushed and CI-verified at 62182c21bf58901deb3de1b22536a02fed98dd3a: audit, dashboard, python and the new rust context all pass; the rust job ran cargo test (2 passed) and scripts/parity_raptor_engine.py (200/200).",
+    "R02 migration parity report: NautilusTrader 1.231.0 goldens frozen over a fixed 240-case corpus and reproduced exactly by the Rust engine (240/240); docs/milestone-raptor-migration-parity-2026-11-12.md records the discrepancy report and the remaining migration-gate gaps."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {
@@ -126,8 +127,8 @@
     "skipped": 0,
     "warnings": 482
   },
-  "latest_evidence_manifest": "docs/milestone-raptor-engine-parity-2026-11-12.md",
-  "latest_milestone": "docs/milestone-raptor-engine-parity-2026-11-12.md",
+  "latest_evidence_manifest": "reports/raptor-migration-goldens.json",
+  "latest_milestone": "docs/milestone-raptor-migration-parity-2026-11-12.md",
   "latest_scientific_code_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
   "latest_verification": {
     "failed": 0,
