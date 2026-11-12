@@ -109,12 +109,14 @@ removed and R02 remains `NOT_TESTED`.**
 
 ### Phase 1 publication record
 
-Pushed at `62182c21bf58901deb3de1b22536a02fed98dd3a` (local `git rev-parse HEAD`
+Pushed at `78c4ba4a5a91f3c71bf0126a73a1452aa5637276` (supersedes the earlier
+`62182c2` record; local `git rev-parse HEAD` matches `git ls-remote`) (local `git rev-parse HEAD`
 matches `git ls-remote origin refs/heads/build/initial-factory`). CI contexts
 `audit`, `dashboard`, `python` and the new `rust` all **pass**; the rust job ran
 `cargo test --release --locked` (2 passed) and
 `scripts/parity_raptor_engine.py --cases 200 --instrument all` (**200/200**).
-Full local suite: **709 passed, 0 failed** in 1375 s. The working tree is clean.
+Full local suite: **709 passed, 0 failed** in 1375 s. CI contexts `audit`,
+`dashboard`, `python` and `rust` all pass for this commit.
 
 ## Environment change observed this session
 
