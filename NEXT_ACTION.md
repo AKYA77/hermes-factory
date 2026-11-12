@@ -94,6 +94,15 @@ reference. Full detail and the reproduction commands:
 implement partial fills, cancellation races, safety closes and fee accounting.
 After that, freeze the Nautilus goldens and write the migration parity report.
 
+### Phase 1 publication record
+
+Pushed at `62182c21bf58901deb3de1b22536a02fed98dd3a` (local `git rev-parse HEAD`
+matches `git ls-remote origin refs/heads/build/initial-factory`). CI contexts
+`audit`, `dashboard`, `python` and the new `rust` all **pass**; the rust job ran
+`cargo test --release --locked` (2 passed) and
+`scripts/parity_raptor_engine.py --cases 200 --instrument all` (**200/200**).
+Full local suite: **709 passed, 0 failed** in 1375 s. The working tree is clean.
+
 ## Environment change observed this session
 
 The prior checkpoint recorded histdata.com/oanda.com/six-group.com as proxy-denied

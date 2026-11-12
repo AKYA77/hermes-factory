@@ -1,10 +1,10 @@
 {
-  "audited_head": "6a5bbe05a5575c7e71a936845eaaa098aa151503",
+  "audited_head": "62182c21bf58901deb3de1b22536a02fed98dd3a",
   "authority_sha256": "33d51494869462c9cfd54b9c1dbb267316a169e268fde9a1aa1f8f7328bc384e",
   "goal": "Lean RaptorBT strategy research factory - Owner Final Directive 2026-11-12",
   "latest_checkpoint": "docs/milestone-raptor-engine-parity-2026-11-12.md",
   "latest_verified_source": {
-    "git_commit": "6a5bbe05a5575c7e71a936845eaaa098aa151503",
+    "git_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
     "source_sha256": "e62800548028fe7049db1fb0bd0c9fb3c97ca64e009855816a1745773e2ef3a0",
     "working_tree_scientific_edits": false
   },

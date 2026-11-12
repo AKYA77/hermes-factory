@@ -98,7 +98,8 @@
     "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification",
     "ADR0071 owner Lean RaptorBT directive 2026-11-12: versioned amendment, measured VPS/repository inventory, twelve new acceptance gates R01-R12 (79 total, 6 PASS / 73 NOT_TESTED), queue task raptorbt_execution, architecture/handoff updates. No gate claimed passed; readiness states unchanged.",
     "RaptorBT-derived Rust execution engine (rust/raptor-engine/) with exact rational arithmetic and sequential bracket replay; parity harness scripts/parity_raptor_engine.py reproduces the Python reference exactly on 100/100 EURUSD, 240/240 and 800/800 all-instrument generated fixtures. R01-R03 gain scoped evidence and remain NOT_TESTED; NautilusTrader not removed.",
-    "Phase 1 Rust engine: 30/30 genuine acquired catalog partitions exact parity; full suite 709 passed / 0 failed in 1375 s. Pinned rust-toolchain.toml (1.100.0) and a CI rust job building with --locked, running cargo test and the parity harness."
+    "Phase 1 Rust engine: 30/30 genuine acquired catalog partitions exact parity; full suite 709 passed / 0 failed in 1375 s. Pinned rust-toolchain.toml (1.100.0) and a CI rust job building with --locked, running cargo test and the parity harness.",
+    "Phase 1 pushed and CI-verified at 62182c21bf58901deb3de1b22536a02fed98dd3a: audit, dashboard, python and the new rust context all pass; the rust job ran cargo test (2 passed) and scripts/parity_raptor_engine.py (200/200)."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {
@@ -112,7 +113,7 @@
   },
   "goal_source": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
   "implementation_queue": "implementation-queue.json",
-  "last_remote_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
+  "last_remote_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
   "last_verification": {
     "failed": 0,
     "format": "PASS",
@@ -127,7 +128,7 @@
   },
   "latest_evidence_manifest": "docs/milestone-raptor-engine-parity-2026-11-12.md",
   "latest_milestone": "docs/milestone-raptor-engine-parity-2026-11-12.md",
-  "latest_scientific_code_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
+  "latest_scientific_code_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
   "latest_verification": {
     "failed": 0,
     "format": "PASS",
@@ -159,20 +160,14 @@
   "next_unfinished": "Phase 1 in progress: the Rust execution engine is built and reproduces the Python reference exactly on generated fixtures (100/100 EURUSD, 240/240 and 800/800 all-instrument). Remaining for R01-R03: genuine acquired historical partitions, partial fills, cancellation races, safety closes, fee accounting, and determinism across restart and batch sizes. Then freeze the Nautilus goldens and write the migration parity report. After that, Phase 2 native data access, Phase 3 dynamic M1-D1 features, Phase 4 tick index, Phase 5 Rust generator, Phase 6 strict 50% qualification, Phase 7 remaining data/scientific evidence, Phase 8 operations/dashboard, Phase 9 whole-system acceptance.",
   "observed_at_utc": "2026-11-12T20:39:38.411052+00:00",
   "publication": {
-    "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
+    "authorization": "Owner directive 2026-11-12 authorizes each tested milestone push; no merge, visibility change or production deployment.",
     "branch": "build/initial-factory",
-    "latest_verified_development_ci": "reports/milestones/frozen-screen-cohorts/prior-screen-fallback-publication.json",
-    "latest_verified_development_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
-    "new_implementation_performed": false,
-    "observed_at_utc": "2026-11-04T17:41:50.059690+00:00",
-    "previous_remote_commit": "9034cbcf4cba91af2a193f518b935af27c1c9dc2",
-    "previously_local_commits_published": 18,
+    "latest_verified_development_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
+    "observed_at_utc": "2026-11-12T21:17:53.093442+00:00",
     "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
     "remote": "https://github.com/AKYA77/hermes-factory.git",
-    "scope": "This receipt observes the source push; the following metadata-only commit records its recovery.",
-    "status": "COMPLETED_SOURCE_PUSHED_AND_VERIFIED",
-    "verification": "git ls-remote, GitHub git-ref API and PR head all match",
-    "verified_completed_source_commit": "4ea36e40d781c9dec555d42a1e919e027792a818"
+    "status": "COMPLETED_SOURCE_PUSHED_AND_CI_VERIFIED",
+    "verification": "git ls-remote matches local HEAD; CI contexts audit, dashboard, python, rust all pass; the rust job ran cargo test (2 passed) and the parity harness (200/200)."
   },
   "readiness": {
     "DATA_READY": false,
@@ -223,8 +218,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Lean RaptorBT strategy research factory - owner final directive 2026-11-12",
   "verified_source_tree": {
-    "git_commit": "6a5bbe05a5575c7e71a936845eaaa098aa151503",
-    "source_sha256": "e62800548028fe7049db1fb0bd0c9fb3c97ca64e009855816a1745773e2ef3a0"
+    "git_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
+    "source_sha256": "recorded at push; recompute with factory.provenance.source_identity()"
   },
   "visibility": {
     "current": "PUBLIC",
