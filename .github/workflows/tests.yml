@@ -19,3 +19,17 @@ jobs:
         with:
           name: python-test-results
           path: reports/runtime/test-results.xml
+  rust:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@1.100.0
+      - run: cargo build --release --locked
+        working-directory: rust/raptor-engine
+      - run: cargo test --release --locked
+        working-directory: rust/raptor-engine
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.12.23'
+      - run: uv sync --frozen
+      - run: uv run python scripts/parity_raptor_engine.py --cases 200 --instrument all --seed 20261112

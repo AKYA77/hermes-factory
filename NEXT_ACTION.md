@@ -56,6 +56,44 @@ approval prompt timed out, so the builder contract still names NautilusTrader as
 the matching engine. The new directive and `ARCHITECTURE.md` carry the governing
 text. Owner action is required to update `AGENTS.md` itself.
 
+## Phase 1 — Rust execution engine, exact parity demonstrated
+
+A from-scratch Rust engine now exists at `rust/raptor-engine/` with a committed
+`Cargo.lock`, and `scripts/parity_raptor_engine.py` proves it reproduces the
+Python reference exactly.
+
+Measured results (exact = equal prices, quote indices, roles, flags, exit
+reasons, sizes and account P&L as an exact rational):
+
+| Corpus | Result | Wall |
+|---|---|---|
+| 100 cases, EURUSD | 100 / 100 | — |
+| 240 cases, all 8 instruments | 240 / 240 | — |
+| 800 cases, all 8 instruments, fresh seed | 800 / 800 | 29 s |
+
+Six reference behaviours were recovered empirically and are now reproduced:
+signal eligibility at the first quote strictly after `available_at` with a
+same-quote entry fill; take-profit filling at the counterparty price; bid/ask
+side-specific stop triggers; the per-quote order (matching phase → deadline
+close → signal loop) including deadline-cancelled protection; synchronous
+callback fills; and 28-significant-digit equity rounding after each fill.
+
+Six real Rust defects were found and fixed, including a silently wrapping
+`i128` rational comparison (exact decimal28 conversion rates give denominators
+up to 10^27, so `Rat` is now arbitrary-precision) and an off-by-one in
+`round_sig28` that rounded conversion rates to 27 digits instead of 28.
+
+**R01, R02 and R03 remain `NOT_TESTED`.** The corpus is generated synthetic
+fixtures. Partial fills, cancellation races, safety closes, fees, genuine
+acquired historical periods, and determinism across restart and batch sizes are
+not yet demonstrated, so NautilusTrader stays installed and remains the
+reference. Full detail and the reproduction commands:
+`docs/milestone-raptor-engine-parity-2026-11-12.md`.
+
+**Next action:** extend parity to genuine acquired catalog partitions, then
+implement partial fills, cancellation races, safety closes and fee accounting.
+After that, freeze the Nautilus goldens and write the migration parity report.
+
 ## Environment change observed this session
 
 The prior checkpoint recorded histdata.com/oanda.com/six-group.com as proxy-denied

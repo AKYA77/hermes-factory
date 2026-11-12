@@ -96,7 +96,9 @@
     "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification",
     "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification",
     "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification",
-    "ADR0071 owner Lean RaptorBT directive 2026-11-12: versioned amendment, measured VPS/repository inventory, twelve new acceptance gates R01-R12 (79 total, 6 PASS / 73 NOT_TESTED), queue task raptorbt_execution, architecture/handoff updates. No gate claimed passed; readiness states unchanged."
+    "ADR0071 owner Lean RaptorBT directive 2026-11-12: versioned amendment, measured VPS/repository inventory, twelve new acceptance gates R01-R12 (79 total, 6 PASS / 73 NOT_TESTED), queue task raptorbt_execution, architecture/handoff updates. No gate claimed passed; readiness states unchanged.",
+    "RaptorBT-derived Rust execution engine (rust/raptor-engine/) with exact rational arithmetic and sequential bracket replay; parity harness scripts/parity_raptor_engine.py reproduces the Python reference exactly on 100/100 EURUSD, 240/240 and 800/800 all-instrument generated fixtures. R01-R03 gain scoped evidence and remain NOT_TESTED; NautilusTrader not removed.",
+    "Phase 1 Rust engine: 30/30 genuine acquired catalog partitions exact parity; full suite 709 passed / 0 failed in 1375 s. Pinned rust-toolchain.toml (1.100.0) and a CI rust job building with --locked, running cargo test and the parity harness."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {
@@ -104,8 +106,8 @@
     "current_task": "raptorbt_execution",
     "publication_identity": "Resolve git HEAD and verify the authorized remote branch; last_remote_commit records the last independently observed remote before this checkpoint was committed.",
     "runtime": "6 vCPU / 11 GiB development host, not the 4 vCPU / 8 GiB target Contabo envelope. Target-envelope evidence must be measured under enforced limits.",
-    "services": "Hermes WebUI on port 8787 left running and untouched. No acquisition supervisor is running; the catalog is complete for 2025-01 through 2026-10.",
-    "state": "QUEUED",
+    "services": "Hermes WebUI on port 8787 left running and untouched. No acquisition supervisor is running; the catalog is complete for 2025-01 through 2026-10. Rust toolchain 1.100.0 and gcc installed 2026-11-12.",
+    "state": "IMPLEMENTING",
     "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume."
   },
   "goal_source": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
@@ -117,14 +119,14 @@
     "frontend_build": "PASS",
     "frontend_check": "PASS",
     "lint": "PASS",
-    "log": "reports/runtime/test-results.xml",
-    "passed": 684,
-    "pytest_seconds": 1305.452,
+    "log": "pytest -q (full suite, 2026-11-12)",
+    "passed": 709,
+    "pytest_seconds": 1375.37,
     "skipped": 0,
-    "warnings": 0
+    "warnings": 482
   },
-  "latest_evidence_manifest": "reports/milestones/historical-screen-cohorts/manifest.json",
-  "latest_milestone": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
+  "latest_evidence_manifest": "docs/milestone-raptor-engine-parity-2026-11-12.md",
+  "latest_milestone": "docs/milestone-raptor-engine-parity-2026-11-12.md",
   "latest_scientific_code_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
   "latest_verification": {
     "failed": 0,
@@ -154,8 +156,8 @@
       "api.github.com"
     ]
   },
-  "next_unfinished": "Begin Phase 1 of the 2026-11-12 owner directive: scaffold the RaptorBT-derived Rust execution crate, port the exact bid/ask pricing, bracket and accounting semantics from factory/simulation/, and prove parity against the frozen Nautilus goldens before any Nautilus removal. Then continue Phase 2 native data access, Phase 3 dynamic M1-D1 features, Phase 4 tick index, Phase 5 Rust generator, Phase 6 strict 50% qualification, Phase 7 remaining data/scientific evidence, Phase 8 operations/dashboard and Phase 9 whole-system acceptance. Twelve new gates R01-R12 are NOT_TESTED.",
-  "observed_at_utc": "2026-11-12T19:02:44.029792+00:00",
+  "next_unfinished": "Phase 1 in progress: the Rust execution engine is built and reproduces the Python reference exactly on generated fixtures (100/100 EURUSD, 240/240 and 800/800 all-instrument). Remaining for R01-R03: genuine acquired historical partitions, partial fills, cancellation races, safety closes, fee accounting, and determinism across restart and batch sizes. Then freeze the Nautilus goldens and write the migration parity report. After that, Phase 2 native data access, Phase 3 dynamic M1-D1 features, Phase 4 tick index, Phase 5 Rust generator, Phase 6 strict 50% qualification, Phase 7 remaining data/scientific evidence, Phase 8 operations/dashboard, Phase 9 whole-system acceptance.",
+  "observed_at_utc": "2026-11-12T20:39:38.411052+00:00",
   "publication": {
     "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
     "branch": "build/initial-factory",

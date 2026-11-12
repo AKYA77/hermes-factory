@@ -15,5 +15,6 @@ dist/
 *.egg-info/
 reports/test-results.xml
 reports/benchmark-report.json
+/rust/target/
 
 /benchmark-report.json

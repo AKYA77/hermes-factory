@@ -21,3 +21,17 @@ becomes a migration target rather than the permanent matching engine; dynamic
 M1–D1 selection, one accurate pipeline, a strict 50% gate and a native Rust
 generator are now mandated. No gate is claimed passed and no readiness state
 changes.
+
+### 2026-11-12 — Phase 1 Rust execution engine, exact parity
+
+Added `rust/raptor-engine/`: a from-scratch Rust execution engine with
+arbitrary-precision rational arithmetic, exact bid/ask pricing, the 2-pip
+spread floor plus separate 2-pip adverse slippage, risk-based sizing and
+sequential bracket replay. `scripts/parity_raptor_engine.py` proves it
+reproduces the Python reference exactly — 100/100 EURUSD, 240/240 and 800/800
+all-instrument generated fixtures, comparing prices, quote indices, roles,
+flags, exit reasons, sizes and P&L as exact rationals. Six real defects were
+found and fixed, including a silently wrapping `i128` rational comparison and an
+off-by-one in 28-significant-digit rounding. R01–R03 gain scoped evidence and
+remain `NOT_TESTED`; NautilusTrader is not removed. See
+`docs/milestone-raptor-engine-parity-2026-11-12.md`.

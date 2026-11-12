@@ -2,7 +2,7 @@
   "audited_head": "6a5bbe05a5575c7e71a936845eaaa098aa151503",
   "authority_sha256": "33d51494869462c9cfd54b9c1dbb267316a169e268fde9a1aa1f8f7328bc384e",
   "goal": "Lean RaptorBT strategy research factory - Owner Final Directive 2026-11-12",
-  "latest_checkpoint": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
+  "latest_checkpoint": "docs/milestone-raptor-engine-parity-2026-11-12.md",
   "latest_verified_source": {
     "git_commit": "6a5bbe05a5575c7e71a936845eaaa098aa151503",
     "source_sha256": "e62800548028fe7049db1fb0bd0c9fb3c97ca64e009855816a1745773e2ef3a0",
@@ -27,7 +27,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json",
-        "reports/milestones/2026-11-04-strategy-families/manifest.json"
+        "reports/milestones/2026-11-04-strategy-families/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/contracts/__init__.py",
@@ -47,7 +48,8 @@
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/shared-indicators/manifest.json"
+        "reports/milestones/shared-indicators/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/contracts/__init__.py",
@@ -68,7 +70,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "tests/recovery/test_process_kill_recovery.py",
-        "tests/recovery/test_supervision.py"
+        "tests/recovery/test_supervision.py",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -133,7 +136,8 @@
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/2026-11-04-import-resume/manifest.json"
+        "reports/milestones/2026-11-04-import-resume/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -160,7 +164,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/2026-11-04-import-resume/manifest.json",
-        "reports/milestones/2026-11-04-import-staging/manifest.json"
+        "reports/milestones/2026-11-04-import-staging/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -188,7 +193,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/2026-11-04-strategy-families/manifest.json",
-        "reports/milestones/shared-indicators/manifest.json"
+        "reports/milestones/shared-indicators/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -215,7 +221,8 @@
       "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -242,7 +249,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -269,7 +277,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -296,7 +305,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -323,7 +333,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -351,7 +362,8 @@
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "docs/milestone-historical-screen-cohorts.md"
+        "docs/milestone-historical-screen-cohorts.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -378,7 +390,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -405,7 +418,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -428,7 +442,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -451,7 +466,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -519,7 +535,8 @@
         "reports/milestones/screen-fallback/manifest.json",
         "reports/milestones/frozen-screen-cohorts/manifest.json",
         "reports/milestones/historical-shadow/manifest.json",
-        "docs/milestone-historical-screen-cohorts.md"
+        "docs/milestone-historical-screen-cohorts.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -548,7 +565,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/2026-11-04-strategy-families/manifest.json",
-        "reports/milestones/autonomous-discovery/manifest.json"
+        "reports/milestones/autonomous-discovery/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -575,7 +593,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/contracts/__init__.py",
@@ -594,7 +613,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -661,7 +681,8 @@
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/autonomous-discovery/manifest.json",
         "reports/milestones/screen-fallback/manifest.json",
-        "reports/milestones/frozen-screen-cohorts/manifest.json"
+        "reports/milestones/frozen-screen-cohorts/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -689,7 +710,8 @@
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "tests/recovery/test_restore_rehearsal.py"
+        "tests/recovery/test_restore_rehearsal.py",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -754,7 +776,8 @@
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "tests/recovery/test_restore_rehearsal.py"
+        "tests/recovery/test_restore_rehearsal.py",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -818,7 +841,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/soak/enforced-soak-report.json"
+        "reports/soak/enforced-soak-report.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -882,7 +906,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -905,7 +930,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -929,7 +955,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/contracts/__init__.py",
@@ -948,7 +975,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1012,7 +1040,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/contracts/__init__.py",
@@ -1033,7 +1062,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "scripts/source_to_restore_rehearsal.py",
-        "tests/integration/test_source_to_restore_rehearsal.py"
+        "tests/integration/test_source_to_restore_rehearsal.py",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1097,7 +1127,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -1124,7 +1155,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -1153,7 +1185,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/2026-11-04-strategy-families/manifest.json",
-        "reports/milestones/shared-indicators/manifest.json"
+        "reports/milestones/shared-indicators/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -1183,7 +1216,8 @@
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/autonomous-discovery/manifest.json",
         "reports/milestones/screen-fallback/manifest.json",
-        "reports/milestones/frozen-screen-cohorts/manifest.json"
+        "reports/milestones/frozen-screen-cohorts/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -1210,7 +1244,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1275,7 +1310,8 @@
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/shared-indicators/manifest.json"
+        "reports/milestones/shared-indicators/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -1302,7 +1338,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -1326,7 +1363,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -1350,7 +1388,8 @@
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "docs/milestone-historical-screen-cohorts.md"
+        "docs/milestone-historical-screen-cohorts.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -1380,7 +1419,8 @@
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/autonomous-discovery/manifest.json",
         "reports/milestones/screen-fallback/manifest.json",
-        "reports/milestones/frozen-screen-cohorts/manifest.json"
+        "reports/milestones/frozen-screen-cohorts/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -1407,7 +1447,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1471,7 +1512,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -1496,7 +1538,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
         "reports/milestones/2026-11-04-historical-protocols/manifest.json",
-        "reports/milestones/2026-11-04-strategy-families/manifest.json"
+        "reports/milestones/2026-11-04-strategy-families/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -1519,7 +1562,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -1547,7 +1591,8 @@
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/autonomous-discovery/manifest.json"
+        "reports/milestones/autonomous-discovery/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -1574,7 +1619,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -1601,7 +1647,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/diagnostics/__init__.py",
@@ -1628,7 +1675,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1693,7 +1741,8 @@
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
-        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/ranking/__init__.py",
@@ -1716,7 +1765,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -1740,7 +1790,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -1764,7 +1815,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/__init__.py",
@@ -1788,7 +1840,8 @@
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
-        "reports/milestones/2026-11-04-source-recovery-search/manifest.json"
+        "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/coordinator/__init__.py",
@@ -1816,7 +1869,8 @@
       "evidence": [
         "development-state.json",
         "release-manifest.json",
-        "docs/security-advisories-2026-11-07.md"
+        "docs/security-advisories-2026-11-07.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -1920,7 +1974,8 @@
       "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2026,7 +2081,8 @@
         "release-manifest.json",
         "reports/milestones/2026-11-04-historical-protocols/manifest.json",
         "reports/milestones/2026-11-04-import-resume/manifest.json",
-        "reports/milestones/2026-11-04-import-staging/manifest.json"
+        "reports/milestones/2026-11-04-import-staging/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2132,7 +2188,8 @@
       "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2243,7 +2300,8 @@
         "reports/milestones/screen-fallback/manifest.json",
         "reports/milestones/frozen-screen-cohorts/manifest.json",
         "reports/milestones/historical-shadow/manifest.json",
-        "docs/milestone-historical-screen-cohorts.md"
+        "docs/milestone-historical-screen-cohorts.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2347,7 +2405,8 @@
       "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2452,7 +2511,8 @@
         "development-state.json",
         "release-manifest.json",
         "reports/milestones/2026-11-04-historical-protocols/manifest.json",
-        "reports/milestones/2026-11-04-strategy-families/manifest.json"
+        "reports/milestones/2026-11-04-strategy-families/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2559,7 +2619,8 @@
         "release-manifest.json",
         "reports/milestones/autonomous-discovery/manifest.json",
         "reports/milestones/screen-fallback/manifest.json",
-        "reports/milestones/frozen-screen-cohorts/manifest.json"
+        "reports/milestones/frozen-screen-cohorts/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2665,7 +2726,8 @@
         "development-state.json",
         "release-manifest.json",
         "reports/milestones/2026-11-04-import-staging/manifest.json",
-        "docs/security-advisories-2026-11-07.md"
+        "docs/security-advisories-2026-11-07.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2771,7 +2833,8 @@
       "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
       "evidence": [
         "development-state.json",
-        "release-manifest.json"
+        "release-manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "apps/api/__init__.py",
@@ -2873,7 +2936,8 @@
       "acceptance_criteria": "Unknown/ambiguous metadata blocks; exact captured reference and source scope permits approved execution; revoked or changed dependencies block finalization. Genuine historical market rehearsal required separately.",
       "evidence": [
         "reports/milestones/2026-11-04-reviewed-inputs/manifest.json",
-        "reports/milestones/2026-11-04-historical-protocols/manifest.json"
+        "reports/milestones/2026-11-04-historical-protocols/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/admission.py",
@@ -2894,7 +2958,8 @@
       "evidence": [
         "reports/milestones/2026-11-04-source-revisions/manifest.json",
         "reports/milestones/2026-11-04-import-resume/manifest.json",
-        "reports/milestones/2026-11-04-import-staging/manifest.json"
+        "reports/milestones/2026-11-04-import-staging/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/data/versions.py",
@@ -2919,7 +2984,8 @@
         "reports/milestones/screen-fallback/manifest.json",
         "reports/milestones/frozen-screen-cohorts/manifest.json",
         "reports/milestones/historical-shadow/manifest.json",
-        "docs/milestone-historical-screen-cohorts.md"
+        "docs/milestone-historical-screen-cohorts.md",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/screening/labels.py",
@@ -2937,7 +3003,8 @@
     {
       "acceptance_criteria": "Distinct finite exact decimal inputs do not collide by arithmetic-context rounding; insignificant padding and correctly representable old IDs remain stable; oversized expansion fails before allocation.",
       "evidence": [
-        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json"
+        "reports/milestones/2026-11-04-cost-shadow-decimal-identity/manifest.json",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [
         "factory/contracts/__init__.py",
@@ -2955,12 +3022,20 @@
       "acceptance_criteria": "One production Rust engine processes exact historical bid/ask quotes for long and short strategies with correct executable-side entry and exit prices, quote-event order including equal timestamps, order states, partial fills, cancellations, deadlines, safety exits, gaps, fees, currency conversion, sizing, margin, equity and drawdown, and no manufactured last-traded-price events.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
-      "implementation_files": [],
-      "next_required_action": "Not started: no Rust execution subsystem exists at the directive commit; matching is Nautilus-owned.",
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
+      "implementation_files": [
+        "rust/raptor-engine/src/lib.rs",
+        "rust/raptor-engine/src/main.rs",
+        "rust/raptor-engine/Cargo.toml",
+        "scripts/parity_raptor_engine.py",
+        "scripts/parity_raptor_genuine.py"
+      ],
+      "next_required_action": "Implement partial fills, cancellation races, safety closes and fee accounting, then re-verify against verified broker profiles before claiming R01.",
       "requirement_id": "R01",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Not started: no Rust execution subsystem exists at the directive commit; matching is Nautilus-owned.",
+      "supporting_evidence_scope": "Implemented and parity-verified on generated fixtures (100/100 EURUSD, 240/240 and 800/800 all-instrument) and on 30 genuine acquired catalog partitions read through the production Catalog API. Exact match on prices, quote indices, roles, flags, exit reasons, sizes and rational P&L. Partial fills, cancellations, safety exits, fees, drawdown and verified broker profiles are not yet implemented or verified.",
       "title": "RaptorBT-based Rust execution engine",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
@@ -2968,12 +3043,18 @@
       "acceptance_criteria": "Frozen Nautilus golden results plus independent reference calculations are reproduced by the Rust engine across genuine historical periods, batch sizes and restarts; a complete parity and discrepancy report is recorded; only then is NautilusTrader removed from active code, dependencies, tests, installers and documentation.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
-      "implementation_files": [],
-      "next_required_action": "Not started: NautilusTrader 1.231.0 remains the matching engine in 27 files.",
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
+      "implementation_files": [
+        "scripts/parity_raptor_engine.py",
+        "docs/milestone-raptor-engine-parity-2026-11-12.md",
+        "scripts/parity_raptor_genuine.py"
+      ],
+      "next_required_action": "Freeze the Nautilus golden results, run parity across restart and batch sizes and against verified broker profiles, then write the complete parity and discrepancy report.",
       "requirement_id": "R02",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Not started: NautilusTrader 1.231.0 remains the matching engine in 27 files.",
+      "supporting_evidence_scope": "Parity harness passing on generated fixtures (240/240 and 800/800 exact, all eight instruments, two seeds) and on 30 genuine acquired catalog partitions. Not the required migration report: Nautilus goldens are not frozen, verified broker profiles are not used, determinism across restart and batch sizes is untested, and NautilusTrader remains installed.",
       "title": "NautilusTrader migration parity",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
@@ -2981,12 +3062,17 @@
       "acceptance_criteria": "Exact 2-pip minimum effective spread with wider observed spreads preserved, separate 2-pip adverse slippage on eligible market and stop-market fills, correct outward tick-grid rounding, and distinct limit-order behaviour, verified for Forex pairs, JPY pairs and XAUUSD.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
-      "implementation_files": [],
-      "next_required_action": "Existing Python semantics implemented and tested; Rust reproduction not started. Spread floor and slippage remain separate charges.",
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
+      "implementation_files": [
+        "rust/raptor-engine/src/lib.rs",
+        "scripts/parity_raptor_engine.py"
+      ],
+      "next_required_action": "Re-verify the cost model against declared/real instrument profiles and genuine acquired partitions, including the Gold 0.001 grid and JPY conversion.",
       "requirement_id": "R03",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Existing Python semantics implemented and tested; Rust reproduction not started. Spread floor and slippage remain separate charges.",
+      "supporting_evidence_scope": "Exact 2-pip spread floor with wider-spread preservation, separate 2-pip adverse slippage on market and stop-market fills, outward tick rounding and distinct limit behaviour are reproduced by the Rust engine and parity-verified for all eight synthetic profiles (including the JPY and 0.001 Gold grids) and on genuine acquired partitions under declared source-measured profiles. Verified broker profiles and source-accepted partitions are not yet used.",
       "title": "Pessimistic cost semantics preserved",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
@@ -2994,7 +3080,9 @@
       "acceptance_criteria": "Indexed execution equals complete sequential quote replay on entry and exit event/timestamp, direction, stop/target ordering, execution prices, spread, slippage, fees, account P&L, trade count, MFE/MAE, deadline and gap behaviour, determinism and complete historical coverage; unsupported or ambiguous cases fall back to sequential replay or are reported unresolved.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Not started: no first-crossing index exists.",
       "requirement_id": "R04",
@@ -3007,7 +3095,9 @@
       "acceptance_criteria": "Each strategy evaluates only the smallest timeframe it actually requires plus its confirmed higher timeframes, with completed candles only, no look-ahead, and no complete M1 loop forced on higher-timeframe strategies.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Partial: shared closed-bar operators and seven timeframes exist; per-strategy timeframe selection is not implemented.",
       "requirement_id": "R05",
@@ -3020,7 +3110,9 @@
       "acceptance_criteria": "Generation, signal compilation, exact indexed or sequential execution, verified evaluation and qualification form one pipeline; approximate OHLC results are never authoritative grounds to prune; independent scientific validation remains mandatory.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Partial: an approximate screen cohort path still exists and must be demoted to a non-pruning screen.",
       "requirement_id": "R06",
@@ -3033,7 +3125,9 @@
       "acceptance_criteria": "Verified win rate of at least 50.00% after applicable costs, applied separately per instrument with adequate trade count; exactly 50.00% passes; qualification is rechecked after any execution-model or data change; rejected candidates remain in the evidence database.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Not started: no absolute win-rate gate is enforced.",
       "requirement_id": "R07",
@@ -3046,7 +3140,9 @@
       "acceptance_criteria": "A typed declarative grammar covers the nine strategy families with parameter variants, lookbacks, thresholds, long and short signals, independent confirmations, M1-D1 combinations, rule combinations, bounded structural mutation, parameter mutation, controlled crossover, exact semantic fingerprints, deduplication and measured novelty, evaluated in batches with shared caches.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Not started: generation is Python/Optuna; no native generator exists.",
       "requirement_id": "R08",
@@ -3059,7 +3155,9 @@
       "acceptance_criteria": "An explicitly approved complete 24-month window per instrument, source-quality accepted, with no invented or misaligned periods.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Partial: 22 months (2025-01 to 2026-10) are structurally imported for all eight instruments; 2024-11 and 2024-12 are missing and no partition is source-accepted.",
       "requirement_id": "R09",
@@ -3072,7 +3170,9 @@
       "acceptance_criteria": "No Python row materialization or per-event Python object creation in performance-critical historical research; bounded native numeric buffers; measured improvement with exact round-trip identity to the canonical quote stream.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Not started: factory/data/__init__.py still uses to_pylist() on important paths.",
       "requirement_id": "R10",
@@ -3085,7 +3185,9 @@
       "acceptance_criteria": "Real measurements on the target 4-vCPU / 8-GiB envelope of generated variants, unique concepts, signal conditions, sequential and indexed evaluations, eight-instrument concepts, CPU and wall time, peak RAM, disk I/O, cache hit/miss, index construction cost and recovery cost.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Not started: no target-envelope benchmark has been run; the development host is larger than the target.",
       "requirement_id": "R11",
@@ -3098,7 +3200,9 @@
       "acceptance_criteria": "Pinned toolchain, committed Cargo.lock, CI builds the Rust components, and a clean checkout rebuilds deterministically.",
       "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
-      "evidence": [],
+      "evidence": [
+        "docs/milestone-raptor-engine-parity-2026-11-12.md"
+      ],
       "implementation_files": [],
       "next_required_action": "Not started: the Rust toolchain was installed 2026-11-12 and no crate exists.",
       "requirement_id": "R12",
