@@ -5,13 +5,56 @@ https://github.com/AKYA77/hermes-factory/pull/1. The owner authorizes each teste
 milestone commit/push and exact-SHA PR/CI verification. No merge, repository
 visibility change, production deployment, release tag or readiness claim.
 
-Read AGENTS.md, the complete authority/blueprint and latest owner directive:
+Read the latest owner directive first:
+`docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md` (ADR 0071), then
+AGENTS.md, the complete authority/blueprint and
 `docs/source/Continuous_Autonomous_Completion_Loop.md`. Then inspect Git HEAD/tree,
 completion-ledger.json, development-state.json, implementation-queue.json and run:
 `.venv/bin/python scripts/completion-queue.py`. Continue without asking what to do.
 Scoped task verification never implies its parent gates pass. Final reconciliation
-explicitly maps every one of the 67 requirements; none may disappear behind a
-scoped checkpoint. SOFTWARE_VERIFIED/DATA_READY/OPERATION_READY remain false.
+explicitly maps every one of the 79 requirements (67 original plus R01–R12); none may
+disappear behind a scoped checkpoint. SOFTWARE_VERIFIED/DATA_READY/OPERATION_READY
+remain false.
+
+## Owner directive 2026-11-12 — Phase 0 complete
+
+The owner's latest design directive is recorded at
+`docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md` with ADR 0071 and the
+measured inventory at `docs/inventory-2026-11-12.md`. It supersedes the
+NautilusTrader matching mandate, the blanket M1 signal loop, the two-stage
+approximate-then-full backtest and the absence of an absolute win-rate gate.
+
+Phase 0 deliverables in this commit:
+
+- Versioned owner amendment, ADR 0071 and measured VPS/repository inventory.
+- Twelve new acceptance requirements R01–R12 added to `completion-ledger.json`
+  (79 total: 6 `PASS`, 73 `NOT_TESTED`). None is claimed passed.
+- New queue task `raptorbt_execution` (priority 25) owns R01–R12 and is the
+  selected next task.
+- `ARCHITECTURE.md` now carries the target architecture with the historical
+  description retained below it.
+
+Measured facts that change the plan:
+
+- Catalog holds **182** partition manifests, 8 instruments × 22 months
+  (2025-01 → 2026-10). **2024-11 and 2024-12 are missing for all eight
+  instruments** — 16 partitions, not a full re-download.
+- No partition is source-accepted; all remain
+  `STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED`. `DATA_READY` stays false.
+- Host is 6 vCPU / 11 GiB, larger than the 4 vCPU / 8 GiB target; target-envelope
+  evidence must be measured under enforced limits.
+- **No Rust toolchain existed.** `rustc 1.100.0` / `cargo 1.100.0` were installed
+  on 2026-11-12; the toolchain must be pinned and CI-built (R12).
+
+**Next action:** begin Phase 1 — scaffold the RaptorBT-derived Rust execution
+crate, port the exact bid/ask pricing and bracket semantics from
+`factory/simulation/`, and prove parity against the frozen Nautilus goldens
+before any Nautilus removal.
+
+**Known blocker:** `AGENTS.md` is write-protected in this environment; the
+approval prompt timed out, so the builder contract still names NautilusTrader as
+the matching engine. The new directive and `ARCHITECTURE.md` carry the governing
+text. Owner action is required to update `AGENTS.md` itself.
 
 ## Environment change observed this session
 

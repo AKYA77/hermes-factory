@@ -95,19 +95,20 @@
     "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification",
     "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification",
     "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification",
-    "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification"
+    "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification",
+    "ADR0071 owner Lean RaptorBT directive 2026-11-12: versioned amendment, measured VPS/repository inventory, twelve new acceptance gates R01-R12 (79 total, 6 PASS / 73 NOT_TESTED), queue task raptorbt_execution, architecture/handoff updates. No gate claimed passed; readiness states unchanged."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {
     "controller": "scripts/completion-queue.py",
-    "current_task": "safe_screening",
+    "current_task": "raptorbt_execution",
     "publication_identity": "Resolve git HEAD and verify the authorized remote branch; last_remote_commit records the last independently observed remote before this checkpoint was committed.",
-    "runtime": "4 CPU quota / 32GiB environment, not the target 8GiB host. API/full pytest requires unsandboxed execution because TestClient hangs under sandbox networking.",
-    "services": "Only isolated generated loopback development fixtures. Latest cohort fixture .local/screen-cohort-browser-final API8099 and coordinator remain paused after browser verification. Grants are source-revision-bound and become stale on commit.",
-    "state": "IMPLEMENTING",
+    "runtime": "6 vCPU / 11 GiB development host, not the 4 vCPU / 8 GiB target Contabo envelope. Target-envelope evidence must be measured under enforced limits.",
+    "services": "Hermes WebUI on port 8787 left running and untouched. No acquisition supervisor is running; the catalog is complete for 2025-01 through 2026-10.",
+    "state": "QUEUED",
     "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume."
   },
-  "goal_source": "docs/source/Continuous_Autonomous_Completion_Loop.md",
+  "goal_source": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
   "implementation_queue": "implementation-queue.json",
   "last_remote_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
   "last_verification": {
@@ -123,7 +124,7 @@
     "warnings": 0
   },
   "latest_evidence_manifest": "reports/milestones/historical-screen-cohorts/manifest.json",
-  "latest_milestone": "docs/milestone-historical-screen-cohorts.md",
+  "latest_milestone": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
   "latest_scientific_code_commit": "71dd1c317788d88bbd6d8dad99db4b8ae0e6be96",
   "latest_verification": {
     "failed": 0,
@@ -153,8 +154,8 @@
       "api.github.com"
     ]
   },
-  "next_unfinished": "Continue the dependency-aware queue from safe_screening: the full source-to-restore historical rehearsal over genuine acquired data, then recursive diagnostics, global qualification, source/profile/refresh/storage/data APIs, full dashboard, installed provenance/systemd/update/rollback/backup/restore, security remediation and release/Hermes handoff. Worker-native prospective diagnostics, screening comparability and selection safeguards are implemented. Historical acquisition is running under owner authorization and is blocked only by the quarantined non-monotonic partitions, which need an owner correction policy.",
-  "observed_at_utc": "2026-11-10T14:43:34.050156+00:00",
+  "next_unfinished": "Begin Phase 1 of the 2026-11-12 owner directive: scaffold the RaptorBT-derived Rust execution crate, port the exact bid/ask pricing, bracket and accounting semantics from factory/simulation/, and prove parity against the frozen Nautilus goldens before any Nautilus removal. Then continue Phase 2 native data access, Phase 3 dynamic M1-D1 features, Phase 4 tick index, Phase 5 Rust generator, Phase 6 strict 50% qualification, Phase 7 remaining data/scientific evidence, Phase 8 operations/dashboard and Phase 9 whole-system acceptance. Twelve new gates R01-R12 are NOT_TESTED.",
+  "observed_at_utc": "2026-11-12T19:02:44.029792+00:00",
   "publication": {
     "authorization": "Owner explicitly requested publishing the existing completed work on 2026-11-04",
     "branch": "build/initial-factory",
@@ -189,10 +190,7 @@
     13,
     14,
     15,
-    16,
-    17,
-    18,
-    19
+    16
   ],
   "resume_instructions": "NEXT_ACTION.md",
   "security": {
@@ -221,10 +219,10 @@
     "updated_utc": "2026-11-07"
   },
   "state": "IMPLEMENTING_NOT_READY",
-  "task": "Full SOFTWARE_VERIFIED completion mandate",
+  "task": "Lean RaptorBT strategy research factory - owner final directive 2026-11-12",
   "verified_source_tree": {
-    "git_commit": "4ea36e40d781c9dec555d42a1e919e027792a818",
-    "source_sha256": "da12e322ed56ae57af9c0ef3f3a3afce2c4eb2f5617a152d4d832c120581a858"
+    "git_commit": "6a5bbe05a5575c7e71a936845eaaa098aa151503",
+    "source_sha256": "e62800548028fe7049db1fb0bd0c9fb3c97ca64e009855816a1745773e2ef3a0"
   },
   "visibility": {
     "current": "PUBLIC",

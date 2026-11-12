@@ -42,6 +42,32 @@
       "evidence": "docs/milestone-shared-indicators.md"
     },
     {
+      "id": "raptorbt_execution",
+      "priority": 25,
+      "requirements": [
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12"
+      ],
+      "state": "QUEUED",
+      "work_kind": [
+        "implementation",
+        "integration",
+        "verification"
+      ],
+      "next_action": "Phase 0 complete: authority amendment, inventory, queue and acceptance updated. Begin Phase 1: install the pinned Rust toolchain, scaffold the RaptorBT-derived execution crate, port the exact bid/ask pricing and bracket semantics from factory/simulation/, and prove parity against the frozen Nautilus goldens before any removal.",
+      "evidence": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md"
+    },
+    {
       "id": "safe_screening",
       "priority": 30,
       "requirements": [
@@ -270,7 +296,19 @@
         "T54",
         "T55",
         "T56",
-        "T57"
+        "T57",
+        "R01",
+        "R02",
+        "R03",
+        "R04",
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10",
+        "R11",
+        "R12"
       ],
       "state": "QUEUED",
       "work_kind": [
@@ -278,7 +316,7 @@
         "integration",
         "verification"
       ],
-      "next_action": "Reconcile every blueprint gate after scoped work; execute source-to-restore genuine/reference integration, reproducible packaging, current-source evidence and Hermes handoff."
+      "next_action": "Reconcile every blueprint gate after scoped work, including the R01-R12 RaptorBT/indexed-execution/50%-gate/Rust-generator/performance gates from the 2026-11-12 owner directive; execute source-to-restore genuine/reference integration, reproducible packaging, current-source evidence and Hermes handoff."
     }
   ]
 }

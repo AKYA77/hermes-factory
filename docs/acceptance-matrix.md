@@ -126,3 +126,25 @@ legacy JSON/IDs. Generated hand/7-timeframe/sparse-MTF/native/offline-worker and
 refit evidence pass within a463-test full suite. No full autonomous new-region
 discovery, calibrated shared-indicator funnel, global validation, complete GUI or
 historical performance is certified from this scoped implementation.
+
+## Owner directive gates 2026-11-12 (ADR 0071)
+
+Added by the owner's latest directive. None is `PASS`; every one is
+`NOT_TESTED` in `completion-ledger.json`. No original requirement is removed or
+weakened. See `docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md` §13
+and `docs/inventory-2026-11-12.md`.
+
+| ID | Requirement | Current evidence / remaining work |
+|---|---|---|
+| R01 | RaptorBT-based Rust execution engine | NOT_TESTED — no Rust execution subsystem exists at the directive commit; matching is Nautilus-owned |
+| R02 | NautilusTrader migration parity | NOT_TESTED — NautilusTrader 1.231.0 remains the matching engine in 27 files; no parity report exists |
+| R03 | Pessimistic cost semantics preserved | NOT_TESTED in Rust — Python semantics implemented and tested; exact 2-pip floor plus separate 2-pip slippage must be reproduced and verified |
+| R04 | TickFirstHitIndex exact equivalence | NOT_TESTED — no first-crossing index exists |
+| R05 | Dynamic M1–D1 signal selection | NOT_TESTED — shared closed-bar operators exist; per-strategy smallest-timeframe selection is not implemented |
+| R06 | One accurate testing pipeline | NOT_TESTED — an approximate screen cohort path still exists and must be demoted to a non-pruning screen |
+| R07 | Strict 50% win-rate qualification gate | NOT_TESTED — no absolute win-rate gate is enforced |
+| R08 | Native Rust strategy generator | NOT_TESTED — generation is Python/Optuna; no native generator exists |
+| R09 | Verified 24-month historical coverage | NOT_TESTED — 22 months (2025-01 → 2026-10) structurally imported for all eight instruments; 2024-11 and 2024-12 missing; no partition source-accepted |
+| R10 | Native data-access optimization | NOT_TESTED — `factory/data/__init__.py` still materializes Python rows via `to_pylist()` on important paths |
+| R11 | Target-envelope performance evidence | NOT_TESTED — no 4-vCPU / 8-GiB benchmark has been run; the development host is 6 vCPU / 11 GiB |
+| R12 | Rust build reproducibility | NOT_TESTED — toolchain installed 2026-11-12 (`rustc 1.100.0`); no crate or `Cargo.lock` exists |

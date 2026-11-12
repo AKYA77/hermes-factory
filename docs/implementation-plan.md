@@ -27,6 +27,16 @@ Most recent actual evidence:
 - development-state.json, NEXT_ACTION.md, completion-ledger.json and hashed
   reports/milestones manifests: current continuation and verification boundaries.
 
+**Owner directive 2026-11-12 (ADR 0071)** supersedes the execution and
+multi-timeframe design: one RaptorBT-derived Rust engine replaces NautilusTrader
+after verified parity, signals are selected dynamically across M1–D1, one
+accurate testing pipeline replaces the approximate-then-full double backtest, a
+strict 50% verified win-rate gate applies per instrument, and a native Rust
+strategy generator is added. Twelve new gates R01–R12 are recorded in
+`completion-ledger.json` and `docs/acceptance-matrix.md`; the queue task
+`raptorbt_execution` owns them. Measured inventory:
+`docs/inventory-2026-11-12.md`.
+
 Next implement the remaining calibrated funnel/shared indicator/family discovery
 and historical scientific propagation, while finishing source resume/UI and the
 full diagnostic/product/lifecycle gates. Genuine reference verification remains
