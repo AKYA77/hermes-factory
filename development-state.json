@@ -100,7 +100,8 @@
     "RaptorBT-derived Rust execution engine (rust/raptor-engine/) with exact rational arithmetic and sequential bracket replay; parity harness scripts/parity_raptor_engine.py reproduces the Python reference exactly on 100/100 EURUSD, 240/240 and 800/800 all-instrument generated fixtures. R01-R03 gain scoped evidence and remain NOT_TESTED; NautilusTrader not removed.",
     "Phase 1 Rust engine: 30/30 genuine acquired catalog partitions exact parity; full suite 709 passed / 0 failed in 1375 s. Pinned rust-toolchain.toml (1.100.0) and a CI rust job building with --locked, running cargo test and the parity harness.",
     "Phase 1 pushed and CI-verified at 62182c21bf58901deb3de1b22536a02fed98dd3a: audit, dashboard, python and the new rust context all pass; the rust job ran cargo test (2 passed) and scripts/parity_raptor_engine.py (200/200).",
-    "R02 migration parity report: NautilusTrader 1.231.0 goldens frozen over a fixed 240-case corpus and reproduced exactly by the Rust engine (240/240); docs/milestone-raptor-migration-parity-2026-11-12.md records the discrepancy report and the remaining migration-gate gaps."
+    "R02 migration parity report: NautilusTrader 1.231.0 goldens frozen over a fixed 240-case corpus and reproduced exactly by the Rust engine (240/240); docs/milestone-raptor-migration-parity-2026-11-12.md records the discrepancy report and the remaining migration-gate gaps.",
+    "Frozen-golden migration evidence pushed and CI-verified at 4b119feb0a2490ea35f4fd98ee1469b9f7319561: audit, dashboard, python and rust all pass."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {
@@ -114,7 +115,7 @@
   },
   "goal_source": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
   "implementation_queue": "implementation-queue.json",
-  "last_remote_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
+  "last_remote_commit": "4b119feb0a2490ea35f4fd98ee1469b9f7319561",
   "last_verification": {
     "failed": 0,
     "format": "PASS",
@@ -129,7 +130,7 @@
   },
   "latest_evidence_manifest": "reports/raptor-migration-goldens.json",
   "latest_milestone": "docs/milestone-raptor-migration-parity-2026-11-12.md",
-  "latest_scientific_code_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
+  "latest_scientific_code_commit": "4b119feb0a2490ea35f4fd98ee1469b9f7319561",
   "latest_verification": {
     "failed": 0,
     "format": "PASS",
@@ -163,12 +164,12 @@
   "publication": {
     "authorization": "Owner directive 2026-11-12 authorizes each tested milestone push; no merge, visibility change or production deployment.",
     "branch": "build/initial-factory",
-    "latest_verified_development_commit": "62182c21bf58901deb3de1b22536a02fed98dd3a",
-    "observed_at_utc": "2026-11-12T21:17:53.093442+00:00",
+    "latest_verified_development_commit": "4b119feb0a2490ea35f4fd98ee1469b9f7319561",
+    "observed_at_utc": "2026-11-12T21:49:18.031416+00:00",
     "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
     "remote": "https://github.com/AKYA77/hermes-factory.git",
     "status": "COMPLETED_SOURCE_PUSHED_AND_CI_VERIFIED",
-    "verification": "git ls-remote matches local HEAD; CI contexts audit, dashboard, python, rust all pass; the rust job ran cargo test (2 passed) and the parity harness (200/200)."
+    "verification": "git ls-remote matches local HEAD; CI contexts audit, dashboard, python and rust all pass; the rust job builds with --locked, runs cargo test (2 passed), the 200-case parity harness and the frozen-golden verifier."
   },
   "readiness": {
     "DATA_READY": false,
