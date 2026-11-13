@@ -195,6 +195,25 @@ Two ways forward, both requiring an owner decision:
 NautilusTrader therefore stays installed and remains the reference. `R02` stays
 `NOT_TESTED`.
 
+### Inventory of what removal would touch
+
+Measured, not estimated:
+
+| Area | Count |
+|---|---|
+| `factory/` modules importing `nautilus_trader` | 8 (`operations/benchmark`, `operations/campaign`, `operations/feed_probe`, `operations/research_probe`, `simulation/ledger`, `simulation/nautilus`, `simulation/reconciliation`, `simulation/runner`) |
+| `factory/validation/evidence.py` | 1 |
+| Test files importing it | 9 |
+| Test functions in those files | 56 |
+| Scripts importing it | 4 (`benchmark-monetary.py`, `dependency_disposition.py`, `freeze_nautilus_goldens.py`, `parity_raptor_engine.py`) |
+| Declared dependency | `pyproject.toml:11` pins `nautilus_trader==1.231.0` |
+
+Note that `scripts/verify_raptor_goldens.py` regenerates cases and checks the
+Rust engine against the frozen artifact without invoking NautilusTrader, so the
+golden evidence survives removal. The direct parity harness
+(`parity_raptor_engine.py`), the restart harness and the genuine-partition
+harness all invoke the Nautilus-backed Python reference and would not.
+
 ## 6. Conclusion
 
 The Rust engine is a faithful reproduction of the reference execution semantics

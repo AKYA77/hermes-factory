@@ -105,7 +105,8 @@
     "Rust engine order-state machine: ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions, verified by the parity harness (240/240, 800/800, 30/30 genuine partitions) and the refrozen goldens (240/240).",
     "Rust engine partial fills against a finite eligible book: size-increment rounding before and after the book cap (Python round(binary64, precision) semantics), partial-entry bracket cancellation with safety close, repeated timeout re-submission, cancelled protection no longer triggering, quantity-weighted multi-fill exit price. Verified exact 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240.",
     "Phase 1c pushed and CI-verified at 97d99a1fc520e6516773905de02f9dc338b2dfab: order states and partial fills reproduced; 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240.",
-    "Resumable Rust replay: Replayer state serializes to JSON and restores exactly; --batch-size/--dump-state/--resume-from added. Restart/batch parity verified exact 240/240 (batch sizes 1/2/3/7/64 and cross-process restart at a quote boundary), each result also matching the Python reference. Closes migration-gate item 7."
+    "Resumable Rust replay: Replayer state serializes to JSON and restores exactly; --batch-size/--dump-state/--resume-from added. Restart/batch parity verified exact 240/240 (batch sizes 1/2/3/7/64 and cross-process restart at a quote boundary), each result also matching the Python reference. Closes migration-gate item 7.",
+    "Phase 1d pushed and CI-verified at 1d5219a55c3f75c7f15be59dcde42aaf4bff668c: resumable Replayer with --batch-size/--dump-state/--resume-from; restart/batch parity 240/240 plus 120/120 on a fresh seed; migration-gate item 7 closed."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {
@@ -119,7 +120,7 @@
   },
   "goal_source": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
   "implementation_queue": "implementation-queue.json",
-  "last_remote_commit": "97d99a1fc520e6516773905de02f9dc338b2dfab",
+  "last_remote_commit": "1d5219a55c3f75c7f15be59dcde42aaf4bff668c",
   "last_verification": {
     "failed": 0,
     "format": "PASS",
@@ -134,7 +135,7 @@
   },
   "latest_evidence_manifest": "reports/raptor-migration-goldens.json",
   "latest_milestone": "docs/milestone-raptor-migration-parity-2026-11-12.md",
-  "latest_scientific_code_commit": "97d99a1fc520e6516773905de02f9dc338b2dfab",
+  "latest_scientific_code_commit": "1d5219a55c3f75c7f15be59dcde42aaf4bff668c",
   "latest_verification": {
     "failed": 0,
     "format": "PASS",
@@ -168,12 +169,12 @@
   "publication": {
     "authorization": "Owner directive 2026-11-12 authorizes each tested milestone push; no merge, visibility change or production deployment.",
     "branch": "build/initial-factory",
-    "latest_verified_development_commit": "97d99a1fc520e6516773905de02f9dc338b2dfab",
-    "observed_at_utc": "2026-11-12T23:38:10.633364+00:00",
+    "latest_verified_development_commit": "1d5219a55c3f75c7f15be59dcde42aaf4bff668c",
+    "observed_at_utc": "2026-11-13T00:18:05.651146+00:00",
     "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
     "remote": "https://github.com/AKYA77/hermes-factory.git",
     "status": "COMPLETED_SOURCE_PUSHED_AND_CI_VERIFIED",
-    "verification": "git ls-remote matches local HEAD; CI contexts audit, dashboard, python, rust all pass; the rust job ran cargo test --release --locked (2 passed) and scripts/parity_raptor_engine.py --cases 200 --instrument all --seed 20261112 (200/200) plus scripts/verify_raptor_goldens.py (240/240)."
+    "verification": "git ls-remote matches local HEAD; CI contexts audit, dashboard, python, rust, dependency-review all pass. The rust job ran cargo build/test --release --locked, parity_raptor_engine.py --cases 200 (200/200), verify_raptor_goldens.py (240/240) and parity_raptor_restart.py --cases 120 (120/120). Full local Python suite 709 passed."
   },
   "readiness": {
     "DATA_READY": false,
@@ -224,7 +225,7 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Lean RaptorBT strategy research factory - owner final directive 2026-11-12",
   "verified_source_tree": {
-    "git_commit": "97d99a1fc520e6516773905de02f9dc338b2dfab",
+    "git_commit": "1d5219a55c3f75c7f15be59dcde42aaf4bff668c",
     "source_sha256": "3371f17eca7ec466e2dd8487566d26fce2ea89f6b908011a01e1f0855cc3758d"
   },
   "visibility": {
