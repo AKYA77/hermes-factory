@@ -582,6 +582,54 @@ Structural import is not calendar/source acceptance or DATA_READY.
 
 ## Exact next implementation
 
+### R07 — strict 50% post-cost win-rate gate (mapped, not started)
+
+Read this before writing code; it is the highest-priority unimplemented
+requirement and the queue's `raptorbt_execution` task owns it.
+
+**Where the gate belongs.** `factory/validation/protocol.py::qualify_forward`
+builds the status chain that ends in `QUALIFIED_FOR_FINAL`. It already computes
+`economic`, `confidence` (Wilson lower bound), Holm-adjusted p-values and an
+optional `targets` block. A hard win-rate gate belongs in that same chain: any
+fold whose verified win rate is below the threshold must prevent
+`QUALIFIED_FOR_FINAL`.
+
+**The win rate already exists and is already post-cost.**
+`summary_of(item)` → `outcome_summary(trades)` → `factory/reporting/__init__.py`
+sets `"win_rate": wins / len(pnl)`, where each trade's P&L comes from
+`factory/monetary.py::trade_pnl`, which reads the exact `pnl_exact` receipt.
+That receipt is the account-realized figure, i.e. net of any configured
+commission — so "after applicable costs" needs no new arithmetic.
+
+**Do not confuse it with the existing 0.7 check.** `protocol.py` compares
+`win_rate >= 0.7` only inside `targets` (`research_targets_met`), and that block
+is gated behind `criteria.require_research_targets`. It is an internal research
+target, not a qualification gate. R07's 50% floor is a separate, unconditional
+gate and must be added alongside, not by lowering 0.7.
+
+**Threshold semantics.** Exactly 50.00% passes — the comparison is `>=`, never
+`>`. Compare as an exact rational, not a float: build the fraction from
+`wins`/`trades` rather than trusting a binary64 division.
+
+**"Per instrument with adequate trade count."** Summaries are per fold, so the
+gate must be applied per fold and combined across folds for the protocol's
+instrument; `min_oos_closed_trades` and `min_annual_closed_trades` are the
+existing sample-size guards to reuse rather than inventing new ones.
+
+**"Rechecked after any execution-model or data change."** The natural trigger is
+the contract `code_revision` / dataset hash that `factory/provenance.py`
+already produces; a stored qualification must be re-evaluated when either moves.
+
+**"Rejected candidates remain in the evidence database."** Do not delete or hide
+failed candidates — `factory/experiments` already retains them; assert retention
+in the test.
+
+**Suggested shape:** a new `ValidationCriteria` field (e.g. `min_win_rate`,
+default `D("0.5")`, bounded `[0, 1]`), a `win_gate_passed` entry in the returned
+dict alongside `wilson_gate_passed` and `research_targets_met`, a failing status
+when any fold falls short, and tests covering exactly-50%, just-below-50%,
+below-50%-with-enough-trades, and retention of the rejected candidate.
+
 Remain in `safe_screening` (IMPLEMENTING). Historical cohort v2 policy, freeze,
 report, CLI, API and fenced-completion diagnostics are implemented and tested.
 Remaining in this task:
