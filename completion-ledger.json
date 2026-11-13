@@ -439,7 +439,7 @@
     },
     {
       "acceptance_criteria": "Separate 2025/2026 YTD, WFO quarter, purge/embargo and holdout state.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -454,10 +454,10 @@
         "factory/validation/protocol.py",
         "factory/validation/statistics.py"
       ],
-      "next_required_action": "Close the recorded gap: Quarter folds and purge/embargo covered. The separate 2025/2026 YTD split and holdout state clauses are not asserted together.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T15",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Exact nanosecond quarter boundary/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending | Measured coverage: Quarter folds and purge/embargo covered. The separate 2025/2026 YTD split and holdout state clauses are not asserted together.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Annual/WFO splits: test_annual_and_pooled_aggregates asserts separate 2025 and 2026 year buckets (set(by_year) == {2025, 2026}, one window each), a pooled total equal to their sum, a stable artifact digest and byte-identical repeat reports. test_T15_quarters covers the WFO quarter folds, test_T15_purge_and_embargo_shrink_every_fold covers purge/embargo shrinking every fold, and tests/integration/test_holdouts.py covers holdout reservation, consumption and immutability state.",
       "title": "Annual/WFO splits",
       "verification_command": "bash scripts/verify.sh"
     },
