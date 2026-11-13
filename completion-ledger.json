@@ -56,16 +56,16 @@
         "factory/experiments/__init__.py",
         "factory/provenance.py"
       ],
-      "next_required_action": "Hash inputs and exact API cache reuse tested; full L2/invalidation graph pending",
+      "next_required_action": "Close the recorded gap: Inversion covered (dataset_hash, fill_version, code_revision, engine_version each change the experiment hash; feature_key identity differs). Exact-rerun reuse is not asserted by any test.",
       "requirement_id": "T02",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Hash inputs and exact API cache reuse tested; full L2/invalidation graph pending; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open.",
+      "supporting_evidence_scope": "Hash inputs and exact API cache reuse tested; full L2/invalidation graph pending; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open. | Measured coverage: Inversion covered (dataset_hash, fill_version, code_revision, engine_version each change the experiment hash; feature_key identity differs). Exact-rerun reuse is not asserted by any test.",
       "title": "Full experiment hash/cache",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Restart worker after partial commit; no duplicate run/trades/attempt counts.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -123,10 +123,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Process-kill recovery and idempotent completion are both tested. A live coordinator kill against the full service with a genuine worker remains separate work.",
+      "next_required_action": "None for the criterion as stated; broader supervisor coverage is tracked by T35.",
       "requirement_id": "T03",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Process-kill recovery added: a real holder process claims a job on a short lease, is SIGKILLed mid-job, and the next claim expires the lease and re-claims the same job with LEASE_EXPIRED recorded. A second claim while the recovered lease is live returns None, so recovery cannot duplicate live work. Together with the existing lease-expiry and stale-lease tests this covers the process-kill recovery gap. Idempotent completion itself was already covered by tests/integration/test_completion_idempotency.py.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Restart/completion semantics: 5 passing tests cover requeue idempotency (test_T03_completion_after_requeue_is_idempotent), process-kill recovery of a leased job (test_T03_process_kill_recovers_the_leased_job), coordinator death without duplicate work (test_T03_killed_coordinator_does_not_duplicate_work), persisted expiry outcome (test_T03_expiry_outcome_is_persisted) and fenced restart (test_T03_fenced_restart). No duplicate run/trade/attempt counts observed.",
       "title": "Unique restart completion",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -179,10 +179,10 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "COMPLETE as to structural acquisition: all 176 planned partitions are imported and verified (182 datasets verified, 0 missing, 0 mismatched, catalog consistent). Three further provider defects were found and handled rather than left as 'import exit 1': a duplicated hour across all eight October 2025 partitions, isolated out-of-order rows (2 to 15,084 per partition), and 353 crossed quotes in USDCAD 2026-07 (0.029%, 1-7 pips) which are quarantined lossily with a receipt. A fourth defect was operational: the acquisition driver never called reclaim_all, so 3.38 GiB of published staging accumulated and starved the largest partitions; the driver now reclaims when staging exceeds half the budget. Coverage verified contiguous: all eight instruments hold 22 slots each spanning 2025-01 through 2026-10 with zero gaps and zero overlaps, and all 176 recorded source observations reference a dataset that verifies (0 missing, 0 duplicates, all 8 instruments). Remaining for historical admission: reviewed metadata, source revisions, calendar/source completeness approval and independent-source reconciliation. Structural acquisition is not calendar acceptance or strategy validation.",
+      "next_required_action": "Close the recorded gap: Quarantine clause covered by test_T05_quarantine_corruption. The 'new 2026 partition updates coverage and invalidation' clause needs a real partition import.",
       "requirement_id": "T05",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
+      "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive. | Measured coverage: Quarantine clause covered by test_T05_quarantine_corruption. The 'new 2026 partition updates coverage and invalidation' clause needs a real partition import.",
       "title": "Gaps and updates",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -209,10 +209,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending",
+      "next_required_action": "Close the recorded gap: Closed-bar availability covered for a 3-hour step. The UTC/session edge clause is not exercised.",
       "requirement_id": "T06",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open.",
+      "supporting_evidence_scope": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open. | Measured coverage: Closed-bar availability covered for a 3-hour step. The UTC/session edge clause is not exercised.",
       "title": "Closed MTF availability",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -246,7 +246,7 @@
     },
     {
       "acceptance_criteria": "Long/short entry and exit adjust exactly 2 pips where eligible, using correct units.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -265,16 +265,16 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Native all-eight synthetic market/stop/limit and 0.001 Gold grid goldens pass; verified production units remain pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T08",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Native all-eight synthetic market/stop/limit and 0.001 Gold grid goldens pass; verified production units remain pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Adverse fills: 3 passing tests. test_T08_exit_adjusts_exactly_two_pips_where_eligible asserts entry pays ask+2 pips and exit receives bid-2 pips with actual_adverse_adjustment == 0.0002 on both, for long and short. test_T08_limit_exit_has_no_adverse_adjustment asserts a take-profit limit fills at its price with zero slippage. test_T08_arithmetic asserts the same 2-pip adjustment for MARKET and STOP_MARKET and none for LIMIT.",
       "title": "Adverse eligible fills",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Limit never exceeds limit price, stop gap recognized, timeout quote absence flagged.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -293,10 +293,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Native partial entries/exits, cancellation races, safety closes and deadlines tested; v4 retains v3 IOC policy and cancels exhausted market remainders without extra-tick fills in BUY/SELL native fixtures; full constraints pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T09",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Native partial entries/exits, cancellation races, safety closes and deadlines tested; v4 retains v3 IOC policy and cancels exhausted market remainders without extra-tick fills in BUY/SELL native fixtures; full constraints pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Order semantics: 3 passing tests. test_T09_limit_never_exceeds_limit_price, test_T09_stop_gap_is_recognized and test_T09_timeout_quote_absence_is_flagged cover each clause of the criterion directly.",
       "title": "Order semantics",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -321,10 +321,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Budget/min-volume/max-cap and exact-rational repeating-FX boundary regression pass; dated synthetic cross-currency sizing tested; verified broker profiles pending",
+      "next_required_action": "Close the recorded gap: $20/10% risk cap and SKIPPED_MIN_VOLUME covered. The 1:3 theoretical distance and round-down-to-lot clauses are not asserted.",
       "requirement_id": "T10",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Budget/min-volume/max-cap and exact-rational repeating-FX boundary regression pass; dated synthetic cross-currency sizing tested; verified broker profiles pending",
+      "supporting_evidence_scope": "Budget/min-volume/max-cap and exact-rational repeating-FX boundary regression pass; dated synthetic cross-currency sizing tested; verified broker profiles pending | Measured coverage: $20/10% risk cap and SKIPPED_MIN_VOLUME covered. The 1:3 theoretical distance and round-down-to-lot clauses are not asserted.",
       "title": "Hypothetical risk",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -349,16 +349,16 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Exact quote timeout and missing-exit flag tested; delayed-gap policy further review",
+      "next_required_action": "Close the recorded gap: Deadline enforcement covered by test_T11_deadline_quote. The missing-executable-quote classification is covered by test_missing_exit, which is not named for T11.",
       "requirement_id": "T11",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Exact quote timeout and missing-exit flag tested; delayed-gap policy further review",
+      "supporting_evidence_scope": "Exact quote timeout and missing-exit flag tested; delayed-gap policy further review | Measured coverage: Deadline enforcement covered by test_T11_deadline_quote. The missing-executable-quote classification is covered by test_missing_exit, which is not named for T11.",
       "title": "24h deadline",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Immediate stop, favorable\u2192SL, near-miss, timeout, missing path, long/short all correct.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -378,16 +378,16 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T12",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Compact summary/inline equality and canonical forensic reconstruction pass alongside stop/partial/tied-quote tests; full cohort/golden suite pending; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.; ADR0038 parameter sensitivity: improvement-sensitivity/v1 groups retained controlled parent-child outcomes by exact changed-field set with outcome counts and mean/min/max equity deltas; content-addressed and immutable; descriptive only and never independently validated.",
+      "status": "PASS",
+      "supporting_evidence_scope": "MFE/MAE paths: 5 passing tests cover the measured path (test_T12_measured_path), immediate stop (test_T12_immediate_stop_is_flagged), the 90% near-miss rule (test_T12_near_miss_requires_ninety_percent_of_target), timeout and short paths (test_T12_timeout_and_short_paths) and the inconclusive missing path (test_T12_missing_path_is_inconclusive).",
       "title": "MFE/MAE paths",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Improved child records exactly what changed and preserves parent/failure history.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -406,16 +406,16 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "Changes, parent preservation, immutable multiple-parent edges and complete-trade-set paired training reports tested; full independent cohort confirmation pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T13",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Changes, parent preservation, immutable multiple-parent edges and complete-trade-set paired training reports tested; full independent cohort confirmation pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Parent-child lineage: test_T13_failed_child_preserves_parent_and_lineage and test_T13_lineage verify that a failed child records what changed and preserves the parent and its failure history.",
       "title": "Parent-child",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Poor training score retained; failed OOS not validated; not silently discarded.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -430,10 +430,10 @@
         "factory/validation/protocol.py",
         "factory/validation/statistics.py"
       ],
-      "next_required_action": "OOS failure status helper tested; bounded persistent training hypothesis decisions now tested; independent failure/holdout workflow pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T14",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "OOS failure status helper tested; bounded persistent training hypothesis decisions now tested; independent failure/holdout workflow pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Reject vs remember: test_T14_negative_evidence asserts OOS_FAILED, INSUFFICIENT_EVIDENCE and FAILED_CHECKS classifications, and tests/integration/test_retained_candidates.py asserts every candidate is retained with its reason (retained_rejected == 0/1 as appropriate) and written to the retained-candidates artifact.",
       "title": "Reject vs remember",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -454,16 +454,16 @@
         "factory/validation/protocol.py",
         "factory/validation/statistics.py"
       ],
-      "next_required_action": "Exact nanosecond quarter boundary/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending",
+      "next_required_action": "Close the recorded gap: Quarter folds and purge/embargo covered. The separate 2025/2026 YTD split and holdout state clauses are not asserted together.",
       "requirement_id": "T15",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Exact nanosecond quarter boundary/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending",
+      "supporting_evidence_scope": "Exact nanosecond quarter boundary/purge/frozen windows tested; annual/pooled/holdout and WFO refit pending | Measured coverage: Quarter folds and purge/embargo covered. The separate 2025/2026 YTD split and holdout state clauses are not asserted together.",
       "title": "Annual/WFO splits",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Max five per instrument, eight separate boards, <70% candidates retained, empty slots empty.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -519,10 +519,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Empty boards + synthetic populated board tested; full ranking/diversity/archive regression pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T16",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Empty boards + synthetic populated board tested; full ranking/diversity/archive regression pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Eight independent boards: 4 passing tests cover the five-per-instrument cap with slots kept (test_T16_board_caps_at_five_and_keeps_slots), board independence (test_T16_boards_are_independent), sub-70% retention (test_T16_retention_is_below_seventy_percent) and empty boards staying empty (test_T16_empty_boards).",
       "title": "Eight independent boards",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -551,10 +551,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending",
+      "next_required_action": "Close the recorded gap: Duplicate-skip clause covered. The false-negative sample evaluation clause is not.",
       "requirement_id": "T17",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.; ADR0034 admission-bound posthoc historical training diagnostics preserve native bytes and reject revocation/corruption. Prospective historical calibration remains unfinished.; ADR0035 historical prospective calibration policy/cohort v2 with immutable typed admission/profile/data/code/training-coverage binding, retained posthoc-diagnostic hash reverification, 24h post-calibration embargo, subject equality, global effective-experiment dedup, canonical/quarantine/holdout/training-scope and active-admission rechecks, deterministic pre-outcome selection, CLI/API and fenced-completion diagnostic production without native-artifact mutation. Approximate historical pruning remains disabled and the native counterexample/all-native fallback are preserved.; ADR0035 also adds the authenticated dashboard workflow for cohort v2 (policy derivation from selected calibration evidence, incompatible-selection and embargo guards, actual native feedback, exact export) plus a Playwright Chromium acceptance at 1280x900 and 390x844: frozen before outcomes, pause preserved, 1 fenced native observation, approximate pruning disabled, byte-exact export, no mobile overflow, zero page errors.; ADR0036 frozen screening comparability and selection-bias reporting: screen-comparability/v1 re-verifies cohort bodies, compares the frozen subject contract pairwise with exact differing fields, reports selection-bias counters, and is content-addressed and immutable. pooled_claim_authorized is always false.; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured.",
+      "supporting_evidence_scope": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.; ADR0034 admission-bound posthoc historical training diagnostics preserve native bytes and reject revocation/corruption. Prospective historical calibration remains unfinished.; ADR0035 historical prospective calibration policy/cohort v2 with immutable typed admission/profile/data/code/training-coverage binding, retained posthoc-diagnostic hash reverification, 24h post-calibration embargo, subject equality, global effective-experiment dedup, canonical/quarantine/holdout/training-scope and active-admission rechecks, deterministic pre-outcome selection, CLI/API and fenced-completion diagnostic production without native-artifact mutation. Approximate historical pruning remains disabled and the native counterexample/all-native fallback are preserved.; ADR0035 also adds the authenticated dashboard workflow for cohort v2 (policy derivation from selected calibration evidence, incompatible-selection and embargo guards, actual native feedback, exact export) plus a Playwright Chromium acceptance at 1280x900 and 390x844: frozen before outcomes, pause preserved, 1 fenced native observation, approximate pruning disabled, byte-exact export, no mobile overflow, zero page errors.; ADR0036 frozen screening comparability and selection-bias reporting: screen-comparability/v1 re-verifies cohort bodies, compares the frozen subject contract pairwise with exact differing fields, reports selection-bias counters, and is content-addressed and immutable. pooled_claim_authorized is always false.; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured. | Measured coverage: Duplicate-skip clause covered. The false-negative sample evaluation clause is not.",
       "title": "Dedup + screen audit",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -610,7 +610,7 @@
     },
     {
       "acceptance_criteria": "Unauthenticated access rejected, typed pagination and correct status/error transitions.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -666,16 +666,16 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Auth, pagination, roles and state tested; scoped actual Chromium policy/cancellation/auth/mobile rehearsal passes; full C7 workflows pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T20",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Auth, pagination, roles and state tested; scoped actual Chromium policy/cancellation/auth/mobile rehearsal passes; full C7 workflows pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "API/dashboard: test_T20_auth_pagination asserts unauthenticated access is rejected (401), an out-of-range pagination limit is a typed validation error (422), an unauthorized action is forbidden (403) and the overview reports the NOT_READY status.",
       "title": "API/dashboard",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Disable hosted LLM; deterministic queue continues and resumes normally.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -697,10 +697,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T21",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Recurring registered-region loop and actual workers run with invalid network proxy and no model; full 24/7 multi-day services pending; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Agent offline: test_T21_no_model_or_network_dependency blackholes every proxy variable to an unroutable address and removes NOUS_API_KEY/HERMES_API_KEY, then asserts the deterministic queue still cycles a job to COMPLETED.",
       "title": "Agent offline",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -763,10 +763,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Rehearsal is implemented and tested. A production rehearsal over a genuine state root with stopped services remains separate work.",
+      "next_required_action": "Close the recorded gap: Pointer mechanics on health-check failure covered by test_T22_pointer_health_failure, which its own comment scopes to pointer mechanics rather than release acceptance; the 'without lost data' clause is not asserted.",
       "requirement_id": "T22",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim.",
+      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim. | Measured coverage: Pointer mechanics on health-check failure covered by test_T22_pointer_health_failure, which its own comment scopes to pointer mechanics rather than release acceptance; the 'without lost data' clause is not asserted.",
       "title": "Rollback",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -829,10 +829,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Rehearsal is implemented and tested. A production rehearsal over a genuine state root with stopped services remains separate work.",
+      "next_required_action": "Close the recorded gap: Backup creation and checksum verification (including corruption detection) covered. Restore of SQLite + manifests + artifacts is not.",
       "requirement_id": "T23",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim.",
+      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim. | Measured coverage: Backup creation and checksum verification (including corruption detection) covered. Restore of SQLite + manifests + artifacts is not.",
       "title": "Backup recovery",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -903,7 +903,7 @@
     },
     {
       "acceptance_criteria": "Changing OOS sample after seeing result changes contract and invalidates validated claim.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -918,16 +918,16 @@
         "factory/validation/protocol.py",
         "factory/validation/statistics.py"
       ],
-      "next_required_action": "Persistent alias-safe holdout reservation, input-use enforcement, candidate freeze, consumption-before-execution and supervised native confirmation/restart tested; full WFO/validation decision workflow in progress",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T25",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Persistent alias-safe holdout reservation, input-use enforcement, candidate freeze, consumption-before-execution and supervised native confirmation/restart tested; full WFO/validation decision workflow in progress",
+      "status": "PASS",
+      "supporting_evidence_scope": "Scientific independence: test_T25_window_change_identity asserts that changing the OOS window changes the contract identity and invalidates a previously validated claim.",
       "title": "Scientific independence",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "JPY and Gold tests reject ambiguous pip/contract metadata.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -943,16 +943,16 @@
         "factory/instruments/__init__.py",
         "factory/instruments/calendar.py"
       ],
-      "next_required_action": "Real Gold source grid retained at 0.001; synthetic 0.001 native fills, lot/base-unit equivalence and JPY conversion pass; real dated metadata remain blocked",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T26",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Real Gold source grid retained at 0.001; synthetic 0.001 native fills, lot/base-unit equivalence and JPY conversion pass; real dated metadata remain blocked",
+      "status": "PASS",
+      "supporting_evidence_scope": "Instrument units: test_T26_unknown_units rejects an ambiguous pip_size at validation; test_currency_identity_cannot_disguise_jpy_as_usd covers JPY and test_gold_requires_independent_units_and_cost_equivalent covers Gold's independent units.",
       "title": "Instrument units",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Attempt to overwrite a completed run or inject AI statistics fails.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -963,10 +963,10 @@
         "factory/experiments/__init__.py",
         "factory/provenance.py"
       ],
-      "next_required_action": "SQL triggers/failed registry/quarantined execution evidence/no metric-write API/idempotent completion tested; worker checksum/integrity and conflicting-completion rejection now pass; full provenance/adversarial suite pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T27",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "SQL triggers/failed registry/quarantined execution evidence/no metric-write API/idempotent completion tested; worker checksum/integrity and conflicting-completion rejection now pass; full provenance/adversarial suite pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Immutable evidence: test_T27_immutable_audit asserts an audit-event UPDATE raises sqlite3.IntegrityError, and the store enforces the same for completed search, strategy, discovery and holdout records (tests/integration/test_search.py:61,194; test_discovery.py:183; test_holdouts.py:84,136,153).",
       "title": "Immutable evidence",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -1028,10 +1028,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Eleven panels added and verified: source coverage, instrument status, instrument profiles, source registry, statistical safeguards, independent qualified ranking, qualified training shortlist, validation evaluation list and detail, strategy detail and lineage, research trials, and research action reports (annual reporting, candidate diversity, improvement lineage and sensitivity, diagnostic cohorts, improvement confirmation, comparability contract). Sixteen browser smokes now pass, four over real acquired data. The only research route still without a caller is research/propose, deliberately: it takes a fully formed Proposal whose strategy_hash, instrument_hash and experiment_hash are backend fingerprints, and it enqueues real compute. A browser form would have to reimplement factory.contracts serialization to match, and any drift yields 422. Surfacing it needs a typed backend draft endpoint rather than a client-side hasher, which is new scope. health/live is a probe, not a UI route.\\n\\nSource QA findings from the real catalog. The 21,345,746-row January 2025 figure in T51 is reproducible exactly: eight real SOURCE_BID_ASK datasets sum to that. A clean structural scan of the EURUSD January partition (2,283,239 rows) returns source_structural_status PASS, complete_source_scan true and synthetic false.\\n\\nTwo defects found. First, the two retained .pending-* scans in artifacts/source-quality were run against dataset 45d7129e8d25e4, which is the project-generated TEST ONLY rehearsal fixture (USDJPY, September 2025) rather than any real partition, and with a EURUSD January 2025 calendar. The instrument mismatch guard correctly rejected it and the event budget was exhausted; the scans are correctly NOT admitted. Second, no completed source-quality receipt exists at all, and the scan CLI writes no receipt when the calendar is unknown, so failed and partial attempts are only discoverable by listing .pending-* directories. That is the orphan-inventory gap the backlog names, now reproduced.\\n\\nThree catalog entries have a manifest.json but no quotes.parquet, including two January 2025 AUDUSD entries. The catalog is not self-consistent; nothing currently resolves those hashes.\\n\\nThe host runs TWO state roots with separate catalogs, stores and artifact trees: /var/lib/hermes-factory (359 catalog entries, 2 failed attempts, 0 receipts) and /var/lib/hermes-factory/backfill (0 catalog entries, 1 completed attempt, 1 receipt). A scan run against one root cannot see the other's receipts or pending directories, which is how the two roots drifted apart. This needs an explicit decision on which root is authoritative; nothing currently reconciles them.",
+      "next_required_action": "Close the recorded gap: Pause/resume with audit records covered. Diagnosing, stopping and exporting are not.",
       "requirement_id": "T28",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Eleven browser smokes now pass, three of them over real acquired data. The dashboard API coverage gap was measured rather than assumed: of 76 API routes, 26 had no caller anywhere in the dashboard. Three panels were added for the highest-value gaps: SourceCoveragePanel (observed/selected/quarantined counts, period range and a per-instrument gap count, plus canonical partitions, rows and GiB), InstrumentProfilesPanel (declared tick/pip/base/quote/multiplier/min-stop geometry, every profile hash, and the synthetic versus verified distinction with an explicit Gold caveat), and SourceRegistryPanel (all 182 datasets with provider, fidelity, parser version and declared limitations). The registry panel also fixed a mislabelling found while building it: a TEST ONLY rehearsal dataset was being bucketed as provider-sourced because it carries real ticks; it is now classified as a test fixture from its declared provenance. Remaining: 23 routes still have no caller, including the action endpoints (propose, pause, resume, refresh, multiple-testing, qualified-ranking, independent-ranking, selection-funnel, improvement lineage and sensitivity, retained-candidates, diagnostic-cohorts, comparability-contract, annual-reporting, candidate-diversity), the strategy and evaluation detail routes, and the instruments route.",
+      "supporting_evidence_scope": "Eleven browser smokes now pass, three of them over real acquired data. The dashboard API coverage gap was measured rather than assumed: of 76 API routes, 26 had no caller anywhere in the dashboard. Three panels were added for the highest-value gaps: SourceCoveragePanel (observed/selected/quarantined counts, period range and a per-instrument gap count, plus canonical partitions, rows and GiB), InstrumentProfilesPanel (declared tick/pip/base/quote/multiplier/min-stop geometry, every profile hash, and the synthetic versus verified distinction with an explicit Gold caveat), and SourceRegistryPanel (all 182 datasets with provider, fidelity, parser version and declared limitations). The registry panel also fixed a mislabelling found while building it: a TEST ONLY rehearsal dataset was being bucketed as provider-sourced because it carries real ticks; it is now classified as a test fixture from its declared provenance. Remaining: 23 routes still have no caller, including the action endpoints (propose, pause, resume, refresh, multiple-testing, qualified-ranking, independent-ranking, selection-funnel, improvement lineage and sensitivity, retained-candidates, diagnostic-cohorts, comparability-contract, annual-reporting, candidate-diversity), the strategy and evaluation detail routes, and the instruments route. | Measured coverage: Pause/resume with audit records covered. Diagnosing, stopping and exporting are not.",
       "title": "User actions",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -2970,12 +2970,13 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "COMPLETE as to structural acquisition: all 176 planned partitions are imported and verified (182 datasets verified, 0 missing, 0 mismatched, catalog consistent). Three further provider defects were found and handled rather than left as 'import exit 1': a duplicated hour across all eight October 2025 partitions, isolated out-of-order rows (2 to 15,084 per partition), and 353 crossed quotes in USDCAD 2026-07 (0.029%, 1-7 pips) which are quarantined lossily with a receipt. A fourth defect was operational: the acquisition driver never called reclaim_all, so 3.38 GiB of published staging accumulated and starved the largest partitions; the driver now reclaims when staging exceeds half the budget. Coverage verified contiguous: all eight instruments hold 22 slots each spanning 2025-01 through 2026-10 with zero gaps and zero overlaps, and all 176 recorded source observations reference a dataset that verifies (0 missing, 0 duplicates, all 8 instruments). Remaining for historical admission: reviewed metadata, source revisions, calendar/source completeness approval and independent-source reconciliation. Structural acquisition is not calendar acceptance or strategy validation.",
+      "next_required_action": "None for the criterion as stated. Genuine broker-calendar verification is tracked separately.",
       "requirement_id": "T55",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Source versions and recovery, 12 passing tests in tests/integration/test_source_versions.py: immutable revision history that never silently selects or overwrites (test_revision_history_never_silently_selects_or_overwrites_inputs), explicit missing-period retention (test_cross_year_snapshot_keeps_tied_records_and_explicit_missing_period), quarantine blocking alias execution and completion (test_quarantined_leaf_blocks_alias_execution_and_completion_after_worker), byte-proven restoration that retains incident history (test_corrupt_known_bytes_can_be_quarantined_and_only_exact_restoration_resolves), exact bounded comparison (test_exact_position_diff_retains_changes_additions_and_hash_verified_cache) and coverage reporting of observed/selected/quarantined (test_source_coverage_reports_observed_selected_and_quarantined). Structural acquisition complete: 182 datasets verified, 0 missing, 0 mismatched.",
       "title": "Source versions and recovery",
-      "verification_command": ".venv/bin/pytest tests/integration/test_source_versions.py -q; bash scripts/verify.sh"
+      "verification_command": ".venv/bin/pytest tests/integration/test_source_versions.py -q; bash scripts/verify.sh",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF"
     },
     {
       "acceptance_criteria": "Causal training-only fixed-horizon cost labels; exact compiler parity; bounded/censored label state; preserved native disagreements; genuine calibrated pruning still required.",
@@ -3066,7 +3067,7 @@
     },
     {
       "acceptance_criteria": "Exact 2-pip minimum effective spread with wider observed spreads preserved, separate 2-pip adverse slippage on eligible market and stop-market fills, correct outward tick-grid rounding, and distinct limit-order behaviour, verified for Forex pairs, JPY pairs and XAUUSD.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
       "evidence": [
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
@@ -3075,10 +3076,10 @@
         "rust/raptor-engine/src/lib.rs",
         "scripts/parity_raptor_engine.py"
       ],
-      "next_required_action": "Re-verify the cost model against declared/real instrument profiles and genuine acquired partitions, including the Gold 0.001 grid and JPY conversion.",
+      "next_required_action": "None for the criterion as stated. Re-verify against genuine acquired partitions under declared profiles if the profile set changes.",
       "requirement_id": "R03",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Exact 2-pip spread floor with wider-spread preservation, separate 2-pip adverse slippage on market and stop-market fills, outward tick rounding and distinct limit behaviour are reproduced by the Rust engine and parity-verified for all eight synthetic profiles (including the JPY and 0.001 Gold grids) and on genuine acquired partitions under declared source-measured profiles. Verified broker profiles and source-accepted partitions are not yet used.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Pessimistic cost semantics verified exactly on every corpus measured, covering all eight instruments (six Forex pairs, USDJPY and XAUUSD): 240/240 finite-book fixtures and 800/800 unbounded fixtures with equal effective spread, equal executable prices and equal exact-rational P&L. The 2-pip spread floor widens only observed spreads below 2 pips (fixture spreads of 1/2/5/10 ticks), wider observed spreads are preserved, the separate 2-pip adverse slippage applies to MARKET and STOP_MARKET fills only, rounding is outward on the tick grid, and LIMIT fills carry no slippage. Reproduced against the Python reference and frozen into the goldens (240/240).",
       "title": "Pessimistic cost semantics preserved",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
@@ -3204,16 +3205,16 @@
     },
     {
       "acceptance_criteria": "Pinned toolchain, committed Cargo.lock, CI builds the Rust components, and a clean checkout rebuilds deterministically.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
       "evidence": [
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [],
-      "next_required_action": "Run the target-envelope benchmark (4 vCPU / 8 GiB enforced limits) and pin the toolchain to the verified envelope before claiming R12.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "R12",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "rustc 1.100.0 / cargo 1.100.0 installed 2026-11-12; rust/raptor-engine builds with a committed Cargo.lock and rust-toolchain.toml, and the CI rust job runs cargo test --release --locked plus parity_raptor_engine.py. Not yet claimed passed: the toolchain is not yet pinned to the target envelope and no target-envelope benchmark has been run.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Pinned toolchain (rust/raptor-engine/rust-toolchain.toml: channel 1.100.0, profile minimal, components rustfmt+clippy), committed Cargo.lock, and CI builds the crate with dtolnay/rust-toolchain@1.100.0 plus cargo build/test --release --locked. Determinism proven by building the committed tree in a fresh clone (git clone + checkout 7792f04) and comparing binaries: both sha256 e9f9c845cefe151a5da244a594148a7f1b44907ac06912495050a7e71ed162d8, byte-identical.",
       "title": "Rust build reproducibility",
       "verification_command": ".venv/bin/pytest tests/parity"
     }
