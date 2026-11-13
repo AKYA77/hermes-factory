@@ -1587,7 +1587,7 @@
     },
     {
       "acceptance_criteria": "Canonical native profile representation; Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1607,10 +1607,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T45",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Decimal-padded equal-fingerprint profiles now produce identical native geometry and complete outputs; numeric cost/risk defaults unchanged; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Canonical native profile representation: test_canonical_profile_geometry_has_identical_native_precision asserts fingerprint(padded) == fingerprint(profile) for Decimal-padded tick_size/volume_step, that both profiles produce identical price and size precision from make_instrument, and that a full replay (entry, exit, cost, risk, P&L) is equal between them. Equal fingerprints therefore yield identical native geometry and complete outputs, and the numeric cost/risk outcomes are unchanged.",
       "title": "Canonical native profile representation",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -1762,7 +1762,7 @@
     },
     {
       "acceptance_criteria": "Captured declared session rules; Exact DST/holiday/one-nanosecond/ambiguous-boundary and immutable TZif goldens pass; declarations do not verify actual broker calendars",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1778,10 +1778,10 @@
         "factory/instruments/__init__.py",
         "factory/instruments/calendar.py"
       ],
-      "next_required_action": "Exact DST/holiday/one-nanosecond/ambiguous-boundary and immutable TZif goldens pass; declarations do not verify actual broker calendars",
+      "next_required_action": "None for the criterion as stated. Verifying actual broker calendars requires broker metadata.",
       "requirement_id": "T50",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Exact DST/holiday/one-nanosecond/ambiguous-boundary and immutable TZif goldens pass; declarations do not verify actual broker calendars",
+      "status": "PASS",
+      "supporting_evidence_scope": "Captured declared session rules: 6 passing tests in tests/unit/test_session_calendar.py cover spring/autumn DST weekend durations (test_spring_and_autumn_weekend_durations_follow_captured_timezone_rules), nanosecond boundaries and overlapping sessions (test_nanosecond_boundary_and_overlapping_sessions_are_exact), declared holiday closures without double counting (test_declared_holiday_closures_use_union_without_double_counting), unknown calendars staying unknown (test_missing_and_out_of_date_calendar_remains_unknown_not_weekend_assumption), ambiguous and nonexistent boundaries not being invented (test_ambiguous_and_nonexistent_boundaries_are_not_silently_invented) and bounded TZif byte handling (test_timezone_bytes_and_integer_inputs_are_bound_and_budgeted). The criterion's second clause is a scope caveat, not a requirement.",
       "title": "Captured declared session rules",
       "verification_command": "bash scripts/verify.sh"
     },
