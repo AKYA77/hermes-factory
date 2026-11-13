@@ -121,6 +121,81 @@ def test_controlled_positive_negative_and_small_sample_decisions(tmp_path):
     assert good["ending_balance"] == str(D(100))
 
 
+def test_win_rate_floor_gates_the_decision_and_forward_qualification():
+    """R07: a verified post-cost win rate below the floor must never validate."""
+    criteria = ValidationCriteria(
+        min_oos_closed_trades=50,
+        min_full_folds=2,
+        min_annual_closed_trades=50,
+        min_wilson_lower=0.5,
+        min_net_profit=D(0),
+        max_losing_streak=5,
+        familywise_alpha=0.05,
+        min_neighborhoods_with_trades=1,
+        require_research_targets=False,
+        min_win_rate=D("0.5"),
+    )
+    policy = ValidationEvidencePolicy(
+        max_censored_fraction=0.1,
+        max_marked_drawdown=".95",
+        min_neighbor_closed_trades=50,
+        min_neighbor_acceptable_fraction=0.5,
+    )
+    p = SimpleNamespace(criteria=criteria, evidence_policy=policy)
+    reference = constructed_replay([1] * 80)
+    losing = constructed_replay([-1] * 80)
+    good = outcome_summary(reference["trades"])
+    bad = outcome_summary(losing["trades"])
+
+    def fold(replay):
+        return {"fold": {"partial": False}, "result": {"windows": [{"replay": replay}]}}
+
+    annual = [{"result": {"windows": [{"metrics": {"completed_trades": 80}, "replay": reference}]}}]
+
+    def run(summaries, folds):
+        return decide(
+            p,
+            folds,
+            summaries,
+            good,
+            annual,
+            [good],
+            holdout_replay=reference,
+            pooled_replay=reference,
+            neighborhood_replays=[reference],
+        )
+
+    result = run([bad, good], [fold(losing), fold(reference)])
+    assert result["status"] == "OOS_FAILED", result
+    assert result["win_rate_gate_passed"] is False
+    assert result["min_win_rate"] == str(D("0.5"))
+
+    # The same evidence clears a floor the weaker fold actually satisfies.
+    permissive = p.criteria.model_copy(update={"min_win_rate": D("0.0")})
+    relaxed = SimpleNamespace(criteria=permissive, evidence_policy=policy)
+    decided = decide(
+        relaxed,
+        [fold(losing), fold(reference)],
+        [bad, good],
+        good,
+        annual,
+        [good],
+        holdout_replay=reference,
+        pooled_replay=reference,
+        neighborhood_replays=[reference],
+    )
+    assert decided["win_rate_gate_passed"] is True
+    assert decided["min_win_rate"] == str(D("0.0"))
+
+    # Forward qualification fails below the floor and passes at or above it.
+    below = qualify_forward(p, [fold(losing), fold(losing)], [bad, bad])
+    assert below["status"] == "OOS_FAILED", below
+    assert below["win_rate_gate_passed"] is False
+    passes = qualify_forward(p, [fold(reference), fold(reference)], [good, good])
+    assert passes["status"] == "QUALIFIED_FOR_FINAL", passes
+    assert passes["win_rate_gate_passed"] is True
+
+
 def test_open_loss_censoring_and_failed_neighbors_block_qualification():
     # Constructed reference inputs exercise decision rules only, not the engine.
     criteria = ValidationCriteria(

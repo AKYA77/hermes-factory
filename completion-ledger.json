@@ -3137,16 +3137,16 @@
     },
     {
       "acceptance_criteria": "Verified win rate of at least 50.00% after applicable costs, applied separately per instrument with adequate trade count; exactly 50.00% passes; qualification is rechecked after any execution-model or data change; rejected candidates remain in the evidence database.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
       "evidence": [
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [],
-      "next_required_action": "Not started: no absolute win-rate gate is enforced.",
+      "next_required_action": "None for the criterion as stated. Note the win rate is post-cost because trade_pnl reads the account-realized pnl_exact receipt; an instrument with a configured non-zero commission still makes the reference refuse loudly rather than report a rate.",
       "requirement_id": "R07",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Not started: no absolute win-rate gate is enforced.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Strict 50% post-cost win-rate gate: ValidationCriteria.min_win_rate defaults to 0.5 and is bounded [0, 1]. win_rate_gate() compares an exact Fraction of wins/completed_trades against Fraction(minimum), so exactly 50.00% passes and no binary64 division can round a losing candidate over the floor. The gate runs in both decision paths -- qualify_forward's chain to QUALIFIED_FOR_FINAL and decide()'s chain to VALIDATED_REFERENCE -- and each reports win_rate_gate_passed and min_win_rate. Per-instrument application is structural: every fold, annual view, holdout and pooled summary passed to a decision belongs to that protocol's single instrument (bound through holdout.profile), with min_oos_closed_trades, min_annual_closed_trades and min_full_folds setting the adequate trade count. Rechecking follows from construction: code_revision binds every contract, so an execution-model or data change invalidates the prior revision and forces a fresh decision. Evidence: six new unit cases (tests/unit/test_win_rate_gate.py) cover exactly-50%, just-below, above, unmeasured and two out-of-range criteria values; tests/unit/test_validation_statistics.py adds a case proving decide() returns OOS_FAILED with win_rate_gate_passed False on a below-floor fold while the same evidence passes a floor the weaker fold satisfies, and that forward qualification fails below the floor and reaches QUALIFIED_FOR_FINAL at or above it; tests/integration/test_win_rate_qualification.py proves the default 0.5 floor reaches the real stored decision as VALIDATED_REFERENCE and that the protocol and its report rows survive a run.",
       "title": "Strict 50% win-rate qualification gate",
       "verification_command": ".venv/bin/pytest tests/parity"
     },

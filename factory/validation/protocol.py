@@ -6,6 +6,7 @@ not sums of independently reset fold equity. Statistical decisions remain labele
 """
 
 from decimal import Decimal as D
+from fractions import Fraction
 import json
 from pathlib import Path
 import time
@@ -47,6 +48,10 @@ class ValidationCriteria(Contract):
     familywise_alpha: float = Field(gt=0, lt=1, allow_inf_nan=False)
     min_neighborhoods_with_trades: int = Field(ge=1, le=10)
     require_research_targets: bool
+    # Owner directive ADR 0071 (R07): an absolute post-cost win-rate floor.
+    # Compared as an exact rational from the closed-trade counts, so exactly
+    # 50.00% passes and no binary64 division can round a losing candidate in.
+    min_win_rate: D = Field(default=D("0.5"), ge=0, le=1)
 
 
 class ValidationEvidencePolicy(Contract):
@@ -765,6 +770,15 @@ def decision_balance(summary, quality):
     return min(D(summary["ending_balance"]), D(quality["ending_marked_equity"]))
 
 
+def win_rate_gate(summary, minimum):
+    """Exact post-cost win rate from closed-trade counts; False when unmeasured."""
+    trades = summary.get("completed_trades") or 0
+    wins = summary.get("wins")
+    if not trades or wins is None:
+        return False
+    return Fraction(int(wins), int(trades)) >= Fraction(minimum)
+
+
 def qualify_forward(p, folds, summaries):
     c = p.criteria
     quality = [replay_quality(replay_of(item), p.evidence_policy) for item in folds]
@@ -793,6 +807,7 @@ def qualify_forward(p, folds, summaries):
         for s, q in zip(summaries, quality)
     )
     confidence = all(s["wilson_95"] and s["wilson_95"][0] >= c.min_wilson_lower for s in summaries)
+    win_gate = all(win_rate_gate(s, c.min_win_rate) for s in summaries)
     targets = quality_status == "PASS" and all(
         s["win_rate"] is not None
         and s["win_rate"] >= 0.7
@@ -808,6 +823,7 @@ def qualify_forward(p, folds, summaries):
         else "OOS_FAILED"
         if not economic
         or not confidence
+        or not win_gate
         or not all(adjusted)
         or (c.require_research_targets and not targets)
         else "QUALIFIED_FOR_FINAL"
@@ -819,6 +835,8 @@ def qualify_forward(p, folds, summaries):
         "holm_forward_rejections": adjusted,
         "p_values": p_values,
         "wilson_gate_passed": confidence,
+        "win_rate_gate_passed": win_gate,
+        "min_win_rate": str(c.min_win_rate),
         "research_targets_met": targets,
         "multiple_testing_scope": "forward tests plus one reserved final test; global researcher discretion remains uncorrected",
     }
@@ -926,6 +944,7 @@ def decide(
         )
     ]
     confidence = all(s["wilson_95"] and s["wilson_95"][0] >= c.min_wilson_lower for s in tested)
+    win_gate = all(win_rate_gate(s, c.min_win_rate) for s in tested)
     research_targets = all(
         s["win_rate"] is not None
         and s["win_rate"] >= 0.7
@@ -948,6 +967,7 @@ def decide(
         or quality_status == "OOS_FAILED"
         or robust["status"] == "OOS_FAILED"
         or not confidence
+        or not win_gate
         or not all(adjusted)
         or (c.require_research_targets and not research_targets)
         else "VALIDATED_REFERENCE"
@@ -957,6 +977,8 @@ def decide(
         "sufficient_samples": enough,
         "failed_oos_indices": failed,
         "wilson_gate_passed": confidence,
+        "win_rate_gate_passed": win_gate,
+        "min_win_rate": str(c.min_win_rate),
         "holm_rejections": adjusted,
         "p_values": p_values,
         "research_targets_met": research_targets,
