@@ -34,6 +34,7 @@ counts and open trades.
 | 30 genuine acquired catalog partitions | **30 / 30 exact** | 29 s |
 | Frozen Nautilus goldens incl. order states and partial fills | **240 / 240** | — |
 | Restart/batch equivalence (batch sizes 1/2/3/7/64 + cross-process restart) | **240 / 240 exact** | — |
+| Goldens verified with every `nautilus_trader` import blocked | **240 / 240** | — |
 
 The last row reads real published partitions through the production catalog
 API (`Catalog.read`) over a bounded quote window, using the project's

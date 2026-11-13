@@ -20,10 +20,11 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import parity_raptor_engine as harness
+import raptor_cases as raptor
 
 
 def digest(result, scale):
-    normalized = harness.normalize_python(result, scale)
+    normalized = raptor.normalize_python(result, scale)
     payload = json.dumps(normalized, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(payload.encode()).hexdigest()
 
@@ -41,7 +42,7 @@ def main():
     rng = random.Random(args.seed)
     cases = []
     for case in range(args.cases):
-        instrument = rng.choice(harness.INSTRUMENTS)
+        instrument = rng.choice(raptor.INSTRUMENTS)
         profile, spec, quotes, signals, partial, fill_model = harness.generate_case(
             rng, instrument
         )

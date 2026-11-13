@@ -164,13 +164,26 @@ rust job at 120 cases.
 This closes migration-gate item 7. **R02 remains `NOT_TESTED`.** Gate items 1–8
 are now demonstrated; only item 9 (removing NautilusTrader) remains.
 
-**Next action — owner decision required.** Removing NautilusTrader would also
-remove the oracle every parity result is checked against, because the Python
-reference (`factory/simulation/runner.py`) imports
+### Phase 1e — Nautilus-free golden verification
+
+Case generation, normalization and comparison moved to `scripts/raptor_cases.py`,
+which imports nothing from NautilusTrader. `scripts/verify_raptor_goldens.py`
+now imports only that module, so the frozen-golden evidence survives Nautilus
+removal: running the verifier with a meta-path hook that raises on any
+`nautilus_trader` import still reports **240/240**.
+
+The direct parity, restart and genuine-partition harnesses still invoke the
+Nautilus-backed Python reference and so do not survive removal.
+
+**Next action — owner decision required.** Gate items 1–8 are demonstrated; only
+item 9 (removing NautilusTrader) remains. Removing it would also remove the
+oracle every parity result is checked against, because the Python reference
+(`factory/simulation/runner.py`) imports
 `nautilus_trader.backtest.engine.BacktestEngine`. Either build an independent
 non-Nautilus reference and verify it against the frozen goldens first, or confirm
 in writing that the Nautilus-backed runner is accepted as the item-2 reference.
-Full reasoning: `docs/milestone-raptor-migration-parity-2026-11-12.md` §5a.
+Full reasoning and the measured removal inventory:
+`docs/milestone-raptor-migration-parity-2026-11-12.md` §5a.
 
 ## Environment change observed this session
 

@@ -1,5 +1,13 @@
 ## Unreleased
 
+### Changed
+
+- Case generation, normalization and comparison for the Rust engine parity
+  tooling moved to a Nautilus-free module (`scripts/raptor_cases.py`), so
+  `scripts/verify_raptor_goldens.py` no longer imports NautilusTrader. The frozen
+  goldens remain verifiable after removal: running the verifier with any
+  `nautilus_trader` import blocked still reports 240/240.
+
 ### Added
 
 - The Rust execution engine is now resumable: its replay state serializes to

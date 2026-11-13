@@ -208,11 +208,15 @@ Measured, not estimated:
 | Scripts importing it | 4 (`benchmark-monetary.py`, `dependency_disposition.py`, `freeze_nautilus_goldens.py`, `parity_raptor_engine.py`) |
 | Declared dependency | `pyproject.toml:11` pins `nautilus_trader==1.231.0` |
 
-Note that `scripts/verify_raptor_goldens.py` regenerates cases and checks the
-Rust engine against the frozen artifact without invoking NautilusTrader, so the
-golden evidence survives removal. The direct parity harness
-(`parity_raptor_engine.py`), the restart harness and the genuine-partition
-harness all invoke the Nautilus-backed Python reference and would not.
+Case generation, normalization and comparison now live in a Nautilus-free
+module (`scripts/raptor_cases.py`), and `scripts/verify_raptor_goldens.py`
+imports only that module. The frozen goldens therefore **do** survive removal:
+verified by running the golden verifier with a meta-path hook that raises on any
+`nautilus_trader` import — it still reports **240/240**.
+
+The direct parity harness (`parity_raptor_engine.py`), the restart harness, the
+genuine-partition harness and the freezer still invoke the Nautilus-backed Python
+reference, so they do not survive removal.
 
 ## 6. Conclusion
 
