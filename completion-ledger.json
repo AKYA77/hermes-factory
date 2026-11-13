@@ -1210,7 +1210,7 @@
     },
     {
       "acceptance_criteria": "Persistent training optimizer; PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1232,10 +1232,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T34",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "PASS scoped actual worker feedback/restart/immutability/leakage rejection; labeled toy TPE learning, no market efficacy claim; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Persistent training optimizer: test_recurring_feedback_restart_and_no_llm covers worker feedback and restart without an LLM; test_durable_ask_recovers_without_duplicate_jobs covers durable recovery; test_optimizer_rejects_oos_and_tampered_artifact covers leakage and immutability rejection; test_sampler_learning_and_restart_determinism_on_labeled_toy covers labeled toy TPE learning with restart determinism and no market efficacy claim. All 11 tests in tests/integration/test_search.py pass.",
       "title": "Persistent training optimizer",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -1360,7 +1360,7 @@
     },
     {
       "acceptance_criteria": "Independent readiness states; PASS scoped receipt/hash/missing-gate tests; SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY all false in current project evidence",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1375,10 +1375,10 @@
         "factory/validation/protocol.py",
         "factory/validation/statistics.py"
       ],
-      "next_required_action": "PASS scoped receipt/hash/missing-gate tests; SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY all false in current project evidence",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T38",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "PASS scoped receipt/hash/missing-gate tests; SOFTWARE_VERIFIED, DATA_READY and OPERATION_READY all false in current project evidence",
+      "status": "PASS",
+      "supporting_evidence_scope": "Independent readiness states: test_software_handoff_does_not_require_bulk_data asserts SOFTWARE_VERIFIED is reachable without DATA_READY or OPERATION_READY and that OPERATION_READY requires every gate, with a changed receipt invalidating the state. test_no_missing_or_unreceipted_gate_is_passed asserts no gate passes without a receipt. tests/unit/test_completion_queue.py::test_queue_reads_all_gates_and_preserves_readiness asserts all three flags are false in current project evidence.",
       "title": "Independent readiness states",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -1413,7 +1413,7 @@
     },
     {
       "acceptance_criteria": "Restart identity and CPU conservation; PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1435,10 +1435,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T40",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "PASS scoped search/v2 JSON defaults, preserved legacy v1 IDs and shared-job CPU attribution across protocols/policies; prior immutable accounting retained; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Restart identity and CPU conservation: test_protocol_hash_survives_json_defaults_and_preserves_legacy_ids covers search/v2 JSON defaults and preserved legacy v1 IDs; test_reused_native_job_cpu_is_attributed_once_across_protocols covers shared-job CPU attribution across protocols and policies. The immutable accounting guards are covered by the store immutability tests (T27 evidence).",
       "title": "Restart identity and CPU conservation",
       "verification_command": "bash scripts/verify.sh"
     },
