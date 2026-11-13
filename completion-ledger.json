@@ -1,10 +1,10 @@
 {
-  "audited_head": "1d5219a55c3f75c7f15be59dcde42aaf4bff668c",
+  "audited_head": "bffb90eb56fa92164b3155fe70941785aa9a8bf9",
   "authority_sha256": "33d51494869462c9cfd54b9c1dbb267316a169e268fde9a1aa1f8f7328bc384e",
   "goal": "Lean RaptorBT strategy research factory - Owner Final Directive 2026-11-12",
   "latest_checkpoint": "docs/milestone-raptor-migration-parity-2026-11-12.md",
   "latest_verified_source": {
-    "git_commit": "1d5219a55c3f75c7f15be59dcde42aaf4bff668c",
+    "git_commit": "bffb90eb56fa92164b3155fe70941785aa9a8bf9",
     "source_sha256": "3371f17eca7ec466e2dd8487566d26fce2ea89f6b908011a01e1f0855cc3758d",
     "working_tree_scientific_edits": false
   },

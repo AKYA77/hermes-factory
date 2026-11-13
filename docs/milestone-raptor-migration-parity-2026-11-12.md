@@ -195,6 +195,23 @@ Two ways forward, both requiring an owner decision:
 NautilusTrader therefore stays installed and remains the reference. `R02` stays
 `NOT_TESTED`.
 
+### Item 9 also needs a replacement execution path
+
+The directive's own supersession table (line 27) states that "one RaptorBT-derived
+Rust execution engine replaces NautilusTrader after verified parity migration".
+Removal is therefore not deletion alone: the nine `factory/` modules and the
+backtest path they serve need somewhere to get execution results from.
+
+Measured: nothing under `factory/` or `apps/` invokes `rust/raptor-engine`. The
+crate is called only by the four `scripts/` harnesses. So item 9 additionally
+requires an integration path — Python bindings or a stable subprocess/CLI
+contract — plus re-pointing the runner, the operations probes, the validation
+evidence path and the 56 affected tests at it. That is a program, not a step, and
+it is why removal is not started here.
+
+NautilusTrader therefore stays installed and remains the reference. `R02` stays
+`NOT_TESTED`.
+
 ### Inventory of what removal would touch
 
 Measured, not estimated:
