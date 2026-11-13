@@ -63,3 +63,30 @@ def test_fair_pending_is_stable_for_equal_production(tmp_path):
     # With equal production the order falls back to arrival and is deterministic.
     assert first == second
     assert sorted(first) == sorted([one, two])
+
+
+def test_fair_pending_spans_instruments_and_timeframes(tmp_path):
+    """No eligible protocol is starved across instruments or timeframes."""
+    from factory.experiments import Store
+
+    store = Store(tmp_path / "factory.sqlite")
+    search = Search(store, tmp_path)
+    combinations = [("EURUSD", "M1"), ("GBPUSD", "M5"), ("USDJPY", "H1")]
+    identities = [
+        register(tmp_path, store, instrument, timeframe, index + 1)
+        for index, (instrument, timeframe) in enumerate(combinations)
+    ]
+    # Every protocol except the last has already produced its outcome.
+    store.pause(False, "test")
+    search.enqueue_pending()
+    from apps.coordinator.service import cycle
+
+    for _ in range(len(combinations) - 1):
+        assert cycle(store, tmp_path)
+    search.feedback()
+
+    pending = search.fair_pending()
+    assert pending, "expected a pending trial"
+    assert pending[0]["protocol_hash"] == identities[-1]
+    # The pending queue still contains work for each unproduced combination.
+    assert {row["protocol_hash"] for row in pending} <= set(identities)

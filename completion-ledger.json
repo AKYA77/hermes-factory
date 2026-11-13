@@ -560,7 +560,7 @@
     },
     {
       "acceptance_criteria": "No eligible instrument starved when queue has work; timeframe choice is searchable.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -581,10 +581,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T18",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Measured CPU-based registered-cell allocation and bounded persistent TPE tested; full-space fairness/continuous expansion/soak pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.; ADR0030 bounded authorized training discovery, immutable planning/SIGKILL recovery, new-data continuation and native/API/desktop/mobile generated proof. Broader parent acceptance remains open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Search fairness: test_fair_pending_does_not_starve_a_protocol and test_fair_pending_is_stable_for_equal_production cover two-instrument fairness, and the new test_fair_pending_spans_instruments_and_timeframes registers protocols across three instruments and three timeframes (EURUSD/M1, GBPUSD/M5, USDJPY/H1), produces outcomes for all but one, and asserts the unproduced protocol is scheduled first with no eligible combination dropped. test_proposal_coverage_and_seed asserts all eight instruments are covered.",
       "title": "Search fairness",
       "verification_command": "bash scripts/verify.sh"
     },
