@@ -206,6 +206,55 @@ updated at each tested checkpoint. Do not use prior CI as proof for a later comm
 
 ## Completed this continuation
 
+### 2026-11-13 — acceptance audit, nine more requirements evidenced, fee accounting
+
+Ledger moved from 21 PASS to **48 PASS / 31 NOT_TESTED**. Commits pushed to
+`build/initial-factory`; CI green on `tests`, `dependency-review`, `dashboard`.
+
+**Requirements newly demonstrated with clause-level evidence:** T05, T29, T30,
+T52, C1, C3, C5, C6, T42. The productive pattern was auditing criteria whose
+clauses were implemented and exercised but never asserted, then writing the
+missing test rather than accepting "partial": proof-cache parity over 1,000
+calls (T36 earlier), cancel/diagnostics audit rows (T28 earlier), rollback
+byte-intactness (T22), restore row and artifact equality (T23), exact 1:3 risk
+geometry (T10), UTC bucket-edge bar availability (T06), cross-instrument and
+cross-timeframe search fairness (T18), profile-aware search bounds (T53),
+annual/WFO split reporting (T15).
+
+**Two stale blockers corrected:**
+
+- `scripts/benchmark.sh` runs on this host; the recorded "cgroup v1"
+  FileNotFoundError was already handled by `cgroup_limit`. `benchmark.py` now
+  also emits a `source_urls` block so the generated report carries the project's
+  provider endpoints plus an explicit synthetic-fixture note (T29).
+- `SourceQuality.orphans()` already existed and was tested; the automatic
+  orphan inventory half of T52 was evidenced against it.
+
+**Real implementation (R01 fees):** no fee model existed anywhere. Added
+`InstrumentSpec.commission_per_unit` (default zero = no fee model, negatives
+rejected), charged it in the Rust engine on every fill entry and exit in quote
+currency (unit-tested at exactly -1000 / -1999), and made the Python runner
+derive the fill commission from the same field so a configured fee makes
+`replay()` refuse loudly with `UNSUPPORTED_NATIVE_REFERENCE_COMMISSION` instead
+of silently ignoring it. Re-verified afterwards: goldens 240/240, direct parity
+200/200, restart/batch 120/120, genuine partitions 7/7.
+
+**Attempted and reverted:** emitting equity/drawdown from the Rust engine.
+Keeping an exact running balance instead of rounding per fill dropped the
+parity corpus from 800/800 to 22/80 with fills and trades disagreeing; reverted
+and re-verified 80/80. R01 stays open on equity/drawdown emission and verified
+broker profiles. The trap is recorded in the `hermes-factory` skill.
+
+**Exact next action:** the remaining 31 are externally blocked or unimplemented
+majors. Resume with the highest-priority unimplemented requirement the queue owns:
+**R07** (strict 50.00% post-cost win-rate qualification gate, rechecked on any
+execution-model or data change) — no absolute gate exists yet
+(`factory/validation/protocol.py` enforces 0.7 only for other metrics). Then R04
+(indexed execution), R05 (per-strategy timeframe selection), R08 (native
+generator). External inputs still required: real acquired metadata/calendar and
+profile admission (T32/T37/T43/T44/T46/T47/T49/T51), target 4-vCPU/8-GiB hardware
+(T31/T35), and owner review/sign-off (T41/T54).
+
 **All 176 partitions are imported and the catalog is consistent.** Structural
 acquisition went from 129 to **176 of 176**; `refresh` reports 182 datasets
 verified, 0 missing, 0 mismatched, consistent. The final three blocks were three
