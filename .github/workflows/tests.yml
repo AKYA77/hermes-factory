@@ -10,6 +10,11 @@ jobs:
       - uses: astral-sh/setup-uv@v6
         with:
           version: '0.12.23'
+      # tests/parity drives the Rust engine, so the binary must exist before
+      # pytest runs. The rust job builds it again for its own checks.
+      - uses: dtolnay/rust-toolchain@1.100.0
+      - run: cargo build --release --locked
+        working-directory: rust/raptor-engine
       - run: uv sync --frozen
       - run: uv run ruff check factory apps tests
       - run: uv run ruff format --check factory apps tests
