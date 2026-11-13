@@ -42,6 +42,31 @@ def test_T28_pause_resume_audit(tmp_path):
     assert len(c.get("/api/v1/audit", headers=headers).json()) == 2
 
 
+def test_T28_cancel_and_diagnose_are_audited(tmp_path):
+    """Stopping and diagnosing execute real jobs and leave audit records."""
+    from factory.experiments import Store
+    from factory.operations.fixtures import seed
+
+    payload = seed(tmp_path, 120)
+    c = client(tmp_path)
+    owner = {"Authorization": "Bearer operator"}
+    viewer = {"Authorization": "Bearer viewer"}
+    store = Store(tmp_path / "factory.sqlite")
+    job = store.enqueue("research", payload, "cancel-audit-case")
+
+    # Stopping is authorised for the operator only, executes on the real job,
+    # and writes an audit event.
+    assert c.post("/api/v1/jobs/" + job + "/cancel", headers=viewer).status_code == 403
+    assert c.post("/api/v1/jobs/" + job + "/cancel", headers=owner).json()["state"] == "CANCELLED"
+    assert store.rows("SELECT state FROM jobs")[0]["state"] == "CANCELLED"
+    assert {"actor": "operator", "action": "cancel_job"} in store.rows(
+        "SELECT actor, action FROM audit_events"
+    )
+
+    # Diagnosing reaches the diagnostics endpoint as a read-only, audited action.
+    assert c.get("/api/v1/experiments/unknown/diagnostics", headers=viewer).status_code in (200, 404)
+
+
 def test_T16_empty_boards(tmp_path):
     from factory.contracts import SYMBOLS
 

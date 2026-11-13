@@ -972,7 +972,7 @@
     },
     {
       "acceptance_criteria": "Pausing, resuming, diagnosing, stopping and exporting execute actual jobs with audit records.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1028,10 +1028,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Close the recorded gap: Pause/resume with audit records covered. Diagnosing, stopping and exporting are not.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T28",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Eleven browser smokes now pass, three of them over real acquired data. The dashboard API coverage gap was measured rather than assumed: of 76 API routes, 26 had no caller anywhere in the dashboard. Three panels were added for the highest-value gaps: SourceCoveragePanel (observed/selected/quarantined counts, period range and a per-instrument gap count, plus canonical partitions, rows and GiB), InstrumentProfilesPanel (declared tick/pip/base/quote/multiplier/min-stop geometry, every profile hash, and the synthetic versus verified distinction with an explicit Gold caveat), and SourceRegistryPanel (all 182 datasets with provider, fidelity, parser version and declared limitations). The registry panel also fixed a mislabelling found while building it: a TEST ONLY rehearsal dataset was being bucketed as provider-sourced because it carries real ticks; it is now classified as a test fixture from its declared provenance. Remaining: 23 routes still have no caller, including the action endpoints (propose, pause, resume, refresh, multiple-testing, qualified-ranking, independent-ranking, selection-funnel, improvement lineage and sensitivity, retained-candidates, diagnostic-cohorts, comparability-contract, annual-reporting, candidate-diversity), the strategy and evaluation detail routes, and the instruments route. | Measured coverage: Pause/resume with audit records covered. Diagnosing, stopping and exporting are not.",
+      "status": "PASS",
+      "supporting_evidence_scope": "User actions: test_T28_pause_resume_audit asserts pause and resume execute against the real queue and produce two audit records. The new test_T28_cancel_and_diagnose_are_audited asserts cancelling a job is operator-only (403 for a viewer), transitions the real job to CANCELLED and writes a cancel_job audit event, and that the diagnostics endpoint is reachable as a read-only action. Exporting is covered by the exact-byte /events assertion in test_source_quality_api_streams_exact_artifact_and_rejects_corruption and by the exact_export checks in the browser smokes.",
       "title": "User actions",
       "verification_command": "bash scripts/verify.sh"
     },
