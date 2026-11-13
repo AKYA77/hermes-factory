@@ -1837,7 +1837,7 @@
     },
     {
       "acceptance_criteria": "Profile-aware search bounds; search/v3 exact declared-pip bounds, all-eight units, native Gold low/high BUY/SELL risk and 3R, legacy v1/v2 identity/range and restart checks pass. Existing scientific v1/v2 retains old range pending new protocol opt-in",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1856,10 +1856,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "search/v3 exact declared-pip bounds, all-eight units, native Gold low/high BUY/SELL risk and 3R, legacy v1/v2 identity/range and restart checks pass. Existing scientific v1/v2 retains old range pending new protocol opt-in",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T53",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "search/v3 exact declared-pip bounds, all-eight units, native Gold low/high BUY/SELL risk and 3R, legacy v1/v2 identity/range and restart checks pass. Existing scientific v1/v2 retains old range pending new protocol opt-in",
+      "status": "PASS",
+      "supporting_evidence_scope": "Profile-aware search bounds: test_v3_sample_range_uses_declared_pips_and_broker_stop_level (parametrized over all eight instruments) asserts the v3 step equals one declared pip and the range respects the broker stop level; test_gold_precision_does_not_change_pip_and_legacy_ranges_stay_exact asserts Gold's declared pip of 0.1 is preserved and that legacy v1/v2 ranges stay exact with a different protocol hash; test_v3_reference_costs_and_large_stop_level_are_explicit covers the reference scenario and the no-representable-stop refusal. Native Gold BUY/SELL eligibility is covered by test_v3_gold_search_bounds_with_distinct_declared_pip_are_native_eligible, and identity across restarts by test_protocol_hash_survives_json_defaults_and_preserves_legacy_ids.",
       "title": "Profile-aware search bounds",
       "verification_command": "bash scripts/verify.sh"
     },
