@@ -19,6 +19,37 @@ from factory.operations.fixtures import seed
 from factory.strategies import compile_signals
 
 
+def cgroup_limit(name):
+    """Read the cgroup v2 limit that actually applies to this process.
+
+    The root cgroup usually has no controllers delegated, so
+    `/sys/fs/cgroup/<name>` does not exist even on a cgroup v2 host, and a
+    process is often nested several levels below the root. Walk from the
+    process's own cgroup (taken from `/proc/self/cgroup`) up to the root and
+    return the nearest delegated limit. Controllers that are not delegated
+    anywhere are reported as ``"not-delegated"`` rather than crashing.
+    """
+    relative = ""
+    try:
+        for line in Path("/proc/self/cgroup").read_text().splitlines():
+            # Format is "<hierarchy-id>:<controllers>:<path>"; the path may be
+            # empty (root) or start with '/'.
+            parts = line.split(":", 2)
+            if len(parts) == 3 and parts[2]:
+                relative = parts[2].lstrip("/")
+                break
+    except OSError:
+        pass
+    while True:
+        candidate = Path("/sys/fs/cgroup") / relative / name
+        if candidate.exists():
+            return candidate.read_text().strip()
+        if not relative:
+            break
+        relative = relative.rsplit("/", 1)[0] if "/" in relative else ""
+    return "not-delegated"
+
+
 def run(output):
     records = []
     with tempfile.TemporaryDirectory() as tmp:
@@ -131,8 +162,8 @@ def run(output):
                 "machine": platform.machine(),
                 "logical_cpus": os.cpu_count(),
                 "host_ram_bytes": psutil.virtual_memory().total,
-                "cgroup_memory_max": Path("/sys/fs/cgroup/memory.max").read_text().strip(),
-                "cgroup_cpu_max": Path("/sys/fs/cgroup/cpu.max").read_text().strip(),
+                "cgroup_memory_max": cgroup_limit("memory.max"),
+                "cgroup_cpu_max": cgroup_limit("cpu.max"),
             },
             "versions": {
                 n: importlib.metadata.version(n)

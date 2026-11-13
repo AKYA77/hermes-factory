@@ -1048,10 +1048,10 @@
         "factory/experiments/__init__.py",
         "factory/provenance.py"
       ],
-      "next_required_action": "Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending",
+      "next_required_action": "Run scripts/benchmark.sh on a cgroup v2 host (or add a cgroup-v1 fallback) to produce reports/runtime/benchmark-report.json, then scripts/checkpoint-report.py.",
       "requirement_id": "T29",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending",
+      "supporting_evidence_scope": "Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending | Measured blocker: scripts/benchmark.sh cannot run on this host -- factory/operations/benchmark.py reads /sys/fs/cgroup/memory.max (cgroup v2) and this host exposes cgroup v1, so reports/runtime/benchmark-report.json cannot be produced and scripts/checkpoint-report.py cannot build the checkpoint evidence here. The report path itself is implemented; it needs a cgroup v2 host.",
       "title": "Provenance",
       "verification_command": "bash scripts/verify.sh"
     },

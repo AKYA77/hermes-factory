@@ -24,12 +24,15 @@ def write(path, value):
 
 revision = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
 bench = read("reports/runtime/benchmark-report.json")
+# The benchmark records the composite scientific identity
+# "<git-sha>@source-sha256:<hash>"; git only understands the sha part.
+benchmark_commit = bench["code_revision"].split("@", 1)[0]
 subprocess.run(
     [
         "git",
         "diff",
         "--exit-code",
-        bench["code_revision"],
+        benchmark_commit,
         "--",
         "factory",
         "apps",
