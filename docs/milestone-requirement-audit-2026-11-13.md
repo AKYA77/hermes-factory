@@ -5,7 +5,7 @@ Method: each criterion was compared against the tests that demonstrate it, the
 tests were executed, and only criteria whose every clause is covered by passing
 evidence were moved to `PASS`. Nothing was marked `PASS` on a scoped reading.
 
-## Moved to PASS (21 total, 12 new this session)
+## Moved to PASS (24 total, 15 new this session)
 
 | ID | Criterion demonstrated | Evidence |
 |---|---|---|
@@ -24,6 +24,9 @@ evidence were moved to `PASS`. Nothing was marked `PASS` on a scoped reading.
 | R03 | 2-pip floor with wider spreads preserved, separate 2-pip slippage, outward rounding, distinct limit behaviour, all eight instruments | 240/240 and 800/800 exact parity; frozen goldens 240/240 |
 | R12 | Pinned toolchain, committed Cargo.lock, CI build, deterministic clean rebuild | Fresh clone built a byte-identical binary (sha256 `e9f9c845…`) |
 | T55 | Immutable revision history, explicit selection, missing periods, quarantine, byte-proven restoration | 12 tests in `tests/integration/test_source_versions.py` |
+| T11 | Deadline enforced; missing executable quote classified, not invented | `test_T11_deadline_quote` + `test_missing_exit` |
+| T02 | Version change invalidates the cache; exact rerun reuses it | `test_T02_fingerprint` + `test_bar_cache_identity_covers_code_and_fill_version` |
+| T17 | Duplicate skip is not a detailed run; false-negative sample is evaluated | `test_T17_duplicate_skip_is_not_a_detailed_run` + `test_false_negative_is_quarantined_never_promoted` |
 
 ## Partial coverage recorded, still NOT_TESTED
 

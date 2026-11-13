@@ -44,7 +44,7 @@
     },
     {
       "acceptance_criteria": "Data, code, fill or fold version change invalidates cache; exact rerun reuses result.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -56,10 +56,10 @@
         "factory/experiments/__init__.py",
         "factory/provenance.py"
       ],
-      "next_required_action": "Close the recorded gap: Inversion covered (dataset_hash, fill_version, code_revision, engine_version each change the experiment hash; feature_key identity differs). Exact-rerun reuse is not asserted by any test.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T02",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Hash inputs and exact API cache reuse tested; full L2/invalidation graph pending; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open. | Measured coverage: Inversion covered (dataset_hash, fill_version, code_revision, engine_version each change the experiment hash; feature_key identity differs). Exact-rerun reuse is not asserted by any test.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Cache invalidation and reuse: test_T02_fingerprint asserts that changing dataset_hash, fill_version, code_revision or engine_version each change the experiment hash. test_bar_cache_identity_covers_code_and_fill_version asserts an exact rerun reuses the cached bars (stats hits == 1), while a code-version change and a fill-version change each invalidate it (misses increments). Every clause of the criterion is covered by passing tests.",
       "title": "Full experiment hash/cache",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -528,7 +528,7 @@
     },
     {
       "acceptance_criteria": "Duplicate skip does not count as detailed run; false-negative sample evaluated.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -551,10 +551,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "Close the recorded gap: Duplicate-skip clause covered. The false-negative sample evaluation clause is not.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T17",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Cached proposal and execution/source version guards tested; exact-zero-signal rejection with persisted receipts, deterministic native audits, false-negative quarantine and TPE PRUNED feedback passes scoped tests; broader staged/approximate cohorts pending; ADR0032 native disagreement persists a fail-closed pruning breaker; bounded64/300CPU native rechecks preserve old rejection evidence, pause/source scope and dedup. Actual supervised/browser/budget proofs pass. Frozen calibration/cohort selection and full parent qualification remain open.; ADR0033 immutable generated-only calibration/prospective sampling frames, pre-outcome deterministic selection, cross-cohort effective-experiment dedup, forced native zero-signal audits, descriptive false-negative/Wilson reporting and actual authenticated desktop/mobile exact export. Historical calibration and broader scientific acceptance remain open.; ADR0034 admission-bound posthoc historical training diagnostics preserve native bytes and reject revocation/corruption. Prospective historical calibration remains unfinished.; ADR0035 historical prospective calibration policy/cohort v2 with immutable typed admission/profile/data/code/training-coverage binding, retained posthoc-diagnostic hash reverification, 24h post-calibration embargo, subject equality, global effective-experiment dedup, canonical/quarantine/holdout/training-scope and active-admission rechecks, deterministic pre-outcome selection, CLI/API and fenced-completion diagnostic production without native-artifact mutation. Approximate historical pruning remains disabled and the native counterexample/all-native fallback are preserved.; ADR0035 also adds the authenticated dashboard workflow for cohort v2 (policy derivation from selected calibration evidence, incompatible-selection and embargo guards, actual native feedback, exact export) plus a Playwright Chromium acceptance at 1280x900 and 390x844: frozen before outcomes, pause preserved, 1 fenced native observation, approximate pruning disabled, byte-exact export, no mobile overflow, zero page errors.; ADR0036 frozen screening comparability and selection-bias reporting: screen-comparability/v1 re-verifies cohort bodies, compares the frozen subject contract pairwise with exact differing fields, reports selection-bias counters, and is content-addressed and immutable. pooled_claim_authorized is always false.; ADR0037 descriptive diagnostic cohort aggregation from one retained verified training-only result: declared UTC session buckets, side cohorts, stop/timeout classes, failure-pattern groups, MFE/MAE R means, hold durations, drawdown and recovery events; content-addressed and immutable, cost sensitivity explicitly not measured. | Measured coverage: Duplicate-skip clause covered. The false-negative sample evaluation clause is not.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Dedup and screen audit: test_T17_duplicate_skip_is_not_a_detailed_run covers the duplicate skip not counting as a detailed run, and test_false_negative_is_quarantined_never_promoted covers the false-negative sample evaluation by injecting a broken screen and asserting the real compiler plus native replay contradict it with TIER0_FALSE_NEGATIVE. test_selected_rejection_runs_authoritative_native_audit asserts tier0_audit false_negative is False for a legitimate screen.",
       "title": "Dedup + screen audit",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -829,10 +829,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Close the recorded gap: Backup creation and checksum verification (including corruption detection) covered. Restore of SQLite + manifests + artifacts is not.",
+      "next_required_action": "Assert leaderboard consistency after restore, or record that leaderboards are outside the backed-up state root.",
       "requirement_id": "T23",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim. | Measured coverage: Backup creation and checksum verification (including corruption detection) covered. Restore of SQLite + manifests + artifacts is not.",
+      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim. | Measured coverage: Backup creation and checksum verification (including corruption detection) covered. Restore of SQLite + manifests + artifacts is not. | Measured coverage: backup creation, checksum verification and corruption detection (test_T23_backup); restore into a fresh root that re-opens the store, re-applies migrations idempotently and reads a catalog partition back, leaving the backup untouched (test_rehearse_restore_exercises_the_recovery_path). The 'leaderboards consistent' clause is not asserted anywhere.",
       "title": "Backup recovery",
       "verification_command": "bash scripts/verify.sh"
     },
