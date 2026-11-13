@@ -220,13 +220,13 @@ def build_request(profile, spec, quotes, signals, conservative, partial=None):
     }
 
 
-def run_rust(request):
+def run_rust(request, *options):
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as handle:
         json.dump(request, handle)
         path = handle.name
     try:
         proc = subprocess.run(
-            [str(BINARY), path], capture_output=True, text=True, timeout=120
+            [str(BINARY), path, *options], capture_output=True, text=True, timeout=120
         )
     finally:
         Path(path).unlink(missing_ok=True)

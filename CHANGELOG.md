@@ -1,5 +1,14 @@
 ## Unreleased
 
+### Added
+
+- The Rust execution engine is now resumable: its replay state serializes to
+  JSON and restores exactly, and the CLI gained `--batch-size`, `--dump-state`
+  and `--resume-from`. `scripts/parity_raptor_restart.py` proves batch sizes
+  1/2/3/7/64 and a cross-process restart at a quote boundary all reproduce the
+  single-pass result exactly (240/240), and that result still matches the Python
+  reference.
+
 ### Fixed
 
 - The Rust execution engine now reproduces partial fills against a finite eligible

@@ -148,6 +148,30 @@ remains the reference. Full detail:
 **Next action:** obtain verified broker profiles and record restart/batch
 equivalence evidence. Only then may the NautilusTrader removal begin.
 
+### Phase 1d — restart and batch-size equivalence
+
+The replay loop was factored into a resumable `Replayer`: its state (equity, open
+position, signal cursor, consumed-quote index, every fill/trade/skip) is a pure
+function of the quotes consumed and serializes to JSON exactly. The CLI gained
+`--batch-size N`, `--dump-state` and `--resume-from`.
+
+`scripts/parity_raptor_restart.py` proves that batch sizes 1/2/3/7/64 and a
+cross-process restart at a quote boundary all reproduce the single-pass result
+exactly, **and** that result still matches the Python reference — **240/240**
+exact (seed 20261112, all eight instruments, ≈35% finite-book). Added to the CI
+rust job at 120 cases.
+
+This closes migration-gate item 7. **R02 remains `NOT_TESTED`.** Gate items 1–8
+are now demonstrated; only item 9 (removing NautilusTrader) remains.
+
+**Next action — owner decision required.** Removing NautilusTrader would also
+remove the oracle every parity result is checked against, because the Python
+reference (`factory/simulation/runner.py`) imports
+`nautilus_trader.backtest.engine.BacktestEngine`. Either build an independent
+non-Nautilus reference and verify it against the frozen goldens first, or confirm
+in writing that the Nautilus-backed runner is accepted as the item-2 reference.
+Full reasoning: `docs/milestone-raptor-migration-parity-2026-11-12.md` §5a.
+
 ## Environment change observed this session
 
 The prior checkpoint recorded histdata.com/oanda.com/six-group.com as proxy-denied

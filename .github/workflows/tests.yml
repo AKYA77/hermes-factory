@@ -34,3 +34,4 @@ jobs:
       - run: uv sync --frozen
       - run: uv run python scripts/parity_raptor_engine.py --cases 200 --instrument all --seed 20261112
       - run: uv run python scripts/verify_raptor_goldens.py
+      - run: uv run python scripts/parity_raptor_restart.py --cases 120 --instrument all

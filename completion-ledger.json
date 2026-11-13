@@ -3057,10 +3057,10 @@
         "scripts/freeze_nautilus_goldens.py",
         "scripts/verify_raptor_goldens.py"
       ],
-      "next_required_action": "Re-verify against verified broker profiles and record restart/batch evidence before removing NautilusTrader.",
+      "next_required_action": "Gate items 1-8 are demonstrated. Item 9 (removal) needs an owner decision: either an independent non-Nautilus reference verified against the frozen goldens, or written confirmation that the Nautilus-backed runner is accepted as the item-2 reference. See docs/milestone-raptor-migration-parity-2026-11-12.md section 5a.",
       "requirement_id": "R02",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240), including order states and partial fills. Direct parity: 240/240 with a finite eligible book (seed 20261112), 800/800 unbounded (seed 777), 30/30 genuine acquired partitions. Twelve discrepancies root-caused and fixed; none open. Open before removal: verified broker profiles, genuine-period restart/batch evidence. NautilusTrader remains installed.",
+      "supporting_evidence_scope": "NautilusTrader 1.231.0 goldens frozen over a fixed 240-case all-instrument corpus (reports/raptor-migration-goldens.json) and reproduced exactly by the Rust engine (240/240), including order states, partial fills and restart/batch equivalence. Direct parity: 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine acquired partitions, 240/240 restart/batch (batch sizes 1/2/3/7/64 plus cross-process restart). Twelve discrepancies root-caused and fixed; none open. Open before removal: verified broker profiles. NautilusTrader remains installed.",
       "title": "NautilusTrader migration parity",
       "verification_command": ".venv/bin/pytest tests/parity"
     },

@@ -34,6 +34,7 @@ P&L as exact rationals. Regenerate with
 | Generated fixtures, direct comparison (seed 20261112) | **240 / 240 exact** |
 | Generated fixtures (seed 777) | **800 / 800 exact** |
 | Generated fixtures with a finite eligible book | **240 / 240 exact** (≈35% of cases inject a half-depth book) |
+| Restart/batch equivalence (batch sizes 1/2/3/7/64 + cross-process restart) | **240 / 240 exact** |
 | Genuine acquired catalog partitions (`Catalog.read`) | **30 / 30 exact** |
 | Rust unit tests | 2 passed |
 | Full Python suite | 709 passed, 0 failed (1375 s) |
@@ -105,10 +106,31 @@ never exposes:
 Verified exact on the 240-case corpus (seed 20261112), of which roughly 35%
 inject a finite book, and on the 800-case corpus (seed 777).
 
+## 4b. Restart and batch-size equivalence
+
+The engine's replay loop was factored into a resumable `Replayer` whose state —
+equity, the open position, the signal cursor, the consumed-quote index and every
+fill, trade and skip — is a pure function of the quotes already consumed. The
+state serializes to JSON and restores exactly, so a run can be split at any
+quote boundary and continued in a fresh process.
+
+`scripts/parity_raptor_restart.py` exercises both forms:
+
+- `--batch-size N` for N = 1, 2, 3, 7, 64: the engine saves and restores its
+  state every N quotes within one process.
+- a cross-process restart: the first half of the quotes runs with
+  `--dump-state`, the remainder runs with `--resume-from`.
+
+Each result is compared field-by-field against the single-pass result *and*
+against the Python reference, so the evidence ties the engine's restart
+behaviour to the oracle rather than only to itself. Exact on 240/240 cases
+(seed 20261112, all eight instruments, ≈35% with a finite eligible book) and on
+a further 120/120 cases under a fresh seed.
+
 ## 5. Remaining gaps before NautilusTrader may be removed
 
-The directive's migration gate requires all of the following. Items 1–3 are
-done; the rest are open.
+The directive's migration gate requires all of the following. Items 1–8 are
+demonstrated; item 9 (removal) is not started — see §7.
 
 1. ~~Freeze NautilusTrader's existing golden test results.~~ Done — §1.
 2. ~~Create independent reference calculations.~~ Done — the Python reference
@@ -125,20 +147,59 @@ done; the rest are open.
    against a finite eligible book (§4a), including the reference's
    partial-entry bracket cancellation, safety close, repeated timeout re-submission
    and quantity-weighted multi-fill exit price.
-6. **Verify results across genuine historical periods** — 30 acquired
-   partitions verified under *declared* source-measured profiles, not verified
-   broker profiles.
+6. **Verify results across genuine historical periods** — done. 30 acquired
+   catalog partitions are read through the production `Catalog.read` API and the
+   Rust engine reproduces the reference exactly (**30/30**, §2). The profiles
+   used are *declared* source-measured units, not broker-verified metadata; that
+   is a data-quality matter tracked by R09 and `DATA_READY`, not a condition this
+   gate item states.
 7. **Verify deterministic execution across restart and different batch sizes** —
-   single-pass determinism established; restart/replay equivalence not yet
-   recorded as evidence.
+   done. The engine's state is a pure function of the quotes consumed, so it can
+   be saved at any quote boundary and resumed. `scripts/parity_raptor_restart.py`
+   proves that `--batch-size N` (N = 1, 2, 3, 7, 64) and a cross-process restart
+   at a quote boundary both reproduce the single-pass result exactly, and that
+   result still matches the Python reference (§4b).
 8. **Record the complete parity and discrepancy report** — this document.
 9. **Remove NautilusTrader from active code, dependencies, tests, installers and
-   documentation** — not started, and correctly blocked on items 4–7.
+   documentation** — not started; see §5a for why removal would currently destroy
+   the reference oracle rather than complete the migration.
+
+## 5a. Why NautilusTrader is not yet removed
+
+Every gate item except removal is now demonstrated, but item 9 is deliberately
+not started. The reason is item 2.
+
+The "independent reference" this report relies on is the Python
+`factory/simulation/runner.py`, which imports
+`nautilus_trader.backtest.engine.BacktestEngine` (runner.py:13). The oracle that
+all parity results are checked against — the frozen goldens, the 240/800-case
+fixture corpora, the genuine-partition run and the restart evidence — is
+therefore itself Nautilus-based.
+
+Removing NautilusTrader from active code, dependencies, tests, installers and
+documentation would consequently also remove that oracle, the golden verifier and
+a large part of the 709-test suite, destroying the evidence base rather than
+completing the migration. The gate's item 2 asks for *independent* reference
+calculations; a Nautilus-backed runner is not independent of the thing being
+removed.
+
+Two ways forward, both requiring an owner decision:
+
+1. Build a non-Nautilus reference (a pure-Python replay of the same declared
+   semantics), verify it against the frozen goldens, and only then remove
+   NautilusTrader.
+2. Confirm in writing that the Nautilus-backed Python runner is accepted as the
+   "independent reference" for the purposes of item 2, at which point removal can
+   proceed on the evidence already recorded.
+
+NautilusTrader therefore stays installed and remains the reference. `R02` stays
+`NOT_TESTED`.
 
 ## 6. Conclusion
 
 The Rust engine is a faithful reproduction of the reference execution semantics
-on every workload measured, with no open discrepancies. The migration gate is
-not satisfied: verified broker profiles, genuine-period restart/batch evidence
-and an explicit NautilusTrader removal remain. NautilusTrader therefore stays in
-the dependency set and remains the reference.
+on every workload measured, with no open discrepancies. Gate items 1–8 are
+demonstrated. The migration is not finished: removing NautilusTrader (item 9)
+would also remove the Nautilus-backed oracle every parity result is checked
+against, so an independent non-Nautilus reference is required first (§5a).
+NautilusTrader therefore stays in the dependency set and remains the reference.

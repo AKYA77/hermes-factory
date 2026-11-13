@@ -137,7 +137,7 @@ and `docs/inventory-2026-11-12.md`.
 | ID | Requirement | Current evidence / remaining work |
 |---|---|---|
 | R01 | RaptorBT-based Rust execution engine | NOT_TESTED — `rust/raptor-engine` exists and reproduces the reference exactly (240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions); the gate is not claimed passed |
-| R02 | NautilusTrader migration parity | NOT_TESTED — `docs/milestone-raptor-migration-parity-2026-11-12.md` records 12 root-caused defects, all fixed; verified broker profiles and genuine-period restart/batch evidence still missing |
+| R02 | NautilusTrader migration parity | NOT_TESTED — `docs/milestone-raptor-migration-parity-2026-11-12.md` records 12 root-caused defects, all fixed, and gate items 1–8 demonstrated; removal (item 9) awaits an owner decision because the reference oracle is itself Nautilus-backed (§5a) |
 | R03 | Pessimistic cost semantics preserved | NOT_TESTED in Rust — the exact 2-pip spread floor plus separate 2-pip adverse slippage is reproduced and verified exactly on every corpus measured |
 | R04 | TickFirstHitIndex exact equivalence | NOT_TESTED — no first-crossing index exists |
 | R05 | Dynamic M1–D1 signal selection | NOT_TESTED — shared closed-bar operators exist; per-strategy smallest-timeframe selection is not implemented |

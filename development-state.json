@@ -104,7 +104,8 @@
     "Frozen-golden migration evidence pushed and CI-verified at 4b119feb0a2490ea35f4fd98ee1469b9f7319561: audit, dashboard, python and rust all pass.",
     "Rust engine order-state machine: ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions, verified by the parity harness (240/240, 800/800, 30/30 genuine partitions) and the refrozen goldens (240/240).",
     "Rust engine partial fills against a finite eligible book: size-increment rounding before and after the book cap (Python round(binary64, precision) semantics), partial-entry bracket cancellation with safety close, repeated timeout re-submission, cancelled protection no longer triggering, quantity-weighted multi-fill exit price. Verified exact 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240.",
-    "Phase 1c pushed and CI-verified at 97d99a1fc520e6516773905de02f9dc338b2dfab: order states and partial fills reproduced; 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240."
+    "Phase 1c pushed and CI-verified at 97d99a1fc520e6516773905de02f9dc338b2dfab: order states and partial fills reproduced; 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240.",
+    "Resumable Rust replay: Replayer state serializes to JSON and restores exactly; --batch-size/--dump-state/--resume-from added. Restart/batch parity verified exact 240/240 (batch sizes 1/2/3/7/64 and cross-process restart at a quote boundary), each result also matching the Python reference. Closes migration-gate item 7."
   ],
   "completion_ledger": "completion-ledger.json",
   "continuation": {

@@ -79,11 +79,17 @@ impl Rat {
         assert!(!d.is_zero(), "zero denominator");
         let (n, d) = if d < BigInt::zero() { (-n, -d) } else { (n, d) };
         let g = gcd_big(n.clone(), d.clone());
-        Rat { n: n / &g, d: d / &g }
+        Rat {
+            n: n / &g,
+            d: d / &g,
+        }
     }
 
     pub fn big(n: BigInt) -> Self {
-        Rat { n, d: BigInt::one() }
+        Rat {
+            n,
+            d: BigInt::one(),
+        }
     }
 
     pub fn int(n: i128) -> Self {
@@ -115,7 +121,10 @@ impl Rat {
     }
 
     pub fn neg(&self) -> Rat {
-        Rat { n: -self.n.clone(), d: self.d.clone() }
+        Rat {
+            n: -self.n.clone(),
+            d: self.d.clone(),
+        }
     }
 
     pub fn cmp(&self, o: &Rat) -> Ordering {
@@ -258,7 +267,8 @@ impl Rat {
 // Contracts
 // --------------------------------------------------------------------------
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Side {
     Buy,
     Sell,
@@ -279,7 +289,8 @@ impl Side {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum OrderType {
     Market,
     StopMarket,
@@ -448,7 +459,8 @@ impl Partial {
     }
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "UPPERCASE")]
 pub enum Direction {
     Both,
     Long,
@@ -457,7 +469,10 @@ pub enum Direction {
 
 impl Spec {
     pub fn from_input(s: &SpecIn) -> Result<Self, String> {
-        let target_rr = s.target_rr.parse::<i64>().map_err(|_| "invalid target_rr")?;
+        let target_rr = s
+            .target_rr
+            .parse::<i64>()
+            .map_err(|_| "invalid target_rr")?;
         let direction = match s.direction.as_str() {
             "both" => Direction::Both,
             "long" => Direction::Long,
@@ -591,9 +606,7 @@ pub fn eligible_price(
     p: &Profile,
     conservative: bool,
 ) -> i64 {
-    let slip = if conservative
-        && matches!(order_type, OrderType::Market | OrderType::StopMarket)
-    {
+    let slip = if conservative && matches!(order_type, OrderType::Market | OrderType::StopMarket) {
         2 * p.pip_int
     } else {
         0
@@ -624,12 +637,7 @@ pub fn eligible_price(
 }
 
 /// Dated executable FX conversion to the USD account, decimal28 rounded.
-pub fn conversion_rate(
-    p: &Profile,
-    eff_bid: i64,
-    eff_ask: i64,
-    side: Side,
-) -> Result<Rat, String> {
+pub fn conversion_rate(p: &Profile, eff_bid: i64, eff_ask: i64, side: Side) -> Result<Rat, String> {
     if p.quote_currency == "USD" {
         return Ok(Rat::int(1));
     }
@@ -731,7 +739,14 @@ pub fn size_position(
 // Replay
 // --------------------------------------------------------------------------
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ExitFillRecord {
+    pub price_int: i64,
+    #[serde(with = "rat_serde")]
+    pub size: Rat,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct FillOut {
     pub role: String,
     pub ts: i64,
@@ -742,13 +757,13 @@ pub struct FillOut {
     pub size_den: String,
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct OrderStateOut {
     pub role: String,
     pub terminal: Option<String>,
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct TradeOut {
     pub side: String,
     pub entry_ts: i64,
@@ -771,7 +786,7 @@ pub struct TradeOut {
     pub requested_den: String,
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct SkipOut {
     pub ts: i64,
     pub status: String,
@@ -786,6 +801,35 @@ pub struct ReplayResult {
     pub quote_count: usize,
 }
 
+/// Serde bridge for `Rat` so the engine state can be persisted and restored.
+mod rat_serde {
+    use super::Rat;
+    use serde::{Deserialize, Deserializer, Serialize, Serializer};
+
+    #[derive(Serialize, Deserialize)]
+    struct RatRepr {
+        n: String,
+        d: String,
+    }
+
+    pub fn serialize<S: Serializer>(value: &Rat, serializer: S) -> Result<S::Ok, S::Error> {
+        RatRepr {
+            n: value.n.to_string(),
+            d: value.d.to_string(),
+        }
+        .serialize(serializer)
+    }
+
+    pub fn deserialize<'de, D: Deserializer<'de>>(deserializer: D) -> Result<Rat, D::Error> {
+        let repr = RatRepr::deserialize(deserializer)?;
+        Ok(Rat {
+            n: repr.n.parse().map_err(serde::de::Error::custom)?,
+            d: repr.d.parse().map_err(serde::de::Error::custom)?,
+        })
+    }
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 struct Position {
     side: Side,
     entry_price: i64,
@@ -794,17 +838,21 @@ struct Position {
     stop: i64,
     target: i64,
     price_scale: i64,
+    #[serde(with = "rat_serde")]
     requested: Rat,
+    #[serde(with = "rat_serde")]
     cost: Rat,
+    #[serde(with = "rat_serde")]
     entered: Rat,
+    #[serde(with = "rat_serde")]
     exited: Rat,
+    #[serde(with = "rat_serde")]
     realized_exact: Rat,
     flags: Vec<String>,
     order_states: Vec<(String, String, Option<String>)>,
     exit_roles: Vec<String>,
     safety_pending: bool,
-    /// (integer price, size) for every non-entry fill, in execution order.
-    exit_fills: Vec<(i64, Rat)>,
+    exit_fills: Vec<ExitFillRecord>,
 }
 
 impl Position {
@@ -832,7 +880,11 @@ impl Position {
     /// Register a resting order for the given role.
     fn register(&mut self, role: &str) {
         if !self.order_states.iter().any(|o| o.1 == role) {
-            self.order_states.push((format!("{role}-{}", self.order_states.len()), role.to_string(), None));
+            self.order_states.push((
+                format!("{role}-{}", self.order_states.len()),
+                role.to_string(),
+                None,
+            ));
         }
     }
 
@@ -849,7 +901,14 @@ impl Position {
         out
     }
 
-    fn apply_fill(&mut self, price: i64, size: &Rat, _order_side: Side, conv: Rat, role: &str) -> Rat {
+    fn apply_fill(
+        &mut self,
+        price: i64,
+        size: &Rat,
+        _order_side: Side,
+        conv: Rat,
+        role: &str,
+    ) -> Rat {
         let scale = Rat::int(self.price_scale as i128);
         let price_dec = Rat::int(price as i128).div(&scale);
         let delta;
@@ -858,7 +917,10 @@ impl Position {
             self.entered = self.entered.add(size);
             delta = Rat::zero();
         } else {
-            self.exit_fills.push((price, size.clone()));
+            self.exit_fills.push(ExitFillRecord {
+                price_int: price,
+                size: size.clone(),
+            });
             let sign = if self.side == Side::Buy {
                 Rat::int(1)
             } else {
@@ -898,16 +960,15 @@ impl Position {
                 let total: Rat = self
                     .exit_fills
                     .iter()
-                    .fold(Rat::zero(), |a, (_, s)| a.add(s));
+                    .fold(Rat::zero(), |a, record| a.add(&record.size));
                 if !closed || total.is_zero() {
                     None
                 } else {
                     // The reference aggregates a multi-fill exit into a
                     // quantity-weighted average price.
-                    let weighted: Rat = self.exit_fills.iter().fold(
-                        Rat::zero(),
-                        |a, (p, s)| a.add(&Rat::int(*p as i128).mul(s)),
-                    );
+                    let weighted: Rat = self.exit_fills.iter().fold(Rat::zero(), |a, record| {
+                        a.add(&Rat::int(record.price_int as i128).mul(&record.size))
+                    });
                     Some(weighted.div(&total).floor().to_i64().unwrap_or(0))
                 }
             },
@@ -949,6 +1010,447 @@ impl Position {
     }
 }
 
+/// One quote of sequential exact replay: matching phase, deadline close, safety
+/// close and signal evaluation, in the reference's per-quote order.
+#[allow(clippy::too_many_arguments)]
+fn step_impl(
+    profile: &Profile,
+    spec: &Spec,
+    signals: &[Signal],
+    conservative: bool,
+    i: usize,
+    q: &Quote,
+    equity: &mut Rat,
+    open: &mut Option<Position>,
+    sig_idx: &mut usize,
+    fills: &mut Vec<FillOut>,
+    trades: &mut Vec<TradeOut>,
+    skips: &mut Vec<SkipOut>,
+) -> Result<(), String> {
+    let (b, a) = effective_quotes(q.bid, q.ask, profile, conservative)?;
+
+    // (a) Matching phase. Resting protection is evaluated against this
+    //     quote. Protection that has passed its deadline was already
+    //     cancelled by the clock alert, so it cannot fill here.
+    if let Some(mut pos) = open.take() {
+        let deadline = pos.entry_ts + spec.max_hold_seconds * NANOS;
+        let exit = if q.ts >= deadline
+            || !pos.order_active("STOP_LOSS") && !pos.order_active("TAKE_PROFIT")
+        {
+            None
+        } else if pos.side == Side::Buy {
+            if b <= pos.stop && pos.order_active("STOP_LOSS") {
+                Some((
+                    eligible_price(b, Side::Sell, OrderType::StopMarket, profile, conservative),
+                    "STOP_LOSS",
+                ))
+            } else if b >= pos.target && pos.order_active("TAKE_PROFIT") {
+                Some((b, "TAKE_PROFIT"))
+            } else {
+                None
+            }
+        } else if a >= pos.stop && pos.order_active("STOP_LOSS") {
+            Some((
+                eligible_price(a, Side::Buy, OrderType::StopMarket, profile, conservative),
+                "STOP_LOSS",
+            ))
+        } else if a <= pos.target && pos.order_active("TAKE_PROFIT") {
+            Some((a, "TAKE_PROFIT"))
+        } else {
+            None
+        };
+        if let Some((price, role)) = exit {
+            let exit_side = pos.side.flip();
+            let conv = conversion_rate(profile, b, a, exit_side)?;
+            let qty = pos.quantity();
+            let avail = order_quantity(profile, &qty, &spec.partial, role, exit_side);
+            let delta = pos.apply_fill(price, &avail, exit_side, conv, role);
+            *equity = equity.add(&delta).round_sig28();
+            pos.exit_roles.push(role.to_string());
+            fills.push(FillOut {
+                role: role.into(),
+                ts: q.ts,
+                qi: i,
+                side: exit_side.as_str().to_string(),
+                price_int: price,
+                size_num: avail.n.to_string(),
+                size_den: avail.d.to_string(),
+            });
+            if avail.cmp(&qty) == Ordering::Less {
+                // A partial protection fill cancels the order remainder and
+                // its sibling; the position stays open for a safety close.
+                pos.terminate(role, "CANCELED");
+                pos.terminate(
+                    if role == "STOP_LOSS" {
+                        "TAKE_PROFIT"
+                    } else {
+                        "STOP_LOSS"
+                    },
+                    "CANCELED",
+                );
+                if !pos.flags.iter().any(|f| f == "PROTECTION_LOST") {
+                    pos.flags.push("PROTECTION_LOST".into());
+                }
+                pos.safety_pending = true;
+                *open = Some(pos);
+            } else {
+                pos.terminate(role, "FILLED");
+                pos.terminate(
+                    if role == "STOP_LOSS" {
+                        "TAKE_PROFIT"
+                    } else {
+                        "STOP_LOSS"
+                    },
+                    "CANCELED",
+                );
+                let mut t = pos.to_trade(Some(q.ts), Some(i), Some(price), Some(role.into()));
+                t.pnl_num = pos.account_realized().n.to_string();
+                t.pnl_den = pos.account_realized().d.to_string();
+                trades.push(t);
+            }
+        } else {
+            *open = Some(pos);
+        }
+    }
+
+    // (b) Strategy callback. A deadline close submits a market exit that
+    //     fills immediately against the current quote, updating equity
+    //     before any new position is sized at this same quote.
+    if let Some(mut pos) = open.take() {
+        let deadline = pos.entry_ts + spec.max_hold_seconds * NANOS;
+        if q.ts >= deadline {
+            let exit_side = pos.side.flip();
+            let book = if pos.side == Side::Buy { b } else { a };
+            let price = eligible_price(book, exit_side, OrderType::Market, profile, conservative);
+            let conv = conversion_rate(profile, b, a, exit_side)?;
+            let qty = pos.quantity();
+            let avail = order_quantity(profile, &qty, &spec.partial, "TIMEOUT", exit_side);
+            let delta = pos.apply_fill(price, &avail, exit_side, conv, "TIMEOUT");
+            *equity = equity.add(&delta).round_sig28();
+            pos.exit_roles.push("TIMEOUT".to_string());
+            pos.terminate("STOP_LOSS", "CANCELED");
+            pos.terminate("TAKE_PROFIT", "CANCELED");
+            pos.register("TIMEOUT");
+            let flag = if q.ts == deadline {
+                "TIMEOUT"
+            } else {
+                "DELAYED_TIMEOUT_QUOTE"
+            };
+            if !pos.flags.iter().any(|f| f == flag) {
+                pos.flags.push(flag.to_string());
+            }
+            fills.push(FillOut {
+                role: "TIMEOUT".into(),
+                ts: q.ts,
+                qi: i,
+                side: exit_side.as_str().to_string(),
+                price_int: price,
+                size_num: avail.n.to_string(),
+                size_den: avail.d.to_string(),
+            });
+            if avail.cmp(&qty) == Ordering::Less {
+                // The exit remainder is cancelled and the position stays
+                // open; a later quote submits a fresh exit order.
+                pos.terminate("TIMEOUT", "CANCELED");
+                *open = Some(pos);
+            } else {
+                pos.terminate("TIMEOUT", "FILLED");
+                let mut t = pos.to_trade(Some(q.ts), Some(i), Some(price), Some("TIMEOUT".into()));
+                t.pnl_num = pos.account_realized().n.to_string();
+                t.pnl_den = pos.account_realized().d.to_string();
+                trades.push(t);
+            }
+        } else {
+            *open = Some(pos);
+        }
+    }
+
+    // (b2) Safety close: protection was lost, so the remaining position is
+    //      exited at the current executable quote.
+    if let Some(mut pos) = open.take() {
+        if pos.safety_pending {
+            let exit_side = pos.side.flip();
+            let book = if pos.side == Side::Buy { b } else { a };
+            let price = eligible_price(book, exit_side, OrderType::Market, profile, conservative);
+            let conv = conversion_rate(profile, b, a, exit_side)?;
+            let qty = pos.quantity();
+            let avail = order_quantity(profile, &qty, &spec.partial, "SAFETY_CLOSE", exit_side);
+            let delta = pos.apply_fill(price, &avail, exit_side, conv, "SAFETY_CLOSE");
+            *equity = equity.add(&delta).round_sig28();
+            pos.exit_roles.push("SAFETY_CLOSE".into());
+            pos.safety_pending = false;
+            if !pos.flags.iter().any(|f| f == "SAFETY_CLOSE") {
+                pos.flags.push("SAFETY_CLOSE".into());
+            }
+            pos.register("SAFETY_CLOSE");
+            pos.terminate("SAFETY_CLOSE", "FILLED");
+            fills.push(FillOut {
+                role: "SAFETY_CLOSE".into(),
+                ts: q.ts,
+                qi: i,
+                side: exit_side.as_str().to_string(),
+                price_int: price,
+                size_num: avail.n.to_string(),
+                size_den: avail.d.to_string(),
+            });
+            if pos.quantity().is_zero() {
+                let mut t = pos.to_trade(
+                    Some(q.ts),
+                    Some(i),
+                    Some(price),
+                    Some("SAFETY_CLOSE".into()),
+                );
+                t.pnl_num = pos.account_realized().n.to_string();
+                t.pnl_den = pos.account_realized().d.to_string();
+                trades.push(t);
+            } else {
+                *open = Some(pos);
+            }
+        } else {
+            *open = Some(pos);
+        }
+    }
+
+    // (c) Signals: eligible once available_at is strictly before the quote.
+    while *sig_idx < signals.len() && signals[*sig_idx].available_at < q.ts {
+        let sig_side = signals[*sig_idx].side.into();
+        *sig_idx += 1;
+        if open.is_some() {
+            skips.push(SkipOut {
+                ts: q.ts,
+                status: "SKIPPED_OVERLAP".into(),
+            });
+            continue;
+        }
+        let allowed = match spec.direction {
+            Direction::Both => true,
+            Direction::Long => sig_side == Side::Buy,
+            Direction::Short => sig_side == Side::Sell,
+        };
+        if !allowed {
+            continue;
+        }
+        let book = if sig_side == Side::Buy { a } else { b };
+        let entry = eligible_price(book, sig_side, OrderType::Market, profile, conservative);
+        let sign = if sig_side == Side::Buy { 1 } else { -1 };
+        let distance = spec.stop_ticks * profile.tick_int;
+        let stop = entry - sign * distance;
+        let target = entry + sign * distance * spec.target_rr;
+        if stop <= 0 || target <= 0 {
+            skips.push(SkipOut {
+                ts: q.ts,
+                status: "SKIPPED_PRICE_LEVEL".into(),
+            });
+            continue;
+        }
+        let liquidation = if sig_side == Side::Buy { b } else { a };
+        if (liquidation - stop) * sign < profile.min_stop_ticks * profile.tick_int {
+            skips.push(SkipOut {
+                ts: q.ts,
+                status: "SKIPPED_STOP_LEVEL".into(),
+            });
+            continue;
+        }
+        let risk_side = if sig_side == Side::Buy {
+            Side::Sell
+        } else {
+            Side::Buy
+        };
+        let risk_conversion = conversion_rate(profile, b, a, risk_side)?;
+        let sizing = size_position(
+            equity.clone(),
+            entry,
+            stop,
+            profile,
+            risk_conversion,
+            conservative,
+        )?;
+        let size = match sizing {
+            SizeResult::Eligible { size, .. } => size,
+            SizeResult::SkippedStopLevel => {
+                skips.push(SkipOut {
+                    ts: q.ts,
+                    status: "SKIPPED_STOP_LEVEL".into(),
+                });
+                continue;
+            }
+            SizeResult::SkippedMinVolume => {
+                skips.push(SkipOut {
+                    ts: q.ts,
+                    status: "SKIPPED_MIN_VOLUME".into(),
+                });
+                continue;
+            }
+            SizeResult::SkippedMargin => {
+                skips.push(SkipOut {
+                    ts: q.ts,
+                    status: "SKIPPED_MARGIN".into(),
+                });
+                continue;
+            }
+        };
+        let native_size = size.mul(&profile.contract_multiplier);
+        let conv = conversion_rate(profile, b, a, sig_side)?;
+        let mut pos = Position {
+            side: sig_side,
+            entry_price: entry,
+            entry_ts: q.ts,
+            entry_qi: i,
+            stop,
+            target,
+            price_scale: profile.price_scale,
+            requested: native_size.clone(),
+            cost: Rat::zero(),
+            entered: Rat::zero(),
+            exited: Rat::zero(),
+            realized_exact: Rat::zero(),
+            flags: Vec::new(),
+            order_states: Vec::new(),
+            exit_roles: Vec::new(),
+            safety_pending: false,
+            exit_fills: Vec::new(),
+        };
+        pos.register("ENTRY");
+        pos.register("STOP_LOSS");
+        pos.register("TAKE_PROFIT");
+        let avail = order_quantity(profile, &native_size, &spec.partial, "ENTRY", sig_side);
+        pos.apply_fill(entry, &avail, sig_side, conv, "ENTRY");
+        fills.push(FillOut {
+            role: "ENTRY".into(),
+            ts: q.ts,
+            qi: i,
+            side: sig_side.as_str().to_string(),
+            price_int: entry,
+            size_num: avail.n.to_string(),
+            size_den: avail.d.to_string(),
+        });
+        if avail.cmp(&native_size) == Ordering::Less {
+            // The IOC remainder is cancelled, and cancelling the parent
+            // order cancels the attached protection (order group).
+            pos.terminate("ENTRY", "CANCELED");
+            pos.terminate("STOP_LOSS", "CANCELED");
+            pos.terminate("TAKE_PROFIT", "CANCELED");
+            if !pos.flags.iter().any(|f| f == "PROTECTION_LOST") {
+                pos.flags.push("PROTECTION_LOST".into());
+            }
+            pos.safety_pending = true;
+        } else {
+            pos.terminate("ENTRY", "FILLED");
+        }
+        *open = Some(pos);
+    }
+
+    Ok(())
+}
+
+/// Persisted engine state: everything needed to resume a replay at a quote
+/// boundary. The state is a pure function of the quotes consumed.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct ReplayerState {
+    #[serde(with = "rat_serde")]
+    equity: Rat,
+    open: Option<Position>,
+    sig_idx: usize,
+    index: usize,
+    fills: Vec<FillOut>,
+    trades: Vec<TradeOut>,
+    skips: Vec<SkipOut>,
+}
+
+/// Resumable sequential replay. `step` advances one quote; `state`/`restore`
+/// split a run at any quote boundary without changing the result, which is the
+/// restart and batch-size evidence the migration gate requires.
+pub struct Replayer<'a> {
+    profile: &'a Profile,
+    spec: &'a Spec,
+    signals: &'a [Signal],
+    conservative: bool,
+    state: ReplayerState,
+}
+
+impl<'a> Replayer<'a> {
+    pub fn new(
+        profile: &'a Profile,
+        spec: &'a Spec,
+        signals: &'a [Signal],
+        conservative: bool,
+    ) -> Self {
+        Replayer {
+            profile,
+            spec,
+            signals,
+            conservative,
+            state: ReplayerState {
+                equity: Rat::int(20),
+                open: None,
+                sig_idx: 0,
+                index: 0,
+                fills: Vec::new(),
+                trades: Vec::new(),
+                skips: Vec::new(),
+            },
+        }
+    }
+
+    pub fn step(&mut self, q: &Quote) -> Result<(), String> {
+        let i = self.state.index;
+        self.state.index += 1;
+        step_impl(
+            self.profile,
+            self.spec,
+            self.signals,
+            self.conservative,
+            i,
+            q,
+            &mut self.state.equity,
+            &mut self.state.open,
+            &mut self.state.sig_idx,
+            &mut self.state.fills,
+            &mut self.state.trades,
+            &mut self.state.skips,
+        )
+    }
+
+    pub fn finish(self) -> ReplayResult {
+        let open_trade = self.state.open.map(|pos| {
+            let mut t = pos.to_trade(None, None, None, None);
+            t.pnl_num = pos.account_realized().n.to_string();
+            t.pnl_den = pos.account_realized().d.to_string();
+            if !t.flags.iter().any(|f| f == "NO_EXECUTABLE_EXIT_QUOTE") {
+                t.flags.push("NO_EXECUTABLE_EXIT_QUOTE".into());
+            }
+            t
+        });
+        ReplayResult {
+            fills: self.state.fills,
+            trades: self.state.trades,
+            open_trade,
+            skips: self.state.skips,
+            quote_count: self.state.index,
+        }
+    }
+
+    pub fn state(&self) -> ReplayerState {
+        self.state.clone()
+    }
+
+    pub fn restore(
+        state: ReplayerState,
+        profile: &'a Profile,
+        spec: &'a Spec,
+        signals: &'a [Signal],
+        conservative: bool,
+    ) -> Self {
+        Replayer {
+            profile,
+            spec,
+            signals,
+            conservative,
+            state,
+        }
+    }
+}
+
 /// Sequential exact quote replay with engine-managed brackets and one open
 /// position. This is the authoritative fallback execution mode.
 pub fn replay(
@@ -958,314 +1460,11 @@ pub fn replay(
     signals: &[Signal],
     conservative: bool,
 ) -> Result<ReplayResult, String> {
-    let mut fills: Vec<FillOut> = Vec::new();
-    let mut trades: Vec<TradeOut> = Vec::new();
-    let mut skips: Vec<SkipOut> = Vec::new();
-    let mut open: Option<Position> = None;
-    let mut sig_idx = 0usize;
-    let mut equity = Rat::int(20);
-
-    for (i, q) in quotes.iter().enumerate() {
-        let (b, a) = effective_quotes(q.bid, q.ask, profile, conservative)?;
-
-        // (a) Matching phase. Resting protection is evaluated against this
-        //     quote. Protection that has passed its deadline was already
-        //     cancelled by the clock alert, so it cannot fill here.
-        if let Some(mut pos) = open.take() {
-            let deadline = pos.entry_ts + spec.max_hold_seconds * NANOS;
-            let exit = if q.ts >= deadline || !pos.order_active("STOP_LOSS") && !pos.order_active("TAKE_PROFIT") {
-                None
-            } else if pos.side == Side::Buy {
-                if b <= pos.stop && pos.order_active("STOP_LOSS") {
-                    Some((
-                        eligible_price(b, Side::Sell, OrderType::StopMarket, profile, conservative),
-                        "STOP_LOSS",
-                    ))
-                } else if b >= pos.target && pos.order_active("TAKE_PROFIT") {
-                    Some((b, "TAKE_PROFIT"))
-                } else {
-                    None
-                }
-            } else if a >= pos.stop && pos.order_active("STOP_LOSS") {
-                Some((
-                    eligible_price(a, Side::Buy, OrderType::StopMarket, profile, conservative),
-                    "STOP_LOSS",
-                ))
-            } else if a <= pos.target && pos.order_active("TAKE_PROFIT") {
-                Some((a, "TAKE_PROFIT"))
-            } else {
-                None
-            };
-            if let Some((price, role)) = exit {
-                let exit_side = pos.side.flip();
-                let conv = conversion_rate(profile, b, a, exit_side)?;
-                let qty = pos.quantity();
-                let avail = order_quantity(profile, &qty, &spec.partial, role, exit_side);
-                let delta = pos.apply_fill(price, &avail, exit_side, conv, role);
-                equity = equity.add(&delta).round_sig28();
-                pos.exit_roles.push(role.to_string());
-                fills.push(FillOut {
-                    role: role.into(),
-                    ts: q.ts,
-                    qi: i,
-                    side: exit_side.as_str().to_string(),
-                    price_int: price,
-                    size_num: avail.n.to_string(),
-                    size_den: avail.d.to_string(),
-                });
-                if avail.cmp(&qty) == Ordering::Less {
-                    // A partial protection fill cancels the order remainder and
-                    // its sibling; the position stays open for a safety close.
-                    pos.terminate(role, "CANCELED");
-                    pos.terminate(
-                        if role == "STOP_LOSS" { "TAKE_PROFIT" } else { "STOP_LOSS" },
-                        "CANCELED",
-                    );
-                    if !pos.flags.iter().any(|f| f == "PROTECTION_LOST") {
-                        pos.flags.push("PROTECTION_LOST".into());
-                    }
-                    pos.safety_pending = true;
-                    open = Some(pos);
-                } else {
-                    pos.terminate(role, "FILLED");
-                    pos.terminate(
-                        if role == "STOP_LOSS" { "TAKE_PROFIT" } else { "STOP_LOSS" },
-                        "CANCELED",
-                    );
-                    let mut t = pos.to_trade(Some(q.ts), Some(i), Some(price), Some(role.into()));
-                    t.pnl_num = pos.account_realized().n.to_string();
-                    t.pnl_den = pos.account_realized().d.to_string();
-                    trades.push(t);
-                }
-            } else {
-                open = Some(pos);
-            }
-        }
-
-        // (b) Strategy callback. A deadline close submits a market exit that
-        //     fills immediately against the current quote, updating equity
-        //     before any new position is sized at this same quote.
-        if let Some(mut pos) = open.take() {
-            let deadline = pos.entry_ts + spec.max_hold_seconds * NANOS;
-            if q.ts >= deadline {
-                let exit_side = pos.side.flip();
-                let book = if pos.side == Side::Buy { b } else { a };
-                let price =
-                    eligible_price(book, exit_side, OrderType::Market, profile, conservative);
-                let conv = conversion_rate(profile, b, a, exit_side)?;
-                let qty = pos.quantity();
-                let avail = order_quantity(profile, &qty, &spec.partial, "TIMEOUT", exit_side);
-                let delta = pos.apply_fill(price, &avail, exit_side, conv, "TIMEOUT");
-                equity = equity.add(&delta).round_sig28();
-                pos.exit_roles.push("TIMEOUT".to_string());
-                pos.terminate("STOP_LOSS", "CANCELED");
-                pos.terminate("TAKE_PROFIT", "CANCELED");
-                pos.register("TIMEOUT");
-                let flag = if q.ts == deadline {
-                    "TIMEOUT"
-                } else {
-                    "DELAYED_TIMEOUT_QUOTE"
-                };
-                if !pos.flags.iter().any(|f| f == flag) {
-                    pos.flags.push(flag.to_string());
-                }
-                fills.push(FillOut {
-                    role: "TIMEOUT".into(),
-                    ts: q.ts,
-                    qi: i,
-                    side: exit_side.as_str().to_string(),
-                    price_int: price,
-                    size_num: avail.n.to_string(),
-                    size_den: avail.d.to_string(),
-                });
-                if avail.cmp(&qty) == Ordering::Less {
-                    // The exit remainder is cancelled and the position stays
-                    // open; a later quote submits a fresh exit order.
-                    pos.terminate("TIMEOUT", "CANCELED");
-                    open = Some(pos);
-                } else {
-                    pos.terminate("TIMEOUT", "FILLED");
-                    let mut t =
-                        pos.to_trade(Some(q.ts), Some(i), Some(price), Some("TIMEOUT".into()));
-                    t.pnl_num = pos.account_realized().n.to_string();
-                    t.pnl_den = pos.account_realized().d.to_string();
-                    trades.push(t);
-                }
-            } else {
-                open = Some(pos);
-            }
-        }
-
-        // (b2) Safety close: protection was lost, so the remaining position is
-        //      exited at the current executable quote.
-        if let Some(mut pos) = open.take() {
-            if pos.safety_pending {
-                let exit_side = pos.side.flip();
-                let book = if pos.side == Side::Buy { b } else { a };
-                let price =
-                    eligible_price(book, exit_side, OrderType::Market, profile, conservative);
-                let conv = conversion_rate(profile, b, a, exit_side)?;
-                let qty = pos.quantity();
-                let avail =
-                    order_quantity(profile, &qty, &spec.partial, "SAFETY_CLOSE", exit_side);
-                let delta = pos.apply_fill(price, &avail, exit_side, conv, "SAFETY_CLOSE");
-                equity = equity.add(&delta).round_sig28();
-                pos.exit_roles.push("SAFETY_CLOSE".into());
-                pos.safety_pending = false;
-                if !pos.flags.iter().any(|f| f == "SAFETY_CLOSE") {
-                    pos.flags.push("SAFETY_CLOSE".into());
-                }
-                pos.register("SAFETY_CLOSE");
-                pos.terminate("SAFETY_CLOSE", "FILLED");
-                fills.push(FillOut {
-                    role: "SAFETY_CLOSE".into(),
-                    ts: q.ts,
-                    qi: i,
-                    side: exit_side.as_str().to_string(),
-                    price_int: price,
-                    size_num: avail.n.to_string(),
-                    size_den: avail.d.to_string(),
-                });
-                if pos.quantity().is_zero() {
-                    let mut t =
-                        pos.to_trade(Some(q.ts), Some(i), Some(price), Some("SAFETY_CLOSE".into()));
-                    t.pnl_num = pos.account_realized().n.to_string();
-                    t.pnl_den = pos.account_realized().d.to_string();
-                    trades.push(t);
-                } else {
-                    open = Some(pos);
-                }
-            } else {
-                open = Some(pos);
-            }
-        }
-
-        // (c) Signals: eligible once available_at is strictly before the quote.
-        while sig_idx < signals.len() && signals[sig_idx].available_at < q.ts {
-            let sig_side = signals[sig_idx].side.into();
-            sig_idx += 1;
-            if open.is_some() {
-                skips.push(SkipOut { ts: q.ts, status: "SKIPPED_OVERLAP".into() });
-                continue;
-            }
-            let allowed = match spec.direction {
-                Direction::Both => true,
-                Direction::Long => sig_side == Side::Buy,
-                Direction::Short => sig_side == Side::Sell,
-            };
-            if !allowed {
-                continue;
-            }
-            let book = if sig_side == Side::Buy { a } else { b };
-            let entry = eligible_price(book, sig_side, OrderType::Market, profile, conservative);
-            let sign = if sig_side == Side::Buy { 1 } else { -1 };
-            let distance = spec.stop_ticks * profile.tick_int;
-            let stop = entry - sign * distance;
-            let target = entry + sign * distance * spec.target_rr;
-            if stop <= 0 || target <= 0 {
-                skips.push(SkipOut { ts: q.ts, status: "SKIPPED_PRICE_LEVEL".into() });
-                continue;
-            }
-            let liquidation = if sig_side == Side::Buy { b } else { a };
-            if (liquidation - stop) * sign < profile.min_stop_ticks * profile.tick_int {
-                skips.push(SkipOut { ts: q.ts, status: "SKIPPED_STOP_LEVEL".into() });
-                continue;
-            }
-            let risk_side = if sig_side == Side::Buy { Side::Sell } else { Side::Buy };
-            let risk_conversion = conversion_rate(profile, b, a, risk_side)?;
-            let sizing = size_position(
-                equity.clone(),
-                entry,
-                stop,
-                profile,
-                risk_conversion,
-                conservative,
-            )?;
-            let size = match sizing {
-                SizeResult::Eligible { size, .. } => size,
-                SizeResult::SkippedStopLevel => {
-                    skips.push(SkipOut { ts: q.ts, status: "SKIPPED_STOP_LEVEL".into() });
-                    continue;
-                }
-                SizeResult::SkippedMinVolume => {
-                    skips.push(SkipOut { ts: q.ts, status: "SKIPPED_MIN_VOLUME".into() });
-                    continue;
-                }
-                SizeResult::SkippedMargin => {
-                    skips.push(SkipOut { ts: q.ts, status: "SKIPPED_MARGIN".into() });
-                    continue;
-                }
-            };
-            let native_size = size.mul(&profile.contract_multiplier);
-            let conv = conversion_rate(profile, b, a, sig_side)?;
-            let mut pos = Position {
-                side: sig_side,
-                entry_price: entry,
-                entry_ts: q.ts,
-                entry_qi: i,
-                stop,
-                target,
-                price_scale: profile.price_scale,
-                requested: native_size.clone(),
-                cost: Rat::zero(),
-                entered: Rat::zero(),
-                exited: Rat::zero(),
-                realized_exact: Rat::zero(),
-                flags: Vec::new(),
-                order_states: Vec::new(),
-                exit_roles: Vec::new(),
-                safety_pending: false,
-                exit_fills: Vec::new(),
-            };
-            pos.register("ENTRY");
-            pos.register("STOP_LOSS");
-            pos.register("TAKE_PROFIT");
-            let avail = order_quantity(profile, &native_size, &spec.partial, "ENTRY", sig_side);
-            pos.apply_fill(entry, &avail, sig_side, conv, "ENTRY");
-            fills.push(FillOut {
-                role: "ENTRY".into(),
-                ts: q.ts,
-                qi: i,
-                side: sig_side.as_str().to_string(),
-                price_int: entry,
-                size_num: avail.n.to_string(),
-                size_den: avail.d.to_string(),
-            });
-            if avail.cmp(&native_size) == Ordering::Less {
-                // The IOC remainder is cancelled, and cancelling the parent
-                // order cancels the attached protection (order group).
-                pos.terminate("ENTRY", "CANCELED");
-                pos.terminate("STOP_LOSS", "CANCELED");
-                pos.terminate("TAKE_PROFIT", "CANCELED");
-                if !pos.flags.iter().any(|f| f == "PROTECTION_LOST") {
-                    pos.flags.push("PROTECTION_LOST".into());
-                }
-                pos.safety_pending = true;
-            } else {
-                pos.terminate("ENTRY", "FILLED");
-            }
-            open = Some(pos);
-        }
-
+    let mut replayer = Replayer::new(profile, spec, signals, conservative);
+    for q in quotes {
+        replayer.step(q)?;
     }
-
-    let open_trade = open.map(|pos| {
-        let mut t = pos.to_trade(None, None, None, None);
-        t.pnl_num = pos.account_realized().n.to_string();
-        t.pnl_den = pos.account_realized().d.to_string();
-        if !t.flags.iter().any(|f| f == "NO_EXECUTABLE_EXIT_QUOTE") {
-            t.flags.push("NO_EXECUTABLE_EXIT_QUOTE".into());
-        }
-        t
-    });
-
-    Ok(ReplayResult {
-        fills,
-        trades,
-        open_trade,
-        skips,
-        quote_count: quotes.len(),
-    })
+    Ok(replayer.finish())
 }
 
 impl Position {
