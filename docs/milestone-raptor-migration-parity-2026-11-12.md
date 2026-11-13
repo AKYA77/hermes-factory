@@ -235,6 +235,32 @@ The direct parity harness (`parity_raptor_engine.py`), the restart harness, the
 genuine-partition harness and the freezer still invoke the Nautilus-backed Python
 reference, so they do not survive removal.
 
+## 5b. R01 capability audit
+
+R01 lists the capabilities the production Rust engine must have. Each term, with
+its measured status:
+
+| Term | Status | Evidence |
+|---|---|---|
+| Exact bid/ask quotes, long and short | Verified | 240/240 and 800/800 fixtures, both directions, all eight instruments |
+| Executable-side entry/exit prices | Verified | exact integer tick units in every corpus; 2-pip floor and separate 2-pip slippage |
+| Order states | Verified | ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminals, 240/240 goldens |
+| Partial fills | Verified | finite eligible book, 240/240 exact incl. bracket cancellation and safety close |
+| Cancellations | Verified | order-state terminals (CANCELED) and the SKIPPED_* paths |
+| Deadlines | Verified | TIMEOUT / DELAYED_TIMEOUT_QUOTE with re-submission under a thin book |
+| Safety exits | Verified | SAFETY_CLOSE after PROTECTION_LOST, 240/240 |
+| Gaps | Verified structurally | the reference has no gap special case; gaps are absorbed by the spread floor and outward rounding in `effective_quotes`, which the engine reproduces |
+| Conversion | Verified | JPY/CHF/CAD cross rates as exact rationals, 28-significant-digit policy |
+| Sizing | Verified | 10% equity risk budget with adverse stop excursion, exact rational sizing |
+| Margin | Verified | margin-rate admission with `SKIPPED_MARGIN` |
+| Equity | Verified | 28-significant-digit rounding after every fill; drives subsequent sizing |
+| Fees | **Not modelled — blocked on an owner policy decision** | the reference deliberately refuses commissions: `native_money.py:42-47` states "Commissions, reversals and inverse contracts require separate policies and are explicitly refused rather than silently approximated", `position_reference` raises `UNSUPPORTED_NATIVE_REFERENCE_COMMISSION` (line 56-57), and `runner.py:591` flags any non-zero commission as `COMMISSION_SCENARIO_MISMATCH`. The venue is configured with `maker_fee=D(0), taker_fee=D(0)` (`runner.py:60-61`). Reproduced: setting non-zero instrument fees makes the reference raise, so no fee-bearing scenario can be built from it. The engine therefore cannot be parity-verified for fees; a fee policy must be defined first. |
+| Drawdown | Not an execution capability | computed downstream in `factory/validation/evidence.py:58` from an equity curve; the engine tracks equity but does not report drawdown |
+
+So R01 is verified for twelve of its fourteen terms. **Fees** requires an owner
+policy decision (the reference refuses them), and **drawdown** belongs to the
+validation layer rather than the engine.
+
 ## 6. Conclusion
 
 The Rust engine is a faithful reproduction of the reference execution semantics
