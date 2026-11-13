@@ -330,7 +330,7 @@
     },
     {
       "acceptance_criteria": "Intended deadline enforced; missing executable quote classified rather than invented.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -349,10 +349,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Close the recorded gap: Deadline enforcement covered by test_T11_deadline_quote. The missing-executable-quote classification is covered by test_missing_exit, which is not named for T11.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T11",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Exact quote timeout and missing-exit flag tested; delayed-gap policy further review | Measured coverage: Deadline enforcement covered by test_T11_deadline_quote. The missing-executable-quote classification is covered by test_missing_exit, which is not named for T11.",
+      "status": "PASS",
+      "supporting_evidence_scope": "24h deadline: test_T11_deadline_quote asserts the exit timestamp is exactly 86400 s after entry and the trade carries the TIMEOUT flag. Missing executable quote: test_missing_exit asserts the position stays open with NO_EXECUTABLE_EXIT_QUOTE rather than inventing an exit. Both clauses of the criterion are covered by passing tests.",
       "title": "24h deadline",
       "verification_command": "bash scripts/verify.sh"
     },
