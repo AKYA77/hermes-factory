@@ -172,6 +172,16 @@ def run(output):
             "dataset_hash": c.dataset_hash,
             "rows": 2000,
             "source": "project synthetic sine fixture/v1",
+            "source_urls": {
+                "provider": "https://www.histdata.com/download-free-forex-historical-data/",
+                "download_endpoint": "https://www.histdata.com/get.php",
+                "used_in_this_run": [],
+                "note": (
+                    "This development benchmark used the project synthetic sine fixture, so no "
+                    "provider dataset URL applies to its measurements; the endpoints above are the "
+                    "project's canonical acquisition sources."
+                ),
+            },
             "code_revision": c.code_revision,
             "worktree_dirty": bool(subprocess.check_output(["git", "status", "--porcelain"])),
             "artifact_hashes": outputs,
