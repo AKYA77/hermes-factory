@@ -70,6 +70,19 @@ def test_verify_release_refuses_paths_escaping_the_release_root(tmp_path):
         verify_release(release)
 
 
+def test_T22_failed_health_check_loses_no_data(tmp_path):
+    """A failed health check must leave both releases byte-intact."""
+    old = write_release(tmp_path, "fixture-old", "old contents")
+    new = write_release(tmp_path, "fixture-new", "new contents")
+    os.symlink(old, tmp_path / "current")
+    with pytest.raises(subprocess.CalledProcessError):
+        switch_release(tmp_path, new, [sys.executable, "-c", "raise SystemExit(1)"])
+    assert (tmp_path / "current").resolve() == old
+    assert (old / "fixture").read_text() == "old contents"
+    assert (new / "fixture").read_text() == "new contents"
+    assert verify_release(old)["commit"] == "abc123"
+
+
 def test_T22_pointer_health_failure(tmp_path):
     # Synthetic release manifests exercise pointer mechanics only, not release acceptance.
     old = write_release(tmp_path, "fixture-old", "synthetic deployment fixture")

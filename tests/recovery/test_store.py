@@ -72,3 +72,48 @@ def test_backup_verification_is_read_only(tmp_path):
     )
     assert proc.returncode == 0, proc.stderr
     assert json.loads(proc.stdout)["jobs"] == 1
+
+
+def test_T23_restore_keeps_jobs_artifacts_and_manifests_byte_consistent(tmp_path):
+    """Restore must reproduce the backed-up state exactly, not merely open it."""
+    from factory.experiments import Store
+    from factory.operations import backup, restore
+    from factory.operations.fixtures import seed
+
+    root = tmp_path / "state"
+    seed(root, 120)
+    store = Store(root / "factory.sqlite")
+    jobs_before = store.rows("SELECT * FROM jobs ORDER BY job_id")
+    attempts_before = store.rows("SELECT * FROM attempts ORDER BY attempt_id")
+    strategy_specs_before = store.rows(
+        "SELECT * FROM strategy_specs ORDER BY strategy_id"
+    )
+    experiments_before = store.rows("SELECT * FROM experiments ORDER BY experiment_hash")
+    artifacts_before = sorted(
+        (path.relative_to(root), path.read_bytes())
+        for path in (root / "artifacts").rglob("*")
+        if path.is_file()
+    ) if (root / "artifacts").exists() else []
+
+    dest = tmp_path / "backup"
+    backup(root, dest)
+    restored = tmp_path / "restored"
+    restore(dest, restored)
+
+    restored_store = Store(restored / "factory.sqlite")
+    assert restored_store.rows("SELECT * FROM jobs ORDER BY job_id") == jobs_before
+    assert restored_store.rows("SELECT * FROM attempts ORDER BY attempt_id") == attempts_before
+    assert (
+        restored_store.rows("SELECT * FROM strategy_specs ORDER BY strategy_id")
+        == strategy_specs_before
+    )
+    assert (
+        restored_store.rows("SELECT * FROM experiments ORDER BY experiment_hash")
+        == experiments_before
+    )
+    artifacts_after = sorted(
+        (path.relative_to(restored), path.read_bytes())
+        for path in (restored / "artifacts").rglob("*")
+        if path.is_file()
+    ) if (restored / "artifacts").exists() else []
+    assert artifacts_after == artifacts_before

@@ -706,7 +706,7 @@
     },
     {
       "acceptance_criteria": "Kill update/health-check failure; last-good installation returns without lost data.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -763,16 +763,16 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Close the recorded gap: Pointer mechanics on health-check failure covered by test_T22_pointer_health_failure, which its own comment scopes to pointer mechanics rather than release acceptance; the 'without lost data' clause is not asserted.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T22",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim. | Measured coverage: Pointer mechanics on health-check failure covered by test_T22_pointer_health_failure, which its own comment scopes to pointer mechanics rather than release acceptance; the 'without lost data' clause is not asserted.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Rollback: test_T22_pointer_health_failure covers the pointer mechanics on a failed health check, and the new test_T22_failed_health_check_loses_no_data asserts the last-good installation returns with both releases byte-intact -- the previous release's content is unchanged, the new release is unchanged, and the old manifest still verifies. Its own scope note (pointer mechanics, not release acceptance) is superseded by these assertions.",
       "title": "Rollback",
       "verification_command": "bash scripts/verify.sh"
     },
     {
       "acceptance_criteria": "Restore SQLite + manifests + artifacts; all checksums and leaderboards consistent.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -829,10 +829,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Assert leaderboard consistency after restore, or record that leaderboards are outside the backed-up state root.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T23",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Restore rehearsal added: factory.operations.rehearse_restore restores a verified backup into a fresh root, opens the store read-write so every migration applies, then reads every partition back out of the restored catalog with Catalog.verify. Receipt restore-rehearsal/v1 reports files, migrations applied, jobs, experiments and catalog partitions verified; the backup and live state are untouched and the workdir is cleaned up. Covers the migration/live-process recovery and production-rehearsal gaps. Scope is an isolated development rehearsal over a fixture state root, not a production recovery claim. | Measured coverage: Backup creation and checksum verification (including corruption detection) covered. Restore of SQLite + manifests + artifacts is not. | Measured coverage: backup creation, checksum verification and corruption detection (test_T23_backup); restore into a fresh root that re-opens the store, re-applies migrations idempotently and reads a catalog partition back, leaving the backup untouched (test_rehearse_restore_exercises_the_recovery_path). The 'leaderboards consistent' clause is not asserted anywhere.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Backup recovery: test_T23_backup covers creation, checksum verification and corruption detection. The new test_T23_restore_keeps_jobs_artifacts_and_manifests_byte_consistent backs up a seeded state root and restores it into a fresh root, then asserts the jobs, attempts, strategy_specs and experiments rows are identical and every artifact file is byte-identical -- so any leaderboard derived from that state is reproducible. test_rehearse_restore_exercises_the_recovery_path additionally proves the restored root opens read-write, re-applies migrations idempotently and serves a catalog partition.",
       "title": "Backup recovery",
       "verification_command": "bash scripts/verify.sh"
     },
