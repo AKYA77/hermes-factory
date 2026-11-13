@@ -91,3 +91,15 @@ def test_proof_cache_outputs_are_identical_across_many_calls(tmp_path):
     # verifications was served by the proof cache, so the scan count never grew.
     assert cat.verification_scans == 1
     assert cat.verification_cache_hits == 1000
+
+
+def test_T06_availability_at_exact_utc_bucket_boundaries():
+    """Bar availability is decided by UTC bucket edges, not by session walls."""
+    q = quotes([(110000, 110010)] * 2, step=3600 * 10**9)
+    bars = list(closed_bars(q, "H1"))
+    assert [b.available_at for b in bars] == [q[1].event_ts_utc_ns]
+    # A bar is never published at or before the quote that last contributed to it.
+    assert all(b.available_at > q[0].event_ts_utc_ns for b in bars)
+    # Five-minute bars over the same two quotes: none can close on the first hour.
+    m5 = list(closed_bars(q, "M5"))
+    assert all(b.available_at >= q[1].event_ts_utc_ns for b in m5)

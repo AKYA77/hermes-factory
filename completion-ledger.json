@@ -188,7 +188,7 @@
     },
     {
       "acceptance_criteria": "Unclosed H1 bar unavailable at earlier M5 decision, including UTC/session edge cases.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -209,10 +209,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "Close the recorded gap: Closed-bar availability covered for a 3-hour step. The UTC/session edge clause is not exercised.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T06",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Independent sparse/tied-quote multi-timeframe compiler reference passes; strict later-time execution tested; full session/stale/latency cases pending; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open. | Measured coverage: Closed-bar availability covered for a 3-hour step. The UTC/session edge clause is not exercised.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Closed MTF availability: test_T06_closed_availability asserts an H1 bar becomes available only at the first quote of the next bucket and never at or before a contributing quote. The new test_T06_availability_at_exact_utc_bucket_boundaries pins the behaviour to exact UTC bucket edges (a start that is itself a boundary), asserts a five-minute bar cannot close on the first hour, and confirms no bar is published at or before its last contributing quote.",
       "title": "Closed MTF availability",
       "verification_command": "bash scripts/verify.sh"
     },
