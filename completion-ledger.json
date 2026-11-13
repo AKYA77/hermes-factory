@@ -3040,10 +3040,10 @@
         "scripts/parity_raptor_engine.py",
         "scripts/parity_raptor_genuine.py"
       ],
-      "next_required_action": "Implement partial fills, cancellation races, safety closes and fee accounting, then re-verify against verified broker profiles before claiming R01.",
+      "next_required_action": "Still open before R01 can be assessed: equity and drawdown emission from the Rust engine (currently only realized P&L), and verified broker profiles. Non-zero-commission end-to-end parity is deliberately unverifiable because the reference refuses commissions pending a policy.",
       "requirement_id": "R01",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Implemented and parity-verified on generated fixtures (100/100 EURUSD, 240/240 and 800/800 all-instrument) and on 30 genuine acquired catalog partitions read through the production Catalog API. Exact match on prices, quote indices, roles, flags, exit reasons, sizes and rational P&L. Partial fills, cancellations, safety exits, fees, drawdown and verified broker profiles are not yet implemented or verified.",
+      "supporting_evidence_scope": "Implemented and parity-verified on generated fixtures (100/100 EURUSD, 240/240 and 800/800 all-instrument) and on 30 genuine acquired catalog partitions read through the production Catalog API. Exact match on prices, quote indices, roles, flags, exit reasons, sizes and rational P&L. Partial fills, cancellations, safety exits, fees, drawdown and verified broker profiles are not yet implemented or verified. Fee accounting is now configurable: InstrumentSpec.commission_per_unit defaults to zero (an unconfigured commission means no fee model) and rejects negatives; the Rust engine charges it on every fill, entry and exit alike, denominated in the instrument's quote currency, proven by a unit test asserting an entry charge of exactly -1000 and a realized total of -1999 for two fills at one unit per unit. The Python reference now derives the fill commission from the same profile field, so configuring a commission makes replay() refuse loudly with UNSUPPORTED_NATIVE_REFERENCE_COMMISSION instead of silently ignoring it, consistent with native_money.py's stated policy that commissions require a separate policy. All parity suites still pass at the default zero commission: goldens 240/240, direct 200/200, restart/batch 120/120.",
       "title": "RaptorBT-based Rust execution engine",
       "verification_command": ".venv/bin/pytest tests/parity"
     },

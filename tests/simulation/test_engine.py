@@ -275,3 +275,15 @@ def test_T10_target_is_three_times_stop_and_size_rounds_down_to_step(profile, sp
     # A valid lot is rounded down to the instrument's volume step.
     requested = D(trade["requested_quantity"])
     assert requested > 0 and requested % profile.volume_step == 0
+
+
+def test_T_R01_configured_commission_is_refused_loudly_not_silently_ignored(profile, spec):
+    """A configured fee model must not be silently approximated by the reference."""
+    import pytest
+
+    charged = profile.model_copy(update={"commission_per_unit": D("1")})
+    q = quotes([(110000, 110010)] * 4)
+    with pytest.raises(ValueError, match="UNSUPPORTED_NATIVE_REFERENCE_COMMISSION"):
+        replay(q, charged, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    # An unconfigured commission keeps the previous behaviour: no fee is charged.
+    assert profile.commission_per_unit == D(0)

@@ -216,3 +216,30 @@ def test_windows_reject_ambiguous_floating_and_boolean_nanoseconds():
         start_ns="1735689600000000001", end_ns="1735689600000000002", role="train_only"
     )
     assert precise.end_ns - precise.start_ns == 1
+
+
+def test_commission_per_unit_defaults_to_zero_and_rejects_negative():
+    """The fee model is optional; an unconfigured commission means no fee model."""
+    from factory.instruments import synthetic_profile
+
+    profile = synthetic_profile("EURUSD")
+    assert profile.commission_per_unit == D(0)
+    with pytest.raises(ValidationError):
+        InstrumentSpec(
+            instrument="EURUSD",
+            version="test/v1",
+            tick_size=D(".00001"),
+            pip_size=D(".00010"),
+            price_scale=100000,
+            base_currency="EUR",
+            quote_currency="USD",
+            contract_multiplier=D(1),
+            volume_step=D(".001"),
+            min_volume=D(".001"),
+            max_volume=D("100000"),
+            margin_rate=D(".001"),
+            min_stop_ticks=1,
+            commission_per_unit=D("-0.01"),
+            source="test",
+            synthetic=True,
+        )

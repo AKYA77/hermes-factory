@@ -206,14 +206,17 @@ class ReplayStrategy(Strategy):
                 self.profile, conversion_bid, conversion_ask, side
             ):
                 raise ValueError("NATIVE_DATED_CONVERSION_MISMATCH")
+        size = event.last_qty.as_decimal()
         fill = Fill(
             order_id=order_id,
             trade_id=str(event.trade_id),
             ts=int(event.ts_event),
             side=side,
-            size=event.last_qty.as_decimal(),
+            size=size,
             price=event.last_px.as_decimal(),
-            commission=event.commission.as_decimal(),
+            # The fee model comes from the instrument profile, not from the venue
+            # event: an unconfigured commission is zero and means no fee model.
+            commission=self.profile.commission_per_unit * size,
             quote_index=max(0, self.quote_count - 1 if self.in_quote else self.quote_count),
             quote_to_account=conversion,
             conversion_ts=conversion_ts,

@@ -163,6 +163,10 @@ class InstrumentSpec(Contract):
     max_volume: Decimal = Field(gt=0)
     margin_rate: Decimal = Field(gt=0, le=1)
     min_stop_ticks: int = Field(ge=1)
+    # Commission charged per unit traded, denominated in the instrument's quote
+    # currency. Zero means no fee model is configured -- the daily cost
+    # assumption is intentionally left open by the owner directive.
+    commission_per_unit: Decimal = Field(default_factory=lambda: Decimal(0), ge=0)
     source: str
     synthetic: bool
 

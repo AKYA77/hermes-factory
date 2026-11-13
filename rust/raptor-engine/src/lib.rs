@@ -311,6 +311,12 @@ pub struct ProfileIn {
     pub max_volume: String,
     pub margin_rate: String,
     pub min_stop_ticks: i64,
+    #[serde(default = "zero_string")]
+    pub commission_per_unit: String,
+}
+
+fn zero_string() -> String {
+    "0".to_string()
 }
 
 #[derive(Clone, Debug)]
@@ -327,6 +333,7 @@ pub struct Profile {
     pub max_volume: Rat,
     pub margin_rate: Rat,
     pub min_stop_ticks: i64,
+    pub commission_per_unit: Rat,
     pub volume_precision: usize,
 }
 
@@ -376,6 +383,7 @@ impl Profile {
             max_volume: Rat::from_decimal(&p.max_volume)?,
             margin_rate: Rat::from_decimal(&p.margin_rate)?,
             min_stop_ticks: p.min_stop_ticks,
+            commission_per_unit: Rat::from_decimal(&p.commission_per_unit)?,
             volume_precision: decimal_places(&p.volume_step),
         })
     }
@@ -848,6 +856,8 @@ struct Position {
     exited: Rat,
     #[serde(with = "rat_serde")]
     realized_exact: Rat,
+    #[serde(with = "rat_serde")]
+    commission_per_unit: Rat,
     flags: Vec<String>,
     order_states: Vec<(String, String, Option<String>)>,
     exit_roles: Vec<String>,
@@ -911,6 +921,9 @@ impl Position {
     ) -> Rat {
         let scale = Rat::int(self.price_scale as i128);
         let price_dec = Rat::int(price as i128).div(&scale);
+        // The reference charges the configured per-unit commission on every fill,
+        // entry and exit alike, denominated in the instrument's quote currency.
+        let fee = self.commission_per_unit.mul(size).mul(&conv);
         let delta;
         if role == "ENTRY" {
             self.cost = self.cost.add(&size.mul(&price_dec));
@@ -936,6 +949,7 @@ impl Position {
             }
             self.exited = self.exited.add(size);
         }
+        let delta = delta.sub(&fee);
         let account_delta = delta.mul(&conv);
         self.realized_exact = self.realized_exact.add(&account_delta);
         account_delta
@@ -1304,6 +1318,7 @@ fn step_impl(
             entered: Rat::zero(),
             exited: Rat::zero(),
             realized_exact: Rat::zero(),
+            commission_per_unit: profile.commission_per_unit.clone(),
             flags: Vec::new(),
             order_states: Vec::new(),
             exit_roles: Vec::new(),
@@ -1477,8 +1492,8 @@ impl Position {
 mod tests {
     use super::*;
 
-    fn usdchf() -> Profile {
-        Profile::from_input(&ProfileIn {
+    pub fn usdchf_in() -> ProfileIn {
+        ProfileIn {
             instrument: "USDCHF".into(),
             tick_size: "0.00001".into(),
             pip_size: "0.00010".into(),
@@ -1491,8 +1506,35 @@ mod tests {
             max_volume: "100000".into(),
             margin_rate: "0.001".into(),
             min_stop_ticks: 1,
-        })
-        .unwrap()
+            commission_per_unit: "0".into(),
+        }
+    }
+
+    fn usdchf() -> Profile {
+        Profile::from_input(&usdchf_in()).unwrap()
+    }
+
+    pub fn position(profile: &Profile, side: Side) -> Position {
+        Position {
+            side,
+            entry_price: 95063,
+            entry_ts: 1,
+            entry_qi: 0,
+            stop: 94863,
+            target: 95663,
+            price_scale: profile.price_scale,
+            requested: Rat::int(1000),
+            cost: Rat::zero(),
+            entered: Rat::zero(),
+            exited: Rat::zero(),
+            realized_exact: Rat::zero(),
+            commission_per_unit: profile.commission_per_unit.clone(),
+            flags: Vec::new(),
+            order_states: Vec::new(),
+            exit_roles: Vec::new(),
+            safety_pending: false,
+            exit_fills: Vec::new(),
+        }
     }
 
     #[test]
@@ -1511,6 +1553,24 @@ mod tests {
     }
 
     #[test]
+    fn commission_is_charged_on_entry_and_exit() {
+        // A per-unit commission is charged on every fill, entry and exit alike,
+        // in the instrument's quote currency, matching the reference ledger.
+        let mut input = usdchf_in();
+        input.commission_per_unit = "1".into();
+        let profile = Profile::from_input(&input).unwrap();
+        let conv = Rat::int(1);
+        let size = Rat::int(1000);
+        let mut pos = position(&profile, Side::Buy);
+        let entry_delta = pos.apply_fill(95063, &size, Side::Buy, conv.clone(), "ENTRY");
+        assert_eq!(entry_delta.n.to_string(), "-1000");
+        assert_eq!(entry_delta.d.to_string(), "1");
+        pos.apply_fill(95163, &size, Side::Sell, conv, "STOP_LOSS");
+        assert_eq!(pos.realized_exact.n.to_string(), "-1999");
+        assert_eq!(pos.realized_exact.d.to_string(), "1");
+    }
+
+    #[test]
     fn decimal28_rounding_matches_reference() {
         // 2 / 0.002314741... must round to 28 significant digits, half-even.
         let value = Rat::int(2).div(&Rat::int(2314741)).mul(&Rat::int(1000000));
@@ -1518,3 +1578,4 @@ mod tests {
         assert_eq!(rounded.d.to_string().len() - 1, 27);
     }
 }
+

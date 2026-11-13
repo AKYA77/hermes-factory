@@ -152,6 +152,7 @@ def build_request(profile, spec, quotes, signals, conservative, partial=None):
             "max_volume": str(profile.max_volume),
             "margin_rate": str(profile.margin_rate),
             "min_stop_ticks": profile.min_stop_ticks,
+            "commission_per_unit": str(profile.commission_per_unit),
         },
         "spec": {
             "stop_ticks": spec.stop_ticks,
