@@ -85,15 +85,17 @@ def test_T23_restore_keeps_jobs_artifacts_and_manifests_byte_consistent(tmp_path
     store = Store(root / "factory.sqlite")
     jobs_before = store.rows("SELECT * FROM jobs ORDER BY job_id")
     attempts_before = store.rows("SELECT * FROM attempts ORDER BY attempt_id")
-    strategy_specs_before = store.rows(
-        "SELECT * FROM strategy_specs ORDER BY strategy_id"
-    )
+    strategy_specs_before = store.rows("SELECT * FROM strategy_specs ORDER BY strategy_id")
     experiments_before = store.rows("SELECT * FROM experiments ORDER BY experiment_hash")
-    artifacts_before = sorted(
-        (path.relative_to(root), path.read_bytes())
-        for path in (root / "artifacts").rglob("*")
-        if path.is_file()
-    ) if (root / "artifacts").exists() else []
+    artifacts_before = (
+        sorted(
+            (path.relative_to(root), path.read_bytes())
+            for path in (root / "artifacts").rglob("*")
+            if path.is_file()
+        )
+        if (root / "artifacts").exists()
+        else []
+    )
 
     dest = tmp_path / "backup"
     backup(root, dest)
@@ -111,9 +113,13 @@ def test_T23_restore_keeps_jobs_artifacts_and_manifests_byte_consistent(tmp_path
         restored_store.rows("SELECT * FROM experiments ORDER BY experiment_hash")
         == experiments_before
     )
-    artifacts_after = sorted(
-        (path.relative_to(restored), path.read_bytes())
-        for path in (restored / "artifacts").rglob("*")
-        if path.is_file()
-    ) if (restored / "artifacts").exists() else []
+    artifacts_after = (
+        sorted(
+            (path.relative_to(restored), path.read_bytes())
+            for path in (restored / "artifacts").rglob("*")
+            if path.is_file()
+        )
+        if (restored / "artifacts").exists()
+        else []
+    )
     assert artifacts_after == artifacts_before

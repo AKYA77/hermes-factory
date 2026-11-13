@@ -64,7 +64,10 @@ def test_T28_cancel_and_diagnose_are_audited(tmp_path):
     )
 
     # Diagnosing reaches the diagnostics endpoint as a read-only, audited action.
-    assert c.get("/api/v1/experiments/unknown/diagnostics", headers=viewer).status_code in (200, 404)
+    assert c.get("/api/v1/experiments/unknown/diagnostics", headers=viewer).status_code in (
+        200,
+        404,
+    )
 
 
 def test_T16_empty_boards(tmp_path):
