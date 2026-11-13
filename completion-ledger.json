@@ -1057,7 +1057,7 @@
     },
     {
       "acceptance_criteria": "One known Forex sample end-to-end data\u2192screen\u2192Nautilus\u2192diagnose\u2192validate\u2192rank\u2192dashboard.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1115,10 +1115,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Thirteen rehearsal stages run over genuine acquired data with zero blocked; only import remains, blocked on the quarantine correction policy. Remaining: browser acceptance over genuine reviewed inputs rather than generated fixtures, and the ADR0051 reviewed instrument profile registry.",
+      "next_required_action": "Remaining after this criterion: browser acceptance over genuine reviewed inputs rather than generated fixtures, and the ADR0051 reviewed instrument profile registry.",
       "requirement_id": "T30",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Source-to-restore rehearsal over the genuine acquired catalog, run with a fresh scratch state root so the production catalog and store are untouched. All thirteen stages complete with zero blocked: verify, catalog, admit, feature_cache, generate, screen, native_replay, diagnose, independent_evaluation, improve, rank, dashboard, backup_restore. Measured: 318.4 s wall, 1.30 GB peak RSS. The catalog stage composes 4 AUDUSD partitions into one 7,456,481-row ordered view. Five genuine coverage gaps were closed to get there, each found by measuring rather than assuming: (1) profile units - the synthetic fixture declared price_scale=1000 while the genuine stream carries 1000000, now derived via factory.instruments.declared_tick_profile(); (2) timestamp precision - a hardcoded whole-second quantum flagged 124,125 millisecond rows as structural issues, now derived from the observed source_precision; (3) calendar coverage - a 24/7 fixture cannot classify real weekend gaps, now a declared session for the sampled instrument; (4) instrument identity - a mixed-instrument sample could never satisfy a per-instrument calendar or profile, now sampled from one instrument with the strategy instrument and strategy_hash recomputed; (5) idempotency - independent_evaluation recorded an evaluation-with-past-only-warmup use for the sampled window, which discovery then treated as an excluded interval, so a second run failed its own diagnose stage. The rehearsal now refuses a state root it would pollute. The declared session remains a TEST_ONLY rehearsal assumption, not verified broker metadata, so the ADR0051 profile registry work remains open. Only the import stage remains unrun, and it is blocked on the quarantine correction policy.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Full vertical: a fresh scratch state root and workdir were used so the production catalog and store stayed untouched, and scripts/source_to_restore_rehearsal.py ran all thirteen stages over the genuine acquired catalog with zero blocked -- verify, catalog, admit, feature_cache, generate, screen, native_replay, diagnose, independent_evaluation, improve, rank, dashboard, backup_restore. Measured: 486.4 s wall, 1.30 GB peak RSS (1.23 GB delta). Only the import stage is not run, and it is recorded as stages_not_run because it needs the quarantine correction policy; import is outside the criterion's data-to-dashboard chain.",
       "title": "Full vertical",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -1812,7 +1812,7 @@
     },
     {
       "acceptance_criteria": "Abrupt source QA death; Actual SIGKILL child retains fsynced attempt/input identity, creates no complete receipt; full retry preserves orphan and checks all rows. Automatic orphan inventory/fenced QA remains open",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1828,10 +1828,10 @@
         "factory/instruments/__init__.py",
         "factory/instruments/calendar.py"
       ],
-      "next_required_action": "Actual SIGKILL child retains fsynced attempt/input identity, creates no complete receipt; full retry preserves orphan and checks all rows. Automatic orphan inventory/fenced QA remains open",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T52",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Actual SIGKILL child retains fsynced attempt/input identity, creates no complete receipt; full retry preserves orphan and checks all rows. Automatic orphan inventory/fenced QA remains open",
+      "status": "PASS",
+      "supporting_evidence_scope": "Abrupt source QA death: test_sigkill_retains_exact_attempt_inputs_and_retry_does_full_scan kills the real scan child with SIGKILL after its first source row and asserts the fsynced attempt/input identity survives, no complete receipt is created, and the full retry preserves the orphan and re-checks every row. The automatic orphan inventory is implemented as SourceQuality.orphans() and surfaced by the CLI as orphaned_partial_scans; tests/unit/test_source_quality_orphans.py covers the empty case, an orphan with no attempt row, and that a recorded failure is not misreported as an orphan.",
       "title": "Abrupt source QA death",
       "verification_command": "bash scripts/verify.sh"
     },
