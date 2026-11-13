@@ -1048,10 +1048,10 @@
         "factory/experiments/__init__.py",
         "factory/provenance.py"
       ],
-      "next_required_action": "Run scripts/benchmark.sh on a cgroup v2 host (or add a cgroup-v1 fallback) to produce reports/runtime/benchmark-report.json, then scripts/checkpoint-report.py.",
+      "next_required_action": "Create a state backup and run scripts/restore-test.sh to produce reports/runtime/restore.json, then run scripts/checkpoint-report.py for the full checkpoint.",
       "requirement_id": "T29",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending | Measured blocker: scripts/benchmark.sh cannot run on this host -- factory/operations/benchmark.py reads /sys/fs/cgroup/memory.max (cgroup v2) and this host exposes cgroup v1, so reports/runtime/benchmark-report.json cannot be produced and scripts/checkpoint-report.py cannot build the checkpoint evidence here. The report path itself is implemented; it needs a cgroup v2 host.",
+      "supporting_evidence_scope": "Local command/test/benchmark/lock reports recorded; signed/tagged release evidence pending | Measured blocker: scripts/benchmark.sh cannot run on this host -- factory/operations/benchmark.py reads /sys/fs/cgroup/memory.max (cgroup v2) and this host exposes cgroup v1, so reports/runtime/benchmark-report.json cannot be produced and scripts/checkpoint-report.py cannot build the checkpoint evidence here. The report path itself is implemented; it needs a cgroup v2 host. | Measured this session: scripts/benchmark.sh now runs (cgroup limits resolved from the process cgroup) and produces reports/runtime/benchmark-report.json with tested versions, code_revision, CPU/RAM and caveats. scripts/checkpoint-report.py now runs past the revision and http-smoke blockers. Remaining input: reports/runtime/restore.json, which needs a state backup plus a restore rehearsal; creating that backup needs an approval prompt.",
       "title": "Provenance",
       "verification_command": "bash scripts/verify.sh"
     },
