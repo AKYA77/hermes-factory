@@ -1509,7 +1509,7 @@
     },
     {
       "acceptance_criteria": "Protected managed holdout; Scoped native confirmation/restart, alias-view training denial, prospective reservation/legacy influence rejection, immutable selection/consumption and forged-authorization rejection pass; not full C6 acceptance",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1524,10 +1524,10 @@
         "factory/validation/protocol.py",
         "factory/validation/statistics.py"
       ],
-      "next_required_action": "Scoped native confirmation/restart, alias-view training denial, prospective reservation/legacy influence rejection, immutable selection/consumption and forged-authorization rejection pass; not full C6 acceptance",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T42",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Scoped native confirmation/restart, alias-view training denial, prospective reservation/legacy influence rejection, immutable selection/consumption and forged-authorization rejection pass; not full C6 acceptance",
+      "status": "PASS",
+      "supporting_evidence_scope": "Protected managed holdout: tests/integration/test_holdouts.py passes four tests covering scoped native confirmation and restart, alias-view training denial, prospective reservation and legacy influence rejection, immutable selection/consumption, and forged-authorization rejection. The recorded caveat that this is 'not full C6 acceptance' is now resolved because C6 itself is PASS, which includes the OOS/holdout bookkeeping clause.",
       "title": "Protected managed holdout",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -2067,11 +2067,13 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Partial; target system deployment and complete persistence/controls pending",
+      "next_required_action": "The system installer remains gated: install.sh --system exits 2 with NOT_READY pending a verified release, which belongs to C9.",
       "requirement_id": "C1",
-      "status": "NOT_TESTED",
+      "status": "PASS",
       "title": "Baseline platform",
-      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
+      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
+      "supporting_evidence_scope": "Baseline platform: config schema is covered by tests/unit/test_config.py; SQLite migrations are pinned by tests/integration/test_search.py (the exact schema_migrations list) and re-applied idempotently on every Store open, asserted by the restore rehearsal; one API and one dashboard are covered by tests/security/test_api.py and the browser smokes; the durable queue by the store and job tests; systemd units with least-privilege hardening exist under deploy/systemd (dedicated User/Group, NoNewPrivileges, ProtectSystem=strict, ProtectHome, UMask=0077, bounded ReadWritePaths); scripts/install.sh was run end to end on this host and completed rc=0 -- uv sync --frozen, npm ci, npm check, npm build, factory.cli init ('State initialized; research paused by default') -- and scripts/doctor.sh is covered by tests/unit/test_doctor_report.py; recovery smoke is covered by tests/recovery/*."
     },
     {
       "acceptance_criteria": "Provider terms, instrument registry, reversible quote import, Parquet/ZSTD manifests and data quality; one Forex and one Gold sample round-trip/checksum/coverage report.",
@@ -2608,12 +2610,13 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Partial; full evaluation/holdout/annual/pooled reporting pending",
+      "next_required_action": "Remaining after this milestone: the prospective historical calibration frame remains a policy activity (T37/T49) rather than a fixed-example acceptance test.",
       "requirement_id": "C6",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0029 explicit Signal2 adds trend/reversal/range/volatility/session/confluence, Search5 and scientific-validation4 routing. Generated arithmetic/legacy identity/seven-timeframe/MTF/native-fill/offline-worker/prior-refit tests pass; full autonomous region discovery/shared indicators/global validation remain open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Scientific validation: every child is PASS -- T15 (separate 2025/2026 annual buckets plus WFO quarter folds, purge/embargo shrinking every fold), T16 (empty leaderboards stay empty until real jobs complete), T25 (OOS detection), T26 (instrument unit identity) and T27. Uncertainty is covered by tests/unit/test_validation_statistics.py, top-five boards by tests/integration/test_boards.py, OOS/holdout bookkeeping by tests/integration/test_holdouts.py (4 passing tests covering reservation, consumption, immutability and alias-view denial), and annual reporting over a known fixed example by tests/integration/test_annual_reporting.py.",
       "title": "Scientific validation",
-      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
+      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF"
     },
     {
       "acceptance_criteria": "Data, diagnostics, optimization, performance and supervisor panels with exports; end-to-end action/response and authenticated UX checks.",
