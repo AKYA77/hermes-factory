@@ -590,7 +590,7 @@
     },
     {
       "acceptance_criteria": "Same input + seed + release yields identical required metrics/artifact hashes or declared tolerances.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -601,10 +601,10 @@
         "factory/experiments/__init__.py",
         "factory/provenance.py"
       ],
-      "next_required_action": "Synthetic replay artifact hashes identical; tagged historical reproduction pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T19",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Synthetic replay artifact hashes identical; tagged historical reproduction pending",
+      "status": "PASS",
+      "supporting_evidence_scope": "Reproducibility: test_engine_exact_reproducibility asserts two replays of identical quotes, profile, spec and signals produce the same fingerprint. test_frozen_goldens_reproduce asserts the Rust engine reproduces every frozen golden digest byte-exactly. R12 records that a clean checkout of the committed tree rebuilds a byte-identical binary (sha256 e9f9c845...). test_sampler_learning_and_restart_determinism_on_labeled_toy covers restart determinism.",
       "title": "Reproducibility",
       "verification_command": "bash scripts/verify.sh"
     },
