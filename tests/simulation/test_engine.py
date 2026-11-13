@@ -259,3 +259,19 @@ def test_T12_missing_path_is_inconclusive(profile, spec):
     assert d["status"] == "INCONCLUSIVE"
     assert d["tags"] == ["UNRESOLVED_PATH"]
     assert d["points"] == 0
+
+
+def test_T10_target_is_three_times_stop_and_size_rounds_down_to_step(profile, spec):
+    """The hypothetical risk geometry: 1:3 distance and legal lot rounding."""
+    from decimal import Decimal as D
+
+    q = quotes([(110000, 110010), (110000, 110010), (110600, 110610)])
+    r = replay(q, profile, spec, [{"available_at": q[0].event_ts_utc_ns, "side": "BUY"}], True)
+    trade = (r["trades"] or [r["open_trade"]])[0]
+    entry = D(trade["entry_fill"]["price"])
+    stop, target = D(trade["stop"]), D(trade["target"])
+    # Theoretical distance is exactly three times the stop excursion.
+    assert target - entry == 3 * (entry - stop)
+    # A valid lot is rounded down to the instrument's volume step.
+    requested = D(trade["requested_quantity"])
+    assert requested > 0 and requested % profile.volume_step == 0
