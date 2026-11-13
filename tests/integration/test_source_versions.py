@@ -334,3 +334,24 @@ def test_resolved_quarantine_stops_blocking_coverage(tmp_path):
     report = versions.coverage()
     assert report["unresolved_quarantined"] == 0
     assert report["instruments"]["EURUSD"]["unresolved_quarantined"] == 0
+
+
+def test_T05_new_period_partition_extends_coverage_without_reselection(tmp_path):
+    """A newly observed period adds coverage and leaves prior selections intact."""
+    data = quotes([(110000, 110010)] * 4)
+    a = capture(tmp_path, data, b"generated period A")
+    versions = SourceVersions(tmp_path, Catalog(tmp_path / "catalog"))
+    first = versions.observe(slot(data), a["dataset_hash"])
+    versions.select(first, actor="test", reason="first period reviewed")
+    before = versions.coverage()
+    assert before["observed"] == 1 and before["selected"] == 1
+
+    later = [replace(q, event_ts_utc_ns=q.event_ts_utc_ns + 86400 * 10**9) for q in data]
+    b = capture(tmp_path, later, b"generated period B")
+    versions.observe(slot(later), b["dataset_hash"])
+
+    after = versions.coverage()
+    assert after["observed"] == 2
+    # The added period extends coverage; it does not silently replace the selection.
+    assert after["selected"] == before["selected"]
+    assert after["schema_version"] == before["schema_version"]

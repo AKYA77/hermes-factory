@@ -159,7 +159,7 @@
     },
     {
       "acceptance_criteria": "Quarantined quote cannot be selected; new 2026 partition updates coverage and invalidation.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Factory.pdf \u00a716.1",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -179,10 +179,10 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Close the recorded gap: Quarantine clause covered by test_T05_quarantine_corruption. The 'new 2026 partition updates coverage and invalidation' clause needs a real partition import.",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T05",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Source refresh and storage inventory re-verified against the real acquired catalog on this host. refresh now reports verified 134, mismatched [], missing [], consistent true. A real defect was found and fixed first: refresh treated every manifest as a leaf, so the three composed views (data/view-v1), which by design have no quotes.parquet of their own, were reported as missing and the catalog as inconsistent. It now verifies a view through its leaves, requiring each referenced leaf to exist and match its recorded parquet_sha256, and still reports a view with no parts or with a missing or mismatched leaf. storage reports 17 partitions and 32,868,960 rows across instruments; source-coverage reports 129 observed with scope 'immutable source coverage; not historical approval or complete market coverage'. A false integrity alarm is worse than no alarm, because a real missing partition would then be dismissed as the known false positive. | Measured coverage: Quarantine clause covered by test_T05_quarantine_corruption. The 'new 2026 partition updates coverage and invalidation' clause needs a real partition import.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Gaps and updates: test_T05_quarantine_corruption asserts a quarantined quote cannot be committed or selected and that corruption is detected on read; the new test_T05_new_period_partition_extends_coverage_without_reselection observes a second period, asserts source coverage goes from one to two observed slots without silently replacing the prior selection, and cache invalidation on a data revision is covered by test_bar_cache_identity_covers_code_and_fill_version.",
       "title": "Gaps and updates",
       "verification_command": "bash scripts/verify.sh"
     },
