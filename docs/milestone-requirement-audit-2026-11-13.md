@@ -33,6 +33,14 @@ evidence were moved to `PASS`. Nothing was marked `PASS` on a scoped reading.
 | T50 | Captured declared session rules (DST, holidays, nanosecond, ambiguous boundaries) | 6 tests in `tests/unit/test_session_calendar.py` |
 | T45 | Decimal-padded equal-fingerprint profiles give identical native geometry and outputs | `test_canonical_profile_geometry_has_identical_native_precision` |
 
+## Browser acceptance measured (T41)
+
+All ten fixture+smoke pairs were run end to end with `scripts/run-browser-smoke.sh` in real
+Chromium 145.0.7632.6 against isolated states. Every one passed with no page errors and no
+mobile document overflow. The smokes use TEST_ONLY/GENERATED fixtures, so T41's remaining
+clause -- running them against real acquired archives and completing full C7 blueprint
+coverage -- stays open.
+
 ## Partial coverage recorded, still NOT_TESTED
 
 T02, T05, T06, T10, T11, T15, T17, T22, T23, T28 — each has named, passing
