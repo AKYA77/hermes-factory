@@ -9,6 +9,8 @@ import platform
 import subprocess
 import xml.etree.ElementTree as ET
 
+from factory.operations.http_smoke import smoke as http_smoke
+
 
 def digest(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -99,7 +101,7 @@ commands = [
     {
         "command": ".venv/bin/python -m factory.operations.http_smoke",
         "exit_code": 0,
-        "result": read("reports/runtime/http-smoke.json"),
+        "result": http_smoke(),
     },
     {
         "command": "bash scripts/install.sh",
