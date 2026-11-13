@@ -5,7 +5,7 @@ Method: each criterion was compared against the tests that demonstrate it, the
 tests were executed, and only criteria whose every clause is covered by passing
 evidence were moved to `PASS`. Nothing was marked `PASS` on a scoped reading.
 
-## Moved to PASS (24 total, 15 new this session)
+## Moved to PASS (29 total, 20 new this session)
 
 | ID | Criterion demonstrated | Evidence |
 |---|---|---|
@@ -27,6 +27,11 @@ evidence were moved to `PASS`. Nothing was marked `PASS` on a scoped reading.
 | T11 | Deadline enforced; missing executable quote classified, not invented | `test_T11_deadline_quote` + `test_missing_exit` |
 | T02 | Version change invalidates the cache; exact rerun reuses it | `test_T02_fingerprint` + `test_bar_cache_identity_covers_code_and_fill_version` |
 | T17 | Duplicate skip is not a detailed run; false-negative sample is evaluated | `test_T17_duplicate_skip_is_not_a_detailed_run` + `test_false_negative_is_quarantined_never_promoted` |
+| T34 | Persistent optimizer: worker feedback, restart, immutability, leakage rejection, toy TPE | 4 tests in `tests/integration/test_search.py` |
+| T40 | Restart identity and CPU conservation across protocols | `test_protocol_hash_survives_json_defaults_and_preserves_legacy_ids`, `test_reused_native_job_cpu_is_attributed_once_across_protocols` |
+| T38 | Independent readiness states, all false in current evidence | `tests/recovery/test_readiness.py`, `test_queue_reads_all_gates_and_preserves_readiness` |
+| T50 | Captured declared session rules (DST, holidays, nanosecond, ambiguous boundaries) | 6 tests in `tests/unit/test_session_calendar.py` |
+| T45 | Decimal-padded equal-fingerprint profiles give identical native geometry and outputs | `test_canonical_profile_geometry_has_identical_native_precision` |
 
 ## Partial coverage recorded, still NOT_TESTED
 
