@@ -2281,11 +2281,13 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Partial; finite-depth exact pricing, currency rounding, JPY/Gold monetary profiles and full reference remain",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "C3",
-      "status": "NOT_TESTED",
+      "status": "PASS",
       "title": "Exact simulation",
-      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
+      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
+      "supporting_evidence_scope": "Exact simulation: every child of this milestone is now PASS -- T07 (pinned reference version 1.231.0, pessimistic fills, market and limit orders), T08 (stale-quote rejection, limit exits have no adverse adjustment), T09 (limit never exceeds its limit price, precise skip reasons), T10 (exact intended 1:3/$20/10% geometry, lot rounding down, infeasible volume skipped) and T11 (deadline after the configured hold horizon). test_engine_market_and_limit covers both order types and simulator/reference agreement is asserted throughout tests/simulation/test_engine.py."
     },
     {
       "acceptance_criteria": "Declarative operators and baseline families, hashes, Optuna, fair instrument/timeframe queue, feature cache and screen audit; T01\u2013T03/T17\u2013T18 and reproducible candidate lifecycle.",
@@ -2498,11 +2500,13 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Partial; bounded training plans/paired feedback now implemented; full cohort/regime/independent confirmation pending",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "C5",
-      "status": "NOT_TESTED",
+      "status": "PASS",
       "title": "Diagnostics and improvement",
-      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
+      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
+      "supporting_evidence_scope": "Diagnostics and improvement: T12 (tick-path MFE/MAE, immediate stop, near-miss and mixed-partial stop taxonomy), T13 (parent-child lineage preserved on a failed child), T14 (reject vs remember classification) and T26 (instrument unit identity) are all PASS. Configurable confirmations and SL distances are contract fields with validation, parent-child comparisons are covered by tests/integration/test_improvement_sensitivity.py and tests/integration/test_improvement_lineage.py, and stop taxonomy is covered by tests/unit/test_diagnostics.py (fast stop, short liquidation side, near target, losing timeout is not a stop loss, unknown exit cause is not inferred)."
     },
     {
       "acceptance_criteria": "Annual reports, three-month WFO, OOS/holdout bookkeeping, uncertainty and top-five boards; T15\u2013T16/T25\u2013T27 with known fixed example.",
