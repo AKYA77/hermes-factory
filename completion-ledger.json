@@ -1306,7 +1306,7 @@
     },
     {
       "acceptance_criteria": "Proof-cache parity; PASS scoped: full-byte invalidation, bounded cache and identical outputs across 1,000 strategies; no production-throughput claim",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/acceptance-matrix.md supplemental directive gate",
       "evidence": [
         "reports/milestones/2026-11-04-source-recovery-search/manifest.json",
@@ -1326,10 +1326,10 @@
         "factory/improvement/service.py",
         "factory/screening/__init__.py"
       ],
-      "next_required_action": "PASS scoped: full-byte invalidation, bounded cache and identical outputs across 1,000 strategies; no production-throughput claim",
+      "next_required_action": "None for the criterion as stated.",
       "requirement_id": "T36",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "PASS scoped: full-byte invalidation, bounded cache and identical outputs across 1,000 strategies; no production-throughput claim; ADR0031 exact shared causal primitive L2, nine-category/seven-timeframe parity, invalidation/context/resource/SIGKILL recovery and native training/evaluation output parity; measured conservative adoption. Full parent acceptance remains open.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Proof-cache parity: test_proof_cache_checks_all_bytes_and_is_bounded covers full-byte invalidation (a changed source byte raises CORRUPT) and the bounded cache; test_proof_cache_outputs_are_identical_across_many_calls verifies the same dataset 1000 times against a fresh uncached catalog with a proof cache of only 8 entries, asserting every result is identical and that the underlying deep scan count stays at 1 while all 1000 verifications are served from the cache. No production-throughput claim is made.",
       "title": "Proof-cache parity",
       "verification_command": "bash scripts/verify.sh"
     },

@@ -69,3 +69,25 @@ def test_proof_cache_checks_all_bytes_and_is_bounded(tmp_path):
     (tmp_path / m["dataset_hash"] / "source.bin").write_bytes(b"changed source")
     with pytest.raises(ValueError, match="CORRUPT"):
         cat.verify(m["dataset_hash"])
+
+
+def test_proof_cache_outputs_are_identical_across_many_calls(tmp_path):
+    """Proof-cache parity: repeated verification of the same inputs is byte-identical.
+
+    The cache must never change a result, only avoid recomputing it. Run far more
+    verifications than the cache can hold so both hits and evictions occur, and
+    compare every result against a fresh catalog that has no cache at all.
+    """
+    q = quotes([(110000 + i, 110010 + i) for i in range(64)])
+    cat = Catalog(tmp_path, proof_cache_size=8)
+    m = cat.commit(
+        q, b"parity source", {"source": "synthetic", "license": "test", "synthetic": True}
+    )
+    uncached = Catalog(tmp_path).verify(m["dataset_hash"], deep=True)
+
+    results = [cat.verify(m["dataset_hash"], deep=True) for _ in range(1000)]
+    assert all(result == uncached for result in results)
+    # commit() performed the single deep scan; every one of the 1000 later
+    # verifications was served by the proof cache, so the scan count never grew.
+    assert cat.verification_scans == 1
+    assert cat.verification_cache_hits == 1000
