@@ -24,31 +24,43 @@ supersedes the 2026-11-12 text wherever they differ. It prioritises real
 implementation over raising the PASS count and names these outstanding bodies of
 work, in order:
 
-1. **Rust execution migration (R01/R02)** — exact equity/drawdown and
-   open-position mark-to-market accounting in Rust; verified instrument/broker
-   profiles; an independent **non-Nautilus** reference oracle validated against
-   the frozen goldens; then connect the engine to the factory's primary
-   historical/paper execution path through a stable versioned interface. Do not
-   remove NautilusTrader until the replacement is integrated and independently
-   verified.
+1. **Rust execution migration (R01/R02)** — IN PROGRESS. Realized-equity reporting
+   exists behind an opt-in flag and matches the reference exactly on 80/80 probe
+   cases. Remaining: mark-to-market equity/drawdown emission
+   (`factory/reporting/equity.py`, whose replication hazards are written down
+   below), verified instrument/broker profiles, an independent non-Nautilus
+   reference oracle validated against the frozen goldens, and a stable versioned
+   integration so the factory's primary historical/paper execution path uses the
+   Rust executor rather than test scripts. Do not remove NautilusTrader until the
+   replacement is integrated and independently verified.
 2. **Rust-vs-Nautilus benchmark** — DONE at `6acad4a`:
    `scripts/benchmark_raptor_vs_reference.py` plus committed report
    `reports/raptor-vs-reference-benchmark.json` (96 cases, all eight instruments,
-   1372 quotes, seed 20261114), with an agreement gate, no computed speedup ratio,
-   and explicit labels that the envelope was NOT enforced and the workload is
-   synthetic only. Still outstanding under this heading: separate data-read /
-   signal-compile / sequential-execution breakdowns, cold-vs-warm cache runs and
-   restart overhead, and any measurement under a real 4-vCPU / 8-GiB quota
-   (impossible on this host — see the R11/T31/T35 envelope note below).
+   1372 quotes, seed 20261114), with an agreement gate, per-case peak RSS via
+   `/usr/bin/time -v`, no computed speedup ratio, and explicit labels that the
+   envelope was NOT enforced and the workload is synthetic only. Still
+   outstanding under this heading: separate data-read / signal-compile /
+   sequential-execution breakdowns, cold-vs-warm cache runs and restart overhead,
+   and any measurement under a real 4-vCPU / 8-GiB quota (impossible on this host).
 3. **R10 native data pipeline**, then **R04 TickFirstHitIndex** (with sequential
    fallback), then **R08 native strategy generator**.
 4. Historical data readiness for the approved 24-month window; source acceptance,
    never structural import alone.
-5. Dashboard/performance/supervisor panels and the resumable autonomous research
-   workflow.
+5. Dashboard completion — DONE at `0de8b09`/`02b8770` for C2 (Forex and Gold
+   sample round-trip/checksum/coverage test plus committed report) and C4
+   (reproducible candidate lifecycle). Remaining for C7: six backend routes have
+   no dashboard caller (`--uncalled`), identified mechanically by the CI-gated
+   `scripts/check-dashboard-api-coverage.py`: `/health/live`,
+   `/profiles/{symbol}`, `/refresh`, `/sources/{identity}` and the two holdout
+   actions `/freeze` and `/evaluate`. Health/live is a liveness probe for
+   orchestrators and `/profiles/{symbol}` duplicates the `/profiles` listing that
+   already carries every field -- both may stay unwired deliberately, but say so
+   in the panel rather than leaving it implicit. The performance and supervisor
+   panels the criterion names have no backend endpoints yet.
 6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
-   completion-ledger.json and development-state.json — DONE at `55f6ee8`, with the
-   verified envelope blocker recorded under R11/T31/T35.
+   completion-ledger.json and development-state.json — DONE; the verified
+   envelope blocker is recorded under R11/T31/T35 and `docs/runbooks/hermes-handoff.md`
+   was refreshed at `9053dba`.
 
 **Unfinished gate states must stay false.** SOFTWARE_VERIFIED, DATA_READY and
 OPERATION_READY are FALSE and must not be set true on scoped evidence.
@@ -56,9 +68,9 @@ OPERATION_READY are FALSE and must not be set true on scoped evidence.
 ### Last audit checkpoint
 
 Externally audited commit `e42714ee66948a6ff03497035320302a7f7150ea`: 51 PASS /
-28 NOT_TESTED, all three readiness gates false, Rust parity substantially
-demonstrated but not integrated as the primary executor, no verified
-Rust-versus-Nautilus performance benchmark.
+28 NOT_TESTED, all three readiness gates false. This continuation has moved the
+ledger to **54 PASS / 25 NOT_TESTED** at `37c44a7`.
+
 
 ---
 
