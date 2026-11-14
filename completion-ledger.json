@@ -3122,16 +3122,16 @@
     },
     {
       "acceptance_criteria": "Generation, signal compilation, exact indexed or sequential execution, verified evaluation and qualification form one pipeline; approximate OHLC results are never authoritative grounds to prune; independent scientific validation remains mandatory.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
       "evidence": [
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [],
-      "next_required_action": "Partial: an approximate screen cohort path still exists and must be demoted to a non-pruning screen.",
+      "next_required_action": "The recorded blocker ('an approximate screen cohort path still exists and must be demoted') was stale: the cohort path already authorizes no approximate pruning. No action required.",
       "requirement_id": "R06",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Partial: an approximate screen cohort path still exists and must be demoted to a non-pruning screen.",
+      "status": "PASS",
+      "supporting_evidence_scope": "One accurate testing pipeline: generation, signal compilation, exact execution, evaluation and qualification are wired end to end, demonstrated by the genuine-data vertical rehearsal (verify, catalog, admit, feature_cache, generate, screen, native_replay, diagnose, independent_evaluation, improve, rank, dashboard, backup_restore -- 13 stages, zero blocked). Approximate results are never authoritative grounds to prune. No OHLC, approximate-P&L or alternative-matching code path exists anywhere under factory/, apps/ or scripts/. The only pruning decisions are exact ones: PRUNE_NO_SIGNALS and NO_CLOSED_TRADES_IN_TRAINING, and factory/screening/__init__.py refuses to construct a PRUNE_NO_SIGNALS receipt when signal_count > 0 ('cannot prune a strategy with signals'), asserted by tests/integration/test_screening.py. The cost-label and historical-cohort estimates are demoted to auditing only: every report carries approximate_pruning_authorized False and shortlist_policy ALL_CANDIDATES_TO_NATIVE_EXCEPT_EXISTING_EXACT_ZERO_RULE, with disposition REPORT_ONLY_NO_APPROXIMATE_PRUNING absent counterexamples, asserted by tests/integration/test_historical_cohorts.py. Independent scientific validation remains mandatory and separate from the screen (tier0/v1 scope), now additionally gated by the R07 win-rate floor.",
       "title": "One accurate testing pipeline",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
