@@ -689,6 +689,20 @@ configuration `{'order_type': 'MARKET', 'side': 'BUY', 'divisor': 2}` and the
 signal sequence BUY@+3s, SELL@+4s, BUY@+14s. Then add this case (and its seed) to
 the parity corpus so the class of bug cannot regress silently.
 
+**Two concrete clues.**
+
+- **Entry quantity.** The reference requests and fills 1666.666; Rust fills
+  833333/1000 = 833.333 -- exactly half. The partial book is configured
+  `divisor: 2`, so the two engines disagree about how much of the requested size
+  the book makes available on ENTRY. Check
+  `order_quantity(profile, &native_size, &spec.partial, "ENTRY", side)` against
+  the reference's adverse-fill model; this alone shifts every downstream figure.
+- **Protection outcome.** At quote +5s the reference fills STOP_LOSS @ 1.09846,
+  whereas Rust records `PROTECTION_LOST` and force-closes with SAFETY_CLOSE @
+  1.09916, then immediately takes a SELL entry the reference skips as
+  `SKIPPED_OVERLAP`. So the stop trigger and/or the protection-termination path
+  differ, not just the fill quantity.
+
 **Then.** Port `factory/reporting/equity.py` (marked equity, peak, minimum, max
 mark-to-market drawdown, insolvency flag, bounded display envelope) using the same
 rounding chain, and re-run goldens 240/240, direct parity 200/200, restart/batch
