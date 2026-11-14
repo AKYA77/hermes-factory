@@ -656,38 +656,43 @@ Structural import is not calendar/source acceptance or DATA_READY.
 
 ### Section 3 — Rust equity/drawdown (next engineering increment)
 
-**Symptom to explain first.** The Rust engine's internal realized equity does not
-always equal the Python reference's `self.equity`, even though fills, trades,
-order states, flags and P&L match exactly on the whole parity corpus. A probe
-comparing per-trade `equity_after` values across 80 generated cases found value
-divergences and, in some configurations, a different number of closed trades
-(Rust closes via `SAFETY_CLOSE` where the reference leaves an open position with
-`NO_EXECUTABLE_EXIT_QUOTE`).
+**Status.** Realized-equity reporting now exists behind an opt-in flag and matches
+the reference exactly wherever the two engines take the same trades. That exposed
+a genuine, previously invisible **execution-semantics divergence** which is now the
+real blocker -- not rounding.
 
-**Prime suspect.** The reference ledger computes the average-cost basis with a
-Decimal division (`basis = self.cost / self.quantity`), which rounds to the
-28-significant-digit context at every partial exit, then forms
-`delta = (price - basis) * size * sign`. The Rust engine carries the same basis
-as an exact rational. After any partial fill whose average cost is a repeating
-decimal, the two deltas differ by a rounding residue, and `self.equity =
-decimal_amount(self.account_cash_exact)` diverges from that point on. P&L parity
-still holds because both sides' reported P&L comes from the same ledger math.
+**The divergence (open).** With `random.Random(4242)` over 80
+`generate_case_params(rng, "EURUSD")` draws, `conservative=True`, case index 11:
 
-**How to confirm.** Reproduce case 11 from `random.Random(4242)` over 80
-`generate_case_params(rng, "EURUSD")` draws with `conservative=True`; compare the
-per-fill account delta as an exact rational against
-`Fraction(delta_decimal) * Fraction(conv)`. If the residues trace to the rounded
-basis, the fix is to make the Rust exit branch round the basis the way
-`decimal_amount` does before forming the delta -- not to change the accumulator,
-which caused the 800/800 -> 22/80 regression when attempted as a blanket
-exact-accumulator change.
+- Reference: one closed trade, ENTRY BUY 1666.666 @ 1.0998 then STOP_LOSS SELL @
+  1.09846, `pnl_exact = -55833311/25000000`; then one still-open BUY position.
+- Rust: ENTRY BUY @ 1.09980, then **SAFETY_CLOSE SELL @ 1.09916**, then a
+  further ENTRY SELL @ 1.09916 that the reference never takes.
 
-**Then.** Emit `equity_before`/`equity_after` per trade and a run-level
-`ending_equity`, and port `factory/reporting/equity.py` (marked equity, peak,
-minimum, max mark-to-market drawdown, insolvency flag, bounded display envelope)
-with its identical rounding chain. Re-run goldens 240/240, direct parity 200/200,
-restart/batch 120/120, genuine partitions 7/7 after every step, plus multiple
-`--seed` variants.
+So the engines disagree on whether the stop was filled and on what happens next;
+the resulting equity paths differ (-2.23333244 vs -0.53333312 on the first trade).
+`cases.compare()` reports fills, trades, open_trade and skips mismatches for this
+case, so it is a real discrepancy, not noise. It is invisible to CI because the
+shipped corpus (`--seed 20261112 --instrument all`) does not generate this case.
+
+**Do not confuse with the earlier rounding red herring.** The reference computes
+its average-cost basis with a Decimal division rounded to 28 significant digits,
+which looks like the culprit but is not: per-trade realized equity matches
+exactly in 79 of 80 cases. The earlier attempt to change the internal accumulator
+to exact arithmetic *did* cause a real regression (800/800 -> 22/80) and was
+reverted; keep the per-fill `round_sig28` behaviour.
+
+**Next step.** Root-cause the STOP_LOSS-vs-SAFETY_CLOSE decision on case 11 --
+compare the matching-phase order state machine against
+`factory/simulation/runner.py` quote by quote, starting from the partial-book
+configuration `{'order_type': 'MARKET', 'side': 'BUY', 'divisor': 2}` and the
+signal sequence BUY@+3s, SELL@+4s, BUY@+14s. Then add this case (and its seed) to
+the parity corpus so the class of bug cannot regress silently.
+
+**Then.** Port `factory/reporting/equity.py` (marked equity, peak, minimum, max
+mark-to-market drawdown, insolvency flag, bounded display envelope) using the same
+rounding chain, and re-run goldens 240/240, direct parity 200/200, restart/batch
+120/120 and genuine partitions 7/7 after every step.
 
 ### R07 — strict 50% post-cost win-rate gate (IMPLEMENTED and PASS)
 
