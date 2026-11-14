@@ -654,6 +654,41 @@ Structural import is not calendar/source acceptance or DATA_READY.
 
 ## Exact next implementation
 
+### Section 3 — Rust equity/drawdown (next engineering increment)
+
+**Symptom to explain first.** The Rust engine's internal realized equity does not
+always equal the Python reference's `self.equity`, even though fills, trades,
+order states, flags and P&L match exactly on the whole parity corpus. A probe
+comparing per-trade `equity_after` values across 80 generated cases found value
+divergences and, in some configurations, a different number of closed trades
+(Rust closes via `SAFETY_CLOSE` where the reference leaves an open position with
+`NO_EXECUTABLE_EXIT_QUOTE`).
+
+**Prime suspect.** The reference ledger computes the average-cost basis with a
+Decimal division (`basis = self.cost / self.quantity`), which rounds to the
+28-significant-digit context at every partial exit, then forms
+`delta = (price - basis) * size * sign`. The Rust engine carries the same basis
+as an exact rational. After any partial fill whose average cost is a repeating
+decimal, the two deltas differ by a rounding residue, and `self.equity =
+decimal_amount(self.account_cash_exact)` diverges from that point on. P&L parity
+still holds because both sides' reported P&L comes from the same ledger math.
+
+**How to confirm.** Reproduce case 11 from `random.Random(4242)` over 80
+`generate_case_params(rng, "EURUSD")` draws with `conservative=True`; compare the
+per-fill account delta as an exact rational against
+`Fraction(delta_decimal) * Fraction(conv)`. If the residues trace to the rounded
+basis, the fix is to make the Rust exit branch round the basis the way
+`decimal_amount` does before forming the delta -- not to change the accumulator,
+which caused the 800/800 -> 22/80 regression when attempted as a blanket
+exact-accumulator change.
+
+**Then.** Emit `equity_before`/`equity_after` per trade and a run-level
+`ending_equity`, and port `factory/reporting/equity.py` (marked equity, peak,
+minimum, max mark-to-market drawdown, insolvency flag, bounded display envelope)
+with its identical rounding chain. Re-run goldens 240/240, direct parity 200/200,
+restart/batch 120/120, genuine partitions 7/7 after every step, plus multiple
+`--seed` variants.
+
 ### R07 — strict 50% post-cost win-rate gate (IMPLEMENTED and PASS)
 
 Read this before writing code; it is the highest-priority unimplemented
