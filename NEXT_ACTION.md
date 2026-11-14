@@ -65,12 +65,22 @@ only TEN have a companion fixture script and can actually run: dashboard-panels,
 discovery, historical-screen-cohort, research-reports, reviewed-inputs,
 screen-cohort, screen-fallback, source-coverage, source-quality and validation.
 The other six -- independent-ranking, instrument-profiles, instrument-status,
-research-actions, source-registry and statistical-safeguards -- have NO fixture at
-all and could never execute; they were dead code sitting alongside real acceptance
-checks. An earlier summary counted only the ten runnable smokes and silently omitted
-the six. Each is now guarded with an explicit `NOT RUNNABLE` exit so its presence
-cannot be mistaken for passing UI evidence. Writing the six fixtures, or deleting
-the scripts, is the remaining work here.
+research-actions, source-registry and statistical-safeguards -- had NO fixture and
+could never execute; they were dead code sitting alongside real acceptance checks.
+An earlier summary counted only the ten runnable smokes and silently omitted the six.
+
+Five of those six are now REVIVED with real fixtures and verified PASSING in
+Chromium: instrument-profiles (8 profiles, synthetic labelling, Gold caveat, hash),
+instrument-status (8 instruments, DATA_UNAVAILABLE/UNKNOWN_SPEC, admission caveat),
+independent-ranking (declaration-gated, descriptive-only), statistical-safeguards
+(selection funnel plus multiple-testing over a supplied family) and research-actions
+(all report actions actor-gated, lineage/sensitivity/plans rendered).
+
+Only `source-registry` remains guarded: it requires seeded PROVIDER-SOURCED
+partitions (HistData.com provenance, SOURCE_BID_ASK fidelity, >=8 datasets), not
+just a clean registry, so its fixture must import or regenerate real archive data
+rather than synthetic rows. Until then its `NOT RUNNABLE` guard keeps it from being
+mistaken for acceptance evidence.
 6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
    completion-ledger.json and development-state.json — DONE; the verified
    envelope blocker is recorded under R11/T31/T35 and `docs/runbooks/hermes-handoff.md`
