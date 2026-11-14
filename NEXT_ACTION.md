@@ -656,52 +656,32 @@ Structural import is not calendar/source acceptance or DATA_READY.
 
 ### Section 3 — Rust equity/drawdown (next engineering increment)
 
-**Status.** Realized-equity reporting now exists behind an opt-in flag and matches
-the reference exactly wherever the two engines take the same trades. That exposed
-a genuine, previously invisible **execution-semantics divergence** which is now the
-real blocker -- not rounding.
+**Status.** Realized-equity reporting now exists behind an opt-in flag and is
+**verified exact**: over 80 generated EURUSD cases (`random.Random(4242)`,
+`conservative=True`, partial book included via the harness's own `fill_model`),
+per-trade realized equity matches the reference in every case with zero value or
+count mismatches.
 
-**The divergence (open).** With `random.Random(4242)` over 80
-`generate_case_params(rng, "EURUSD")` draws, `conservative=True`, case index 11:
+**Do not repeat the retracted claim.** An earlier entry here called case index 11
+of that seed an "open execution divergence" (STOP_LOSS vs SAFETY_CLOSE, half-size
+entry). That was a **probe artifact**, not an engine defect: the probe called
+`replay(quotes, profile, spec, signals, req)` and passed the whole request dict as
+the fifth positional argument, which is `conservative`. The Python reference
+therefore never received the partial-book `fill_model`, filled full size, and
+naturally disagreed. Re-run through the harness's own path --
+`generate_case(rng, instrument)` then
+`replay(..., conservative, fill_model=fill_model)` -- and case 11 compares clean
+with zero mismatches.
 
-- Reference: one closed trade, ENTRY BUY 1666.666 @ 1.0998 then STOP_LOSS SELL @
-  1.09846, `pnl_exact = -55833311/25000000`; then one still-open BUY position.
-- Rust: ENTRY BUY @ 1.09980, then **SAFETY_CLOSE SELL @ 1.09916**, then a
-  further ENTRY SELL @ 1.09916 that the reference never takes.
+**Lesson for future probes.** Never call the reference directly with hand-built
+arguments; always go through `scripts/parity_raptor_engine.py`'s
+`generate_case`/`build_request` pair so both engines receive the same partial-book
+configuration. A raw `replay()` call silently drops the fill model and manufactures
+false discrepancies.
 
-So the engines disagree on whether the stop was filled and on what happens next;
-the resulting equity paths differ (-2.23333244 vs -0.53333312 on the first trade).
-`cases.compare()` reports fills, trades, open_trade and skips mismatches for this
-case, so it is a real discrepancy, not noise. It is invisible to CI because the
-shipped corpus (`--seed 20261112 --instrument all`) does not generate this case.
-
-**Do not confuse with the earlier rounding red herring.** The reference computes
-its average-cost basis with a Decimal division rounded to 28 significant digits,
-which looks like the culprit but is not: per-trade realized equity matches
-exactly in 79 of 80 cases. The earlier attempt to change the internal accumulator
-to exact arithmetic *did* cause a real regression (800/800 -> 22/80) and was
-reverted; keep the per-fill `round_sig28` behaviour.
-
-**Next step.** Root-cause the STOP_LOSS-vs-SAFETY_CLOSE decision on case 11 --
-compare the matching-phase order state machine against
-`factory/simulation/runner.py` quote by quote, starting from the partial-book
-configuration `{'order_type': 'MARKET', 'side': 'BUY', 'divisor': 2}` and the
-signal sequence BUY@+3s, SELL@+4s, BUY@+14s. Then add this case (and its seed) to
-the parity corpus so the class of bug cannot regress silently.
-
-**Two concrete clues.**
-
-- **Entry quantity.** The reference requests and fills 1666.666; Rust fills
-  833333/1000 = 833.333 -- exactly half. The partial book is configured
-  `divisor: 2`, so the two engines disagree about how much of the requested size
-  the book makes available on ENTRY. Check
-  `order_quantity(profile, &native_size, &spec.partial, "ENTRY", side)` against
-  the reference's adverse-fill model; this alone shifts every downstream figure.
-- **Protection outcome.** At quote +5s the reference fills STOP_LOSS @ 1.09846,
-  whereas Rust records `PROTECTION_LOST` and force-closes with SAFETY_CLOSE @
-  1.09916, then immediately takes a SELL entry the reference skips as
-  `SKIPPED_OVERLAP`. So the stop trigger and/or the protection-termination path
-  differ, not just the fill quantity.
+**Also settled:** the average-cost basis rounding was a red herring -- the
+reference rounds the basis to 28 significant digits while Rust carries it exactly,
+yet realized equity still agrees everywhere once the fill model is applied.
 
 **Then.** Port `factory/reporting/equity.py` (marked equity, peak, minimum, max
 mark-to-market drawdown, insolvency flag, bounded display envelope) using the same
