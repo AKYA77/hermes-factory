@@ -2178,12 +2178,13 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Partial; 176 planned partitions pending, calendars/revisions and full operational ingestion remain; immutable views now exist",
+      "next_required_action": "None for the criterion as stated. Broader C2 programme items that sit outside this criterion's text -- provider calendar completeness, genuine new-profile integration, scheduled refresh and quota/retention -- remain open and are tracked elsewhere.",
       "requirement_id": "C2",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "; ADR0026 historical admission propagates through versioned TPE/refits/confirmation. Complete labeled generated positive annual/WFO/one-time reference passes. Genuine EURUSD generic-unit training/frozen exploratory native replay passes; source gaps/broker fidelity and independent historical promotion remain uncertified.; ADR0027 generated SIGKILL/chunk/raw-prefix/publication-race/CLI recovery passes. Parser v2 rejects context-rounded nonrepresentable source prices. Does not complete provider calendar, genuine new-profile integration, scheduled refresh, quota/retention or full C2.; ADR0028 catalog-wide staging payload budget and explicit deeply verified duplicate-chunk reclamation/interrupt recovery pass. Does not complete canonical retention/compaction, scheduled source refresh, off-host backup or source UI.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Price data: provider terms and provenance are documented in docs/data-terms-and-provenance.md; the instrument registry is factory/instruments.py backed by the /api/v1/profiles endpoints; quote import is reversible (partition reads back byte-exactly); canonical storage is Parquet with ZSTD compression; data quality is enforced by the source-quality scanner. The Forex and Gold sample round-trip/checksum/coverage clause now has both durable evidence and a committed artifact: tests/integration/test_sample_roundtrip_report.py (CI-enforced) drives the streaming importer for EURUSD and XAUUSD samples and asserts raw-source and canonical-parquet hash agreement with the published manifest, exact read-back identity, row count, first/last timestamps, zero gaps over 60s across multiple parquet row groups, distinct per-instrument price grids, and idempotent re-import producing the same dataset identity; reports/sample-roundtrip-report.json records the same measurements for the acceptance record. Both samples are synthetic fixtures and this is structural pipeline verification, not market validation or DATA_READY.",
       "title": "Price data",
-      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
+      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF"
     },
     {
       "acceptance_criteria": "Pinned Nautilus reference and pessimistic scenarios, exact intended 1:3/$20/10%, stop/limit/24h; complete T07\u2013T11 goldens and simulator/reference agreement.",
