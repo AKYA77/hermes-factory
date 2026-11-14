@@ -1143,10 +1143,10 @@
         "factory/simulation/runner.py",
         "factory/simulation/streaming.py"
       ],
-      "next_required_action": "PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED",
+      "next_required_action": "PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED Blocker to close: obtain a host (or delegated cgroup v2 subtree) where a real 4-vCPU / 8-GiB quota can be applied and demonstrated.",
       "requirement_id": "T31",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED",
+      "supporting_evidence_scope": "PASS scoped fixtures: full results equal at batches 1/2/3/8192 vs materialized native delivery; real feed-only months received all quotes; target-host strategy stress remains NOT_TESTED Envelope verification (2026-11-14): the target 4-vCPU / 8-GiB limit CANNOT be enforced on this host. The container exposes cgroup v2 without delegating the cpu/memory controllers -- /sys/fs/cgroup/cpu.max does not exist at the root and systemd-run --scope -p CPUQuota=400% -p MemoryMax=8G reports CPUQuotaPerSecUSec=infinity and MemoryMax=infinity once created. Any benchmark run here is therefore measured on the unrestricted VPS capacity (6 vCPU / ~11 GiB) and must be labelled as such; taskset -c 0-3 plus ulimit -v is only an approximation of affinity and virtual-memory limits, not a real quota.",
       "title": "Bounded native delivery parity",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -1297,10 +1297,10 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Supervision flake fixed. Remaining: real target-host 8-GB reboot/soak, which needs the host rather than a scoped test.",
+      "next_required_action": "Supervision flake fixed. Remaining: real target-host 8-GB reboot/soak, which needs the host rather than a scoped test. Blocker to close: obtain a host (or delegated cgroup v2 subtree) where a real 4-vCPU / 8-GiB quota can be applied and demonstrated.",
       "requirement_id": "T35",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests. The known wall-time flake in test_bound_worker_dies_with_coordinator is fixed rather than worked around: the test polled child.is_running() and child.status(), and the child could exit between the two calls, raising psutil.NoSuchProcess. Both the poll loop and the final assertion now treat NoSuchProcess as the terminal state it is, since a process that no longer exists has died with its parent. Verified five consecutive local runs plus the other known flake three times in isolation. Real 8-GB reboot/soak remains NOT_TESTED.",
+      "supporting_evidence_scope": "Scoped actual kernel parent-death, stale fencing, memory-failure and cgroup arithmetic tests. The known wall-time flake in test_bound_worker_dies_with_coordinator is fixed rather than worked around: the test polled child.is_running() and child.status(), and the child could exit between the two calls, raising psutil.NoSuchProcess. Both the poll loop and the final assertion now treat NoSuchProcess as the terminal state it is, since a process that no longer exists has died with its parent. Verified five consecutive local runs plus the other known flake three times in isolation. Real 8-GB reboot/soak remains NOT_TESTED. Envelope verification (2026-11-14): the target 4-vCPU / 8-GiB limit CANNOT be enforced on this host. The container exposes cgroup v2 without delegating the cpu/memory controllers -- /sys/fs/cgroup/cpu.max does not exist at the root and systemd-run --scope -p CPUQuota=400% -p MemoryMax=8G reports CPUQuotaPerSecUSec=infinity and MemoryMax=infinity once created. Any benchmark run here is therefore measured on the unrestricted VPS capacity (6 vCPU / ~11 GiB) and must be labelled as such; taskset -c 0-3 plus ulimit -v is only an approximation of affinity and virtual-memory limits, not a real quota.",
       "title": "Worker supervision/resources",
       "verification_command": "bash scripts/verify.sh"
     },
@@ -3203,10 +3203,10 @@
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [],
-      "next_required_action": "Not started: no target-envelope benchmark has been run; the development host is larger than the target.",
+      "next_required_action": "Not started: no target-envelope benchmark has been run; the development host is larger than the target. Blocker to close: obtain a host (or delegated cgroup v2 subtree) where a real 4-vCPU / 8-GiB quota can be applied and demonstrated.",
       "requirement_id": "R11",
       "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Not started: no target-envelope benchmark has been run; the development host is larger than the target.",
+      "supporting_evidence_scope": "Not started: no target-envelope benchmark has been run; the development host is larger than the target. Envelope verification (2026-11-14): the target 4-vCPU / 8-GiB limit CANNOT be enforced on this host. The container exposes cgroup v2 without delegating the cpu/memory controllers -- /sys/fs/cgroup/cpu.max does not exist at the root and systemd-run --scope -p CPUQuota=400% -p MemoryMax=8G reports CPUQuotaPerSecUSec=infinity and MemoryMax=infinity once created. Any benchmark run here is therefore measured on the unrestricted VPS capacity (6 vCPU / ~11 GiB) and must be labelled as such; taskset -c 0-3 plus ulimit -v is only an approximation of affinity and virtual-memory limits, not a real quota.",
       "title": "Target-envelope performance evidence",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
