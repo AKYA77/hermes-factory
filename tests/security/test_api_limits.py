@@ -1,4 +1,5 @@
 """C8 throttling: the API's connection and request-rate limits are enforced."""
+
 import hashlib
 import json
 
@@ -38,8 +39,14 @@ def test_each_token_has_its_own_bucket(tmp_path):
     client = _client(tmp_path, {"viewer": victim, "operator": bystander})
     for _ in range(121):
         client.get("/api/v1/overview", headers={"Authorization": f"Bearer {victim}"})
-    assert client.get("/api/v1/overview", headers={"Authorization": f"Bearer {victim}"}).status_code == 429
-    assert client.get("/api/v1/overview", headers={"Authorization": f"Bearer {bystander}"}).status_code == 200
+    assert (
+        client.get("/api/v1/overview", headers={"Authorization": f"Bearer {victim}"}).status_code
+        == 429
+    )
+    assert (
+        client.get("/api/v1/overview", headers={"Authorization": f"Bearer {bystander}"}).status_code
+        == 200
+    )
 
 
 def test_an_oversized_body_is_rejected_before_decoding(tmp_path):
