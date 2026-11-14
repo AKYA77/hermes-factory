@@ -105,7 +105,9 @@ shift = parent_contract.windows[-1].end_ns + 86_400 * 10**9
 child_contract = parent_contract.model_copy(
     update={
         "windows": tuple(
-            window.model_copy(update={"start_ns": window.start_ns + shift, "end_ns": window.end_ns + shift})
+            window.model_copy(
+                update={"start_ns": window.start_ns + shift, "end_ns": window.end_ns + shift}
+            )
             for window in parent_contract.windows
         )
     }
