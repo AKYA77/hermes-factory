@@ -800,13 +800,37 @@ pub struct SkipOut {
     pub status: String,
 }
 
-#[derive(Clone, Debug, Serialize)]
+/// Per-trade realized equity observation. Reported only when the caller opts in
+/// with `--emit-equity`; the default result schema stays byte-identical so the
+/// frozen Nautilus goldens remain comparable.
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EquityRecord {
+    pub entry_ts: i64,
+    pub exit_ts: Option<i64>,
+    #[serde(with = "rat_serde")]
+    pub before: Rat,
+    #[serde(with = "rat_serde")]
+    pub after: Rat,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct EquityOut {
+    pub trades: Vec<EquityRecord>,
+    #[serde(with = "rat_serde")]
+    pub ending_equity: Rat,
+    #[serde(with = "rat_serde")]
+    pub initial_equity: Rat,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct ReplayResult {
     pub fills: Vec<FillOut>,
     pub trades: Vec<TradeOut>,
     pub open_trade: Option<TradeOut>,
     pub skips: Vec<SkipOut>,
     pub quote_count: usize,
+    #[serde(skip_serializing_if = "Option::is_none", default)]
+    pub equity: Option<EquityOut>,
 }
 
 /// Serde bridge for `Rat` so the engine state can be persisted and restored.
@@ -858,6 +882,8 @@ struct Position {
     realized_exact: Rat,
     #[serde(with = "rat_serde")]
     commission_per_unit: Rat,
+    #[serde(with = "rat_serde")]
+    equity_at_entry: Rat,
     flags: Vec<String>,
     order_states: Vec<(String, String, Option<String>)>,
     exit_roles: Vec<String>,
@@ -961,6 +987,7 @@ impl Position {
         exit_qi: Option<usize>,
         _exit_price: Option<i64>,
         _reason: Option<String>,
+        _equity_after: &Rat,
     ) -> TradeOut {
         TradeOut {
             side: self.side.as_str().to_string(),
@@ -1040,6 +1067,8 @@ fn step_impl(
     fills: &mut Vec<FillOut>,
     trades: &mut Vec<TradeOut>,
     skips: &mut Vec<SkipOut>,
+    equity_log: &mut Vec<EquityRecord>,
+    emit_equity: bool,
 ) -> Result<(), String> {
     let (b, a) = effective_quotes(q.bid, q.ask, profile, conservative)?;
 
@@ -1117,7 +1146,16 @@ fn step_impl(
                     },
                     "CANCELED",
                 );
-                let mut t = pos.to_trade(Some(q.ts), Some(i), Some(price), Some(role.into()));
+                let mut t =
+                    pos.to_trade(Some(q.ts), Some(i), Some(price), Some(role.into()), equity);
+                if emit_equity {
+                    equity_log.push(EquityRecord {
+                        entry_ts: pos.entry_ts,
+                        exit_ts: Some(q.ts),
+                        before: pos.equity_at_entry.clone(),
+                        after: equity.round_sig28(),
+                    });
+                }
                 t.pnl_num = pos.account_realized().n.to_string();
                 t.pnl_den = pos.account_realized().d.to_string();
                 trades.push(t);
@@ -1169,7 +1207,21 @@ fn step_impl(
                 *open = Some(pos);
             } else {
                 pos.terminate("TIMEOUT", "FILLED");
-                let mut t = pos.to_trade(Some(q.ts), Some(i), Some(price), Some("TIMEOUT".into()));
+                let mut t = pos.to_trade(
+                    Some(q.ts),
+                    Some(i),
+                    Some(price),
+                    Some("TIMEOUT".into()),
+                    equity,
+                );
+                if emit_equity {
+                    equity_log.push(EquityRecord {
+                        entry_ts: pos.entry_ts,
+                        exit_ts: Some(q.ts),
+                        before: pos.equity_at_entry.clone(),
+                        after: equity.round_sig28(),
+                    });
+                }
                 t.pnl_num = pos.account_realized().n.to_string();
                 t.pnl_den = pos.account_realized().d.to_string();
                 trades.push(t);
@@ -1213,7 +1265,16 @@ fn step_impl(
                     Some(i),
                     Some(price),
                     Some("SAFETY_CLOSE".into()),
+                    equity,
                 );
+                if emit_equity {
+                    equity_log.push(EquityRecord {
+                        entry_ts: pos.entry_ts,
+                        exit_ts: Some(q.ts),
+                        before: pos.equity_at_entry.clone(),
+                        after: equity.round_sig28(),
+                    });
+                }
                 t.pnl_num = pos.account_realized().n.to_string();
                 t.pnl_den = pos.account_realized().d.to_string();
                 trades.push(t);
@@ -1319,6 +1380,7 @@ fn step_impl(
             exited: Rat::zero(),
             realized_exact: Rat::zero(),
             commission_per_unit: profile.commission_per_unit.clone(),
+            equity_at_entry: equity.round_sig28(),
             flags: Vec::new(),
             order_states: Vec::new(),
             exit_roles: Vec::new(),
@@ -1364,6 +1426,10 @@ fn step_impl(
 pub struct ReplayerState {
     #[serde(with = "rat_serde")]
     equity: Rat,
+    #[serde(default)]
+    equity_log: Vec<EquityRecord>,
+    #[serde(with = "rat_serde")]
+    initial_equity: Rat,
     open: Option<Position>,
     sig_idx: usize,
     index: usize,
@@ -1380,6 +1446,7 @@ pub struct Replayer<'a> {
     spec: &'a Spec,
     signals: &'a [Signal],
     conservative: bool,
+    emit_equity: bool,
     state: ReplayerState,
 }
 
@@ -1389,14 +1456,18 @@ impl<'a> Replayer<'a> {
         spec: &'a Spec,
         signals: &'a [Signal],
         conservative: bool,
+        emit_equity: bool,
     ) -> Self {
         Replayer {
             profile,
             spec,
             signals,
             conservative,
+            emit_equity,
             state: ReplayerState {
                 equity: Rat::int(20),
+                equity_log: Vec::new(),
+                initial_equity: Rat::int(20),
                 open: None,
                 sig_idx: 0,
                 index: 0,
@@ -1423,25 +1494,46 @@ impl<'a> Replayer<'a> {
             &mut self.state.fills,
             &mut self.state.trades,
             &mut self.state.skips,
+            &mut self.state.equity_log,
+            self.emit_equity,
         )
     }
 
     pub fn finish(self) -> ReplayResult {
-        let open_trade = self.state.open.map(|pos| {
-            let mut t = pos.to_trade(None, None, None, None);
+        let mut equity_log = self.state.equity_log.clone();
+        let mut open_trade = None;
+        if let Some(pos) = self.state.open.as_ref() {
+            let mut t = pos.to_trade(None, None, None, None, &self.state.equity);
             t.pnl_num = pos.account_realized().n.to_string();
             t.pnl_den = pos.account_realized().d.to_string();
             if !t.flags.iter().any(|f| f == "NO_EXECUTABLE_EXIT_QUOTE") {
                 t.flags.push("NO_EXECUTABLE_EXIT_QUOTE".into());
             }
-            t
-        });
+            if self.emit_equity {
+                equity_log.push(EquityRecord {
+                    entry_ts: pos.entry_ts,
+                    exit_ts: None,
+                    before: pos.equity_at_entry.clone(),
+                    after: self.state.equity.round_sig28(),
+                });
+            }
+            open_trade = Some(t);
+        }
         ReplayResult {
             fills: self.state.fills,
             trades: self.state.trades,
             open_trade,
             skips: self.state.skips,
             quote_count: self.state.index,
+            equity: if self.emit_equity {
+                Some(EquityOut {
+                    trades: equity_log,
+                    ending_equity: self.state.equity.round_sig28(),
+                    initial_equity: self.state.initial_equity.clone(),
+                })
+            } else {
+                None
+            },
         }
     }
 
@@ -1461,6 +1553,7 @@ impl<'a> Replayer<'a> {
             spec,
             signals,
             conservative,
+            emit_equity: false,
             state,
         }
     }
@@ -1475,7 +1568,7 @@ pub fn replay(
     signals: &[Signal],
     conservative: bool,
 ) -> Result<ReplayResult, String> {
-    let mut replayer = Replayer::new(profile, spec, signals, conservative);
+    let mut replayer = Replayer::new(profile, spec, signals, conservative, false);
     for q in quotes {
         replayer.step(q)?;
     }
@@ -1529,6 +1622,7 @@ mod tests {
             exited: Rat::zero(),
             realized_exact: Rat::zero(),
             commission_per_unit: profile.commission_per_unit.clone(),
+            equity_at_entry: Rat::int(20),
             flags: Vec::new(),
             order_states: Vec::new(),
             exit_roles: Vec::new(),
@@ -1578,4 +1672,3 @@ mod tests {
         assert_eq!(rounded.d.to_string().len() - 1, 27);
     }
 }
-

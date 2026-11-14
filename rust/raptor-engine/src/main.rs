@@ -27,6 +27,8 @@ struct Request {
     spec: SpecIn,
     #[serde(default = "default_conservative")]
     conservative: bool,
+    #[serde(default)]
+    emit_equity: bool,
     quotes: Vec<Quote>,
     signals: Vec<Signal>,
 }
@@ -38,12 +40,13 @@ fn default_conservative() -> bool {
 fn main() -> Result<(), String> {
     let args: Vec<String> = env::args().collect();
     let usage = "usage: raptor-engine <request.json> [--batch-size N] \
-                 [--dump-state PATH] [--resume-from PATH]";
+                 [--dump-state PATH] [--resume-from PATH] [--emit-equity]";
     let path = args.get(1).ok_or(usage)?;
 
     let mut batch_size: Option<usize> = None;
     let mut dump_state: Option<String> = None;
     let mut resume_from: Option<String> = None;
+    let mut emit_equity = false;
     let mut i = 2;
     while i < args.len() {
         match args[i].as_str() {
@@ -51,6 +54,9 @@ fn main() -> Result<(), String> {
                 i += 1;
                 let value = args.get(i).ok_or("--batch-size needs a value")?;
                 batch_size = Some(value.parse().map_err(|_| "invalid --batch-size")?);
+            }
+            "--emit-equity" => {
+                emit_equity = true;
             }
             "--dump-state" => {
                 i += 1;
@@ -82,7 +88,13 @@ fn main() -> Result<(), String> {
                 request.conservative,
             )
         }
-        None => Replayer::new(&profile, &spec, &request.signals, request.conservative),
+        None => Replayer::new(
+            &profile,
+            &spec,
+            &request.signals,
+            request.conservative,
+            emit_equity || request.emit_equity,
+        ),
     };
 
     let quotes = &request.quotes;
