@@ -38,6 +38,10 @@ jobs:
           version: '0.12.23'
       - run: uv sync --frozen
       - run: uv run python scripts/parity_raptor_engine.py --cases 200 --instrument all --seed 20261112
+      # A second seed catches case classes the first one never generates; the
+      # shipped corpus once missed behaviour that only appeared under other draws.
+      - run: uv run python scripts/parity_raptor_engine.py --cases 300 --instrument all --seed 4242
       - run: uv run python scripts/verify_raptor_goldens.py
+      - run: uv run python scripts/parity_raptor_equity.py --cases 80 --seed 4242 --instrument EURUSD
       - run: uv run python scripts/parity_raptor_restart.py --cases 120 --instrument all
       - run: uv run python scripts/verify_goldens_without_nautilus.py
