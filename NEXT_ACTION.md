@@ -683,10 +683,43 @@ false discrepancies.
 reference rounds the basis to 28 significant digits while Rust carries it exactly,
 yet realized equity still agrees everywhere once the fill model is applied.
 
-**Then.** Port `factory/reporting/equity.py` (marked equity, peak, minimum, max
-mark-to-market drawdown, insolvency flag, bounded display envelope) using the same
-rounding chain, and re-run goldens 240/240, direct parity 200/200, restart/batch
-120/120 and genuine partitions 7/7 after every step.
+### Marked equity / drawdown (R01's remaining accounting clause)
+
+Port `factory/reporting/equity.py` behind the same `--emit-equity` opt-in contract
+(realized equity is already there and verified). The scalar fields to emit are
+`peak_marked_equity`, `minimum_marked_equity`, `max_mark_to_market_drawdown`,
+`insolvent_at_any_observation`, `ending_marked_equity`, `unrealized_pnl`,
+`signed_open_quantity`, `quote_observations` and `fill_observations`. The
+`curve` array is a bounded *display* envelope (`curve_is_execution_input: False`)
+and may stay Python-side initially; say so explicitly if you defer it.
+
+**Replication hazards -- these are where a port silently goes wrong.**
+
+- `realized_cash` starts at `Fraction(20)` **regardless of quote currency**, while
+  the separate notional `cash` starts at `D(20)` only for USD-quoted instruments
+  and `D(0)` otherwise. The two track different things; do not unify them.
+- Every observation computes
+  `marked_exact = realized_cash + Fraction(unrealized_quote) * Fraction(conversion)`
+  and then rounds once with `decimal_amount` (28 significant digits,
+  ROUND_HALF_EVEN). Peak, minimum, drawdown ratio and insolvency are all derived
+  from the *rounded* value, so the rounding must happen before the comparison --
+  computing the stats on exact rationals gives different answers.
+- `max_dd` is `(peak - marked) / peak` evaluated in Decimal context precision
+  (28 digits), not on an exact fraction.
+- Partial exits compute `basis = cost / abs(inventory)` as a **Decimal division**
+  rounded to 28 digits before forming `quote_delta`; Rust must apply
+  `round_sig28` to the basis at the same point or the deltas drift.
+- Observations occur once per quote before any fills, and again after **each**
+  fill within that quote. Missing the after-fill observations changes peak,
+  minimum, drawdown and the insolvency flag.
+- `bid`/`ask` used for marking are the *effective* quotes (conservative adverse
+  slippage applied), matching `conversion_rate`/`effective_quotes`.
+- `conversion = quote_to_usd(profile, bid, ask, "SELL" if inventory >= 0 else "BUY")`
+  is taken from the current quote even when marking an open position.
+
+Verify against `factory.reporting.equity.equity_summary` over generated cases on
+all eight instruments (the non-USD ones exercise the currency-dependent start
+values and conversion path), not just EURUSD.
 
 ### R07 — strict 50% post-cost win-rate gate (IMPLEMENTED and PASS)
 
