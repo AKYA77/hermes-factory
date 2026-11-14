@@ -13,9 +13,26 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
  await page.getByLabel('Access token',{exact:true}).fill(token);
  await page.getByRole('button',{name:'Connect / refresh',exact:true}).click();
  await page.getByText('Application evidence',{exact:true}).waitFor();
+ const checks=[];
+ // Exercised first: panels fetch on mount and the API allows each token only
+ // 120 requests per minute, so a late check would trip the throttle.
+ await page.getByRole('button',{name:'Market data',exact:true}).click();
+ const mSection='section[aria-label="Source operations"]';
+ await page.getByRole('heading',{name:'Source operations',exact:true}).waitFor();
+ await page.getByRole('button',{name:'Refresh source data',exact:true}).click();
+ await page.waitForFunction(
+  () => {
+   const el=document.querySelector('section[aria-label="Source operations"]');
+   return !!el && el.textContent.includes('dataset(s) verified');
+  },
+  {timeout:30000}
+ );
+ const mBody=await page.locator(mSection).innerText();
+ if(!mBody.includes('dataset(s) verified'))throw Error('Source refresh did not report verified datasets');
+ checks.push('source refresh action re-verified the catalog and reported coverage');
+
  await page.getByRole('button',{name:'Research',exact:true}).click();
 
- const checks=[];
  const qSection='section[aria-label="Qualified training shortlist"]';
  await page.getByRole('heading',{name:'Qualified training shortlist',exact:true}).waitFor();
  const qButton=page.locator(qSection+' button',{hasText:'Rank qualified shortlist'});
@@ -68,7 +85,7 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
  if(errors.length)throw Error('Browser page errors: '+errors.join(';'));
  const report={
   status:'PASS',
-  scope:'qualified ranking, validation evaluation detail, strategy lineage and research trials in authenticated loopback Chromium; descriptive records only, no qualification or promotion',
+  scope:'qualified ranking, validation evaluation detail, strategy lineage, research trials and the source-refresh action in authenticated loopback Chromium; descriptive records only, no qualification or promotion',
   browser:await browser.version(),
   state_directory:path.basename(state),
   evaluations:evaluations.length,

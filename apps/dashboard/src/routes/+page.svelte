@@ -24,6 +24,7 @@
  let data = $state<unknown>(null);
  let evidencePath = $state('');
  let error = $state('');
+ let sourceMessage = $state('');
  let pending = $state(false);
  const symbols=['EURUSD','GBPUSD','USDJPY','USDCHF','USDCAD','AUDUSD','NZDUSD','XAUUSD'];
  type ProtocolRow={protocol_hash:string;enabled:number;reason:string|null;protocol_json:string};
@@ -75,6 +76,13 @@
   catch(e){error=String(e);}finally{pending=false;}
  }
  async function inspect(run:string){pending=true;error='';try{data=await request('experiments/'+run);evidencePath='experiments/'+run;}catch(e){error=String(e);}finally{pending=false;}}
+ async function refreshSources(){pending=true;error='';sourceMessage='';
+  try{const r=await request('refresh','POST');
+   const verified=r.verified??r.datasets??r.partitions??'catalog verified';
+   const missing=Array.isArray(r.missing)?r.missing.length:(r.missing??0);
+   const mismatched=Array.isArray(r.mismatched)?r.mismatched.length:(r.mismatched??0);
+   sourceMessage=`Refreshed source registry: ${verified} dataset(s) verified, ${missing} missing, ${mismatched} mismatched.`;}
+  catch(e){error=String(e);}finally{pending=false;}}
 </script>
 <svelte:head><title>Hermes Factory · Research</title><meta name="description" content="Historical and paper research control plane"/></svelte:head>
 <div class="shell">
@@ -116,7 +124,7 @@
    <section class="panel"><h2>Improvement policies</h2>{#if improvement.policies.length===0}<p>No policies registered.</p>{/if}{#each improvement.policies as policy}<div class="row"><span>{policy.policy_hash.slice(0,12)} · {policy.enabled?'enabled':'disabled'}</span>{#if policy.enabled}<button disabled={pending} onclick={()=>stop('improvement/policies/'+policy.policy_hash+'/disable')}>Stop new children</button>{/if}</div>{/each}</section>
    <section class="panel"><h2>Children and paired comparisons</h2>{#if children.length===0}<p>No controlled children have been planned.</p>{/if}{#each children as child}<article><h3>{child.status??'Awaiting execution or budget'}</h3><p>{child.hypothesis}</p><button onclick={()=>{view='Experiments';inspect(child.child_experiment_hash);}} disabled={pending||!nativeChildRun(child)}>Inspect native run</button><details><summary>Paired evidence</summary><pre>{child.evidence_json?JSON.stringify(JSON.parse(child.evidence_json),null,2):'No completed comparison yet.'}</pre></details></article>{/each}</section>
   {/if}
-  {#if view==='Market data' && data!==null}<SourceCoveragePanel {request}/><InstrumentStatusPanel {request}/><InstrumentProfilesPanel {request}/><SourceRegistryPanel {request}/><SourceQualityPanel {request} {download}/><InputReviews {request} {download}/>{/if}
+  {#if view==='Market data' && data!==null}<section class="panel" aria-label="Source operations"><h2>Source operations</h2><p>Re-read the canonical catalog and verify every published partition against its manifest. This refreshes coverage facts only; it does not acquire new data and admits no profile.</p><button onclick={refreshSources} disabled={pending}>Refresh source data</button>{#if sourceMessage}<p role="status">{sourceMessage}</p>{/if}</section><SourceCoveragePanel {request}/><InstrumentStatusPanel {request}/><InstrumentProfilesPanel {request}/><SourceRegistryPanel {request}/><SourceQualityPanel {request} {download}/><InputReviews {request} {download}/>{/if}
   {#if view==='Validation' && data!==null}<ValidationLab {request} {download}/>{/if}
   {#if view==='Queue' && Array.isArray(data)}<section class="panel"><h2>Jobs</h2>{#if data.length===0}<p>No queued jobs.</p>{/if}{#each data as job}<div class="row"><span>{job.job_id.slice(0,12)} · {job.state}</span>{#if ['QUEUED','RUNNING','FAILED_RETRYABLE'].includes(job.state)}<button disabled={pending} onclick={()=>stop('jobs/'+job.job_id+'/cancel')}>Cancel job</button>{/if}</div>{/each}</section>{/if}
   {#if view==='Experiments' && Array.isArray(data)}<ul>{#each data as run}<li><button onclick={()=>inspect(run.run_id)}>{run.instrument} · {run.status} · {run.run_id.slice(0,12)}</button></li>{/each}</ul>{/if}
