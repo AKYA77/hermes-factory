@@ -1,6 +1,14 @@
 const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
 (async()=>{
  const root=path.resolve(__dirname,'..');
+ // NOT RUNNABLE: no companion fixture script exists. run-browser-smoke.sh needs
+ // scripts/research-actions-browser-fixture.py to prepare state, and without it this smoke cannot be
+ // executed at all. Either add the fixture or delete this script -- until then it is
+ // NOT UI acceptance evidence and must not be counted as a passing check.
+ if(!fs.existsSync(path.resolve(__dirname,'research-actions-browser-fixture.py'))){
+  console.error('NOT RUNNABLE: missing fixture research-actions-browser-fixture.py');
+  process.exit(2);
+ }
  const state=path.resolve(process.env.FACTORY_BROWSER_STATE||path.join(root,'.local/research-actions-v1'));
  const base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8124';
  if(!['127.0.0.1','localhost','[::1]'].includes(new URL(base).hostname))throw Error('Browser QA permits loopback only');
