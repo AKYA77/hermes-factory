@@ -60,7 +60,7 @@ def measure_python(profile, spec, quotes, signals, fill_model) -> dict:
     }
 
 
-def measure_rust(request: dict) -> dict:
+def measure_rust(request: dict, time_binary: str | None) -> dict:
     import tempfile
 
     binary = (
@@ -77,7 +77,12 @@ def measure_rust(request: dict) -> dict:
         request_path = handle.name
     try:
         start = time.perf_counter()
-        completed = subprocess.run([str(binary), request_path], capture_output=True, check=False)
+        command = (
+            [time_binary, "-v", str(binary), request_path]
+            if time_binary
+            else [str(binary), request_path]
+        )
+        completed = subprocess.run(command, capture_output=True, check=False)
         elapsed = time.perf_counter() - start
     finally:
         Path(request_path).unlink(missing_ok=True)
@@ -90,15 +95,22 @@ def measure_rust(request: dict) -> dict:
         cpu = round(usage.ru_utime + usage.ru_stime, 6)
     except Exception:  # pragma: no cover - platform dependent
         cpu = None
+    peak_rss_kb = None
+    if time_binary:
+        for line in completed.stderr.decode().splitlines():
+            if "Maximum resident set size" in line:
+                peak_rss_kb = int(line.rsplit(":", 1)[1].strip())
+                break
     parsed = json.loads(out)
     return {
         "wall_seconds": round(elapsed, 6),
         "cpu_seconds_children_including_prior": cpu,
+        "peak_rss_kb": peak_rss_kb,
         "trades": len(parsed["trades"]),
         "fills": len(parsed["fills"]),
         "quotes": len(request["quotes"]),
-        "_note": "wall includes process start-up; RSS requires the GNU time wrapper "
-        "and is reported separately by scripts/benchmark.sh",
+        "_note": "wall includes process start-up; peak RSS is per-case from "
+        "/usr/bin/time -v when available",
     }
 
 
@@ -114,6 +126,11 @@ def main() -> int:
     parser.add_argument("--seed", type=int, default=20261114)
     parser.add_argument("--instrument", default="all")
     parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument(
+        "--time-bin",
+        default="/usr/bin/time",
+        help="GNU time binary for the engine subprocess's peak RSS; empty skips it",
+    )
     args = parser.parse_args()
 
     per_instrument = args.cases if args.cases is not None else WORKLOADS[args.workload]
@@ -126,7 +143,7 @@ def main() -> int:
             profile, spec, quotes, signals, partial, fill_model = generate_case(rng, instrument)
             request = cases.build_request(profile, spec, quotes, signals, True, partial)
             py = measure_python(profile, spec, quotes, signals, fill_model)
-            rs = measure_rust(request)
+            rs = measure_rust(request, args.time_bin or None)
             # Sanity: the two engines must agree on trade/fill counts before any
             # timing is reported, otherwise the comparison is meaningless.
             if py["trades"] != rs["trades"] or py["fills"] != rs["fills"]:
@@ -141,7 +158,7 @@ def main() -> int:
                     "case": index,
                     "quotes": py["quotes"],
                     "python": {k: v for k, v in py.items() if k != "quotes"},
-                    "rust": {k: v for k, v in rs.items() if k not in ("quotes", "_note")},
+                    "rust": {k: v for k, v in rs.items() if k != "quotes"},
                 }
             )
             print(
@@ -161,7 +178,11 @@ def main() -> int:
             "conservative=True and finite-book configuration via "
             "scripts/parity_raptor_engine.generate_case",
             "python_timing": "wall via perf_counter around an in-process replay(); "
-            "CPU via RUSAGE_SELF user-time delta",
+            "CPU via RUSAGE_SELF user-time delta. Python peak RSS is NOT reported "
+            "per case because RUSAGE_SELF ru_maxrss is a process-lifetime maximum "
+            "dominated by interpreter start-up.",
+            "rust_peak_rss": "per-case Maximum resident set size from /usr/bin/time -v "
+            "on the engine subprocess; disable with --time-bin ''",
             "rust_timing": "wall around a fresh subprocess of target/release/"
             "raptor-engine; the binary path is resolved relative to "
             "this script",
