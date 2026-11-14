@@ -86,6 +86,7 @@ fn main() -> Result<(), String> {
                 &spec,
                 &request.signals,
                 request.conservative,
+                emit_equity || request.emit_equity,
             )
         }
         None => Replayer::new(
@@ -115,6 +116,7 @@ fn main() -> Result<(), String> {
                     &spec,
                     &request.signals,
                     request.conservative,
+                    emit_equity || request.emit_equity,
                 );
             }
         }

@@ -1547,13 +1547,14 @@ impl<'a> Replayer<'a> {
         spec: &'a Spec,
         signals: &'a [Signal],
         conservative: bool,
+        emit_equity: bool,
     ) -> Self {
         Replayer {
             profile,
             spec,
             signals,
             conservative,
-            emit_equity: false,
+            emit_equity,
             state,
         }
     }
