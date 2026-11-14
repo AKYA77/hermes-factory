@@ -15,6 +15,7 @@ the partial book and manufactures false discrepancies.
     env -u PYTHONPATH .venv/bin/python scripts/parity_raptor_equity.py \
         --cases 80 --seed 4242 --instrument EURUSD
 """
+
 from __future__ import annotations
 
 import argparse
@@ -89,7 +90,12 @@ def main() -> int:
         ):
             if frac(before) != rusted_before:
                 bad.append(
-                    {"row": row, "side": "before", "python": str(before), "rust": str(rusted_before)}
+                    {
+                        "row": row,
+                        "side": "before",
+                        "python": str(before),
+                        "rust": str(rusted_before),
+                    }
                 )
             # The still-open trade has no settled equity_after in the reference.
             if after is not None and frac(after) != rusted_after:
