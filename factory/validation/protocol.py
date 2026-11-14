@@ -48,10 +48,13 @@ class ValidationCriteria(Contract):
     familywise_alpha: float = Field(gt=0, lt=1, allow_inf_nan=False)
     min_neighborhoods_with_trades: int = Field(ge=1, le=10)
     require_research_targets: bool
-    # Owner directive ADR 0071 (R07): an absolute post-cost win-rate floor.
-    # Compared as an exact rational from the closed-trade counts, so exactly
-    # 50.00% passes and no binary64 division can round a losing candidate in.
-    min_win_rate: D = Field(default=D("0.5"), ge=0, le=1)
+    # Owner directive ADR 0071 (R07): an ABSOLUTE post-cost win-rate floor of 50%.
+    # The bound is part of the field, not a default a caller may override, so
+    # neither production research qualification nor a synthetic software rehearsal
+    # can lower it; thresholds above 50% remain configurable. Compared as an exact
+    # rational from the closed-trade counts, so exactly 50.00% passes and no
+    # binary64 division can round a losing candidate in.
+    min_win_rate: D = Field(default=D("0.5"), ge=D("0.5"), le=1)
 
 
 class ValidationEvidencePolicy(Contract):
@@ -771,12 +774,23 @@ def decision_balance(summary, quality):
 
 
 def win_rate_gate(summary, minimum):
-    """Exact post-cost win rate from closed-trade counts; False when unmeasured."""
-    trades = summary.get("completed_trades") or 0
-    wins = summary.get("wins")
-    if not trades or wins is None:
+    """Exact post-cost win rate from closed-trade counts.
+
+    Returns False for unmeasured, insufficient or malformed evidence rather than
+    defaulting to a favourable answer: a missing count, a non-integer count, a
+    negative win count or more wins than closed trades all fail the gate.
+    """
+    if not isinstance(summary, dict):
         return False
-    return Fraction(int(wins), int(trades)) >= Fraction(minimum)
+    trades, wins = summary.get("completed_trades"), summary.get("wins")
+    if not isinstance(trades, int) or isinstance(trades, bool) or trades <= 0:
+        return False
+    if not isinstance(wins, int) or isinstance(wins, bool) or wins < 0 or wins > trades:
+        return False
+    floor = Fraction(minimum)
+    if floor < Fraction(1, 2):
+        raise ValueError("win-rate floor below the absolute 50% minimum")
+    return Fraction(wins, trades) >= floor
 
 
 def qualify_forward(p, folds, summaries):

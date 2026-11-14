@@ -58,14 +58,14 @@
         "R11",
         "R12"
       ],
-      "state": "QUEUED",
+      "state": "IMPLEMENTING",
       "work_kind": [
         "implementation",
         "integration",
         "verification"
       ],
-      "next_action": "Phase 0 complete: authority amendment, inventory, queue and acceptance updated. Begin Phase 1: install the pinned Rust toolchain, scaffold the RaptorBT-derived execution crate, port the exact bid/ask pricing and bracket semantics from factory/simulation/, and prove parity against the frozen Nautilus goldens before any removal.",
-      "evidence": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md"
+      "next_action": "Phase 1 parity is substantially demonstrated (goldens 240/240, direct parity 200/200, restart/batch 120/120, genuine partitions 7/7, all-instrument corpus 800/800) and the Rust engine now also carries configurable fee accounting. Remaining per the 2026-11-14 owner directive: exact equity/drawdown and open-position mark-to-market accounting in Rust; verified instrument/broker profiles; an independent non-Nautilus reference oracle validated against the frozen goldens; a stable versioned integration so the factory's primary historical/paper execution path uses the Rust executor rather than test scripts; then R10 (native data pipeline), R04 (TickFirstHitIndex with sequential fallback) and R08 (native strategy generator). Do not remove NautilusTrader until the replacement is integrated and independently verified.",
+      "evidence": "docs/source/Owner_Hermes_Factory_Full_Completion_Directive_2026-11-14.md"
     },
     {
       "id": "safe_screening",

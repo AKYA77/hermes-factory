@@ -170,11 +170,14 @@ def test_win_rate_floor_gates_the_decision_and_forward_qualification():
     assert result["win_rate_gate_passed"] is False
     assert result["min_win_rate"] == str(D("0.5"))
 
-    # The same evidence clears a floor the weaker fold actually satisfies.
-    permissive = p.criteria.model_copy(update={"min_win_rate": D("0.0")})
-    relaxed = SimpleNamespace(criteria=permissive, evidence_policy=policy)
-    decided = decide(
-        relaxed,
+    # A stricter floor still fails on the same evidence: 60% cannot be met by a
+    # half-winning candidate, so raising the threshold is effective.
+    strict = SimpleNamespace(
+        criteria=p.criteria.model_copy(update={"min_win_rate": D("1")}),
+        evidence_policy=policy,
+    )
+    raised = decide(
+        strict,
         [fold(losing), fold(reference)],
         [bad, good],
         good,
@@ -184,8 +187,25 @@ def test_win_rate_floor_gates_the_decision_and_forward_qualification():
         pooled_replay=reference,
         neighborhood_replays=[reference],
     )
-    assert decided["win_rate_gate_passed"] is True
-    assert decided["min_win_rate"] == str(D("0.0"))
+    assert raised["win_rate_gate_passed"] is False
+    assert raised["min_win_rate"] == str(D("1"))
+
+    # The absolute floor cannot be configured away.
+    import pytest
+
+    with pytest.raises(ValueError):
+        ValidationCriteria(
+            min_oos_closed_trades=50,
+            min_full_folds=2,
+            min_annual_closed_trades=50,
+            min_wilson_lower=0.5,
+            min_net_profit=D(0),
+            max_losing_streak=5,
+            familywise_alpha=0.05,
+            min_neighborhoods_with_trades=1,
+            require_research_targets=False,
+            min_win_rate=D("0.49"),
+        )
 
     # Forward qualification fails below the floor and passes at or above it.
     below = qualify_forward(p, [fold(losing), fold(losing)], [bad, bad])

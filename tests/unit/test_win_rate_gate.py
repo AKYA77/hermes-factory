@@ -41,6 +41,27 @@ def test_boundary_is_an_exact_rational_not_a_float_rounding():
     assert win_rate_gate(_summary(500, 1000), D("0.5")) is True
 
 
+def test_malformed_or_insufficient_evidence_never_passes():
+    """Missing, non-integer, negative or impossible counts must all fail closed."""
+    assert win_rate_gate(None, D("0.5")) is False
+    assert win_rate_gate([], D("0.5")) is False
+    assert win_rate_gate({"wins": "25", "completed_trades": 50}, D("0.5")) is False
+    assert win_rate_gate({"wins": 25.0, "completed_trades": 50}, D("0.5")) is False
+    assert win_rate_gate({"wins": True, "completed_trades": 50}, D("0.5")) is False
+    assert win_rate_gate({"wins": -1, "completed_trades": 50}, D("0.5")) is False
+    assert win_rate_gate({"wins": 51, "completed_trades": 50}, D("0.5")) is False
+
+
+def test_a_floor_below_the_absolute_minimum_is_refused():
+    """Even a caller holding the helper cannot lower the floor below 50%."""
+    import pytest
+
+    with pytest.raises(ValueError, match="absolute 50%"):
+        win_rate_gate(_summary(0, 100), D("0.499"))
+    with pytest.raises(ValueError, match="absolute 50%"):
+        win_rate_gate(_summary(0, 100), D("0.0"))
+
+
 def test_criteria_default_and_bounds():
     criteria = ValidationCriteria(
         min_oos_closed_trades=50,
@@ -67,8 +88,24 @@ def test_criteria_default_and_bounds():
             require_research_targets=True,
             min_win_rate=D("1.5"),
         )
-    with pytest.raises(ValueError):
-        ValidationCriteria(
+    # The absolute floor cannot be configured away, in either direction of abuse.
+    for refused in (D("-0.1"), D("0"), D("0.499"), D("0.499999999999999999999")):
+        with pytest.raises(ValueError):
+            ValidationCriteria(
+                min_oos_closed_trades=50,
+                min_full_folds=2,
+                min_annual_closed_trades=50,
+                min_wilson_lower=0.5,
+                min_net_profit=D(0),
+                max_losing_streak=5,
+                familywise_alpha=0.05,
+                min_neighborhoods_with_trades=1,
+                require_research_targets=True,
+                min_win_rate=refused,
+            )
+    # Thresholds above 50% remain configurable.
+    for allowed in (D("0.5"), D("0.7"), D("1")):
+        criteria = ValidationCriteria(
             min_oos_closed_trades=50,
             min_full_folds=2,
             min_annual_closed_trades=50,
@@ -78,5 +115,6 @@ def test_criteria_default_and_bounds():
             familywise_alpha=0.05,
             min_neighborhoods_with_trades=1,
             require_research_targets=True,
-            min_win_rate=D("-0.1"),
+            min_win_rate=allowed,
         )
+        assert criteria.min_win_rate == allowed

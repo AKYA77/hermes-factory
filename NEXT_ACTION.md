@@ -16,6 +16,47 @@ explicitly maps every one of the 79 requirements (67 original plus R01–R12); n
 disappear behind a scoped checkpoint. SOFTWARE_VERIFIED/DATA_READY/OPERATION_READY
 remain false.
 
+## ACTIVE — read this first (owner directive 2026-11-14)
+
+The governing directive is now
+`docs/source/Owner_Hermes_Factory_Full_Completion_Directive_2026-11-14.md`, which
+supersedes the 2026-11-12 text wherever they differ. It prioritises real
+implementation over raising the PASS count and names these outstanding bodies of
+work, in order:
+
+1. **Rust execution migration (R01/R02)** — exact equity/drawdown and
+   open-position mark-to-market accounting in Rust; verified instrument/broker
+   profiles; an independent **non-Nautilus** reference oracle validated against
+   the frozen goldens; then connect the engine to the factory's primary
+   historical/paper execution path through a stable versioned interface. Do not
+   remove NautilusTrader until the replacement is integrated and independently
+   verified.
+2. **Rust-vs-Nautilus benchmark** — identical datasets, signals and assumptions;
+   separate data-read, signal-compile, sequential-execution and end-to-end
+   timings plus CPU, wall, peak memory and disk I/O; cold and warm cache;
+   restart overhead; enforced 4-vCPU / 8-GiB envelope. No invented speedup
+   factors and no extrapolating synthetic results to historical throughput.
+3. **R10 native data pipeline**, then **R04 TickFirstHitIndex** (with sequential
+   fallback), then **R08 native strategy generator**.
+4. Historical data readiness for the approved 24-month window; source acceptance,
+   never structural import alone.
+5. Dashboard/performance/supervisor panels and the resumable autonomous research
+   workflow.
+6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
+   completion-ledger.json and development-state.json.
+
+**Unfinished gate states must stay false.** SOFTWARE_VERIFIED, DATA_READY and
+OPERATION_READY are FALSE and must not be set true on scoped evidence.
+
+### Last audit checkpoint
+
+Externally audited commit `e42714ee66948a6ff03497035320302a7f7150ea`: 51 PASS /
+28 NOT_TESTED, all three readiness gates false, Rust parity substantially
+demonstrated but not integrated as the primary executor, no verified
+Rust-versus-Nautilus performance benchmark.
+
+---
+
 ## Owner directive 2026-11-12 — Phase 0 complete
 
 The owner's latest design directive is recorded at
@@ -205,6 +246,37 @@ development-state.json `last_verification`. Full-suite and focused results are
 updated at each tested checkpoint. Do not use prior CI as proof for a later commit.
 
 ## Completed this continuation
+
+### 2026-11-14 — owner directive, absolute win-rate floor, stale blocker cleanup
+
+**New governing directive.** `Owner_Hermes_Factory_Full_Completion_Directive_2026-11-14.md`
+is now recorded and is the active authority; it supersedes the 2026-11-12 text where
+they differ. It explicitly prioritises real implementation over raising the PASS
+count, and orders the remaining work: Rust execution migration, an independent
+non-Nautilus reference oracle, a Rust-vs-Nautilus benchmark under a 4-vCPU/8-GiB
+envelope, then R10, R04 and R08, then data readiness and the dashboard.
+
+**R07 corrected to an absolute floor.** The first implementation let any caller
+configure the threshold down to zero. `ValidationCriteria.min_win_rate` is now
+bounded `ge=0.5, le=1`, so neither production research qualification nor a
+synthetic rehearsal can lower it; thresholds above 50% stay configurable.
+`win_rate_gate()` additionally rejects malformed evidence (missing, non-integer,
+negative or impossible counts) instead of defaulting to a favourable answer, and
+raises if handed a floor below the absolute minimum. Tests added for malformed
+input, sub-50% refusal in both directions, exact-50% inclusivity, legacy specs
+that predate the field keeping the 50% default, and the end-to-end pipeline.
+
+**Two more stale blockers closed:** R06 (one accurate testing pipeline -- no
+OHLC or approximate-pruning path exists; the cohort estimates are report-only)
+and R05 (per-strategy timeframe selection -- asserted directly, proving a D1
+strategy builds no M1 bars). Both had been recorded as unfinished although the
+behaviour was already implemented.
+
+**Project management repaired.** `implementation-queue.json`'s `raptorbt_execution`
+task no longer describes Phase 0 as the next step; it now records the achieved
+parity evidence and what remains. NEXT_ACTION.md carries an unambiguous ACTIVE
+section at the top pointing at the 2026-11-14 directive and the ordered
+outstanding work, with the older milestone sections retained below it.
 
 ### 2026-11-13 — acceptance audit, nine more requirements evidenced, fee accounting
 

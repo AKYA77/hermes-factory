@@ -44,3 +44,21 @@ def test_candidates_and_rejection_records_remain_queryable(tmp_path):
     assert store.rows(
         "SELECT * FROM validation_protocol_reports WHERE protocol_id=?", (identity,)
     ), "the decision record disappeared"
+
+
+def test_legacy_specifications_without_the_field_keep_the_absolute_floor(tmp_path):
+    """Immutable specs written before the field existed are still gated at 50%."""
+    from factory.validation.protocol import win_rate_gate
+    from factory.validation.statistics import outcome_summary
+
+    protocol = positive_reference(tmp_path)
+    raw = json.loads(protocol.model_dump_json())
+    assert raw["criteria"]["min_win_rate"] == str(D("0.5"))
+    raw["criteria"].pop("min_win_rate")
+    parsed = type(protocol).model_validate(raw)
+    assert parsed.criteria.min_win_rate == D("0.5")
+
+    losing = outcome_summary([{"pnl": "-1", "closed": True} for _ in range(80)])
+    winning = outcome_summary([{"pnl": "1", "closed": True} for _ in range(80)])
+    assert win_rate_gate(losing, parsed.criteria.min_win_rate) is False
+    assert win_rate_gate(winning, parsed.criteria.min_win_rate) is True
