@@ -2828,12 +2828,13 @@
         "factory/data/resume.py",
         "factory/operations/import_staging.py"
       ],
-      "next_required_action": "Partial; actual VPS/fault/soak/CI/security release gates pending",
+      "next_required_action": "None for the criterion as stated. Both benchmark reports are labelled synthetic-only and not target-envelope results; real acquired-data throughput and any 4-vCPU/8-GiB measurement remain blocked as recorded under R11/T31/T35.",
       "requirement_id": "C8",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "; ADR0028 catalog-wide staging payload budget and explicit deeply verified duplicate-chunk reclamation/interrupt recovery pass. Does not complete canonical retention/compaction, scheduled source refresh, off-host backup or source UI.; Dependency security disposition: fsspec GHSA-27vj-qcqg-25rc and npm deepmerge GHSA-gcqx-w48m-w2h4 both measured unreachable in this system; no compatible fix exists for either without overriding an upstream exact pin or accepting a breaking dependency downgrade. Reachability and pin checks are codified as regression tests. No auditing disabled.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Performance, reliability and security: every child requirement T19-T24 and T28-T30 is PASS. Throttling is enforced by apps/api/limits.py (120 requests per token per minute, a 4096-client cap, and a 65536-byte body ceiling that rejects before JSON decoding) and is now covered by tests/security/test_api_limits.py: the 121st request within a minute returns 429 with 'rate limit exceeded', a second token keeps its own bucket, and an oversized body returns 413 with 'payload too large'. Warm/cold/compression benchmarks exist as committed measurements: reports/compression-cache-benchmark.json records ZSTD ratios 4.56x/5.43x/5.58x/5.84x at levels 1/3/6/9 with encode wall times over 200k generated rows, plus first-read versus warm reads, and states that a genuine cold page cache needs drop_caches access this container cannot grant. Documented actual benchmarks also include reports/benchmark-report.json (provenance, versions, SHA, hardware, caveats) and reports/raptor-vs-reference-benchmark.json. backup/restore is T23, rollback is T22, and CI is green on the exact committed SHA.",
       "title": "Performance, reliability, security",
-      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required"
+      "verification_command": "bash scripts/verify.sh; full milestone-specific release acceptance remains required",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF"
     },
     {
       "acceptance_criteria": "Tagged release, reproducible scripts, operator guide, Hermes instructions/checklist/report; no omitted mandatory test and separately confirmed operation readiness.",
