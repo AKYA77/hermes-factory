@@ -3107,16 +3107,16 @@
     },
     {
       "acceptance_criteria": "Each strategy evaluates only the smallest timeframe it actually requires plus its confirmed higher timeframes, with completed candles only, no look-ahead, and no complete M1 loop forced on higher-timeframe strategies.",
-      "acceptance_level": "FULL_ACCEPTANCE_NOT_DEMONSTRATED",
+      "acceptance_level": "SOFTWARE_FIXTURE_OR_SOURCE_PROOF",
       "authority": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
       "evidence": [
         "docs/milestone-raptor-engine-parity-2026-11-12.md"
       ],
       "implementation_files": [],
-      "next_required_action": "Partial: shared closed-bar operators and seven timeframes exist; per-strategy timeframe selection is not implemented.",
+      "next_required_action": "The recorded blocker ('per-strategy timeframe selection is not implemented') was stale; no action required.",
       "requirement_id": "R05",
-      "status": "NOT_TESTED",
-      "supporting_evidence_scope": "Partial: shared closed-bar operators and seven timeframes exist; per-strategy timeframe selection is not implemented.",
+      "status": "PASS",
+      "supporting_evidence_scope": "Per-strategy timeframe selection: factory/strategies/__init__.py builds closed bar events from (spec.timeframe, *spec.confirmations), and factory/features/__init__.py binds the cached feature key to sorted({spec.timeframe, *spec.confirmations}). New tests in tests/unit/test_per_strategy_timeframes.py prove an H1 strategy publishes only H1 bars, that adding a D1 confirmation publishes at most H1 and D1 and never M1 or M5, that a D1-only strategy publishes exactly D1 -- so no complete M1 loop is forced on a higher-timeframe strategy -- and that the feature key changes when either the base timeframe or the confirmations change. Completed candles only and no look-ahead are covered by the closed-bar builder (test_T06_closed_availability, test_T06_availability_at_exact_utc_bucket_boundaries).",
       "title": "Dynamic M1-D1 signal selection",
       "verification_command": ".venv/bin/pytest tests/parity"
     },
