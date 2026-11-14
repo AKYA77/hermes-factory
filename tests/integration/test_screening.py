@@ -122,6 +122,24 @@ def test_training_feedback_prunes_without_an_objective_or_run(tmp_path):
     assert not Search(Store(tmp_path / "factory.sqlite"), tmp_path).pending()
 
 
+def test_candidate_lifecycle_is_reproducible_from_identical_generation_inputs(tmp_path):
+    """C4: identical generation inputs reproduce the same candidate identity.
+
+    The same seed must yield the same strategy hash and experiment hash whether or
+    not the fixture happens to be written under a different directory, and re-running
+    the screen must reproduce an identical restart receipt.
+    """
+    payload_a, contract_a = prepared(tmp_path / "run-a", False)
+    payload_b, contract_b = prepared(tmp_path / "run-b", False)
+    assert payload_a["contract"]["strategy_hash"] == payload_b["contract"]["strategy_hash"]
+    assert contract_a.experiment_hash == contract_b.experiment_hash
+
+    first = worker.run(payload_a, tmp_path / "run-a")
+    again = worker.run(payload_a, tmp_path / "run-a")
+    assert first == again, "restart receipt changed for identical inputs"
+    verify_pruned(tmp_path / "run-a", contract_a, first)
+
+
 def test_oos_and_forged_positive_rejection_are_rejected(tmp_path):
     payload, contract = prepared(tmp_path, False)
     w = contract.windows[0].model_copy(update={"role": "selection_oos"})
