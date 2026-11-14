@@ -119,9 +119,9 @@
     "state": "IMPLEMENTING",
     "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume."
   },
-  "goal_source": "docs/source/Owner_Lean_RaptorBT_Final_Directive_2026-11-12.md",
+  "goal_source": "docs/source/Owner_Hermes_Factory_Full_Completion_Directive_2026-11-14.md",
   "implementation_queue": "implementation-queue.json",
-  "last_remote_commit": "bffb90eb56fa92164b3155fe70941785aa9a8bf9",
+  "last_remote_commit": "7301c7d89077347c692a4a67903a30a268653ab8",
   "last_verification": {
     "failed": 0,
     "format": "PASS",
@@ -136,7 +136,7 @@
   },
   "latest_evidence_manifest": "reports/raptor-migration-goldens.json",
   "latest_milestone": "docs/milestone-raptor-migration-parity-2026-11-12.md",
-  "latest_scientific_code_commit": "bffb90eb56fa92164b3155fe70941785aa9a8bf9",
+  "latest_scientific_code_commit": "7301c7d89077347c692a4a67903a30a268653ab8",
   "latest_verification": {
     "failed": 0,
     "format": "PASS",
@@ -165,8 +165,8 @@
       "api.github.com"
     ]
   },
-  "next_unfinished": "Phase 1 in progress: the Rust execution engine is built and reproduces the Python reference exactly on generated fixtures (100/100 EURUSD, 240/240 and 800/800 all-instrument). Remaining for R01-R03: genuine acquired historical partitions, partial fills, cancellation races, safety closes, fee accounting, and determinism across restart and batch sizes. Then freeze the Nautilus goldens and write the migration parity report. After that, Phase 2 native data access, Phase 3 dynamic M1-D1 features, Phase 4 tick index, Phase 5 Rust generator, Phase 6 strict 50% qualification, Phase 7 remaining data/scientific evidence, Phase 8 operations/dashboard, Phase 9 whole-system acceptance.",
-  "observed_at_utc": "2026-11-12T20:39:38.411052+00:00",
+  "next_unfinished": "Rust execution migration per the 2026-11-14 directive: exact equity/drawdown and open-position mark-to-market accounting in the Rust engine; verified instrument/broker profiles; an independent non-Nautilus reference oracle validated against the frozen goldens; a stable versioned integration so the factory's primary historical/paper execution path uses the Rust executor rather than test scripts; then a Rust-vs-Nautilus benchmark under a 4-vCPU/8-GiB envelope, then R10 (native data pipeline), R04 (TickFirstHitIndex with sequential fallback) and R08 (native strategy generator).",
+  "observed_at_utc": "2026-11-14T10:09:17+00:00",
   "publication": {
     "authorization": "Owner directive 2026-11-12 authorizes each tested milestone push; no merge, visibility change or production deployment.",
     "branch": "build/initial-factory",
@@ -183,6 +183,7 @@
     "SOFTWARE_VERIFIED": false
   },
   "remaining_mandate_sections": [
+    3,
     4,
     5,
     6,
@@ -190,12 +191,7 @@
     8,
     9,
     10,
-    11,
-    12,
-    13,
-    14,
-    15,
-    16
+    11
   ],
   "resume_instructions": "NEXT_ACTION.md",
   "security": {
@@ -226,8 +222,8 @@
   "state": "IMPLEMENTING_NOT_READY",
   "task": "Lean RaptorBT strategy research factory - owner final directive 2026-11-12",
   "verified_source_tree": {
-    "git_commit": "bffb90eb56fa92164b3155fe70941785aa9a8bf9",
-    "source_sha256": "3371f17eca7ec466e2dd8487566d26fce2ea89f6b908011a01e1f0855cc3758d"
+    "git_commit": "7301c7d89077347c692a4a67903a30a268653ab8",
+    "source_sha256": "f394e482d40258f158bae48973667a88a69b04f8c50932bc83a82ab909abf12c"
   },
   "visibility": {
     "current": "PUBLIC",
