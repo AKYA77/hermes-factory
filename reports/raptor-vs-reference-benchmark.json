@@ -1,0 +1,1667 @@
+{
+ "schema_version": "raptor-vs-reference-benchmark/v1",
+ "generated_utc": "2026-11-14T12:13:34Z",
+ "seed": 20261114,
+ "workload": "medium",
+ "cases_per_instrument": 12,
+ "instruments": [
+  "EURUSD",
+  "GBPUSD",
+  "USDJPY",
+  "USDCHF",
+  "USDCAD",
+  "AUDUSD",
+  "NZDUSD",
+  "XAUUSD"
+ ],
+ "methodology": {
+  "engine_inputs": "identical generated quotes, signals, profile, spec, conservative=True and finite-book configuration via scripts/parity_raptor_engine.generate_case",
+  "python_timing": "wall via perf_counter around an in-process replay(); CPU via RUSAGE_SELF user-time delta",
+  "rust_timing": "wall around a fresh subprocess of target/release/raptor-engine; the binary path is resolved relative to this script",
+  "agreement_gate": "trade and fill counts must match exactly before timings are recorded; a mismatch aborts the run",
+  "speedup_ratio_reported": false,
+  "speedup_note": "No ratio is computed. Python wall time includes interpreter-side harness overhead that the Rust subprocess does not pay, and Rust wall time includes process start-up, so neither number isolates engine execution."
+ },
+ "envelope": {
+  "target": "4 vCPU / 8 GiB",
+  "enforced": false,
+  "reason": "cgroup v2 controllers are not delegated on this host; systemd-run --scope -p CPUQuota=400% -p MemoryMax=8G reports CPUQuotaPerSecUSec=infinity and MemoryMax=infinity",
+  "measured_on": "unrestricted VPS capacity; these are NOT target-envelope results"
+ },
+ "synthetic_only": true,
+ "synthetic_note": "Generated quote streams, not acquired history; these numbers must not be extrapolated to historical throughput.",
+ "rows": [
+  {
+   "instrument": "EURUSD",
+   "case": 0,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.018603,
+    "cpu_seconds": 0.010549,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002445,
+    "cpu_seconds_children_including_prior": 0.002162,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 1,
+   "quotes": 16,
+   "python": {
+    "wall_seconds": 0.00962,
+    "cpu_seconds": 0.008546,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001904,
+    "cpu_seconds_children_including_prior": 0.00378,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 2,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.008574,
+    "cpu_seconds": 0.008585,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001831,
+    "cpu_seconds_children_including_prior": 0.005298,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 3,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.023269,
+    "cpu_seconds": 0.022353,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.002149,
+    "cpu_seconds_children_including_prior": 0.007156,
+    "trades": 2,
+    "fills": 4
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 4,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.011648,
+    "cpu_seconds": 0.01166,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002385,
+    "cpu_seconds_children_including_prior": 0.009189,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 5,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.014867,
+    "cpu_seconds": 0.014879,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.002127,
+    "cpu_seconds_children_including_prior": 0.011015,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 6,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.00542,
+    "cpu_seconds": 0.005428,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001918,
+    "cpu_seconds_children_including_prior": 0.012623,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 7,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004987,
+    "cpu_seconds": 0.004996,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002082,
+    "cpu_seconds_children_including_prior": 0.014444,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 8,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.017559,
+    "cpu_seconds": 0.017491,
+    "trades": 0,
+    "fills": 8
+   },
+   "rust": {
+    "wall_seconds": 0.002188,
+    "cpu_seconds_children_including_prior": 0.016329,
+    "trades": 0,
+    "fills": 8
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 9,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.004918,
+    "cpu_seconds": 0.004929,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002069,
+    "cpu_seconds_children_including_prior": 0.018157,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 10,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.020991,
+    "cpu_seconds": 0.020989,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.002038,
+    "cpu_seconds_children_including_prior": 0.019922,
+    "trades": 2,
+    "fills": 4
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 11,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.005401,
+    "cpu_seconds": 0.005356,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002043,
+    "cpu_seconds_children_including_prior": 0.021662,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 0,
+   "quotes": 16,
+   "python": {
+    "wall_seconds": 0.008521,
+    "cpu_seconds": 0.007589,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002255,
+    "cpu_seconds_children_including_prior": 0.023576,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 1,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.005708,
+    "cpu_seconds": 0.00539,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001751,
+    "cpu_seconds_children_including_prior": 0.025048,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 2,
+   "quotes": 10,
+   "python": {
+    "wall_seconds": 0.005164,
+    "cpu_seconds": 0.005172,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002084,
+    "cpu_seconds_children_including_prior": 0.026865,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 3,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.008566,
+    "cpu_seconds": 0.00755,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002021,
+    "cpu_seconds_children_including_prior": 0.028617,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 4,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.007562,
+    "cpu_seconds": 0.007542,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001999,
+    "cpu_seconds_children_including_prior": 0.030346,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 5,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.016639,
+    "cpu_seconds": 0.01569,
+    "trades": 1,
+    "fills": 3
+   },
+   "rust": {
+    "wall_seconds": 0.002066,
+    "cpu_seconds_children_including_prior": 0.032175,
+    "trades": 1,
+    "fills": 3
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 6,
+   "quotes": 16,
+   "python": {
+    "wall_seconds": 0.019528,
+    "cpu_seconds": 0.018469,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.00205,
+    "cpu_seconds_children_including_prior": 0.033992,
+    "trades": 2,
+    "fills": 4
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 7,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.008148,
+    "cpu_seconds": 0.008137,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001729,
+    "cpu_seconds_children_including_prior": 0.035438,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 8,
+   "quotes": 13,
+   "python": {
+    "wall_seconds": 0.004592,
+    "cpu_seconds": 0.00365,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002168,
+    "cpu_seconds_children_including_prior": 0.037151,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 9,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.006953,
+    "cpu_seconds": 0.005966,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001819,
+    "cpu_seconds_children_including_prior": 0.038746,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 10,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.00694,
+    "cpu_seconds": 0.005955,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001845,
+    "cpu_seconds_children_including_prior": 0.04028,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 11,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.004019,
+    "cpu_seconds": 0.004024,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002166,
+    "cpu_seconds_children_including_prior": 0.042244,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 0,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.008916,
+    "cpu_seconds": 0.008924,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002025,
+    "cpu_seconds_children_including_prior": 0.04405,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 1,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.007753,
+    "cpu_seconds": 0.007762,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001775,
+    "cpu_seconds_children_including_prior": 0.045584,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 2,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.011713,
+    "cpu_seconds": 0.010755,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.001689,
+    "cpu_seconds_children_including_prior": 0.047021,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 3,
+   "quotes": 23,
+   "python": {
+    "wall_seconds": 0.021365,
+    "cpu_seconds": 0.021328,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.002354,
+    "cpu_seconds_children_including_prior": 0.049037,
+    "trades": 2,
+    "fills": 4
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 4,
+   "quotes": 13,
+   "python": {
+    "wall_seconds": 0.009356,
+    "cpu_seconds": 0.007489,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002217,
+    "cpu_seconds_children_including_prior": 0.050961,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 5,
+   "quotes": 21,
+   "python": {
+    "wall_seconds": 0.012354,
+    "cpu_seconds": 0.012319,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.001924,
+    "cpu_seconds_children_including_prior": 0.052637,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 6,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.007944,
+    "cpu_seconds": 0.007954,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001907,
+    "cpu_seconds_children_including_prior": 0.05428,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 7,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.004179,
+    "cpu_seconds": 0.004166,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001807,
+    "cpu_seconds_children_including_prior": 0.055824,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 8,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.005555,
+    "cpu_seconds": 0.005565,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001895,
+    "cpu_seconds_children_including_prior": 0.057464,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 9,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.004519,
+    "cpu_seconds": 0.004528,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001688,
+    "cpu_seconds_children_including_prior": 0.058945,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 10,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.004753,
+    "cpu_seconds": 0.004762,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.00156,
+    "cpu_seconds_children_including_prior": 0.060253,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 11,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.004201,
+    "cpu_seconds": 0.002306,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001965,
+    "cpu_seconds_children_including_prior": 0.061969,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 0,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.004978,
+    "cpu_seconds": 0.004986,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002049,
+    "cpu_seconds_children_including_prior": 0.063795,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 1,
+   "quotes": 13,
+   "python": {
+    "wall_seconds": 0.009232,
+    "cpu_seconds": 0.009209,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001842,
+    "cpu_seconds_children_including_prior": 0.065415,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 2,
+   "quotes": 10,
+   "python": {
+    "wall_seconds": 0.007736,
+    "cpu_seconds": 0.007746,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001926,
+    "cpu_seconds_children_including_prior": 0.067077,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 3,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.012867,
+    "cpu_seconds": 0.012876,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.002164,
+    "cpu_seconds_children_including_prior": 0.068962,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 4,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.006189,
+    "cpu_seconds": 0.006198,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001832,
+    "cpu_seconds_children_including_prior": 0.070543,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 5,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.00415,
+    "cpu_seconds": 0.004158,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001912,
+    "cpu_seconds_children_including_prior": 0.072203,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 6,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.006669,
+    "cpu_seconds": 0.006677,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001829,
+    "cpu_seconds_children_including_prior": 0.073793,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 7,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.01036,
+    "cpu_seconds": 0.010369,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.00168,
+    "cpu_seconds_children_including_prior": 0.075238,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 8,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.01085,
+    "cpu_seconds": 0.009758,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.001979,
+    "cpu_seconds_children_including_prior": 0.077027,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 9,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.006761,
+    "cpu_seconds": 0.006769,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002078,
+    "cpu_seconds_children_including_prior": 0.078875,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 10,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.00408,
+    "cpu_seconds": 0.004087,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.00196,
+    "cpu_seconds_children_including_prior": 0.080631,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 11,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.005057,
+    "cpu_seconds": 0.005066,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003307,
+    "cpu_seconds_children_including_prior": 0.083691,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 0,
+   "quotes": 5,
+   "python": {
+    "wall_seconds": 0.011549,
+    "cpu_seconds": 0.011562,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.002061,
+    "cpu_seconds_children_including_prior": 0.085459,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 1,
+   "quotes": 5,
+   "python": {
+    "wall_seconds": 0.007258,
+    "cpu_seconds": 0.006351,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002023,
+    "cpu_seconds_children_including_prior": 0.087221,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 2,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.00752,
+    "cpu_seconds": 0.006585,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001948,
+    "cpu_seconds_children_including_prior": 0.088882,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 3,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.015502,
+    "cpu_seconds": 0.015513,
+    "trades": 1,
+    "fills": 3
+   },
+   "rust": {
+    "wall_seconds": 0.00172,
+    "cpu_seconds_children_including_prior": 0.090377,
+    "trades": 1,
+    "fills": 3
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 4,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.004037,
+    "cpu_seconds": 0.003357,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001958,
+    "cpu_seconds_children_including_prior": 0.092138,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 5,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.046639,
+    "cpu_seconds": 0.046648,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.00171,
+    "cpu_seconds_children_including_prior": 0.093608,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 6,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.007436,
+    "cpu_seconds": 0.006514,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001709,
+    "cpu_seconds_children_including_prior": 0.095055,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 7,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.004514,
+    "cpu_seconds": 0.004523,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001614,
+    "cpu_seconds_children_including_prior": 0.096418,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 8,
+   "quotes": 6,
+   "python": {
+    "wall_seconds": 0.010825,
+    "cpu_seconds": 0.010138,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.0019,
+    "cpu_seconds_children_including_prior": 0.09811,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 9,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.003912,
+    "cpu_seconds": 0.00392,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002779,
+    "cpu_seconds_children_including_prior": 0.100649,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 10,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.007958,
+    "cpu_seconds": 0.007967,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.00199,
+    "cpu_seconds_children_including_prior": 0.102356,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 11,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.004863,
+    "cpu_seconds": 0.004828,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001654,
+    "cpu_seconds_children_including_prior": 0.1038,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 0,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.011122,
+    "cpu_seconds": 0.011119,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.00183,
+    "cpu_seconds_children_including_prior": 0.105351,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 1,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004257,
+    "cpu_seconds": 0.004265,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002416,
+    "cpu_seconds_children_including_prior": 0.107553,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 2,
+   "quotes": 7,
+   "python": {
+    "wall_seconds": 0.005613,
+    "cpu_seconds": 0.004704,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001809,
+    "cpu_seconds_children_including_prior": 0.109126,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 3,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004516,
+    "cpu_seconds": 0.004524,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002752,
+    "cpu_seconds_children_including_prior": 0.111606,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 4,
+   "quotes": 7,
+   "python": {
+    "wall_seconds": 0.006136,
+    "cpu_seconds": 0.006143,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002814,
+    "cpu_seconds_children_including_prior": 0.114179,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 5,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.004165,
+    "cpu_seconds": 0.004172,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001509,
+    "cpu_seconds_children_including_prior": 0.115503,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 6,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.013709,
+    "cpu_seconds": 0.013633,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.002759,
+    "cpu_seconds_children_including_prior": 0.11805,
+    "trades": 2,
+    "fills": 4
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 7,
+   "quotes": 10,
+   "python": {
+    "wall_seconds": 0.006203,
+    "cpu_seconds": 0.006184,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003426,
+    "cpu_seconds_children_including_prior": 0.121258,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 8,
+   "quotes": 6,
+   "python": {
+    "wall_seconds": 0.00897,
+    "cpu_seconds": 0.008979,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002481,
+    "cpu_seconds_children_including_prior": 0.12355,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 9,
+   "quotes": 21,
+   "python": {
+    "wall_seconds": 0.006452,
+    "cpu_seconds": 0.006461,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.00176,
+    "cpu_seconds_children_including_prior": 0.125063,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 10,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.006255,
+    "cpu_seconds": 0.006262,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003224,
+    "cpu_seconds_children_including_prior": 0.128061,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 11,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.006612,
+    "cpu_seconds": 0.005616,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.002426,
+    "cpu_seconds_children_including_prior": 0.130262,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 0,
+   "quotes": 9,
+   "python": {
+    "wall_seconds": 0.005862,
+    "cpu_seconds": 0.005859,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003127,
+    "cpu_seconds_children_including_prior": 0.133183,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 1,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.007129,
+    "cpu_seconds": 0.005752,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003136,
+    "cpu_seconds_children_including_prior": 0.136028,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 2,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.017224,
+    "cpu_seconds": 0.0172,
+    "trades": 2,
+    "fills": 7
+   },
+   "rust": {
+    "wall_seconds": 0.003994,
+    "cpu_seconds_children_including_prior": 0.13977,
+    "trades": 2,
+    "fills": 7
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 3,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.014614,
+    "cpu_seconds": 0.014626,
+    "trades": 0,
+    "fills": 7
+   },
+   "rust": {
+    "wall_seconds": 0.00201,
+    "cpu_seconds_children_including_prior": 0.141556,
+    "trades": 0,
+    "fills": 7
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 4,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004208,
+    "cpu_seconds": 0.004217,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001942,
+    "cpu_seconds_children_including_prior": 0.143229,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 5,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.013351,
+    "cpu_seconds": 0.013317,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.001811,
+    "cpu_seconds_children_including_prior": 0.144787,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 6,
+   "quotes": 7,
+   "python": {
+    "wall_seconds": 0.004604,
+    "cpu_seconds": 0.004546,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001771,
+    "cpu_seconds_children_including_prior": 0.146329,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 7,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.023417,
+    "cpu_seconds": 0.023372,
+    "trades": 3,
+    "fills": 6
+   },
+   "rust": {
+    "wall_seconds": 0.002018,
+    "cpu_seconds_children_including_prior": 0.148127,
+    "trades": 3,
+    "fills": 6
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 8,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.014522,
+    "cpu_seconds": 0.014533,
+    "trades": 1,
+    "fills": 3
+   },
+   "rust": {
+    "wall_seconds": 0.001861,
+    "cpu_seconds_children_including_prior": 0.149697,
+    "trades": 1,
+    "fills": 3
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 9,
+   "quotes": 21,
+   "python": {
+    "wall_seconds": 0.005214,
+    "cpu_seconds": 0.005198,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001689,
+    "cpu_seconds_children_including_prior": 0.151132,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 10,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.013433,
+    "cpu_seconds": 0.013445,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.002065,
+    "cpu_seconds_children_including_prior": 0.152815,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 11,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.009079,
+    "cpu_seconds": 0.009075,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001761,
+    "cpu_seconds_children_including_prior": 0.154338,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 0,
+   "quotes": 23,
+   "python": {
+    "wall_seconds": 0.011175,
+    "cpu_seconds": 0.011186,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.002629,
+    "cpu_seconds_children_including_prior": 0.156704,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 1,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.007288,
+    "cpu_seconds": 0.007297,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001981,
+    "cpu_seconds_children_including_prior": 0.158416,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 2,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.004776,
+    "cpu_seconds": 0.003951,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001832,
+    "cpu_seconds_children_including_prior": 0.160004,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 3,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.010273,
+    "cpu_seconds": 0.010248,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.001687,
+    "cpu_seconds_children_including_prior": 0.161456,
+    "trades": 1,
+    "fills": 2
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 4,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.006254,
+    "cpu_seconds": 0.005236,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001915,
+    "cpu_seconds_children_including_prior": 0.163149,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 5,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.007927,
+    "cpu_seconds": 0.007936,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001811,
+    "cpu_seconds_children_including_prior": 0.1647,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 6,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.008525,
+    "cpu_seconds": 0.007538,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001678,
+    "cpu_seconds_children_including_prior": 0.166149,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 7,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.006919,
+    "cpu_seconds": 0.006927,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.001625,
+    "cpu_seconds_children_including_prior": 0.167531,
+    "trades": 0,
+    "fills": 1
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 8,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.00472,
+    "cpu_seconds": 0.004729,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002029,
+    "cpu_seconds_children_including_prior": 0.169292,
+    "trades": 0,
+    "fills": 0
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 9,
+   "quotes": 19,
+   "python": {
+    "wall_seconds": 0.019862,
+    "cpu_seconds": 0.018879,
+    "trades": 3,
+    "fills": 6
+   },
+   "rust": {
+    "wall_seconds": 0.001727,
+    "cpu_seconds_children_including_prior": 0.170773,
+    "trades": 3,
+    "fills": 6
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 10,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.015309,
+    "cpu_seconds": 0.015319,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.001921,
+    "cpu_seconds_children_including_prior": 0.172487,
+    "trades": 2,
+    "fills": 4
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 11,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.005494,
+    "cpu_seconds": 0.005505,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.001766,
+    "cpu_seconds_children_including_prior": 0.174001,
+    "trades": 0,
+    "fills": 0
+   }
+  }
+ ]
+}
