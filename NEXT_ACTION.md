@@ -57,6 +57,20 @@ work, in order:
    already carries every field -- both may stay unwired deliberately, but say so
    in the panel rather than leaving it implicit. The performance and supervisor
    panels the criterion names have no backend endpoints yet.
+   `/refresh` has since been wired as an operator action in the Market data view
+   and is asserted in real Chromium by the dashboard-panels smoke, leaving five.
+
+**Smoke inventory (corrected).** Of the 16 scripts under `scripts/*-browser-smoke.cjs`,
+only TEN have a companion fixture script and can actually run: dashboard-panels,
+discovery, historical-screen-cohort, research-reports, reviewed-inputs,
+screen-cohort, screen-fallback, source-coverage, source-quality and validation.
+The other six -- independent-ranking, instrument-profiles, instrument-status,
+research-actions, source-registry and statistical-safeguards -- have NO fixture at
+all and could never execute; they were dead code sitting alongside real acceptance
+checks. An earlier summary counted only the ten runnable smokes and silently omitted
+the six. Each is now guarded with an explicit `NOT RUNNABLE` exit so its presence
+cannot be mistaken for passing UI evidence. Writing the six fixtures, or deleting
+the scripts, is the remaining work here.
 6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
    completion-ledger.json and development-state.json — DONE; the verified
    envelope blocker is recorded under R11/T31/T35 and `docs/runbooks/hermes-handoff.md`
