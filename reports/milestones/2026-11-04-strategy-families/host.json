@@ -1,0 +1,11 @@
+{
+  "os": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "logical_cpu": 5,
+  "disk_free_bytes": 62384320512,
+  "cpu.max": "400000 100000",
+  "memory.max": "34359738368",
+  "node": "v24.22.1",
+  "uv": "uv 0.13.4 (x86_64-unknown-linux-gnu)",
+  "scope": "Current cloud instance, not verified Contabo/8GB target"
+}

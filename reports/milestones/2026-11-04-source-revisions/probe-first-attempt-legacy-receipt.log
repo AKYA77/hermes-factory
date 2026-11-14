@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/workspace/hermes-factory/scripts/real-source-multiperiod-probe.py", line 32, in <module>
+    assert receipt["status"] == "STRUCTURAL_IMPORT_PASS" and receipt["source_context_unchanged"]
+                                                             ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyError: 'source_context_unchanged'

@@ -1,0 +1,316 @@
+# Historical prospective calibration cohorts — NOT_READY
+
+Baseline remote: `c36c1f39c410847cff6d18c33ad45cf1f639b08a`.
+ADR0035 defines the v2 boundary. This is a continuation of `safe_screening`;
+the full historical and scientific acceptance remains open.
+
+## Implemented
+
+- `HistoricalCalibrationPolicy` (`historical-calibration-policy/v1`): immutable
+  typed binding of reviewed admission, exact profile, canonical dataset, current
+  code revision, calibration coverage window and a literal no-pruning flag.
+- `HistoricalCohortRequest` (`historical-screen-cohort/v2`): calibration members
+  must already carry a retained `historical-shadow` posthoc diagnostic
+  (ADR0034); prospective members must be unattempted queued jobs.
+- Freeze re-verifies diagnostic artifact/body hashes against the immutable
+  `historical_shadow_completed` audit events, the diagnostic experiment binding,
+  profile/dataset/code/admission identity, `approximate_pruning_authorized is
+  False`, and the native artifact hash.
+- Prospective safeguards: approved-policy admission identity, single
+  `train_only` window at least 24h after calibration coverage, subject equality,
+  no prior outcome, no prior prospective membership, global effective-experiment
+  dedup, canonical source verification, quarantine rejection, protected-holdout
+  and evaluation-window exclusion, and active reviewed admission.
+- Deterministic hash-seeded pre-outcome selection; repeated identical requests
+  retrieve the same immutable cohort.
+- Fenced completion produces the historical diagnostic natively for selected
+  members. The native artifact is never mutated; the diagnostic is a separate
+  content-addressed artifact with its own hash and audit lineage, and it
+  rechecks admission, quarantine, holdout, source and code scope before feature
+  access and again at publication.
+- v1 remains generated-only and rejects a v2 request; the generic report route
+  dispatches on `schema_version`.
+- CLI `historical-screen-cohort-freeze`; authenticated API
+  `POST /api/v1/research/historical-screen-cohorts`.
+- ADR0036 screening comparability and selection-bias reporting:
+  `screen-comparability/v1` re-verifies cohort bodies, compares the frozen
+  subject contract pairwise with exact differing fields, reports
+  selection-bias counters (distinct effective experiments, selected, observed,
+  selected-but-unobserved, unselected), and is content-addressed and immutable.
+  `pooled_claim_authorized` is always false. CLI `screen-comparability`,
+  authenticated API `POST /api/v1/research/screen-comparability` and a
+  dashboard comparability panel.
+- ADR0037 descriptive diagnostic cohort aggregation: session/side/stop-class/
+  failure-pattern/excursion/hold-duration/drawdown-recovery cohorts from one
+  retained verified training-only result, content-addressed and immutable, with
+  declared UTC hour buckets (not a broker calendar) and cost sensitivity
+  explicitly not measured. CLI `diagnose-cohorts` and authenticated API
+  `POST /api/v1/research/diagnostic-cohorts`.
+- ADR0038 parameter sensitivity for controlled improvements:
+  `improvement-sensitivity/v1` groups retained parent-child outcomes by the exact
+  changed-field set with outcome counts and mean/min/max equity deltas, plus
+  hypothesis counts. Content-addressed and immutable; descriptive only and never
+  independently validated. CLI `improvement-sensitivity` and authenticated API
+  `POST /api/v1/research/improvement-sensitivity`.
+- ADR0039 diversity-aware candidate reporting: `candidate-diversity/v1` reports
+  trial outcomes, distinct parameter sets and the largest single-set share with a
+  concentration flag, operator/timeframe distributions and per-field coverage
+  buckets. Content-addressed and immutable; descriptive only and never feeds the
+  optimizer. CLI `candidate-diversity` and authenticated API
+  `POST /api/v1/research/candidate-diversity`.
+- ADR0040 market volatility regime cohorts: canonical M1 midpoints over the
+  experiment's own admitted window produce a trailing 60-minute realized
+  volatility classifier mapped to LOW / NORMAL / HIGH by window percentiles.
+  Regimes are relative to the reviewed window, never broker-calendar
+  classifications; a missing dataset yields null rather than an invented label.
+  ADR0040 documents the thresholds and safeguards.
+- ADR0041 improvement lineage: `improvement-lineage/v1` reconstructs the retained
+  parent-to-child tree for one improvement policy with plans, distinct parents,
+  children, changed fields, hypotheses, parameter summaries and outcome statuses.
+  Content-addressed and immutable; every child is explicitly training-only and a
+  `TRAIN_IMPROVED_ONLY` child is not independently validated. CLI
+  `improvement-lineage` and authenticated API
+  `POST /api/v1/research/improvement-lineage`.
+- ADR0042 independent confirmation of training improvements:
+  `improvement-confirmation/v1` binds a `TRAIN_IMPROVED_ONLY` edge to a retained
+  independent evaluation, refusing self-evaluation, overlapping windows or a
+  different canonical dataset. `qualification_authorized` is always false.
+  CLI `improvement-confirmation` and authenticated API
+  `POST /api/v1/research/improvement-confirmation`.
+- ADR0043 multiple-testing safeguards: `multiple-testing/v1` reports uncorrected,
+  Bonferroni and Benjamini-Hochberg pass counts for a supplied candidate family,
+  with the corrected threshold. Content-addressed and immutable;
+  `qualification_authorized` is always false. CLI `multiple-testing` and
+  authenticated API `POST /api/v1/research/multiple-testing`.
+- ADR0044 diversity-aware qualified shortlist: `qualified-ranking/v1` applies a
+  greedy `(operator, timeframe)` diversity guard over the tier-ranked candidate
+  list, reporting DIVERSITY_LIMIT and SLOT_LIMIT exclusions plus per-key counts.
+  Content-addressed and immutable; `qualification_authorized` is always false.
+  CLI `qualified-ranking` and authenticated API
+  `POST /api/v1/research/qualified-ranking`.
+- ADR0045 annual and pooled evaluation reporting:
+  `annual-pooled-reporting/v1` aggregates retained independent evaluations by
+  UTC window-start year and pooled, with evaluation, window, trade, win/loss,
+  win-rate and ending-equity counts. Content-addressed and immutable;
+  `qualification_authorized` is always false. CLI `annual-reporting` and
+  authenticated API `POST /api/v1/research/annual-reporting`.
+- ADR0046 global candidate-selection funnel: `selection-funnel/v1` reports search
+  trials, distinct trial configurations, distinct effective cohort candidates,
+  candidates selected for native audit, selected-and-observed counts, training
+  promotions and a `funnel_complete` flag. Content-addressed and immutable;
+  `qualification_authorized` is always false. CLI `selection-funnel` and
+  authenticated API `POST /api/v1/research/selection-funnel`.
+- ADR0047 typed comparability contracts: `comparability-contract/v1` registers a
+  typed assertion of which peer context hashes an evaluation window is comparable
+  with, plus protected windows it must never enter. Stored in migration
+  `013_comparability_contracts.sql` (immutable by trigger) and retained under
+  `artifacts/comparability-contracts/`; `qualification_authorized` is always false.
+  CLI `comparability-contract` and authenticated API
+  `POST /api/v1/research/comparability-contract`.
+- ADR0048 bounded synthetic soak: `factory/operations/soak.py` repeats a bounded
+  synthetic generation-plus-replay cycle, sampling RSS and swap against
+  `max_rss_bytes` (default 8 GiB) and `max_wall_seconds`, archiving peak RSS, peak
+  swap, `within_limits`, `oom_detected` and `uncontrolled_swap`. Scope is
+  `NOT VPS / NOT HISTORICAL / NOT MARKET VALIDATION`. CLI `soak`.
+- ADR0049 qualified ranking over independent evaluations:
+  `independent-qualified-ranking/v1` joins retained evaluation results to their
+  experiments, excludes synthetic evaluations, ranks by ending equity and applies
+  the same `(operator, timeframe)` diversity guard. Content-addressed and
+  immutable; `qualification_authorized` is always false. CLI
+  `independent-ranking` and authenticated API
+  `POST /api/v1/research/independent-ranking`.
+- ADR0050 data source registry, storage inventory and refresh:
+  `factory/data/sources.py` lists committed partitions as sources, reports
+  per-instrument storage totals, and re-verifies every partition parquet digest
+  against its manifest on refresh without mutating catalog data. API
+  `GET /api/v1/sources`, `GET /api/v1/sources/{identity}`, `GET
+  `GET /api/v1/storage`, `POST /api/v1/refresh`; CLI `sources`, `storage`, `refresh`.
+- ADR0051 instrument profile registry and integrity:
+  `factory/instruments/registry.py` lists every known symbol with version,
+  synthetic flag, source, sizes, currencies, volume bounds, margin rate and a
+  content hash, plus a drift-checking integrity report. API `GET
+  /api/v1/profiles`, `GET /api/v1/profiles/{symbol}`, `GET
+  `/api/v1/profile-integrity`; CLI `profiles`, `profile-integrity`.
+- ADR0052 research reports dashboard panel:
+  `apps/dashboard/src/lib/ResearchReportsPanel.svelte` surfaces the selection
+  funnel, annual/pooled reporting, independent qualified ranking, storage
+  inventory, instrument profiles and committed data sources under the Research
+  view. Every report action requires a named authorizer and the descriptive-use
+  attestation; buttons stay disabled until both are supplied. svelte-check
+  reports 0 errors and 0 warnings and the production build succeeds.
+- ADR0053 state restore and rollback planning:
+  `factory/operations.restore` verifies a backup and copies it into a target that
+  must not exist and must sit outside the backup, then re-verifies the copy.
+  `rollback_plan` returns a plan with `applied: false` and refuses unless
+  services-stopped and previous-release-verified are both affirmed. CLI actions
+  `restore` and `rollback-plan`; `scripts/restore.sh` and
+  `scripts/rollback-plan.sh`. `scripts/rollback.sh` remains a refusal stub
+  because no production release exists yet.
+- ADR0054 installed-operations doctor report: `factory.cli doctor` now reports host
+  inventory, Python-against-3.12 and resolved Node version, database presence,
+  `PRAGMA integrity_check`, job/experiment counts and highest schema migration,
+  catalog partition/row/byte totals, source fidelity labels, and the standing
+  `operation_ready: false`. Read-only; still exits 1 as a pre-flight report.
+  Observed here: Python 3.12.3, Node v26.7.0, 6 CPUs, 12.5 GB RAM, 87 GB free,
+  integrity ok with 13 migrations, 32 catalog partitions holding 92.4M rows and
+  1.2 GB at `SOURCE_BID_ASK` fidelity.
+- ADR0055 restrictive security header policy: `apps/api/headers.py` defines one
+  testable `HEADER_POLICY` (nosniff, no-store, no-referrer, denied
+  geolocation/microphone/camera, same-origin COOP/CORP, `X-Frame-Options: DENY`)
+  plus the CSP, and adds `Strict-Transport-Security` only when the request is
+  HTTPS, since a transport header on plaintext HTTP is ignored by browsers and
+  would misrepresent the deployment. Applied uniformly to every response.
+- ADR0056 release manifest verification coverage:
+  `tests/recovery/test_releases.py` now exercises `verify_release` directly —
+  accepting a consistent manifest and refusing `NOT_READY` status, an empty
+  commit, an empty tag, an empty file list, a tampered file and a manifest entry
+  escaping the release root. A shared `write_release` helper keeps every fixture
+  a well-formed release; the pointer health-failure rollback test is retained.
+- Hermes handoff runbook: `docs/runbooks/hermes-handoff.md` records the checkout
+  and state layout, the hard environment facts (no GitHub credentials, the
+  `PYTHONPATH` shadowing, the 3.12 venv requirement, the off-PATH Node toolchain,
+  HistData reachability), the commands, the verified state, the hazards
+  (mid-run commits, the pinned migration list, wall-time-sensitive tests,
+  acquisition pausing, `store.rows()` dict access), the continuation loop and the
+  standing constraints. It is linked from `docs/operator-guide.md`.
+- ADR0057 cache identity covers code and fill version: `BarCache._input` now keys
+  cached bars on `code_revision` and `fill_version` in addition to dataset,
+  instrument, revision, timeframe, range, policy and decimal policy, defaulting to
+  the running source identity and execution version. `BarCache.events` and
+  `IndicatorCache.events` accept optional overrides. A data, code, fill or fold
+  version change now invalidates the cache; an exact rerun still hits it.
+- ADR0058 calendar gap classification: `factory/data/gaps.py` classifies every UTC
+  calendar day of a declared period as MISSING (zero ticks), PARTIAL (below half
+  the median observed day) or COVERED, with the median taken over observed days
+  only so widespread outages are not normalised away. `import_history.py` now
+  includes the result as `calendar_gaps` in the import report, replacing the
+  standing "calendar gaps unclassified" limitation. No quote is ever invented to
+  fill a gap; `synthesized_quotes` is always 0. Observed on a real partition
+  (USDJPY, March 2025, 3.9M ticks): 21 covered, 5 partial (Sundays) and 5 missing
+  (Saturdays).
+- ADR0059 completion idempotency after worker restart:
+  `tests/integration/test_completion_idempotency.py` re-queues a `COMPLETED` job
+  as if the lease expired after the experiment row landed, re-claims it and
+  completes it again with identical content. The experiment count and cost-label
+  audit count are unchanged, exactly one additional attempt is recorded, and the
+  job ends `COMPLETED` — covering the T03 window the fenced-restart test did not.
+- ADR0060 retained rejected candidates: `retained-rejected-candidates/v1` reports
+  every experiment row for an instrument with its status, metrics and exclusion
+  reasons (`EXECUTION_VERSION_MISMATCH`, `NON_PESSIMISTIC_SCENARIO`,
+  `FAILED_CHECKS`, `INSUFFICIENT_EVIDENCE`), because the leaderboard previously
+  dropped non-pessimistic and mismatched-version rows without a trace. A poor
+  training score stays visible; a failed out-of-sample run is not validated and
+  is not validated and is not discarded. CLI `retained-candidates`; API
+  `POST /api/v1/research/retained-candidates`.
+- ADR0061 source coverage report: `SourceVersions.coverage()` reports per
+  instrument the observed, selected and unresolved-quarantined counts plus each
+  observation's period, dataset hash and states. `selected` follows the latest
+  selection per slot so a re-selection updates coverage; a quarantine is reflected
+  only while unresolved. API `GET /api/v1/source-coverage`; CLI
+  `source-coverage`. Live state root: EURUSD has 5 observed monthly periods, none
+  selected and none quarantined.
+- ADR0062 adverse fill coverage for entry and exit: scenario tests assert the
+  exact two-pip adverse adjustment on both legs of long and short stop-loss
+  trades (long entry ask + 2 pips, long exit bid − 2 pips; short entry bid − 2
+  pips, short exit ask + 2 pips) and confirm a take-profit limit exit carries no
+  adverse adjustment and zero slippage. T08 previously covered the pricing
+  function for entry only, leaving exit pricing and the runner's exit
+  verification unexercised.
+- ADR0063 order semantics coverage: scenario tests assert that a SELL take-profit
+  fills at or above its target, that a stop gap produces an exit strictly worse
+  than the stop level with the role recorded as `STOP_LOSS`, and that a trade
+  still open at the deadline carries the `TIMEOUT` flag. T09 previously had no
+  coverage despite the runner enforcing all three.
+- ADR0064 board cap, independence and retention coverage:
+  `tests/integration/test_boards.py` asserts the five-slot cap on a populated
+  board, that EURUSD and GBPUSD boards are disjoint, and that retention stays
+  strictly below 70% with eleven candidates. T16 previously covered only the
+  empty-board case.
+- ADR0065 search fairness across protocols: `Search.fair_pending()` orders pending
+  trials by how much each protocol has already produced (immutable
+  `search_outcomes` joined to `search_trials`), then by arrival, so a protocol
+  that generated trials quickly cannot starve an eligible instrument.
+  `enqueue_pending()` and the coordinator enqueue loop both use it. Scheduling
+  fairness only — it never changes what is searchable or what a trial may
+  conclude.
+- ADR0066 duplicate-skip accounting coverage:
+  `test_T17_duplicate_skip_is_not_a_detailed_run` pins the study so two asks
+  propose the same spec, then asserts the second is recorded as `PRUNED` with
+  reason `EXACT_DUPLICATE_SPEC`, that no job and no experiment exist, and that
+  `exact_duplicates_skipped` is 1.
+- ADR0067 MFE/MAE path coverage: tests pin the immediate-stop (`FAST_STOP`),
+  near-miss threshold (93% of target tags `TARGET_NEAR_MISS`, 87% does not),
+  timeout (`TIMEOUT`), short stop-loss (negative MAE with `FAST_STOP`) and
+  missing-path (`INCONCLUSIVE` / `UNRESOLVED_PATH`, zero points) paths. T12
+  previously covered only favourable-then-stop.
+- ADR0068 failed-child lineage preservation:
+  `test_T13_failed_child_preserves_parent_and_lineage` records a `FAILED_CHECKS`
+  outcome for a discovered improvement edge, then asserts the parent experiment
+  row is unchanged, the child's `parent_id`/`changed_fields`/`hypothesis` are
+  intact, and the failed outcome is retained rather than rewritten.
+- ADR0069 purge/embargo fold geometry:
+  `test_T15_purge_and_embargo_shrink_every_fold` builds a protocol with
+  `purge_seconds=86400` and `embargo_seconds=3600`, then asserts every fold has
+  `train_end == oos_start - (purge + embargo)`, that consecutive folds meet
+  exactly at the embargo boundary, and that the holdout start equals the final
+  fold's out-of-sample end so purge/embargo never shrink the holdout.
+- `docs/source-quality-findings.md` records two measured source findings: the
+  October 2025 archives for EURUSD/GBPUSD/USDJPY contain a duplicated hour
+  (2025-10-27 00:00–01:00 UTC), which the quality gate correctly quarantines as
+  non-monotonic, and the cumulative staging budget exhaustion that blocked three
+  September partitions until published staging was reclaimed.
+
+## Preserved
+
+- Approximate historical pruning stays disabled; the v1 shortlist keeps all
+  candidates for native work except the existing exact-zero rule.
+- The known profitable native counterexample and the all-native fallback remain.
+- Generated-only v1 cohort identities, membership immutability and restrictions
+  are unchanged.
+
+## Evidence
+
+Focused acceptance: `tests/integration/test_historical_cohorts.py` —
+4 passed / 0 failed, covering freeze-before-outcomes, v1 preservation,
+embargo/admission/duplicate rejection, reviewed-admission revocation, and
+fenced-completion diagnostic production.
+
+Full verification at this checkpoint: 571 passed / 0 failed / 0 skipped
+(566 baseline + 5 new), ruff check/format clean, svelte-check 0 errors and
+0 warnings, vite build OK. Exact receipts:
+[manifest.json](../reports/milestones/historical-screen-cohorts/manifest.json).
+
+## Authenticated browser acceptance
+
+`scripts/historical-screen-cohort-browser-fixture.py` builds a fresh paused
+TEST_ONLY reviewed-admission fixture and `scripts/historical-screen-cohort-browser-smoke.cjs`
+drives the real dashboard and API in Chromium at 1280x900 and 390x844. Observed:
+authenticated session, cohort frozen before any prospective outcome, pause
+preserved, actual fenced native feedback (1 selected observation), approximate
+pruning disabled, byte-exact export matching the API response, no mobile
+overflow and zero page errors. Receipts:
+`reports/runtime/completion/historical-cohort-{desktop,mobile}.png` and
+`historical-cohort-browser-export.json`.
+
+These are generated TEST_ONLY authorization fixtures. They exercise the
+historical admission branch and are **not** genuine market validation, broker
+execution or independent strategy qualification.
+
+## Remaining
+
+**Worker-native prospective diagnostics are implemented and measured.** For the
+v2 cohort frozen before this increment (browser fixture state
+`.local/historical-cohort-browser`, cohort `1012a821fa0e10`), the prospective
+member's diagnostic was produced by `coordinator-fenced-historical-completion`,
+not by the calibration path. Measured: the native artifact's sha256 still equals
+the store's `artifact_hash` (never mutated), the diagnostic is a separate
+content-addressed artifact bound to that same native hash, and
+`approximate_pruning_authorized` is false. The calibration member's diagnostic is
+bound to its own native artifact and was produced by the acceptance path, as
+designed.
+
+API/dashboard graphical workflow for v2 and screening comparability with
+selection-bias safeguards were completed in ADR0036 and browser-verified at
+1280x900 and 390x844. The remaining work is the full source-to-restore
+historical gate. All three readiness flags stay false; no merge, visibility
+change or production deployment occurred.

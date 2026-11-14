@@ -1,0 +1,64 @@
+const {chromium}=require('playwright');
+const fs=require('fs');
+const path=require('path');
+(async()=>{
+ const root=path.resolve(__dirname,'..');
+ const state=path.resolve(process.env.FACTORY_BROWSER_STATE);
+ const base=process.env.FACTORY_BROWSER_URL||'http://127.0.0.1:8096';
+ if(!['localhost','127.0.0.1'].includes(new URL(base).hostname))throw Error('Loopback acceptance only');
+ const token=fs.readFileSync(path.join(state,'operator-1.token'),'utf8').trim();
+ const browser=await chromium.launch({executablePath:require('./lib/chromium-path.cjs').resolveChromium(),headless:true,args:['--no-sandbox']});
+ const page=await browser.newPage({viewport:{width:1280,height:900}});const errors=[];
+ page.on('pageerror',e=>errors.push(e.message));
+ try{
+  await page.goto(base);
+  await page.getByLabel('Access token').fill(token);
+  await page.getByRole('button',{name:'Connect / refresh',exact:true}).click();
+  await page.getByRole('button',{name:'Research',exact:true}).click();
+  await page.getByRole('heading',{name:'Automatic research discovery',exact:true}).waitFor();
+  await page.getByLabel('Instrument profile files').setInputFiles(path.join(state,'profile.json'));
+  await page.getByLabel('Training starts (UTC)').fill('2025-01-01T00:00');
+  await page.getByLabel('Training ends (UTC)').fill('2025-01-03T00:00');
+  // Two panels expose an "Authorized by" field (discovery and research reports),
+  // so a page-global locator is ambiguous under strict mode. Scope to the panel.
+  const discoveryPanel=page.getByRole('region',{name:'Automatic research discovery'});
+  await discoveryPanel.getByLabel('Authorized by',{exact:true}).fill('Generated browser acceptance');
+  const panel=discoveryPanel;
+  for(const tf of ['M5','M15','M30','H1','H4','D1'])await panel.getByLabel(tf,{exact:true}).uncheck();
+  await page.getByLabel('Explore strictly closed higher-timeframe confirmations').uncheck();
+  await page.getByLabel('Region limit',{exact:true}).fill('2');
+  await page.getByLabel('Active regions',{exact:true}).fill('1');
+  await page.getByLabel('Trials per region',{exact:true}).fill('1');
+  await page.getByLabel('CPU seconds per region',{exact:true}).fill('60');
+  await page.getByLabel('Total measured CPU admission budget',{exact:true}).fill('120');
+  await page.getByLabel('I authorize only this training scope, never evaluation or holdout reuse.').check();
+  await page.getByRole('button',{name:'Authorize discovery',exact:true}).click();
+  await page.getByRole('button',{name:'Stop discovery',exact:true}).waitFor();
+  const headers={Authorization:'Bearer '+token};
+  const get=async route=>{const r=await page.request.get(base+'/api/v1/'+route,{headers});if(!r.ok())throw Error('API '+r.status());return r.json();};
+  let overview=await get('overview');let discovery=await get('research/discovery');
+  if(!overview.paused||discovery.policies.length!==1||discovery.regions.length)throw Error('Authorization changed pause or invented regions');
+  await page.getByRole('button',{name:'Overview',exact:true}).click();
+  await page.getByRole('button',{name:'Resume queued research',exact:true}).click();
+  const deadline=Date.now()+30000;
+  do{discovery=await get('research/discovery');if(discovery.regions.length)break;await page.waitForTimeout(200);}while(Date.now()<deadline);
+  if(!discovery.regions.length)throw Error('No automatic region admitted after resume');
+  await page.getByRole('button',{name:'Pause after current job',exact:true}).click();
+  await page.getByRole('button',{name:'Research',exact:true}).click();
+  await page.getByRole('button',{name:'Stop discovery',exact:true}).click();
+  await page.getByRole('button',{name:'Stop discovery',exact:true}).waitFor({state:'detached'});
+  await page.getByRole('button',{name:'Refresh discovery',exact:true}).click();
+  await page.screenshot({path:root+'/reports/runtime/completion/discovery-desktop.png',fullPage:true});
+  const event=page.waitForEvent('download');
+  await page.getByRole('button',{name:'Export discovery evidence',exact:true}).click();
+  const downloaded=await event;const target=root+'/reports/runtime/completion/discovery-export.json';await downloaded.saveAs(target);
+  const exact=await page.request.get(base+'/api/v1/research/discovery',{headers});
+  if(!fs.readFileSync(target).equals(await exact.body()))throw Error('Export differs from exact API bytes');
+  await page.setViewportSize({width:390,height:844});
+  await page.screenshot({path:root+'/reports/runtime/completion/discovery-mobile.png',fullPage:true});
+  const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);
+  const final=await get('research/discovery');
+  if(overflow||errors.length||final.policies[0].enabled)throw Error(JSON.stringify({overflow,errors,policy_enabled:final.policies[0].enabled}));
+  console.log(JSON.stringify({authenticated_registration:true,pause_preserved:true,automatic_region_after_resume:true,stopped:true,exact_export:true,mobile_overflow:false,page_errors:errors,regions:final.regions.length,fixture:'GENERATED, not market data'}));
+ }finally{await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1);});

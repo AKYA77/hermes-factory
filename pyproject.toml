@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "hermes-factory"
+version = "0.1.0.dev0"
+description = "Auditable historical and paper research factory"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+ "nautilus_trader==1.231.0", "duckdb==1.4.2", "pyarrow==25.0.0",
+ "numpy==2.3.4", "scipy==1.16.3", "optuna==4.5.0",
+ "pydantic==2.12.3", "fastapi==0.162.0", "uvicorn==0.38.0",
+ "pyyaml==6.0.3", "psutil==7.1.3", "starlette==1.3.1"
+]
+
+[dependency-groups]
+dev = ["pytest==9.2.0", "hypothesis==6.142.4", "httpx==0.28.1", "ruff==0.14.3"]
+
+[project.scripts]
+hermes-factory = "factory.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["factory", "apps"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.hatch.build.targets.wheel.force-include]
+"migrations/001_initial.sql" = "factory/sql/001_initial.sql"
+
+"migrations/002_search.sql" = "factory/sql/002_search.sql"
+"migrations/003_evidence.sql" = "factory/sql/003_evidence.sql"
+
+"migrations/004_improvement.sql" = "factory/sql/004_improvement.sql"
+
+"migrations/005_validation.sql" = "factory/sql/005_validation.sql"
+
+"migrations/006_scientific_protocol.sql" = "factory/sql/006_scientific_protocol.sql"
+"migrations/007_source_quality.sql" = "factory/sql/007_source_quality.sql"
+"migrations/008_reviewed_inputs.sql" = "factory/sql/008_reviewed_inputs.sql"
+"migrations/009_source_versions.sql" = "factory/sql/009_source_versions.sql"
+"migrations/010_cost_label_audits.sql" = "factory/sql/010_cost_label_audits.sql"
+"migrations/011_discovery.sql" = "factory/sql/011_discovery.sql"
+"migrations/012_screen_cohorts.sql" = "factory/sql/012_screen_cohorts.sql"

@@ -1,0 +1,47 @@
+{
+  "source": {
+    "git_commit": "fc2a54f78969cb30cd3275482941b6d4b56f3fac",
+    "source_sha256": "1dd0717cf6805fda7a0b1aa257073da116882b4cd6076d8df4965c3289d1495b"
+  },
+  "verification": {
+    "passed": 571,
+    "warnings": 0,
+    "pytest_seconds": 591.856,
+    "failed": 0,
+    "skipped": 0,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "focused_passed": 5,
+    "log": "reports/runtime/test-results.xml"
+  },
+  "scope": "Historical prospective calibration cohort v2 software scope (ADR0035). TEST_ONLY authorization fixtures; not genuine market validation, broker execution or independent strategy qualification. NOT_READY.",
+  "files": {
+    "test-results.xml": "5a5c86723f4a8df189bbc4cccc18fbd9370a4fb1294efab5ca2174e7f56aba54",
+    "historical-screen-cohorts-focused.log": "8ce8c241e2c5cbb739c2735790053e0926ac5999c30a41ea283338f5f83adbbd",
+    "historical-screen-cohorts-source.json": "2bab95cc26d96bbab49b7bffef724ce2000680b2183e60724eca225b6f56e3a7",
+    "historical-screen-cohorts-queue.json": "2b71aa9b4c1c1620e92c93381392f8cb0d72851951b3b9a96b091a000d35ae17"
+  },
+  "browser_acceptance": {
+    "chromium": "154.0.8037.57 at /root/.hermes/tools/chromium-1208/chrome-linux64/chrome",
+    "viewports": [
+      "1280x900",
+      "390x844"
+    ],
+    "authenticated": true,
+    "frozen_before_outcomes": true,
+    "pause_preserved": true,
+    "fenced_native_feedback_observations": 1,
+    "approximate_pruning_authorized": false,
+    "exact_export": true,
+    "mobile_overflow": false,
+    "page_errors": [],
+    "fixture": "TEST_ONLY authorization fixture, not market data",
+    "files": {
+      "historical-cohort-browser-export.json": "cb0daf08e8768a9bcdd955f4cae01daf96b0536f701e20de1ef872f1587eda1f",
+      "historical-cohort-desktop.png": "53ba3f11d7540fdf52ca6dcd6418114936a9b65689b2d25ad5cbbe53b6459409",
+      "historical-cohort-mobile.png": "fe3c49cb098fd66e77cfb3aa9be92a9b7bccd4e8a6a41466fa437f8777482aa3"
+    }
+  }
+}

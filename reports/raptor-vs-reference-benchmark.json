@@ -1,0 +1,1860 @@
+{
+ "schema_version": "raptor-vs-reference-benchmark/v1",
+ "generated_utc": "2026-11-14T12:19:42Z",
+ "seed": 20261114,
+ "workload": "medium",
+ "cases_per_instrument": 12,
+ "instruments": [
+  "EURUSD",
+  "GBPUSD",
+  "USDJPY",
+  "USDCHF",
+  "USDCAD",
+  "AUDUSD",
+  "NZDUSD",
+  "XAUUSD"
+ ],
+ "methodology": {
+  "engine_inputs": "identical generated quotes, signals, profile, spec, conservative=True and finite-book configuration via scripts/parity_raptor_engine.generate_case",
+  "python_timing": "wall via perf_counter around an in-process replay(); CPU via RUSAGE_SELF user-time delta. Python peak RSS is NOT reported per case because RUSAGE_SELF ru_maxrss is a process-lifetime maximum dominated by interpreter start-up.",
+  "rust_peak_rss": "per-case Maximum resident set size from /usr/bin/time -v on the engine subprocess; disable with --time-bin ''",
+  "rust_timing": "wall around a fresh subprocess of target/release/raptor-engine; the binary path is resolved relative to this script",
+  "agreement_gate": "trade and fill counts must match exactly before timings are recorded; a mismatch aborts the run",
+  "speedup_ratio_reported": false,
+  "speedup_note": "No ratio is computed. Python wall time includes interpreter-side harness overhead that the Rust subprocess does not pay, and Rust wall time includes process start-up, so neither number isolates engine execution."
+ },
+ "envelope": {
+  "target": "4 vCPU / 8 GiB",
+  "enforced": false,
+  "reason": "cgroup v2 controllers are not delegated on this host; systemd-run --scope -p CPUQuota=400% -p MemoryMax=8G reports CPUQuotaPerSecUSec=infinity and MemoryMax=infinity",
+  "measured_on": "unrestricted VPS capacity; these are NOT target-envelope results"
+ },
+ "synthetic_only": true,
+ "synthetic_note": "Generated quote streams, not acquired history; these numbers must not be extrapolated to historical throughput.",
+ "rows": [
+  {
+   "instrument": "EURUSD",
+   "case": 0,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.018387,
+    "cpu_seconds": 0.009505,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004057,
+    "cpu_seconds_children_including_prior": 0.003666,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 1,
+   "quotes": 16,
+   "python": {
+    "wall_seconds": 0.007405,
+    "cpu_seconds": 0.007353,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.005868,
+    "cpu_seconds_children_including_prior": 0.009269,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 2,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.006101,
+    "cpu_seconds": 0.00611,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003561,
+    "cpu_seconds_children_including_prior": 0.012609,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 3,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.042127,
+    "cpu_seconds": 0.0189,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.00364,
+    "cpu_seconds_children_including_prior": 0.016012,
+    "peak_rss_kb": 3072,
+    "trades": 2,
+    "fills": 4,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 4,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.008713,
+    "cpu_seconds": 0.007762,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004446,
+    "cpu_seconds_children_including_prior": 0.020126,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 5,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.011354,
+    "cpu_seconds": 0.011307,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.004504,
+    "cpu_seconds_children_including_prior": 0.024356,
+    "peak_rss_kb": 2944,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 6,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.004647,
+    "cpu_seconds": 0.004656,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003094,
+    "cpu_seconds_children_including_prior": 0.027222,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 7,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.00425,
+    "cpu_seconds": 0.003291,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.002865,
+    "cpu_seconds_children_including_prior": 0.029871,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 8,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.012846,
+    "cpu_seconds": 0.012855,
+    "trades": 0,
+    "fills": 8
+   },
+   "rust": {
+    "wall_seconds": 0.004286,
+    "cpu_seconds_children_including_prior": 0.033946,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 8,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 9,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.004274,
+    "cpu_seconds": 0.004283,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.005962,
+    "cpu_seconds_children_including_prior": 0.0396,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 10,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.016791,
+    "cpu_seconds": 0.014842,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.004573,
+    "cpu_seconds_children_including_prior": 0.043834,
+    "peak_rss_kb": 3072,
+    "trades": 2,
+    "fills": 4,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "EURUSD",
+   "case": 11,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.005983,
+    "cpu_seconds": 0.004995,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.004237,
+    "cpu_seconds_children_including_prior": 0.047776,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 0,
+   "quotes": 16,
+   "python": {
+    "wall_seconds": 0.00913,
+    "cpu_seconds": 0.009116,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003569,
+    "cpu_seconds_children_including_prior": 0.050949,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 1,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.005916,
+    "cpu_seconds": 0.004939,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.00306,
+    "cpu_seconds_children_including_prior": 0.05372,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 2,
+   "quotes": 10,
+   "python": {
+    "wall_seconds": 0.005431,
+    "cpu_seconds": 0.005442,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003939,
+    "cpu_seconds_children_including_prior": 0.057428,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 3,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.007756,
+    "cpu_seconds": 0.006753,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003295,
+    "cpu_seconds_children_including_prior": 0.060461,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 4,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.007473,
+    "cpu_seconds": 0.007408,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003707,
+    "cpu_seconds_children_including_prior": 0.063875,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 5,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.018575,
+    "cpu_seconds": 0.017273,
+    "trades": 1,
+    "fills": 3
+   },
+   "rust": {
+    "wall_seconds": 0.004346,
+    "cpu_seconds_children_including_prior": 0.06794,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 3,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 6,
+   "quotes": 16,
+   "python": {
+    "wall_seconds": 0.021052,
+    "cpu_seconds": 0.021062,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.004402,
+    "cpu_seconds_children_including_prior": 0.071983,
+    "peak_rss_kb": 3072,
+    "trades": 2,
+    "fills": 4,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 7,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.008256,
+    "cpu_seconds": 0.006374,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004566,
+    "cpu_seconds_children_including_prior": 0.076179,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 8,
+   "quotes": 13,
+   "python": {
+    "wall_seconds": 0.005281,
+    "cpu_seconds": 0.005256,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003139,
+    "cpu_seconds_children_including_prior": 0.079029,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 9,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.007057,
+    "cpu_seconds": 0.006202,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003518,
+    "cpu_seconds_children_including_prior": 0.082303,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 10,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.007914,
+    "cpu_seconds": 0.006935,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003519,
+    "cpu_seconds_children_including_prior": 0.085496,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "GBPUSD",
+   "case": 11,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.005087,
+    "cpu_seconds": 0.005081,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003918,
+    "cpu_seconds_children_including_prior": 0.089081,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 0,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.011359,
+    "cpu_seconds": 0.008924,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003824,
+    "cpu_seconds_children_including_prior": 0.092611,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 1,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.008331,
+    "cpu_seconds": 0.008296,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003616,
+    "cpu_seconds_children_including_prior": 0.095895,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 2,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.012327,
+    "cpu_seconds": 0.012281,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003493,
+    "cpu_seconds_children_including_prior": 0.099149,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 3,
+   "quotes": 23,
+   "python": {
+    "wall_seconds": 0.02109,
+    "cpu_seconds": 0.01908,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.004103,
+    "cpu_seconds_children_including_prior": 0.102884,
+    "peak_rss_kb": 3072,
+    "trades": 2,
+    "fills": 4,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 4,
+   "quotes": 13,
+   "python": {
+    "wall_seconds": 0.007413,
+    "cpu_seconds": 0.007358,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003576,
+    "cpu_seconds_children_including_prior": 0.106209,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 5,
+   "quotes": 21,
+   "python": {
+    "wall_seconds": 0.012237,
+    "cpu_seconds": 0.012204,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003437,
+    "cpu_seconds_children_including_prior": 0.109349,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 6,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.008992,
+    "cpu_seconds": 0.009001,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003374,
+    "cpu_seconds_children_including_prior": 0.112447,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 7,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.004124,
+    "cpu_seconds": 0.004134,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.00359,
+    "cpu_seconds_children_including_prior": 0.11574,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 8,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.005204,
+    "cpu_seconds": 0.004185,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.0062,
+    "cpu_seconds_children_including_prior": 0.121704,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 9,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.003918,
+    "cpu_seconds": 0.003,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003766,
+    "cpu_seconds_children_including_prior": 0.125166,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 10,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.006186,
+    "cpu_seconds": 0.005172,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003815,
+    "cpu_seconds_children_including_prior": 0.128479,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDJPY",
+   "case": 11,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.00507,
+    "cpu_seconds": 0.005065,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003556,
+    "cpu_seconds_children_including_prior": 0.131767,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 0,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.005251,
+    "cpu_seconds": 0.004226,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003397,
+    "cpu_seconds_children_including_prior": 0.134899,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 1,
+   "quotes": 13,
+   "python": {
+    "wall_seconds": 0.010053,
+    "cpu_seconds": 0.010045,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004011,
+    "cpu_seconds_children_including_prior": 0.13857,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 2,
+   "quotes": 10,
+   "python": {
+    "wall_seconds": 0.007335,
+    "cpu_seconds": 0.00729,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003494,
+    "cpu_seconds_children_including_prior": 0.141826,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 3,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.01328,
+    "cpu_seconds": 0.013238,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.004102,
+    "cpu_seconds_children_including_prior": 0.145548,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 4,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.007842,
+    "cpu_seconds": 0.007853,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004165,
+    "cpu_seconds_children_including_prior": 0.149389,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 5,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.004198,
+    "cpu_seconds": 0.004174,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003822,
+    "cpu_seconds_children_including_prior": 0.152894,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 6,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.008676,
+    "cpu_seconds": 0.008686,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.00458,
+    "cpu_seconds_children_including_prior": 0.157064,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 7,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.011938,
+    "cpu_seconds": 0.010954,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003822,
+    "cpu_seconds_children_including_prior": 0.160523,
+    "peak_rss_kb": 2944,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 8,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.013177,
+    "cpu_seconds": 0.013153,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003747,
+    "cpu_seconds_children_including_prior": 0.163851,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 9,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.007638,
+    "cpu_seconds": 0.006697,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004017,
+    "cpu_seconds_children_including_prior": 0.167553,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 10,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.005359,
+    "cpu_seconds": 0.005314,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003962,
+    "cpu_seconds_children_including_prior": 0.171262,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCHF",
+   "case": 11,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.004981,
+    "cpu_seconds": 0.004989,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003921,
+    "cpu_seconds_children_including_prior": 0.174894,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 0,
+   "quotes": 5,
+   "python": {
+    "wall_seconds": 0.013039,
+    "cpu_seconds": 0.013035,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.004164,
+    "cpu_seconds_children_including_prior": 0.178757,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 1,
+   "quotes": 5,
+   "python": {
+    "wall_seconds": 0.008507,
+    "cpu_seconds": 0.007607,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004383,
+    "cpu_seconds_children_including_prior": 0.182858,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 2,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.008562,
+    "cpu_seconds": 0.007491,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004006,
+    "cpu_seconds_children_including_prior": 0.18662,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 3,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.01458,
+    "cpu_seconds": 0.014588,
+    "trades": 1,
+    "fills": 3
+   },
+   "rust": {
+    "wall_seconds": 0.003542,
+    "cpu_seconds_children_including_prior": 0.189906,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 3,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 4,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.004954,
+    "cpu_seconds": 0.004964,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003164,
+    "cpu_seconds_children_including_prior": 0.192757,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 5,
+   "quotes": 8,
+   "python": {
+    "wall_seconds": 0.049406,
+    "cpu_seconds": 0.049418,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.00363,
+    "cpu_seconds_children_including_prior": 0.196141,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 6,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.007325,
+    "cpu_seconds": 0.007285,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003861,
+    "cpu_seconds_children_including_prior": 0.199724,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 7,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.005262,
+    "cpu_seconds": 0.005234,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003449,
+    "cpu_seconds_children_including_prior": 0.202967,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 8,
+   "quotes": 6,
+   "python": {
+    "wall_seconds": 0.012036,
+    "cpu_seconds": 0.012019,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003733,
+    "cpu_seconds_children_including_prior": 0.206371,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 9,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.004498,
+    "cpu_seconds": 0.004507,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003558,
+    "cpu_seconds_children_including_prior": 0.209496,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 10,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.007561,
+    "cpu_seconds": 0.007571,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003794,
+    "cpu_seconds_children_including_prior": 0.212968,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "USDCAD",
+   "case": 11,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.004589,
+    "cpu_seconds": 0.003518,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003603,
+    "cpu_seconds_children_including_prior": 0.216309,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 0,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.012322,
+    "cpu_seconds": 0.01228,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003726,
+    "cpu_seconds_children_including_prior": 0.219721,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 1,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004413,
+    "cpu_seconds": 0.004423,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003219,
+    "cpu_seconds_children_including_prior": 0.222716,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 2,
+   "quotes": 7,
+   "python": {
+    "wall_seconds": 0.006722,
+    "cpu_seconds": 0.004637,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003557,
+    "cpu_seconds_children_including_prior": 0.226024,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 3,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004318,
+    "cpu_seconds": 0.004279,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.004538,
+    "cpu_seconds_children_including_prior": 0.230272,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 4,
+   "quotes": 7,
+   "python": {
+    "wall_seconds": 0.006417,
+    "cpu_seconds": 0.006376,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003674,
+    "cpu_seconds_children_including_prior": 0.23353,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 5,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.005082,
+    "cpu_seconds": 0.004217,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.004121,
+    "cpu_seconds_children_including_prior": 0.237397,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 6,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.018344,
+    "cpu_seconds": 0.018354,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.004039,
+    "cpu_seconds_children_including_prior": 0.241145,
+    "peak_rss_kb": 3072,
+    "trades": 2,
+    "fills": 4,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 7,
+   "quotes": 10,
+   "python": {
+    "wall_seconds": 0.006643,
+    "cpu_seconds": 0.006576,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003165,
+    "cpu_seconds_children_including_prior": 0.244087,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 8,
+   "quotes": 6,
+   "python": {
+    "wall_seconds": 0.008328,
+    "cpu_seconds": 0.008338,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003153,
+    "cpu_seconds_children_including_prior": 0.247012,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 9,
+   "quotes": 21,
+   "python": {
+    "wall_seconds": 0.006452,
+    "cpu_seconds": 0.006431,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003288,
+    "cpu_seconds_children_including_prior": 0.25005,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 10,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.007424,
+    "cpu_seconds": 0.007433,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.00476,
+    "cpu_seconds_children_including_prior": 0.254553,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "AUDUSD",
+   "case": 11,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.007752,
+    "cpu_seconds": 0.006929,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003715,
+    "cpu_seconds_children_including_prior": 0.258017,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 0,
+   "quotes": 9,
+   "python": {
+    "wall_seconds": 0.006908,
+    "cpu_seconds": 0.006918,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003314,
+    "cpu_seconds_children_including_prior": 0.260983,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 1,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.007103,
+    "cpu_seconds": 0.005238,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003155,
+    "cpu_seconds_children_including_prior": 0.263865,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 2,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.017054,
+    "cpu_seconds": 0.017065,
+    "trades": 2,
+    "fills": 7
+   },
+   "rust": {
+    "wall_seconds": 0.003166,
+    "cpu_seconds_children_including_prior": 0.266708,
+    "peak_rss_kb": 3072,
+    "trades": 2,
+    "fills": 7,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 3,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.014472,
+    "cpu_seconds": 0.014424,
+    "trades": 0,
+    "fills": 7
+   },
+   "rust": {
+    "wall_seconds": 0.003244,
+    "cpu_seconds_children_including_prior": 0.269677,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 7,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 4,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.004226,
+    "cpu_seconds": 0.004201,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003106,
+    "cpu_seconds_children_including_prior": 0.272531,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 5,
+   "quotes": 24,
+   "python": {
+    "wall_seconds": 0.012219,
+    "cpu_seconds": 0.012192,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.004889,
+    "cpu_seconds_children_including_prior": 0.277094,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 6,
+   "quotes": 7,
+   "python": {
+    "wall_seconds": 0.004466,
+    "cpu_seconds": 0.00441,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.004595,
+    "cpu_seconds_children_including_prior": 0.281358,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 7,
+   "quotes": 22,
+   "python": {
+    "wall_seconds": 0.021016,
+    "cpu_seconds": 0.021011,
+    "trades": 3,
+    "fills": 6
+   },
+   "rust": {
+    "wall_seconds": 0.006851,
+    "cpu_seconds_children_including_prior": 0.287887,
+    "peak_rss_kb": 3072,
+    "trades": 3,
+    "fills": 6,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 8,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.012312,
+    "cpu_seconds": 0.012272,
+    "trades": 1,
+    "fills": 3
+   },
+   "rust": {
+    "wall_seconds": 0.003175,
+    "cpu_seconds_children_including_prior": 0.29081,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 3,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 9,
+   "quotes": 21,
+   "python": {
+    "wall_seconds": 0.004509,
+    "cpu_seconds": 0.004516,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.004077,
+    "cpu_seconds_children_including_prior": 0.294628,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 10,
+   "quotes": 20,
+   "python": {
+    "wall_seconds": 0.012315,
+    "cpu_seconds": 0.01128,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.003246,
+    "cpu_seconds_children_including_prior": 0.297587,
+    "peak_rss_kb": 2944,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "NZDUSD",
+   "case": 11,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.009018,
+    "cpu_seconds": 0.009023,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.003065,
+    "cpu_seconds_children_including_prior": 0.300406,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 0,
+   "quotes": 23,
+   "python": {
+    "wall_seconds": 0.012531,
+    "cpu_seconds": 0.012542,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.005463,
+    "cpu_seconds_children_including_prior": 0.304326,
+    "peak_rss_kb": 2944,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 1,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.00881,
+    "cpu_seconds": 0.008827,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004615,
+    "cpu_seconds_children_including_prior": 0.308639,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 2,
+   "quotes": 4,
+   "python": {
+    "wall_seconds": 0.005771,
+    "cpu_seconds": 0.005782,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.006528,
+    "cpu_seconds_children_including_prior": 0.313435,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 3,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.014837,
+    "cpu_seconds": 0.014848,
+    "trades": 1,
+    "fills": 2
+   },
+   "rust": {
+    "wall_seconds": 0.004502,
+    "cpu_seconds_children_including_prior": 0.317513,
+    "peak_rss_kb": 3072,
+    "trades": 1,
+    "fills": 2,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 4,
+   "quotes": 11,
+   "python": {
+    "wall_seconds": 0.010253,
+    "cpu_seconds": 0.010228,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.007111,
+    "cpu_seconds_children_including_prior": 0.324071,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 5,
+   "quotes": 17,
+   "python": {
+    "wall_seconds": 0.010753,
+    "cpu_seconds": 0.010766,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.005712,
+    "cpu_seconds_children_including_prior": 0.328775,
+    "peak_rss_kb": 2944,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 6,
+   "quotes": 18,
+   "python": {
+    "wall_seconds": 0.0111,
+    "cpu_seconds": 0.009083,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004237,
+    "cpu_seconds_children_including_prior": 0.332616,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 7,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.008711,
+    "cpu_seconds": 0.007758,
+    "trades": 0,
+    "fills": 1
+   },
+   "rust": {
+    "wall_seconds": 0.004555,
+    "cpu_seconds_children_including_prior": 0.336814,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 1,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 8,
+   "quotes": 14,
+   "python": {
+    "wall_seconds": 0.005681,
+    "cpu_seconds": 0.005695,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003963,
+    "cpu_seconds_children_including_prior": 0.34038,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 9,
+   "quotes": 19,
+   "python": {
+    "wall_seconds": 0.027313,
+    "cpu_seconds": 0.026273,
+    "trades": 3,
+    "fills": 6
+   },
+   "rust": {
+    "wall_seconds": 0.004189,
+    "cpu_seconds_children_including_prior": 0.344212,
+    "peak_rss_kb": 3072,
+    "trades": 3,
+    "fills": 6,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 10,
+   "quotes": 12,
+   "python": {
+    "wall_seconds": 0.0166,
+    "cpu_seconds": 0.015529,
+    "trades": 2,
+    "fills": 4
+   },
+   "rust": {
+    "wall_seconds": 0.003947,
+    "cpu_seconds_children_including_prior": 0.347876,
+    "peak_rss_kb": 2944,
+    "trades": 2,
+    "fills": 4,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  },
+  {
+   "instrument": "XAUUSD",
+   "case": 11,
+   "quotes": 15,
+   "python": {
+    "wall_seconds": 0.005031,
+    "cpu_seconds": 0.003042,
+    "trades": 0,
+    "fills": 0
+   },
+   "rust": {
+    "wall_seconds": 0.003787,
+    "cpu_seconds_children_including_prior": 0.351407,
+    "peak_rss_kb": 3072,
+    "trades": 0,
+    "fills": 0,
+    "_note": "wall includes process start-up; peak RSS is per-case from /usr/bin/time -v when available"
+   }
+  }
+ ]
+}

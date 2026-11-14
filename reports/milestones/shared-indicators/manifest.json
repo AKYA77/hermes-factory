@@ -1,0 +1,41 @@
+{
+  "source": {
+    "git_commit": "72c591b446f3f15c977d01bebd7239b63f36e334",
+    "source_sha256": "a502f6a49ac4ad7ea785526f4442946baaed168fa155f5bffb41dc3fc0349aac"
+  },
+  "verification": {
+    "passed": 544,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 390,
+    "pytest_seconds": 184.0,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "command": "bash scripts/verify.sh",
+    "log": "reports/milestones/shared-indicators/indicators-full-verification.log"
+  },
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "scope": "Generated software/reference evidence, NOT_READY; no historical/target-host/native-throughput claim",
+  "files": {
+    "indicators-benchmark-final.json": "8d6d1e41b213028c36a525eb7556d8fc61ac4630efa51d44358b151b9dc25c4c",
+    "indicators-benchmark-final.log": "b16ab622489e4e6010ddd19dce506518417da596cda30c8757319578f1d1db41",
+    "indicators-benchmark-first.json": "a0a799b1396f627dcbf0519349838c0d90b2942312a061a5838658ed201d4cd6",
+    "indicators-benchmark-first.log": "d6c0c32fd78d3b8f024eb71328f35cb06b85e290e76830d8dc2e71e83ddb7c15",
+    "indicators-cycle-state.json": "eb6a2c41f0072cb53fe2dfad7e0a612bff50eacf192c2246cee269f3c5ce80c1",
+    "indicators-final-focused.log": "a1d438cf6550dbde5af63a800ea434e6081469e8044ebc97cb14ab1d2f6d6e89",
+    "indicators-focused.log": "ba945d7c06d789788528969f52c6acdc9375e4496c207286c7f72ff968e29fe1",
+    "indicators-full-verification.log": "37ae5767f8c9b95452ce1f79117ebbdfd864f26ac42d78dd432c8e3184044d2d",
+    "indicators-initial-collection-failure.log": "e39964ec2412798e8cef3b4a3b40365acfb178d6f2800c411b173dde32147cc3",
+    "indicators-native-focused.log": "c232bb2a103952857ab322b9a2689ffc9070934bee920f3fcdd7c8db80f461ef",
+    "indicators-native-initial-failure.log": "f743749efda947b9b59e712986c4e32100c1c80be1a388f513aa3b3cfd2cb62b",
+    "indicators-verification-resources.json": "51c5d4b089079d2fad9a1cf2cdffd59cf9f6ebdd13663dc6c1e92b49eaa4313b",
+    "prior-discovery-publication.json": "17cb58d7e068f31f77b20953e6a46b76260df02b47bbcb3c66653cf16fac6669",
+    "test-results.xml": "09c9d8326df577fbdec2c5bbe6b9bd71e9b00d5381fc8711da46b05ad629211a"
+  }
+}

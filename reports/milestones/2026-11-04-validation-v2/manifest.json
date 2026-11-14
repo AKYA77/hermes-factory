@@ -1,0 +1,30 @@
+{
+  "browser": "PASS_RESEARCH_REGISTRATION_NATIVE_FAILURE_WITH_UNCONSUMED_FINAL_AND_SEPARATE_REHEARSAL_REGISTRATION",
+  "clean_browser_source_context": {
+    "git_commit": "a530de566b56cf9c3fd97d1d815aba2cdf6e84a6",
+    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
+  },
+  "files": {
+    "browser-rehearsal-registration.json": "39e3ff066f69dcc948767e7a34e5a737f9e2aa32fecb3a96fe7b9e6108685202",
+    "browser-research-completed.json": "f841488c90c203342ee3e00a34cd0f16ed71b05e549f4f54beff278967a17619",
+    "browser-research-native.json": "f7ad6ba7d7c77f62a1d50c351a6ad8a1ddf05b6e61318d864e9f672a00d5b4b0",
+    "browser-research-registered.json": "6b6afbcf29521519f797662f04fc48b7cc93667e302d3ea9af67d3288f8107ca",
+    "core-verification.log": "19666b2224687683fe947730da24fd01af89055d4bab6a1e5bad52faf5dbc96f"
+  },
+  "observed_at_utc": "2026-11-04T02:36:17.331452+00:00",
+  "scope": "native protocol admission and decision guards; not complete scientific/product/target verification",
+  "status": "IMPLEMENTING_NOT_READY",
+  "tested_source_context": {
+    "git_commit": "b04034aff67a3cf93407dd5db41ce7f7d4f3eafc",
+    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
+  },
+  "verification": {
+    "failed": 0,
+    "frontend": "PASS",
+    "lint": "PASS",
+    "passed": 271,
+    "seconds": 73.22,
+    "skipped": 0,
+    "warnings": 340
+  }
+}

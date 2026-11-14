@@ -1,0 +1,33 @@
+<script lang="ts">
+ import {onMount} from 'svelte';
+ type Input={experiment_hash?:string;job_id?:string;instrument:string;operator:string;timeframe:string;native_closed_trades?:number;observed_false_negative?:boolean};
+ type Inputs={calibration:Input[];prospective:Input[]};
+ type Report={cohort_id:string;source_current:boolean;selected_count:number;native_observed:number;audit_complete:boolean;prospective_rejections_audited:number;false_negatives:number;known_counterexamples:number;disposition:string;approximate_pruning_authorized:boolean;descriptive_wilson_95:unknown;limitations:string[]};
+ let {request,download}:{request:(path:string,method?:string,body?:unknown)=>Promise<any>;download:(path:string,name:string)=>Promise<void>}=$props();
+ let inputs=$state<Inputs>({calibration:[],prospective:[]}),cohorts=$state<{cohort_id:string}[]>([]),report=$state<Report|null>(null),error=$state(''),busy=$state(false);
+ let calibration=$state<string[]>([]),prospective=$state<string[]>([]),actor=$state(''),attest=$state(false),sample=$state(1),seed=$state(42),offset=$state(0);
+ async function refresh(){try{inputs=await request('research/screen-cohort-inputs?limit=50&offset='+offset);cohorts=(await request('research/screen-cohorts?limit=20&offset='+offset)).cohorts;error='';}catch(e){error=String(e);}}
+ onMount(refresh);
+ async function inspect(id:string){try{report=await request('research/screen-cohorts/'+id);error='';}catch(e){error=String(e);}}
+ async function freeze(event:SubmitEvent){event.preventDefault();busy=true;try{const result=await request('research/screen-cohorts','POST',{calibration_experiments:calibration,prospective_job_ids:prospective,audit_sample_count:sample,seed,authorized_by:actor,attestation:attest?'Freeze this training-only screening cohort before native audit outcomes; no validation or pruning authority':''});await refresh();await inspect(result.cohort_id);}catch(e){error=String(e);}finally{busy=false;}}
+ async function page(delta:number){offset=Math.max(0,offset+delta);calibration=[];prospective=[];await refresh();}
+</script>
+<section class="cohorts" aria-label="Frozen screen audit cohorts">
+ <header><h2>Frozen screen audit cohorts</h2><button onclick={refresh} disabled={busy}>Refresh screen cohorts</button></header>
+ <p>Freeze calibration evidence and a prospective audit frame before native outcomes. Version 1 supports explicitly generated cost-shadow training. Historical calibration is unfinished. Approximate labels cannot prune candidates or qualify strategies.</p>
+ {#if error}<p role="alert">{error}</p>{/if}
+ <form onsubmit={freeze}>
+  <fieldset><legend>Native calibration evidence</legend>{#each inputs.calibration as item}<label class="choice"><input type="checkbox" bind:group={calibration} value={item.experiment_hash}/><span>{item.instrument} · {item.operator} · {item.timeframe} · {item.native_closed_trades} closed trades{item.observed_false_negative?' · native counterexample':''}<small>{item.experiment_hash}</small></span></label>{/each}{#if inputs.calibration.length===0}<p>No current-source native cost-shadow calibration evidence.</p>{/if}</fieldset>
+  <fieldset><legend>Prospective sampling frame</legend>{#each inputs.prospective as item}<label class="choice"><input type="checkbox" bind:group={prospective} value={item.job_id}/><span>{item.instrument} · {item.operator} · {item.timeframe}<small>{item.job_id}</small></span></label>{/each}{#if inputs.prospective.length===0}<p>No unattempted eligible cost-shadow jobs.</p>{/if}</fieldset>
+  <p>Use compatible profiles, families, timeframes and policies. Prospective training must start at least 24 hours after calibration ends. Already attempted, previously sampled, protected or influenced periods are rejected. Membership stays immutable.</p>
+  <div class="fields"><label>Screen audit sample size <input type="number" min="1" max="128" bind:value={sample} required/></label><label>Screen audit seed <input type="number" min="0" step="1" bind:value={seed} required/></label><label>Cohort authorized by <input bind:value={actor} maxlength="200" required/></label></div>
+  <label class="choice"><input type="checkbox" bind:checked={attest}/><span>Freeze this training-only screening cohort before native audit outcomes; no validation or pruning authority</span></label>
+  <button disabled={busy||!attest||!calibration.length||prospective.length<sample}>Freeze screen cohort</button>
+ </form>
+ <nav aria-label="Screen cohort input pages"><button disabled={offset===0||busy} onclick={()=>page(-20)}>Previous cohort inputs</button><span>Offset {offset}</span><button disabled={busy} onclick={()=>page(20)}>Next cohort inputs</button></nav>
+ <h3>Retained cohorts</h3>{#each cohorts as cohort}<button class="identity" onclick={()=>inspect(cohort.cohort_id)}>{cohort.cohort_id}</button>{/each}{#if cohorts.length===0}<p>No cohorts frozen on this page.</p>{/if}
+ {#if report}<article><h3>Native audit feedback</h3><p>{report.disposition.replaceAll('_',' ').toLowerCase()}</p><p>{report.native_observed} / {report.selected_count} selected native observations · {report.audit_complete?'complete':'incomplete'}</p><p>{report.false_negatives} false negatives / {report.prospective_rejections_audited} prospective rejections audited</p><p>{report.known_counterexamples} known calibration/audit counterexamples. Approximate pruning: {report.approximate_pruning_authorized?'authorized':'disabled'}.</p><p>Source revision: {report.source_current?'current':'retained older revision'}</p><p>Descriptive Wilson 95% interval: {report.descriptive_wilson_95?JSON.stringify(report.descriptive_wilson_95):'no rejected audit observations'}</p><ul>{#each report.limitations as limitation}<li>{limitation}</li>{/each}</ul><button onclick={()=>inspect(report!.cohort_id)}>Refresh native audit feedback</button><button onclick={()=>download('research/screen-cohorts/'+report!.cohort_id,'screen-cohort-'+report!.cohort_id+'.json')}>Export exact screen cohort evidence</button></article>{/if}
+</section>
+<style>
+ .cohorts{margin:1.2rem 0;padding:1rem;background:#151e29;border:1px solid #304158;border-radius:12px;overflow-wrap:anywhere}header,.fields,nav{display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;justify-content:space-between}fieldset{min-width:0;margin:1rem 0;border:1px solid #40516a;border-radius:8px}.choice{display:flex;align-items:flex-start;gap:.6rem;margin:.6rem 0}.choice input{width:auto;flex:none}small{display:block;color:#b5c2d3}.fields label{flex:1;min-width:180px}input{display:block;max-width:100%;box-sizing:border-box;padding:.6rem}.identity{display:block;overflow-wrap:anywhere;max-width:100%;margin:.5rem 0;text-align:left}article{margin-top:1rem}button{padding:.6rem;margin:.2rem;max-width:100%}
+</style>

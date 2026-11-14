@@ -1,0 +1,47 @@
+{
+  "parity": true,
+  "results": [
+    {
+      "operator": "momentum",
+      "lookback": 8,
+      "bar_only": 0.1787,
+      "indicator_build": 0.3346,
+      "indicator_reuse": 0.264
+    },
+    {
+      "operator": "momentum",
+      "lookback": 64,
+      "bar_only": 0.3377,
+      "indicator_build": 0.3541,
+      "indicator_reuse": 0.2604
+    },
+    {
+      "operator": "mean_reversion",
+      "lookback": 8,
+      "bar_only": 0.2293,
+      "indicator_build": 0.3424,
+      "indicator_reuse": 0.3054
+    },
+    {
+      "operator": "mean_reversion",
+      "lookback": 64,
+      "bar_only": 0.5051,
+      "indicator_build": 0.4581,
+      "indicator_reuse": 0.2844
+    },
+    {
+      "operator": "trend",
+      "lookback": 8,
+      "bar_only": 0.1781,
+      "indicator_build": 0.3705,
+      "indicator_reuse": 0.3261
+    },
+    {
+      "operator": "trend",
+      "lookback": 64,
+      "bar_only": 0.5138,
+      "indicator_build": 0.4404,
+      "indicator_reuse": 0.3252
+    }
+  ]
+}

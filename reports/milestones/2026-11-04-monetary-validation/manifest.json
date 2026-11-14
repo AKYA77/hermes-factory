@@ -1,0 +1,33 @@
+{
+  "dependency_audits": {
+    "ignored_findings": [],
+    "npm_exit_code": 1,
+    "python_exit_code": 1
+  },
+  "files": {
+    "api-csp-regression.log": "a8ae00b6b807fef7ad7dbde0f5eae2915a43b4f399f353d65756382d5e3cb93a",
+    "core-verification.log": "29cd4319b27b0a14c02c1ae2cdcd167af07d15bb6ed64d9b9a8b83b94e48181d",
+    "frontend-build.log": "2093853289d24da50d5ed617c232b1ac3e52904a7938ee022a06082bb845800a",
+    "frontend-check.log": "b3036e2881f67b5fb9df90bacfc4a30187983e7b1ccf1b8459ecaf36d6175582",
+    "history-known-signatures.json": "478cc8aa1469b0cae44a7bd8847bb310c8f2de4872594f8a54e7e223c525ea29",
+    "improvement-browser-regression.json": "04971b544cd98a5bd11c6879f733a4fa13f85091d606ad14d570fd5e99b11aee",
+    "monetary-benchmark.json": "0019e21d5e4154d05da9a447a0dbe7cdbc5c0c7b17e5f53bcbcb4eb7dcab80f3",
+    "npm-audit.json": "1c7812dddf8e75be0ac8d93072180ccf32ccca5d7ebecbecfb4bf19a2e6a9450",
+    "python-audit.json": "7893b49fcf6a70cfbe96cb4a4c38b5a2b41b559b06344d25838c877247245280",
+    "real-source-byte-check.json": "ac33e086b1a7fb21f9252526d095d7f101f6c539dd6ba4557853bae6d711b459",
+    "synthetic-1000-campaign.json": "9b438eadbc34ec8cf4d9bbe0cb55f72a79eff064b767954ea35b19453ff49a61",
+    "validation-browser-completed.json": "43b5fdc47bceeaee071978a434cb6d82d7f11753fb1ed1a692fcb3bc2f3fdbcf",
+    "validation-browser-native-run.json": "cf271adf9bf18c481f586338cadbe44614157cedc7a9080695bc7f406e51b6f3",
+    "validation-browser-registered.json": "5192fa88d6413f2416f737cb068c507864d2b7fcb40d12517063e96ec5c977af"
+  },
+  "generated_at_utc": "2026-11-04T02:07:32.909081+00:00",
+  "readiness": {
+    "DATA_READY": false,
+    "OPERATION_READY": false,
+    "SOFTWARE_VERIFIED": false
+  },
+  "scientific_code_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+  "scientific_source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922",
+  "scope": "component and synthetic reference verification; not full C0-C9/C7 or VPS/market acceptance",
+  "status": "IMPLEMENTING_NOT_READY"
+}

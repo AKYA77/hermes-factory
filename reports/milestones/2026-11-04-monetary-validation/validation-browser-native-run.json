@@ -1,0 +1,21 @@
+{
+  "scope": "actual native multi-quarter synthetic reference via browser-registered protocol; not historical or VPS evidence",
+  "source": {
+    "git_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+    "source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922"
+  },
+  "source_unchanged": true,
+  "status": "INSUFFICIENT_EVIDENCE",
+  "cycles": 20,
+  "wall_seconds": 37.74198566999985,
+  "artifact_hash": "a7ef558bd5c9c7cbb92b8c16c34ec40aaa7b5a147c169981522c028b93175bf0",
+  "protocol_id": "109b077503c7cca06a38cdc5092ff4451b4552c83bb63b16941171f4b4829434",
+  "actual_experiments": 5,
+  "actual_evaluations": 14,
+  "all_jobs": [
+    {
+      "state": "COMPLETED",
+      "n": 19
+    }
+  ]
+}

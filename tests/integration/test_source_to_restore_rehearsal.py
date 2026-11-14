@@ -1,0 +1,163 @@
+"""The source-to-restore rehearsal must run its chain and record what it ran."""
+
+import importlib.util
+import json
+from pathlib import Path
+
+import pytest
+
+from factory.contracts import ExperimentContract
+from factory.experiments import Store
+from factory.operations.fixtures import seed
+
+
+def _load_script():
+    path = Path(__file__).resolve().parents[2] / "scripts" / "source_to_restore_rehearsal.py"
+    spec = importlib.util.spec_from_file_location("source_to_restore_rehearsal", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+def _catalog(tmp_path):
+    seed(tmp_path, 240)
+    return tmp_path / "catalog"
+
+
+def _state_root(tmp_path):
+    root = tmp_path / "state"
+    root.mkdir()
+    store = Store(root / "factory.sqlite")
+    payload = seed(root)
+    store.enqueue(
+        "research",
+        payload,
+        ExperimentContract.model_validate(payload["contract"]).experiment_hash,
+        actor="rehearsal-test",
+    )
+    return root
+
+
+def test_rehearsal_runs_the_chain_and_records_the_receipt(tmp_path):
+    rehearsal = _load_script()
+    catalog = _catalog(tmp_path)
+    state_root = _state_root(tmp_path)
+    workdir = tmp_path / "rehearsal"
+    receipt = rehearsal.run(catalog=catalog, state_root=state_root, sample_size=1, workdir=workdir)
+    assert receipt["schema"] == "source-to-restore-rehearsal/v1"
+    assert receipt["stages_run"] == [
+        "verify",
+        "catalog",
+        "admit",
+        "feature_cache",
+        "generate",
+        "screen",
+        "native_replay",
+        "diagnose",
+        "independent_evaluation",
+        "improve",
+        "rank",
+        "dashboard",
+        "backup_restore",
+    ]
+    # The receipt must be explicit about what it did not run.
+    assert "import" in receipt["stages_not_run"]
+    assert "catalog" not in receipt["stages_not_run"]
+    assert receipt["scope"].startswith("Development rehearsal")
+    archived = json.loads((workdir / "rehearsal-report.json").read_text())
+    assert archived["stages_run"] == receipt["stages_run"]
+    assert receipt["measurements"]["wall_seconds"] > 0
+    assert receipt["measurements"]["peak_rss_bytes"] > 0
+
+
+def test_rehearsal_reports_a_monotonic_source(tmp_path):
+    rehearsal = _load_script()
+    receipt = rehearsal.run(
+        catalog=_catalog(tmp_path),
+        state_root=_state_root(tmp_path),
+        sample_size=1,
+        workdir=tmp_path / "rehearsal",
+    )
+    replay = next(s for s in receipt["stages"] if s["stage"] == "native_replay")
+    assert replay["monotonic"] is True
+    assert replay["ticks"] == 240
+
+
+def test_rehearsal_records_a_blocked_stage_instead_of_aborting(tmp_path, monkeypatch):
+    rehearsal = _load_script()
+    catalog = _catalog(tmp_path)
+    state_root = _state_root(tmp_path)
+
+    def boom(state_root, catalog, sample):
+        raise ValueError("SOURCE_QUALITY_NOT_ACCEPTABLE")
+
+    monkeypatch.setattr(rehearsal, "admit", boom)
+    receipt = rehearsal.run(
+        catalog=catalog, state_root=state_root, sample_size=1, workdir=tmp_path / "reh"
+    )
+    blocked = {s["stage"]: s.get("reason") for s in receipt["stages_blocked"]}
+    assert "admit" in blocked
+    assert "SOURCE_QUALITY_NOT_ACCEPTABLE" in blocked["admit"]
+    # A blocked stage must never be reported as run.
+    assert "admit" not in receipt["stages_run"]
+    assert "verify" in receipt["stages_run"]
+
+
+def test_rehearsal_refuses_a_state_root_it_would_pollute(tmp_path):
+    """A second run against the same state root must be refused, not misreported.
+
+    The independent-evaluation stage records an evaluation-with-past-only-warmup
+    use for the sampled window. Discovery treats that window as excluded, so a
+    reused state root makes the next run's diagnose stage fail with
+    DISCOVERY_EVALUATION_WINDOW_EXCLUDED. That is state pollution, not a data
+    finding, so it must be refused loudly.
+    """
+    import sqlite3
+
+    rehearsal = _load_script()
+    catalog = _catalog(tmp_path)
+    state_root = _state_root(tmp_path)
+    db = sqlite3.connect(state_root / "factory.sqlite")
+    db.execute(
+        """CREATE TABLE IF NOT EXISTS research_input_uses (
+            use_id TEXT PRIMARY KEY, instrument TEXT, evidence_kind TEXT,
+            dataset_hash TEXT, start_ns INTEGER, end_ns INTEGER,
+            purpose TEXT, owner_id TEXT, created_at TEXT)"""
+    )
+    db.execute(
+        "INSERT INTO research_input_uses VALUES (?,?,?,?,?,?,?,?,?)",
+        (
+            "u1",
+            "EURUSD",
+            "synthetic",
+            "d" * 64,
+            1,
+            2,
+            "evaluation-with-past-only-warmup",
+            "o1",
+            "2026-01-01T00:00:00Z",
+        ),
+    )
+    db.commit()
+    db.close()
+    with pytest.raises(RuntimeError, match="not idempotent"):
+        rehearsal.run(
+            catalog=catalog, state_root=state_root, sample_size=1, workdir=tmp_path / "reh"
+        )
+
+
+def test_rehearsal_refuses_to_run_without_partitions(tmp_path):
+    rehearsal = _load_script()
+    empty = tmp_path / "empty-catalog"
+    empty.mkdir()
+    try:
+        rehearsal.run(
+            catalog=empty,
+            state_root=_state_root(tmp_path),
+            sample_size=1,
+            workdir=tmp_path / "rehearsal",
+        )
+    except RuntimeError as exc:
+        assert "no acquired partitions" in str(exc) or "no single instrument" in str(exc)
+    else:
+        raise AssertionError("expected RuntimeError for an empty catalog")

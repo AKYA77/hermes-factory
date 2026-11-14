@@ -1,0 +1,1734 @@
+{
+  "acceptance": {
+    "all_original_release_gates_passed": false,
+    "backlog": "docs/completion-backlog.md",
+    "matrix": "docs/acceptance-matrix.md",
+    "milestones": {
+      "C0": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C1": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C2": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C3": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C4": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C5": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C6": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C7": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C8": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C9": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      }
+    },
+    "original_acceptance_full_scope": {
+      "T01": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T02": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T03": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T04": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T05": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T06": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T07": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T08": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T09": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T10": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T11": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T12": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T13": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T14": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T15": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T16": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T17": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T18": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T19": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T20": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T21": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T22": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T23": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T24": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T25": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T26": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T27": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T28": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T29": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T30": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      }
+    },
+    "scoped_new_tests": [
+      "T31",
+      "T32",
+      "T33",
+      "T34",
+      "T35",
+      "T36"
+    ]
+  },
+  "actual_api": {
+    "anonymous_rejected": true,
+    "scope": "real authenticated loopback API over synthetic campaign",
+    "status": "PASSED",
+    "top_five_boards": {
+      "AUDUSD": [
+        "79ea049e9798a29facfae7dde4a77ace1fd6de74f47045bbad793d3f291dcc92",
+        "05dcc8993b11aa6e7f3ee7207a5e93b95e55d488727246ffafbeabe5fb263b9a",
+        "e1ca6f65ffd8ab84dcb7754fb9603111521a813494df15a1f5f91e3efad8d752",
+        "d440c4f8af956e2fc4d99cf7c151ee9b5f4782c86a24320f41558f4066628c42",
+        "6bc034abb400ba6a9864adac339409558844b14a0b48ec9ed4fb41a07cb688b7"
+      ],
+      "EURUSD": [
+        "38fcd060208b13058b07d2b57183650878eef9594ff9e1ed99440bc48c1d3514",
+        "39f4294c5a25f88fcfe9d25fcfe79c86440f4657f38b4697d495bf06c8c1f1b1",
+        "81ede1c0f1b351d4d58e0b6267729dcf6a57beddc71c1256a517177be20086d4",
+        "52449b3cd4c7e799844757bc003e15118b52735d1fe33b1da62a77a87489566c",
+        "fec58f275bfa8e4145c66dcd7302f4afc266b5075aff7ff3ab0b376a97f3ba74"
+      ],
+      "GBPUSD": [
+        "81d477adc4fa94e81cbe947c1fd52bb36ce2fad59257a9f8e893eb79856be1e4",
+        "71dfd81822999eb71db49aaae81a7879c378935252d631d63c2b2693e0627361",
+        "f2482c26ccac119c480583ac8987d25a7c45b6ea0b05e513efdb8fe84999a820",
+        "a9d73ac9ddb56f12275a9035809130247c815cd6f6f62dd479d6ece85faaaaa7",
+        "e013c4b4a2a5abf85de9b32798166b5fa083814fc10589fc0a987a890ebf6447"
+      ],
+      "NZDUSD": [
+        "1a3b176a88a7a66710909af5ec7784880cef4598297cb0142d0a3dd58d88c8da",
+        "dbb9e62ddb34b8425626be9af007dcfa9ad15929df83a9e1fa94f64d223f29b8",
+        "d0caf31abf2c8762780a71741ce3a2f9b80a04f049b304ebcc9742678c43cdf3",
+        "9043644e1258360af78a9632b6d45c52ae993f4c2ac85d2ba58bf17c9208b6c3",
+        "613797019ebe77ce1bfe5c227260213730de1d48f6cb9dc12e69dbace3a42ac0"
+      ]
+    },
+    "unique_experiments_paginated": 1000,
+    "validated_boards_empty": true,
+    "wall_seconds": 1.776292447000742
+  },
+  "additional_checks": [
+    {
+      "command": "uv pip check",
+      "compatible_packages": 49,
+      "exit_code": 0
+    },
+    {
+      "command": "uv build --wheel",
+      "exit_code": 0,
+      "installed_scientific_distribution_approved": false,
+      "packaged_sql_migrations": [
+        1,
+        2,
+        3
+      ]
+    }
+  ],
+  "backfill": {
+    "dry_run": false,
+    "free_sources_only": true,
+    "historical_validation": false,
+    "limitations": [
+      "not calendar/source completeness approval",
+      "current month and provider outages may be incomplete",
+      "source corrections/periodic recaptures and independent-source reconciliation unfinished",
+      "failed download bytes remain preserved; manual recovery may be required before retry"
+    ],
+    "new_partition_attempts": 6,
+    "remaining_partitions": 0,
+    "requested_partitions": 8,
+    "results": [
+      {
+        "cpu_seconds": 68.106131637,
+        "dataset_hash": "eaf174f6780fb80e674438b7ea5c36fe98710ff05a009ddd547163cb00730119",
+        "key": "GBPUSD:2025-01",
+        "log": ".local/historical-backfill/GBPUSD-202501-1793723550490407943.log",
+        "peak_rss_bytes": 171188224,
+        "rows": 2660109,
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "source_sha256": "665455f96f31328ee663d1fe9088098c700fcbba8d85352cbc6fdb4f17cdaee1",
+        "state": "STRUCTURAL_IMPORT_PASS",
+        "wall_seconds": 70.55474513899753
+      },
+      {
+        "cpu_seconds": 83.51763665,
+        "dataset_hash": "eb96f6feeec011eb2f45a1443ca8cdacc48618f49133a6d94c002b0ce0fd70b8",
+        "key": "USDJPY:2025-01",
+        "log": ".local/historical-backfill/USDJPY-202501-1793723622481538023.log",
+        "peak_rss_bytes": 182874112,
+        "rows": 3467097,
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "source_sha256": "72834b8a2d3c553e76018a8a3724af64ac30de4ec7211875378887b73232a896",
+        "state": "STRUCTURAL_IMPORT_PASS",
+        "wall_seconds": 85.53618797600211
+      },
+      {
+        "cpu_seconds": 40.273317270999996,
+        "dataset_hash": "f7b5b7a95f585aa4f7936a311f2ad03d9727e9f5f71d993e4d26000164f67ee8",
+        "key": "USDCHF:2025-01",
+        "log": ".local/historical-backfill/USDCHF-202501-1793723709430308213.log",
+        "peak_rss_bytes": 154554368,
+        "rows": 1627731,
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "source_sha256": "ac8cfb5e93ed40588198b2c80faf0dfaa4003d2e2f03cafc5e097b734d58fc79",
+        "state": "STRUCTURAL_IMPORT_PASS",
+        "wall_seconds": 42.399681037000846
+      },
+      {
+        "cpu_seconds": 62.972041274,
+        "dataset_hash": "1fbb7f213c466db7540d04431534ac349ca68cc953d8b4d0288d7a45457021b9",
+        "key": "USDCAD:2025-01",
+        "log": ".local/historical-backfill/USDCAD-202501-1793723753280710919.log",
+        "peak_rss_bytes": 168697856,
+        "rows": 2494413,
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "source_sha256": "45ae9034b12d0fb5ff16aad8fde01118827d097903ce2491dd3050b666964dd8",
+        "state": "STRUCTURAL_IMPORT_PASS",
+        "wall_seconds": 65.18151523000051
+      },
+      {
+        "cpu_seconds": 41.871216223000005,
+        "dataset_hash": "1520c4173abb5823a4e36b23f96f1b0e43b135a7c8d767ed25de4b4b8c294b6a",
+        "key": "AUDUSD:2025-01",
+        "log": ".local/historical-backfill/AUDUSD-202501-1793723819894698674.log",
+        "peak_rss_bytes": 155176960,
+        "rows": 1668426,
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "source_sha256": "bcb94bfa9d2da041e2a4ba28f2c18efcf32cfad1e92a37dfe3c3abeac633b8d9",
+        "state": "STRUCTURAL_IMPORT_PASS",
+        "wall_seconds": 43.98653697999907
+      },
+      {
+        "cpu_seconds": 32.476239639,
+        "dataset_hash": "cefa1d6d328dfc76f96288188628bade0a9317736bd6e88eee23264a42fe18e1",
+        "key": "NZDUSD:2025-01",
+        "log": ".local/historical-backfill/NZDUSD-202501-1793723865380041032.log",
+        "peak_rss_bytes": 150536192,
+        "rows": 1346505,
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "source_sha256": "f34788e0b34279f46ae508f86a219acd98c8d1fa7c40b25b516a658b5de86c1e",
+        "state": "STRUCTURAL_IMPORT_PASS",
+        "wall_seconds": 33.987195415000315
+      }
+    ],
+    "source_context": {
+      "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+      "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+    },
+    "source_context_unchanged": true,
+    "status": "STRUCTURAL_BACKFILL_PROGRESS",
+    "structurally_imported_partitions": 8,
+    "through_provider_month": "2025-01"
+  },
+  "branch": "build/initial-factory",
+  "campaign_cache_parity": {
+    "after_commit": "32fe84fb35d8b7c6a40376b3d4afedfc5dcaa648",
+    "before_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+    "combined_normalized_hash": "dd95add118a94f3af6c6e5920362b73d4e7c24f8c691a62470fa2a7346147faa",
+    "excluded_field": "runtime_provenance: actual Git/source versions differ; all scientific outputs compared",
+    "normalized_results_identical": true,
+    "status": "PASS",
+    "strategies": 1000
+  },
+  "campaign_cpu_scope": "sum of batch-worker CPU; parent setup and verification excluded",
+  "campaign_host_note": "CPU-time comparison before/after is observed; baseline overlapped source imports. No production throughput claim.",
+  "campaign_source_commit": "32fe84fb35d8b7c6a40376b3d4afedfc5dcaa648",
+  "completed_increments": [
+    "Gate 0 baseline reconciliation",
+    "bounded causal features and native delivery",
+    "compact reconstructable diagnostics",
+    "independent USD fixture cash/native inventory checks",
+    "bounded persistent TPE feedback from verified training artifacts",
+    "recurring registered-region admission/restart recovery and CPU accounting",
+    "operator research controls, cancellation and parent-death/resource guards",
+    "eight-instrument January 2025 free-source structural import and checkpoint/retry recovery",
+    "canonical provenance/deep identity guards and byte-bound proof reuse",
+    "failed strategy registry and quarantined engine-contract artifacts",
+    "currency-label/volume-grid/protective-level/quarter-boundary guards"
+  ],
+  "coverage_plan": {
+    "dry_run": true,
+    "remaining_partitions": 176,
+    "requested_partitions": 184,
+    "structurally_imported_partitions": 8,
+    "through_provider_month": "2026-11"
+  },
+  "directive": {
+    "path": "docs/source/Completion_Directive_2026-11-03.md",
+    "read_completely": true,
+    "reconciled_against_commit": "2f1e50517f71eed123e4b0f9712d19a3f56d1eca",
+    "sha256": "18db0072fc5d77bfb24e9244dc29414b0ab6b4c16ccad25b62468dc55f7928b7"
+  },
+  "full_milestones_completed": [],
+  "github": {
+    "branch_rules": "BLOCKED: integration HTTP403",
+    "current_head_ci": "pending push; check PR for final observed results",
+    "prior_code_ci": {
+      "commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+      "dashboard": "PASS",
+      "dependency_audit": "FAIL",
+      "python": "PASS"
+    },
+    "private_verified": true
+  },
+  "historical_strategy_validation": false,
+  "host": {
+    "cpu_quota": "400000 100000",
+    "memory_limit_bytes": 34359738368,
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "target_contabo_verified": false
+  },
+  "isolated_migration_restore": {
+    "experiments_preserved": 15,
+    "schema_versions_after": [
+      [
+        1
+      ],
+      [
+        2
+      ],
+      [
+        3
+      ]
+    ],
+    "schema_versions_before": [
+      [
+        1
+      ],
+      [
+        2
+      ]
+    ],
+    "scope": "isolated schema2 to3 upgrade only; not live production rollback",
+    "source_backup_unchanged": true,
+    "status": "PASS_ISOLATED_MIGRATION_RESTORE",
+    "strategies_preserved": 15
+  },
+  "observed_at_utc": "2026-11-03T17:40:13.462814+00:00",
+  "peak_system_memory_bytes": null,
+  "previous_report": "reports/checkpoints/training-research-61489ba.json",
+  "prior_native_real_feed_probes": [
+    {
+      "actual_fills": 0,
+      "batch_rows": 8192,
+      "cost_mode": "historical-reference/v1, unused by orders",
+      "cpu_seconds": 4.0315259999999995,
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "delivery": "materialized reference",
+      "engine": "nautilus_trader/1.231.0",
+      "full_strategy_replays": 0,
+      "host": {
+        "cpu_quota": "400000 100000",
+        "memory_limit_bytes": "34359738368",
+        "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+      },
+      "instrument": "EURUSD",
+      "monetary_profile_approved": false,
+      "native_feed_replays": 1,
+      "os_page_cache": "uncontrolled; no cold-cache claim",
+      "parameter_proposals": 0,
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "peak_rss_bytes": 360071168,
+      "result_hash": "e48085c509739d6f38502474a8c3ebec67a99cc37807be9fabcfe5f2f2a8cff7",
+      "rows": 200000,
+      "scope": "real quote delivery through native Nautilus; NO ORDERS, NO historical strategy validation",
+      "signal_screens": 0,
+      "source_context": {
+        "git_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+        "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97"
+      },
+      "source_context_unchanged": true,
+      "source_first_ns": 1735768814647000000,
+      "source_last_ns": 1738360797318000000,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "spool_bytes": 6400000,
+      "status": "PASS_FEED_PLUMBING_ONLY",
+      "synthetic_source": false,
+      "target_8gb_vps_verified": false,
+      "wall_seconds": 3.858894099999816
+    },
+    {
+      "actual_fills": 0,
+      "batch_rows": 8192,
+      "cost_mode": "historical-reference/v1, unused by orders",
+      "cpu_seconds": 5.136907999999999,
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "delivery": "materialized reference",
+      "engine": "nautilus_trader/1.231.0",
+      "full_strategy_replays": 0,
+      "host": {
+        "cpu_quota": "400000 100000",
+        "memory_limit_bytes": "34359738368",
+        "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+      },
+      "instrument": "EURUSD",
+      "monetary_profile_approved": false,
+      "native_feed_replays": 1,
+      "os_page_cache": "uncontrolled; no cold-cache claim",
+      "parameter_proposals": 0,
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "peak_rss_bytes": 358715392,
+      "result_hash": "e48085c509739d6f38502474a8c3ebec67a99cc37807be9fabcfe5f2f2a8cff7",
+      "rows": 200000,
+      "scope": "real quote delivery through native Nautilus; NO ORDERS, NO historical strategy validation",
+      "signal_screens": 0,
+      "source_context": {
+        "git_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+        "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97"
+      },
+      "source_context_unchanged": true,
+      "source_first_ns": 1735768814647000000,
+      "source_last_ns": 1738360797318000000,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "spool_bytes": 6400000,
+      "status": "PASS_FEED_PLUMBING_ONLY",
+      "synthetic_source": false,
+      "target_8gb_vps_verified": false,
+      "wall_seconds": 4.937518454999008
+    },
+    {
+      "actual_fills": 0,
+      "batch_rows": 8192,
+      "cost_mode": "historical-reference/v1, unused by orders",
+      "cpu_seconds": 4.269414,
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "delivery": "native chunk iterator",
+      "engine": "nautilus_trader/1.231.0",
+      "full_strategy_replays": 0,
+      "host": {
+        "cpu_quota": "400000 100000",
+        "memory_limit_bytes": "34359738368",
+        "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+      },
+      "instrument": "EURUSD",
+      "monetary_profile_approved": false,
+      "native_feed_replays": 1,
+      "os_page_cache": "uncontrolled; no cold-cache claim",
+      "parameter_proposals": 0,
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "peak_rss_bytes": 330231808,
+      "result_hash": "e48085c509739d6f38502474a8c3ebec67a99cc37807be9fabcfe5f2f2a8cff7",
+      "rows": 200000,
+      "scope": "real quote delivery through native Nautilus; NO ORDERS, NO historical strategy validation",
+      "signal_screens": 0,
+      "source_context": {
+        "git_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+        "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97"
+      },
+      "source_context_unchanged": true,
+      "source_first_ns": 1735768814647000000,
+      "source_last_ns": 1738360797318000000,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "spool_bytes": 6400000,
+      "status": "PASS_FEED_PLUMBING_ONLY",
+      "synthetic_source": false,
+      "target_8gb_vps_verified": false,
+      "wall_seconds": 4.078945565999675
+    },
+    {
+      "actual_fills": 0,
+      "batch_rows": 8192,
+      "cost_mode": "historical-reference/v1, unused by orders",
+      "cpu_seconds": 3.9077979999999997,
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "delivery": "native chunk iterator",
+      "engine": "nautilus_trader/1.231.0",
+      "full_strategy_replays": 0,
+      "host": {
+        "cpu_quota": "400000 100000",
+        "memory_limit_bytes": "34359738368",
+        "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+      },
+      "instrument": "EURUSD",
+      "monetary_profile_approved": false,
+      "native_feed_replays": 1,
+      "os_page_cache": "uncontrolled; no cold-cache claim",
+      "parameter_proposals": 0,
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "peak_rss_bytes": 330977280,
+      "result_hash": "e48085c509739d6f38502474a8c3ebec67a99cc37807be9fabcfe5f2f2a8cff7",
+      "rows": 200000,
+      "scope": "real quote delivery through native Nautilus; NO ORDERS, NO historical strategy validation",
+      "signal_screens": 0,
+      "source_context": {
+        "git_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+        "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97"
+      },
+      "source_context_unchanged": true,
+      "source_first_ns": 1735768814647000000,
+      "source_last_ns": 1738360797318000000,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "spool_bytes": 6400000,
+      "status": "PASS_FEED_PLUMBING_ONLY",
+      "synthetic_source": false,
+      "target_8gb_vps_verified": false,
+      "wall_seconds": 3.7470814550015348
+    },
+    {
+      "actual_fills": 0,
+      "batch_rows": 8192,
+      "cost_mode": "historical-reference/v1, unused by orders",
+      "cpu_seconds": 37.345567,
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "delivery": "native chunk iterator",
+      "engine": "nautilus_trader/1.231.0",
+      "full_strategy_replays": 0,
+      "host": {
+        "cpu_quota": "400000 100000",
+        "memory_limit_bytes": "34359738368",
+        "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+      },
+      "instrument": "EURUSD",
+      "monetary_profile_approved": false,
+      "native_feed_replays": 1,
+      "os_page_cache": "uncontrolled; no cold-cache claim",
+      "parameter_proposals": 0,
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "peak_rss_bytes": 329035776,
+      "result_hash": "cb262a97901c15f9615f378b3559c71ad98a6f7c6d8851125f7e8e367bb54041",
+      "rows": 2283239,
+      "scope": "real quote delivery through native Nautilus; NO ORDERS, NO historical strategy validation",
+      "signal_screens": 0,
+      "source_context": {
+        "git_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+        "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97"
+      },
+      "source_context_unchanged": true,
+      "source_first_ns": 1735768814647000000,
+      "source_last_ns": 1738360797318000000,
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "spool_bytes": 73063648,
+      "status": "PASS_FEED_PLUMBING_ONLY",
+      "synthetic_source": false,
+      "target_8gb_vps_verified": false,
+      "wall_seconds": 37.17809812899941
+    },
+    {
+      "actual_fills": 0,
+      "batch_rows": 8192,
+      "cost_mode": "historical-reference/v1, unused by orders",
+      "cpu_seconds": 94.92445400000001,
+      "dataset_hash": "ab3f273988dcb7b2aaff21168bc9d0f6afe624d8e18856b73b37a93b975ae755",
+      "delivery": "native chunk iterator",
+      "engine": "nautilus_trader/1.231.0",
+      "full_strategy_replays": 0,
+      "host": {
+        "cpu_quota": "400000 100000",
+        "memory_limit_bytes": "34359738368",
+        "platform": "Linux-6.18.57-x86_64-with-glibc2.41"
+      },
+      "instrument": "XAUUSD",
+      "monetary_profile_approved": false,
+      "native_feed_replays": 1,
+      "os_page_cache": "uncontrolled; no cold-cache claim",
+      "parameter_proposals": 0,
+      "parquet_sha256": "e0dd55dd37c7651c65c1fbd0308ebc3d090f4100b4d915ced525a2639e3c23d0",
+      "peak_rss_bytes": 374054912,
+      "result_hash": "219b2c69508d3d53d36a2862c3e1a67271613b89bb09c65dfddf06182f02bc5c",
+      "rows": 5798226,
+      "scope": "real quote delivery through native Nautilus; NO ORDERS, NO historical strategy validation",
+      "signal_screens": 0,
+      "source_context": {
+        "git_commit": "39e52bb6ee3cea72eceece48d5b81bf058381862",
+        "source_sha256": "e23e631cabbfe48b6497ed058d06ff1ba3d67c0ea1d299354a0a10c444e96b97"
+      },
+      "source_context_unchanged": true,
+      "source_first_ns": 1735772400455000000,
+      "source_last_ns": 1738360796320000000,
+      "source_sha256": "8653c8c14951e5b84315090f7e813ff38325223b59e1ad8c702e4e4fb78af51d",
+      "spool_bytes": 185543232,
+      "status": "PASS_FEED_PLUMBING_ONLY",
+      "synthetic_source": false,
+      "target_8gb_vps_verified": false,
+      "wall_seconds": 94.73904977799975
+    }
+  ],
+  "production_ready": false,
+  "proof_cache_probe": {
+    "dataset_hash": "23b2403fc79e45f5d6dd725fd770307fc702f111217eaa590c8b41b7e6de1d93",
+    "manifest_equal_cache_on_off": true,
+    "manifest_hash": "0d919a795c838c0b46d7cfe2abe2d8e0039ac227c301df828882945000fc52c2",
+    "measurements": [
+      {
+        "byte_hashes_checked_every_call": true,
+        "cache_hits": 0,
+        "cpu_seconds": 0.7093610370000001,
+        "proof_cache_entries": 0,
+        "uncached_semantic_checks": 100,
+        "verification_calls": 100,
+        "wall_seconds": 0.7129277559979528
+      },
+      {
+        "byte_hashes_checked_every_call": true,
+        "cache_hits": 99,
+        "cpu_seconds": 0.019603656999999997,
+        "proof_cache_entries": 32,
+        "uncached_semantic_checks": 1,
+        "verification_calls": 100,
+        "wall_seconds": 0.019609431001299527
+      },
+      {
+        "byte_hashes_checked_every_call": true,
+        "cache_hits": 99,
+        "cpu_seconds": 0.01780731099999988,
+        "proof_cache_entries": 32,
+        "uncached_semantic_checks": 1,
+        "verification_calls": 100,
+        "wall_seconds": 0.0178154919994995
+      },
+      {
+        "byte_hashes_checked_every_call": true,
+        "cache_hits": 0,
+        "cpu_seconds": 0.7522548440000001,
+        "proof_cache_entries": 0,
+        "uncached_semantic_checks": 100,
+        "verification_calls": 100,
+        "wall_seconds": 0.753369203001057
+      }
+    ],
+    "os_page_cache": "uncontrolled; no cold-cache claim",
+    "process_peak_rss_bytes": 101163008,
+    "rows_per_verification": 480,
+    "scope": "synthetic 480-row canonical verification only; no strategy/historical/VPS throughput",
+    "source_context": {
+      "git_commit": "32fe84fb35d8b7c6a40376b3d4afedfc5dcaa648",
+      "source_sha256": "3e6bfcd777c9d1acd6b55f8e613e0d1d32665b999bb1c3e82f9226196d6701d2"
+    },
+    "source_context_unchanged": true,
+    "status": "PASS_VERIFICATION_PARITY"
+  },
+  "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
+  "raw_market_data_committed": false,
+  "real_quotes_structurally_verified": 21345746,
+  "real_source_imports": [
+    {
+      "dataset_hash": "1520c4173abb5823a4e36b23f96f1b0e43b135a7c8d767ed25de4b4b8c294b6a",
+      "first_ns": 1735769041721000000,
+      "gap_count_over_60s": 285,
+      "import_measurement": {
+        "cpu_seconds": 41.871216223000005,
+        "peak_rss_bytes": 155176960,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 43.98653697999907
+      },
+      "instrument": "AUDUSD",
+      "latest_verified_ns": 1738360734122000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "28de1b4743649a4261cf9733f774736c46be0034dcadfccce4476194202cf880",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "1f20e14cd4b2bee8886b15abda7f7af59e50c65909c03d0ce00acfdcffc891fb",
+      "readback_exact": true,
+      "rows": 1668426,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "bcb94bfa9d2da041e2a4ba28f2c18efcf32cfad1e92a37dfe3c3abeac633b8d9",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/audusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "first_ns": 1735768814647000000,
+      "gap_count_over_60s": 201,
+      "import_measurement": {
+        "cpu_seconds": 54.982249047,
+        "peak_rss_bytes": null,
+        "prior_resource_receipt": "reports/checkpoints/accounting-data-2f1e505.json",
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": null,
+        "wall_seconds": 54.55692046799959
+      },
+      "instrument": "EURUSD",
+      "latest_verified_ns": 1738360797318000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "47db421efed0291f98f0e1afe1b8deb51ce5201be414a76f0b266f86f0148f9e",
+      "readback_exact": true,
+      "rows": 2283239,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "eaf174f6780fb80e674438b7ea5c36fe98710ff05a009ddd547163cb00730119",
+      "first_ns": 1735768883324000000,
+      "gap_count_over_60s": 171,
+      "import_measurement": {
+        "cpu_seconds": 68.106131637,
+        "peak_rss_bytes": 171188224,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 70.55474513899753
+      },
+      "instrument": "GBPUSD",
+      "latest_verified_ns": 1738360796085000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "b1dc2f120f1baec36a835048435a558c16bb6a74dccbf8564183f587c9652be7",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "a4915ba2bcbc67b463505043c61d14cb6ef5d626c6ec7cda6f8d7392b84ab8a8",
+      "readback_exact": true,
+      "rows": 2660109,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "665455f96f31328ee663d1fe9088098c700fcbba8d85352cbc6fdb4f17cdaee1",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/gbpusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "cefa1d6d328dfc76f96288188628bade0a9317736bd6e88eee23264a42fe18e1",
+      "first_ns": 1735768878560000000,
+      "gap_count_over_60s": 352,
+      "import_measurement": {
+        "cpu_seconds": 32.476239639,
+        "peak_rss_bytes": 150536192,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 33.987195415000315
+      },
+      "instrument": "NZDUSD",
+      "latest_verified_ns": 1738360796189000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "09ef3520c8758bba4a749b5a21b55254afe62d318704292282d1b396f06bff02",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "b7d5438b7ae7741efa77c8819a31d02496d761e79013fc05b19c8cdaf7c819b8",
+      "readback_exact": true,
+      "rows": 1346505,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "f34788e0b34279f46ae508f86a219acd98c8d1fa7c40b25b516a658b5de86c1e",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/nzdusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "1fbb7f213c466db7540d04431534ac349ca68cc953d8b4d0288d7a45457021b9",
+      "first_ns": 1735769051542000000,
+      "gap_count_over_60s": 206,
+      "import_measurement": {
+        "cpu_seconds": 62.972041274,
+        "peak_rss_bytes": 168697856,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 65.18151523000051
+      },
+      "instrument": "USDCAD",
+      "latest_verified_ns": 1738360771940000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "1d540d9fd5e8cd9b00055abeb6c901ba3826f43ac31dd414d97b07c171d655a1",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "c3ecb3dade3562a411e0c8508d237fabc0440a6b9cca4b4d1f53730391af3e36",
+      "readback_exact": true,
+      "rows": 2494413,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "45ae9034b12d0fb5ff16aad8fde01118827d097903ce2491dd3050b666964dd8",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/usdcad/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "f7b5b7a95f585aa4f7936a311f2ad03d9727e9f5f71d993e4d26000164f67ee8",
+      "first_ns": 1735769041721000000,
+      "gap_count_over_60s": 285,
+      "import_measurement": {
+        "cpu_seconds": 40.273317270999996,
+        "peak_rss_bytes": 154554368,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 42.399681037000846
+      },
+      "instrument": "USDCHF",
+      "latest_verified_ns": 1738360797398000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "12c32824ada5acdb808b45751298bb86f69b0dedcd1b721070688429bad61355",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "7e92d80a5354e86e819278f582fdd0bcda19a5384469ce8dc0d4ac46cd5668bc",
+      "readback_exact": true,
+      "rows": 1627731,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "ac8cfb5e93ed40588198b2c80faf0dfaa4003d2e2f03cafc5e097b734d58fc79",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/usdchf/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "eb96f6feeec011eb2f45a1443ca8cdacc48618f49133a6d94c002b0ce0fd70b8",
+      "first_ns": 1735769041721000000,
+      "gap_count_over_60s": 193,
+      "import_measurement": {
+        "cpu_seconds": 83.51763665,
+        "peak_rss_bytes": 182874112,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 85.53618797600211
+      },
+      "instrument": "USDJPY",
+      "latest_verified_ns": 1738360798140000000,
+      "observed_price_quantum": "0.001",
+      "parquet_sha256": "e34ab70f65aba69dcd83ac726df67d3750fe8600e9d15e5ba44c79860a94a170",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "19cb5528afd50b63586a046845773fb39c502aaff97cb395008999703cd2a359",
+      "readback_exact": true,
+      "rows": 3467097,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "72834b8a2d3c553e76018a8a3724af64ac30de4ec7211875378887b73232a896",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/usdjpy/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "ab3f273988dcb7b2aaff21168bc9d0f6afe624d8e18856b73b37a93b975ae755",
+      "first_ns": 1735772400455000000,
+      "gap_count_over_60s": 26,
+      "import_measurement": {
+        "cpu_seconds": 133.355523369,
+        "peak_rss_bytes": null,
+        "prior_resource_receipt": "reports/checkpoints/accounting-data-2f1e505.json",
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": null,
+        "wall_seconds": 132.22431828000026
+      },
+      "instrument": "XAUUSD",
+      "latest_verified_ns": 1738360796320000000,
+      "observed_price_quantum": "0.001",
+      "parquet_sha256": "e0dd55dd37c7651c65c1fbd0308ebc3d090f4100b4d915ced525a2639e3c23d0",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "885dd09fec86cc438fe894709ec884d1db8ebd2b3d14ffc738afd939049f47a0",
+      "readback_exact": true,
+      "rows": 5798226,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "8653c8c14951e5b84315090f7e813ff38325223b59e1ad8c702e4e4fb78af51d",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/xauusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    }
+  ],
+  "recurring_research_probe": {
+    "budgeted_trials": 16,
+    "cgroup_cpu_max": "400000 100000",
+    "cgroup_memory_max": "34359738368",
+    "cycles": 17,
+    "dataset_hash": "a66e2efb10fa446a659273303b90da0b7d34a10594ac8cf09d66d0b5224218f4",
+    "disk_state_bytes": 12741669,
+    "engine": "nautilus_trader/1.231.0",
+    "fill_policy": "adverse-fill/v2",
+    "full_successful_native_replays": 15,
+    "independent_validations": 0,
+    "instrument": "EURUSD",
+    "operation_ready": false,
+    "parent_peak_rss_bytes": 128237568,
+    "paused_admission_verified": true,
+    "peak_system_memory_bytes": null,
+    "protocol_hash": "3af95f7d54c96c618582ccdab0540375c26d81d8fc217929d8ba888c302ef914",
+    "quote_events_replayed": 30000,
+    "rows_per_replay": 2000,
+    "scope": "synthetic training only; no independent evaluation, target VPS or multi-day soak",
+    "source_context": {
+      "git_commit": "6728371ddaf4721594608d02f58f92b12a26ac02",
+      "source_sha256": "3f40e6eae607a63650a6d1ef85421e34f9840ad193e70659f593dff942f88c75"
+    },
+    "source_context_unchanged": true,
+    "state": {
+      "distinct_referenced_simulations": 15,
+      "exact_duplicates_skipped": 1,
+      "independent_validations": 0,
+      "limitations": [
+        "not a multi-day soak",
+        "budgets checked between jobs; one job may overshoot a soft CPU budget",
+        "explicit registered regions only; no approved real monetary profiles",
+        "all families, automated improvement/selection and screen-rejection audits unfinished"
+      ],
+      "measured_generation_cpu_seconds": 0.09652644900000018,
+      "measured_replay_cpu_seconds": 21.837058,
+      "outcomes": [
+        {
+          "count": 12,
+          "outcome": "COMPLETE"
+        },
+        {
+          "count": 4,
+          "outcome": "PRUNED"
+        }
+      ],
+      "paused": false,
+      "protocols": 1,
+      "scope": "synthetic authorized training only; no independent validation",
+      "trials_considered": 16
+    },
+    "status": "PASS_BOUNDED_SYNTHETIC_RESEARCH",
+    "total_parent_plus_children_cpu_seconds": 23.733201,
+    "wall_seconds": 24.42092297900126,
+    "warnings": [
+      "CPU includes measured benchmark parent and subprocesses, excluding CLI startup before main",
+      "OS page cache uncontrolled",
+      "monetary fixtures are synthetic",
+      "budgets do not constitute an 8GB enforcement/soak proof"
+    ],
+    "window": {
+      "end_ns": 1735809540000000001,
+      "role": "train_only",
+      "start_ns": 1735689600000000000
+    },
+    "worker_peak_rss_bytes": 295387136
+  },
+  "release_tag": null,
+  "remaining": [
+    "176 planned 2025/2026 provider-month partitions not imported; current month availability must be verified",
+    "source-specific calendars/gaps, correction recapture and independent-source comparison",
+    "approved real Gold/JPY/Forex monetary constraints, dated conversion and native cash-rounding contract",
+    "multi-month dataset views, source-mapped forensic references and large artifact/report pipeline",
+    "persistent shared features/incremental append and calibrated screening/reject audits",
+    "automatic data/region discovery, full families and cohort-guided parent-child improvement",
+    "independent annual/OOS/three-month WFO/holdout/stability/robustness and comparable boards",
+    "full dashboard/browser workflows and paper observation",
+    "production install/update/rollback/off-host backup/signed provenance and actual 4-vCPU/8-GB Ubuntu soak",
+    "unresolved dependency-security findings and all mandatory release gates"
+  ],
+  "resolved_failed_attempts": [
+    {
+      "cause": "benchmark harness incorrectly treated duplicate-only idle cycle as budget exhaustion",
+      "fix_commit": "6728371",
+      "probe_exit_code": 1,
+      "rerun_exit_code": 0,
+      "retained_state": ".local/directive-recurring-probe",
+      "source_commit": "018a058",
+      "trials_at_abort": 12
+    },
+    {
+      "corrected_result": "PASS in final suite",
+      "initial_result": "FAIL: missing Path import in child test script",
+      "test": "kernel parent-death harness"
+    },
+    {
+      "final": "PASS",
+      "reason": "currency-identity guard rejected a malformed test profile earlier; fixture now uses a valid mismatched profile to retain the worker-identity test",
+      "scope": "test fixture"
+    },
+    {
+      "final": "PASS",
+      "reason": "initial command used system Python without Arrow; rerun with .venv Python passed",
+      "scope": "migration rehearsal command"
+    }
+  ],
+  "restore": {
+    "experiments": 1000,
+    "files": 1016,
+    "jobs": 1000,
+    "restore_verified": true,
+    "scope": "isolated copy; active state unchanged"
+  },
+  "security": {
+    "checks_disabled": false,
+    "decision": "docs/decisions/0007-dependency-security-assessment.md",
+    "findings": [
+      "PYSEC-2026-4217",
+      "GHSA-gcqx-w48m-w2h4"
+    ],
+    "ignored_advisories": [],
+    "npm_audit_exit_code": 1,
+    "npm_chain_findings": 4,
+    "pip_audit_exit_code": 1,
+    "status": "FAIL_RELEASE_BLOCKED"
+  },
+  "source_context": {
+    "git_commit": "e75c0bafdac3d7815645437710895592464a7325",
+    "source_sha256": "74d34e1302ccfb0e1a3d7d53da4902dc93f446609c6c85be4a0e5e7ba08b10fa"
+  },
+  "status": "NOT_READY",
+  "synthetic_regression_campaign": {
+    "batch_size": 25,
+    "checks": {
+      "assertion_failures": [],
+      "completed_replays": 1000,
+      "coverage": [
+        {
+          "family": "breakout",
+          "instrument": "AUDUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "breakout",
+          "instrument": "AUDUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "AUDUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "AUDUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "momentum",
+          "instrument": "AUDUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "momentum",
+          "instrument": "AUDUSD",
+          "runs": 42,
+          "timeframe": "M5"
+        },
+        {
+          "family": "breakout",
+          "instrument": "EURUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "breakout",
+          "instrument": "EURUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "EURUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "EURUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "momentum",
+          "instrument": "EURUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "momentum",
+          "instrument": "EURUSD",
+          "runs": 42,
+          "timeframe": "M5"
+        },
+        {
+          "family": "breakout",
+          "instrument": "GBPUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "breakout",
+          "instrument": "GBPUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "GBPUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "GBPUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "momentum",
+          "instrument": "GBPUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "momentum",
+          "instrument": "GBPUSD",
+          "runs": 42,
+          "timeframe": "M5"
+        },
+        {
+          "family": "breakout",
+          "instrument": "NZDUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "breakout",
+          "instrument": "NZDUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "NZDUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "mean_reversion",
+          "instrument": "NZDUSD",
+          "runs": 41,
+          "timeframe": "M5"
+        },
+        {
+          "family": "momentum",
+          "instrument": "NZDUSD",
+          "runs": 42,
+          "timeframe": "M1"
+        },
+        {
+          "family": "momentum",
+          "instrument": "NZDUSD",
+          "runs": 42,
+          "timeframe": "M5"
+        }
+      ],
+      "job_states": [
+        {
+          "count": 1000,
+          "state": "COMPLETED"
+        }
+      ],
+      "totals": {
+        "completed_trades": 14620,
+        "open_at_sample_end": 568,
+        "quote_events_replayed": 480000,
+        "signals_screened": 261856,
+        "skipped_opportunities": 246164
+      },
+      "unique_specs": 1000,
+      "zero_trade_runs": [
+        "f995ebde56fb4c4f621a3289da740cb33fc029adb6e6f3736390f8f91ea25b4d",
+        "fb91807e53c2295ae007ca706ba9be3950c101cbd6aea9343a1275a1f32a5176",
+        "1f681a1390b07af011f179aeff01ce445151151001794fa8620bd1feb4bc0190",
+        "3d5bcae01d1554b32386265be3979a0601a3ba7f23408c298d3eb1eb5063330b",
+        "8ca3385efd09785f74ec72bfa927c8e2438aa6fc46238ede64cf5f0bb408ad52",
+        "9357fdf5044b78c78c3d180279f57c30e94599e8510bab17f48c337a9cb2f86d",
+        "a4d6b4a4284059f3bff1878c0b2e063e49c35e46ba15f3beac8f5b7dbc7d31ca",
+        "435f880ab6d102315796d4fe66c36459d9cb466d2de62a8f530c0384f14d8690",
+        "6071b2f197ba9c5598fafe6221be35e32a6774ed4227764866bca76b89e0497f",
+        "45b53b3e6551f39e6d6e74d9160f1e82c278427e96ecf3b04028cb5901b2370c",
+        "5f3eb136babd30d2f4aa5ea01fe6b3c58aa0d7730ad63b28309ec6915783a40f",
+        "50e2b073ede6766a2e1e3f7890b8d3ae879dc9106355c3ff37dae86caf17d061",
+        "6dacef8c170a1975b2ca81c83b543e9bd5a662426225bfa76f3ccf37f9206ddd",
+        "cc2631beb5641a00dfd5b5a5d57ebf30b69dbc361d95be2c0fa315fd660a7a2a",
+        "4ba6689702ca4a724efab9cff0199e94ca60beae9efdc4dc834222b6c6690cb9",
+        "0cfdff297549f60c36f75437d4d80a54a94dbde4fc612b1a61a70579c39acf74",
+        "9d396845b7e16a865c0cc1b2c5c4664989d529030b01486c86e03c5ae83d82e6",
+        "cbe706175d5a6de91ebdf4a04d297a9e94fd46fd8ec65fc96e79f0d683a81230",
+        "59ce7d9e16537291e74756b6ec12abe66b527fe58eb46031370df067a760880e",
+        "2c7170a1d6467a9bfd1463814c6537a61f7417888d5d0aea27e87b76ed20c15f",
+        "086aa6fc9b43481a85e7543f24acf3006a3239aaf8df8337e8ce7a829122a40d",
+        "6731f2ad1c32cae2977fd03f88095bffaaf885fee2589f937d29e0b71aaf9cbc",
+        "c57835c33e9509c2cde1d66f960adf68f7ee369924ac345c0cf52e74e947367d",
+        "c21a3607237c40aaac8393603e79a1068f72970455e03e1cf7d4278c11fcbeea",
+        "4fc9f4e0a8e6eec5510ee74e55917d63ec9de73f2baf4a8b0462463c204ad405",
+        "e933af81e5495ec6c0a5ccc53f5f67b2cc0c61b0ce7cbedc1506130a234baeb5",
+        "666347c230f95e2455d531ef2d1e87910fd24d59cd113831c1ad64b03f95c21e",
+        "a3e8f4ac9a932234a6945015a6ad50d199f2fb668e58aa9c03f702165e28d233",
+        "60a32a85fafe151051b253b34fdbc32142d2e261f4a5e1540a0f2cc1a632fb10",
+        "b5a0a6f2aaff4fc7ac7438faf1c2d48dfb58448bcca9cd71633792773af1acba",
+        "1f13457b8870a79acc1d8622e4d9b7064486d82e372717f9d996443bd60e417c",
+        "4b705905013e8372fd76d3fd97ccdc0ae8390709a498caab9352fc2aa464f03b",
+        "d92edec342bbb15ce94da66a409a2c2871282c6931d76a3d0c37da0f5a45a699",
+        "0f345c74086d20410b80ebd198670b3b91ffb2e61f12845de07eefeb0d5a9b32",
+        "391aeb06ed760a07aca7bdc4221cbbb058685d23d73215ef0ee166f4df11d2c7",
+        "3db6906a5f790c1bcda2d038062316b4e220681a1911b700e0ffe989740c583e",
+        "975912ba6ab3ec8142239ded985a546e3fb3694b1452e70646a13b1d8ba40e5e",
+        "7d4c245f80d50e587a097038c15a4bcadb10188786a10f0c7df8270c09d838fc",
+        "cff26d5969f906a49853425fa6a4e6b22c867d291df81acd8c16cb4a030a598b",
+        "5a573dc20eb05299bd50ce4afd9888c5d9ea6c7d7de780ed5613c8afce17366b",
+        "992b4db7b5853f3acec0cbe8e6d287edabad2f193a67aa1fad3a80348f8ba227",
+        "d24e826d921f25fbc0ee9eb3b9ebe89df4c382c58400b0f2c8b54a077f486695",
+        "d642a69e86115b37984b7f072bb48331292f404af843e31dde3a5b1e99c0cc18",
+        "b0f9faaba454c9856558ad71a506bd4021718c977847cdc9e8144abfc54b4d20",
+        "230e647f60693a8fb7179213fe2470c5df5be080b488610dbb4e5617598adf80",
+        "4397160cb778db131ebfd07cfe888be273c2bd5a6f8b63d744bfc591b0eeb038",
+        "46a33886fb72deab3cd857bccb1c10ab878733a5feea92ff501da8eee2f39187",
+        "c7c44feb7dafca2bac2835651f9b9702896077a8a628796cf1a29ab5ed8a4c4e",
+        "16743f9431604f3a387fb71daf2cf7094bc783ebb0e7acb9b4de9140e1593883",
+        "6530ef5e9b27d9bb851a6eaf2fc3348c3c4ef4e899c7cda76d697bfdcfa24d1e",
+        "4886289aa5e9169f2093476725b92b1b8954f8ecca34cd52921ff81a4285bd79",
+        "15c5244519b835a9e72285c471f334348436aa625829bc2496bbd4de31c83764",
+        "cb2083c57fd8c0ee47e2d7d960d4085be0f41afc39a5f4835b9e91b6c2427e95",
+        "3e127cec6fd842ba61690a7ffbb5770128c44574cc4d75108a004f522933702b",
+        "cc4f372e4255768e0337d45a01ad5f989df2e28fcb837dd3f7875d06045525bc",
+        "b05cbcb526d53d19ac23553f655053ff2af2acd05ea075fd41df7078b2dff2e9",
+        "300f38c52ffcc3587370ee884892b6aeee9412fab7487342ad25123a9054d89e",
+        "2425e41282c80f75bc48230b68f26d1c60bf18855dcd5dd8b8fc5eb2d6163548",
+        "aaf199277ad9b4d7c24128cab1e9ac463506501d2622eeef8a73c77f618371fc",
+        "90650f8c1ebb0cb70b14d930d528323b0a4c4c1956b8c53869ee4add3627c244",
+        "9e4051c476f528b8b62e872770a6d409e5e247b50816b487c0fd11cd84d4f9c3",
+        "d7fa88c808b05678bd55275b3728bf0fa97cee54d56368b4804f917ff97f1cff",
+        "877a2dc45be458756316a86d4cfc9f78e8a965545b349bb41906c936516f8b5f",
+        "fc9802dd1b13578a062a02b17cf7d07e53edba9231df2c232b04e3f8be528006",
+        "07a1fd71eb4968787dbbe123eaf124cb8bf8953653622912801a2baa03804415",
+        "9c33ef21cff6edc9458bfbcad1c19896db655cdf247a44d5219803cb12835fc1",
+        "5ec705c1af22a0b142305f8800e7e86c68c287491e9ae813002c7fcca62cd43b",
+        "239fe6be65ad25b9adabda8c06f76634ffffff3745fce71d382c70395aa1a1be",
+        "55e9f58989c143a8572755703d4e5579b5cc033031433d7f44aa02335d79cc46",
+        "5dcb153f6e3928bf87db4ef0d6342694f45a885123ed60cb9851e07826befe49",
+        "e839875591d0ab9c8fd883e2d8b7bc90f8e5687f23bf9c4f1a73c9da2a0da24a",
+        "927322cc76b6ad8d7f2ac0e3f76ff4e18560ddaf26d0ddf06b6c5d902369004c",
+        "d9abc60f222fd5691badd5632a7f8f48293154d48941e81ca97052c8fe7814ac",
+        "c6795a00e31fb9bd91468f62a06c10ce40e6d19c23c86ecb0bc394ef5214bdae",
+        "ce95a36b6ebfabf3075a3fb11ce758bc83205315d47dc5977b5ecce8c8458c72",
+        "b127bd99a9cc7c9ab1e31b3468a3fdaf021205f212d0cbfec76dedfd1e1684a3",
+        "bb14e1b644d1bae78850b8bad228d1a3d2c0f0dffddc13c62cc3d98ee9fde50f",
+        "3bca7f32b9b8966172030d460ddc79f571f363c15544f843082f26ef5b23c2a2",
+        "07713cff3215772db66831c289ea323e1262beeee44791a9775a8826b2324fbb",
+        "934afdaa5bc4a1ee2cf58c9492e0b2ed1775666349f3aebcd1d49cd9a14803ce",
+        "6a1d9c9035747e0597844cbc6cb853159e245c516a473a2ed9718aab8891ac65",
+        "9f5304f92f4685200165286c3d4bae562125bf9f9a94243bc2f896a38772c8ee",
+        "7e7ccac1bfe809883af2da7bb0d0c8709bde84a45a18d40b5905c9cd4572bbbb",
+        "a0c146847df66abab3da659454e2b5012c14f8a558a1b74f1c6a9a9c73d3782d",
+        "851ab1a0e077ea96e6fe7b1667ece2c0a9e20cbfc6a2a6370d06356be5ba73ce",
+        "64e9651dcbfe0f39f70977d79e5765b00d8ca3a3abf574f7cf3022e278fea184",
+        "35d71210a721569b2a19a4c3f67c455250027893b148988dbf0fd46f5a2b72ad",
+        "c34a6592b58221cd3250651d5ec497009c02631c317d0dc07d3c2414f737df2d",
+        "a1c902c52e38440514daacd6ba580775146e0506c88717b5969c047576e63fea",
+        "4b03f51e485c93fbeb3c566f147b2aa0f469387a44864f4d2c8e2a9461ff4a3f",
+        "c3812eb2721d6f4d19b1eac9503f6c1c17316e9d2e10c55db0d4293584952254",
+        "f1e0b9fd1e40263719457d1a9c01834156bb96dd505514839994c72663ffcb11",
+        "35216676b80a43d9e9b59060934fa5dd5e0aab00f137cad86d5b32b64e2101e9",
+        "7bb4469b807c38a1f7f65439fbe5cc88c32a23db200db8e72b871379fe8eb0a2",
+        "e262adc25e7ef92ae8034a9bad5d4e190307172a2696ccb266116edd6ebb1e42",
+        "44199098d971cea97d20f5b2d0d011dac7e090247d4540b1888eb46078588c89",
+        "450d3f69b57bfe54c181dbf6118f6f0a44a4d3898d93139bb2186eedf7e2e5d2",
+        "b42967546e6528ca00b4714ec161b90017e173ce7ffcd37a8cc4ae82ac457093",
+        "1478ad5973761e602c86ae3f3656046e394bb8b4f3b2250834a7c32feb7b67e4",
+        "1391113b50425ac1013df571a14b40db7ea3003e50bb769b57c7b5ee7899fa82",
+        "b13d69bc4382f1515a70e68cc0d6f47fb41fd459d8abcb9b72724ddb098ddfde",
+        "18106c89900f7685341921c4663c89c81d884094ac07a9b5c21caa4bcaf83ec5",
+        "e33bea872eecef92a57e4255d84b3a4f5d33e63e4203891000dc7256ff3b1020",
+        "11ffec74eb84f919b6779656be8ea897ff5ae72344fa167f9997ae2b01d3702a",
+        "6cb62b0461248b82d59afa5ec1ac4818d0919b6c289ab6553a167accb678b184",
+        "161843ee34f16bfe75e4058b37a9254aa6cb0a880fa3c9d0743c260f132338a5",
+        "ad9f2e41ca0b51dcdb410f5f0b045472a07a9e9f2dc1f0c884c5f3f3b78f867a",
+        "25d77d1eab5492622fcbfbe5cf5d6ef6d0d514ffdb30ba9ca899effc42c79fd1",
+        "2a2a6e9ceec73f172fd54addee1f93de1d284475727b160d50d4cd51fa9c4f91",
+        "e48b59a2ab0047e029daaf109a59b04a13b2cc0e851c8c3c92767d8e71b5831a",
+        "b88519341a4e3392150edb11c43dd7f1a2eabd78c2e443d00711739a00fc2f44",
+        "3a9f3371c2c5bab9ade4aec502484741a5ade41ef6361b306d0bfa0116c226bb",
+        "da1e5413ccb2509c74c91c30f9cabd17453c7b8176525b120da022733f25af16",
+        "4e77a2051c94c6dfbe39c0c778d04c9ac164e55628d20c7ba88730e4aae5d04b",
+        "eee4226fb845b616092a6daff7b867110d2a75c54c2491a62f812865f9b6f74f",
+        "083a29a9829a3b97e7c48802bb3eb45f104e2d5f279d0d3d636313bc0c133297",
+        "53e653775b360d01db35ed271cf599b74b7ebc261efaa3c1cd7ec111105d81dd",
+        "51da8187411eb63968029f725671300e73d30a4753c02a984fa1ba2446604d07",
+        "522976cbde63be3fc56f927cd8c11b0090a2ce5e6c11825a13deb5efa5b3d086",
+        "ca336719b6fb41a491e26363b8e4fe0cd7612ab8f39eb4136a26e4ef9b41a3b7",
+        "a6a2d330b10f6a03d926a75449407612bf80c0202b2fffc5a4048c9102f8ced1",
+        "1b7ae25c95becb463dde16bc0a0a71f0987bc980dc813c61b5c4db42f8e9e977",
+        "4be7c8c176e8ead6737bfd2ccb396c0563fe6c647896f49339474fcaa9e350de",
+        "58c57213bbd42e603da9a5712c39359cc40fa26919822eefc689b08c81e30850",
+        "baee7d3554b1be51d252eeb187bc6b6b604cb94a5abd398949720e878b0a6516",
+        "a4e1db794704aff5e805fa920fe0fee263dd35c380cf5d7ec7ef53e8e2681930",
+        "1a7ae84dc17df0871b6298cf24c6f25699aab71718eca6f41399add0beca0376",
+        "ff143b7dbaca26deb62a4c81ab6c135e14a227575dfa2c6ea23533b313e9a9cc",
+        "23d33d2f09020eaf989961f9f56085abaac451930db82559a75c6aced2897cdf",
+        "06fd0da4a6a68e2f5389d3a131f69184ee651c49418bf912e17602c431eaa1dd",
+        "870f99477ccb36919b0d3ec93eafdfb3724ba25b22d41678578d3365f287c448",
+        "068a050cd8449f0ba8ccba2ca767fddea4b7c90db68262bc9cd083f4f0cc3596",
+        "7b6cdd7bb009e8b8b7c4aa1bd171c3f877249a0f9ee3975d33c6de6b7e7b3853",
+        "8332e2c053f5ebb48539554822be359eaf00633cef3ecce61b6b706170ed0821",
+        "a5448df248801fa60f8a7ca8587358c0d2eb4696bee095430f44fded361af114",
+        "34802f0db59d627ea7040e1c7342e8851fbf11825a4eaf02e3a85b192f9a659d",
+        "a2f56751282073146ad371ac6b2d3db7c7590ebca5fa0e9f30ac3caf4c3469ec",
+        "ab63d5c21ab5b2389d040cd78a4183efe48d1181fb5359bac0f1aa0d222e24b9",
+        "d08f6404d87829a28b97519b7ddd1ae0c9ffc1298a745b3284f24fb23239a753",
+        "6032e0d47e5071cd665c01a52b5d49a8e7e15d10a2042e25ede9c87c57880c59",
+        "b30e5ec4997a000a521bc33b2ed8d271c73992cdfa0d1d3225ed611f6db63b33",
+        "5bca314492e64de59d270502899286df52be3a7ac6f962e1820ee9c414812a14",
+        "19caa91f460c731e4625fb0e9f852a5ee9d4898f11cf2699601ebcefc522255e",
+        "da08f6b43dba76bc681f4bb7306ab8fb04a72c1e24fdf6e365ffd837c297c347",
+        "29b0476152891f8a19b9c60e5fde93f7b2ac25d565ada7e08357103bdb42c740",
+        "d2a35340a3903f469814a75a636648e4d187bd8358c21398d2d63c5521bf06ca",
+        "97ecf2d6afe3236ae97dab05990f1cc5b70c6f611cec1ffc795e181fd63219af",
+        "06609064f43a012669936925239fec683d479e49c8c4e9b5741de9511be02f85",
+        "88458cd7b296adf90ec92852f24f9d44225ce2eb3c7c3d2d2aa0a9094dedaa05",
+        "fdca2fcc718b22e410f898ed0e281e453b40041a5c82dcb48bb0db847072ed9b",
+        "7384f225bbbeee64358662ac0bceab53b63db891d2d4eb2382f71721fd276e06",
+        "6795ff34c8dd4525a5889751b80f19eb8629a037aa3ba14b2ebb97cde7f27ca5",
+        "39a45e123b8ba941153a3ba5bbc5f4b3a7f931d0a5c6bb9600d6c4efc315ee1d",
+        "d1a2037791e7d9bfccb1ceb0db750aca49805b3a83e412392b54989189ac3bdb",
+        "a5b5c3cee5b90e83c29e4237038123a92d1c7b86152d678c70fda44db50ba50a",
+        "ecb7295b28d926e4d850bacf7d25931448cba59a14717dbe2a181be206d64cfd",
+        "a3052396b877451a6bdf332ef8648af8d877688b00d3e1d7c1f4689a65c10d3d",
+        "ecefb90fcc3b3b0b88a886b1ae49282cb0646dd289871a23450174b10dd35b1c",
+        "430fb6435b12c61f00e6da8bd05e6a680c8225c4c1300948d022c13aec8e048e",
+        "ce48dc8393caf978f3a2648c2e6e9f0a4d07fc8b5be5ddf3519b182c308c94f0",
+        "45d1e752f277d2f145593c79cbde836460c870ee19ef55b8177e3e498263c2d2",
+        "a486205933aacee840f04d603544bb73c79abcbb7c82ca1eb5bfe9d560170e64",
+        "aa7dd22d3ff9094806c1e199cc3e236a66b588ef9cdde911082d2c7883cfd2d6",
+        "274b15407cf98142231494210472fdef99de3777c49479b1153453c0e2fc1797",
+        "23b8100e395febc8ecb19050f1c4fcd73d0c556350aa74ae32aba8b6fd0dee21",
+        "2caf514021d8537e2cb3a223199cf3dfb97d39511d22b057cf9249d6dcdb5dce",
+        "9f6cb5cf118109aa14d4999e33dcc2b17697c3cbf156ffe8c63027265a0a704c",
+        "948ac220b9f734d9bbac1bfdddb4c13c474f933b5f09bc84fc840d947b6d8649",
+        "33309782d5b06f10ad2dd5fe43bb115502cc77837bf9c5da4beec74b1424384e",
+        "6ca6f9d009c359b09a5108b925cc63a2c4497ac6133a5391dce535a57656ccd4",
+        "9b8ffb4124b9ca637c430853d8bb6895cd98a27ed60736987ea0a57124aeb4f5",
+        "144e7da291907b362f1fa0133caeef020237055e9f35b89e2bc82d9908a7a303",
+        "8fe728d52cca1e035d5bfc25e101af422103ea588d3a67c9f2d9921c803019c4",
+        "836582d7c81f53aadabac30970210eefea3c0aa5ca3def9f9cf55dda9351536e",
+        "48f2123fab2c540fbb4abf6747ad2ab1196f32e72f55d8990ce72c835916aacb",
+        "37f0e6505d5a47bd693af92ce90aecf890e5278c9ae1b1414b75e9424d3ad4b5",
+        "8fa8d3152487bd48ef3b9f72445dcce41428c37a3949d991a88cf2c9f398707d",
+        "7d96173b96587e8f1a59b9bf1fae2193bcb38a0e0a7688363d32468e6893171b",
+        "547436e4a301483da747406fba08dc336321239c84470e2e4d3f599db4bf890e",
+        "4118437fff8bba17cc82aea1b04693711ed1f016c213d3ed81e12e08c334b0f1",
+        "f7671336848f091220c358f122f91e0bf6a3a03434d368c950ffa88d88043de3",
+        "b1cb1142cc9d1a0a60d79b11c9e1ef8e79b73b392aca5f2243f8cb9e2bb5a614",
+        "118fcf7697599164c9c7a718269eec451d79788d6340bfdaa5209e9b4886c7ea",
+        "5c5a3fc48d14fec041418c8d81b674dbd77a4d6e00d06fe58a5117ff16d4579b",
+        "e07aab41f572b0aa8e4a6e1ca634caf178ff0e5e08db358090a421e21275c234",
+        "1fcf4a5cd759a3db9661b73f59aba188d75bfc6aa4df3a97a6f7cbe906e78130",
+        "a416cdeaf02e84a5dd91f05977970bb032c9bf934c8fd4da57341c5ee9ebbfdb",
+        "acd634e2c069534501727ee9d55f44fc71548b3d810721086458d33bcf081a84",
+        "855ae5b64a099286d90190078a7bc0e12995ccf34870a55f10601dba03b9e7a9",
+        "e6fba7afbdc2b153b8e4a53ee782c3b58cef9beafe5ca9c4e1ab478f766b9107",
+        "c92f867a9e5fd024d3b32f27dd3f986fe71f6c71252aba8d145cfb39ab7d3778",
+        "90e35364517921d98c37118012420dad1d515a69fe28a5841ca90056c65b0eed",
+        "c879a60c2c4048de778137f51f16db80a543b0ba9ebf7e61055afe61446d80cc",
+        "548e65f6a1e096db9ba1d571dcef0c21c7584f8558c5669f6acf82eab86fc08a",
+        "a5f5c5558f8b18a44a0a3b2c17e775176981cc9de3e66e355e4e75ef3843e1f8",
+        "b1a30266071b64909e30d67583d92f04950d45f4106962820ae4daf4a6715a1b",
+        "1050c38ffebefa7a836ac27bb1ea8c8d1614a9f6444a9ca74c3e908521ea32c3",
+        "64ba6a29c4517b01f24005bfa3be7cf0edc978fd2c5582589708a1957ed6b863",
+        "ed11ea686b9547a58a42ab77ded23555f5e41be5a5a6c975f77c32496be88066",
+        "072fa364f18826c0291f1c33be0e131c6c4140583bebc80e2190a7c15bd22a25",
+        "4ef02d2d85963377d7c01f90fcdf6975c13b06fa07a7a1b8a6ba574922dd2484",
+        "61176f163abd1333b77ac53c131accfacf293a1019b42bd8613d51fdf3e14e70",
+        "8c3fa9587438cd3bff82cd74498e1dd040f60e88070f3bcbc68dbc68cf0cbfc3",
+        "d16bb266184c6269e3f0c63eba915b788104dffd3eb679c9cef363d2b4372372",
+        "12ae82840c1e69e97108b7e1f9f2bd274d324fea0a128fc197089ea3c88503da",
+        "fdbb821f4820584ee28fb8868d7863a513f5061299edc36987f22427dfc732a3",
+        "09b4df161791fa5642df3abd88b0b1096f66a9de21225446214be9707cf437bc",
+        "64e1a8f904af3d2006ad7eb68b4d1540e0243ab8c652c1df9379eae1a3985d5c",
+        "8753c030715885648cf7a0a1c97fad2cdb438a44779f5c96b61addcdfb9cb5e3",
+        "a7ea075e8452d0ae57102a5b04d8046833584e963fe5884018f324818212f409",
+        "24e1388ab41226d2cbb5e3525d9ee91e3bf5771c59f91405be89eed6452a3045",
+        "633b27671f8a3a4dc26132af44395cd45c49649f7779557ca9418771b576e717",
+        "de7498c4d0cf83b04e3a05dfa64893576b5472558baccb5445442e300e89abc3",
+        "d478e0251e05a62528aec3cccc17b4d39b90c6ddf1de33e9a728e9679c2c858c",
+        "6218b6a1a8f222404ff2cc0d3687cf6152259d2702e200ae1ae111b639126ab4",
+        "e4ec7a9e162ea68f1de72ecb7b727dc1e3d2c20a4352c36931768819bb755b4c",
+        "328048eb43694b6ddc3c2b5578b694b8fb3233f9f35761b0dc3c518fe04c26d1",
+        "e4665de1c7e72ddad8625213645c5a2cc8a951ca14738c81b9690ee13d165d97",
+        "1f4683ab1650cccb4b488ad25ccf505f31025e305c4a821426bf8d502347153b",
+        "abd91b9f7a21867c7ee3ceba60edbcf6c3b1b987d72356b36837a0ffa9deb0d9",
+        "4ebc489c1a6c3db220eb4a56940d200b24a40206ed9e4e278955a1c72cebab06",
+        "51a686c05863a451a8741806e6211d6612152b1b0100c40a1109e89feb849829",
+        "319d49e4974496d288b01c98cdf2e4cec7419db69167b0323e943c5fb9a3fbbe",
+        "52ba9a3cff27d0160090d7d995c4256e5e33633a324ae2a3613b81475e7db8c8",
+        "fcc6b6c64305a55ef4ddad6dd8de98fe6323533338c76d7af13ba5fac920f38f",
+        "c7a1e2fa74440f614657d5c979e364770257b4c2cd570ea82495408304f6e67a",
+        "a59ab496d34e6beed3b2acd671a94be4d2a751ab2b6db85a1d24021c84732b92",
+        "43307d26f3070013494d64ce15c7a10949b814ae3b50a1dadfb13f6c5beab3c4",
+        "6552966dbfb2122057d69b2ddfcbcff12aa8f25cfade0e4d21dceb570eb42041",
+        "286e2b45562accd942f5fdf7561149b82226d80660c6c8083b8ad7fc9486d7ff",
+        "9b0d5abcf64afa608fec460907936f9291ec6e9cffab3c4a3d935ab0cabeb34c",
+        "60b866259c2f0c1f0702f34d916e642c67f1399b3f6722d6edd3f8d070b63f9b",
+        "2894040427e0543632e2a1cfdb4c878af65544773aa06dd73e7d27232db03877",
+        "b5fb23074030d5cf010ad97fec9a5bcb9b93f57cb4a9d6cccf83adf4ed164f41",
+        "c9ee48af15b59a30df4e361299ad29c92be1c7e6f0aa5a57c5e3bc2cb2a1ce4e",
+        "c4d632551f6ed5794832c2f1602199013fc0e1374e68ad57b754f5c3997b1624",
+        "5bccdf6e67244d7cc5f74e31d5f16956f3195e97d954bdb1bc6503b8bb8c532b",
+        "6639478d61b1d3c0636c017ae2275543de73526b42953a0e661c2fe3294ca227",
+        "a40854185837e105ef881bcd21976c846f084ab90ab5c5075cb360008f933dcb",
+        "da76b50be86ca5a50dc926cb1e97bd96649fc0c4e53157412965b9f1cf0e6d0f",
+        "8a23b4b661062df7c9ee9173693c725d8b5b99986f63da300faeeb0ab8572efa",
+        "5c8d2c2b06c4c965411dea2326a9a0d972e93c5c9750802f1f338cf8f44f7c0d",
+        "28ba08d4b5f0b1a3dc73cef7f577567ab4af603ead90243783a7428d231eb023",
+        "be9eed14a87aec38e144ee5f174b2562eae670c7c89058243924cbc23bda0ce2",
+        "1ef2b7dced28680df22573602a736d52aafe9318eea339f12e71b8390a404a3a",
+        "31e06c901f3bb1fa97be2f9813132f08430f25ea9101b9fe0854e4c08dd5f1a3",
+        "1bb212c421233fce024968c025375ef39d276e1e4f79c4ac7e8ca85dbf3fde5a",
+        "63e5166822780eea1f80f1faeef9ffb09665bdfbb09951cb625a8a0409d29de4",
+        "b1bf5297a27266ece000bd42a7128381e30e3c18f5460a24a2c62597185a425c",
+        "25e27501418b50036327672040a4ff8f578c05825aaa57f6178b28d5c354cca2",
+        "b3fe994784095bf77d52522e30572a17d844959258f06784ebd65799efbd18b9",
+        "0354516c9fb004eec068b11419f3e9dd27242dfbb6a385ad2a6ade09a5488fee",
+        "b23af5811487b6705a872c2a4349d6fbc123e885ec2871dd0c9807bbb1c8c958",
+        "5ad50609867757b0fd60a5de497f88f1756d7d976e4800478d08a2602a23863a",
+        "6ba7a4090f16b4a7ccfa45eac2978be72e514fb035ec87f4d6f3d34f21c7967b",
+        "bc5987be757e22fa17fa61d110f0a76b2f4dec9d8b923aa19c4bf6aafde646b1",
+        "23ec436f4e1fa47cc74017c3ce7544c4f861d659a672fbdf7d204f171e7aca8b",
+        "e6f38e0690fd5cb690498b9a247a6345be4977c6b978bf1acea3b9c80220fb03",
+        "092c22a4f8f10025e49695a8450adbdf66afb2607c9f63bb1594329d65ed5760",
+        "8ce1120ea2c3dc982bd308574f7b8a7f93c5805dbd084158cfa105f49a574e6c",
+        "7cbf64b78e9ff4fc40c7daab995f2b0917791a29c87692d23a092e596d091ce2",
+        "66f36fc8498c1ea34751a72fb119426a8a0386e0b88dd1855a7eb5f078dfb00f",
+        "66278350f8340135642abd623f2991c4e5130ebaebae35712318af0790b89e3a",
+        "efa017ec0861ca494c6f04c296d15f65fca5054b214e33a0287cc8cb1803944a",
+        "1ec96443768bddc071ae406e17cdf2e4f4cb86a616db53e5d19db1a80c34cddd",
+        "40c20542ef76e4bc4902cc635900157d486eca0d0c5276bed1530e4ec354e628",
+        "7473be759e27474126929bd475dabf1b6942f76a2c9717797de3beaa5d3e8b03",
+        "24f5b895259cfe124d84d4d8c2164298a9d132e33f3aa7cd94c4b662d3a3b1d2",
+        "991d93da14e674f6c4076e500d9d223952f97890cd9f58e99c3e46010cc19084",
+        "ef03d3c4cf869f2216e68f85a5cfd37f9471159b4803e7abd78deef5e621a255",
+        "6fe39b95ed04c8c02c5fd094c9d52efc7406d402ca70e6695172c067d0a80467",
+        "c69e6db7ec0ad4454a7e687e656950a595b055d121705e2a25ff5a8d6d86ff27",
+        "f3ec844ca01c9f2285df8ea4483f9c542c55ea4dca002f286344507228419889",
+        "03ad0af02e6d300045a0b3d9e4582ea77eb17a8683f8d57eaa0053dc8256f724",
+        "fc6abc3aa889ede92e71b9537fec1df1db87b3a1b434139e87448a0c9bb42088",
+        "fc6f1bced021d58a9d4b8e90ccc7b56f7bb3e2cc7cbd54bf75b6f108532a9465",
+        "c22633e267bf51403fcae2d1bb124b717c84836ca82b136651a2e5a0d6005025",
+        "7d5e4f6ab4232b87b7e531ec87a5baccba52694dbb1fb32ff3b25912a645e15b",
+        "42f773196f2b26a0b58b6c197ddd19d455f9b6c46d1ae0c926f14a427b168893",
+        "631662b517b9c74f639fdb41a9d79fa5b37a8fd5829b66a9aadafbb958c45a8f",
+        "3dc625554cf0a522e87ec63ca11a5cb340d8af32096646f98948b5c1f6edc622",
+        "9df63476fee06294e70c0ad77335c3d4a37e665043c863f05830204d6e5f2ae7",
+        "045f7fe883d826dc94a37a69872251b826aefb5445c98503ca686fba44a9c0d7",
+        "5b66976168c3be89703f6c733bb3376e6decf3196f5c5c6b1a038b027f985397",
+        "b261598ec962339e329d62818d2fb0d71809419296909bba000e0505c0e0c423",
+        "85ff609acf98f97a9167f0906ce0909aa2a08784a7badaa188f4b9478e393b9e",
+        "0e2885a6bbdac4cbcec2a73a475da143f438c0f6461d3450be1fc3dee55c60fc",
+        "3e10402b21ade9ce0f3698e853d0c06585e69ca89841e2b6f33ff57822274717",
+        "eac85466e25a6f129469bc5e72ed3c96d91e108fc3afae36c54a31c03fa9a28f",
+        "762d0c8325e24dcaf55c7b75f545e91d6ee460ebb9ea521030fd59c1f78daa9a",
+        "58dee57a45ad75a3393563629d28148f8612ba05d6ed97b303a9e484193db9f7",
+        "363b467be5145f78d8a68400dc5df30d29c51736c00e6a56c8cd519fa475d88f",
+        "530808bdd49cca82e4e43a4f88345f0f95fc62405d1aed3bf0a67c3f62157960",
+        "2c05a4f14dc644eab0fe9021ee626a37b3d8977f9fae949265a516421020400b",
+        "3e4f0435e043b4ba94cd96c1b5be5726930767525ead06a8e122262691b3b32a",
+        "e0281765e1ba157fa8eb7a39521eac9f7ab216464fd42750707280515460b636",
+        "eec597a5b8857b43447231c05f2ccdb844d5db38577c77d22d431a34c5e334e3",
+        "a8fcfb2c33c0de04bcd504d9f2fed4f01eabd16832ceeddd9bb4656f8d241ce4",
+        "bb57e311c8fb2f787ed2a3b80cc670fcf0a057704a87d975ce5d35167b64e8e7",
+        "1e63f862bc95abe7dd270760543a18c6318188b0315394ba4968ecc544b5f20c",
+        "6ae004d2077835d3dd001b7ca9134c41570a56643235acdb5c9074e10738ed8d",
+        "843a02989e56a08de4a654be186654f045fff6ca14343a5bbd8a71a2336a2372",
+        "435beb65f769e7013ded0d472bc9c01cb5a6d64590bf8b274aeeb6fc357e04b5",
+        "0bb240f73f42dab62174ac07a66e08492ac25fcd8dd41e69aeb00017017e59de",
+        "f628ca09609d52aec4fc3eb5ed00329bfe6f4503620184dcfa212a8177a1af1a",
+        "8360bd4fea033fe6cf219ab684b14c1f0462bd063caec3d1f2500765af863f09",
+        "67f557f26be2eec363aa82919679a96196bbd60283ad34794f07b401a8f4d7e6",
+        "57bbb4411c2e7b9411390bd86bf599af79a6acc6d5b5a3abedddbdb1186b11e6",
+        "c101f6cff7591ed9eb34c9f013ec0433389765875898e748f17d65a60407d105",
+        "a80fa4a7d1a4ffaac334a86c6e0645f94e4ebde6e5eb73e15e32ab9dd074d2a5",
+        "6837d71ea2ad047adc54da83bd9f8211bee41d247d97d88a1455a9b6f8511ec5",
+        "1790b501a5b961d54db97586205f5eaa8da21cfab3de839193f7800bb523434a",
+        "b2f9facbaf1382dab867ce7f4a0f4a4c5746ae05da99b6ba6bcb43bc2989b05d",
+        "d3c3cff30030ca530c0f7bd8ff94334d523b50a5d4b3b03ac52989fefa9f2746",
+        "99cd443394c5764a318e100c430e14fa0b2b1faa9b27dfdc740a5c818a4a6a0a",
+        "b1743662a8c6e8f6cbdaedf720db80a1a9866ea573aabbde243565bef258329f",
+        "e757c2ac6b485766bf4e9e8acd4942bc64bd5093822b55973501676e6789ce4c",
+        "b64d595c7583780090a3125df319d6d38350627615401d749692bde1f56fc957",
+        "5c21b524ca03b1b572c7233ad061a105cf932771e72bb9b46aff4e42ee9222a3",
+        "b3b3bd18f3783f7665e066347bf7d1db251781e3af14f8378c5d25605b680010",
+        "52b841bedbf55cc6accb77ea4929099d486242e92507e9cb588a6f99f48412dd",
+        "a4c49fbf502988dabef7216b09f6e23cd218ad485090e76c5dc132c0908ac8e8",
+        "caa26e94069984bcb56fcd009d3f4578805dd8bbf03e425ee9c29f4123ad61a7",
+        "b2dca31609074b093d222a4d48670cd1c24c175bea30bbab521d1f034ab01d09",
+        "c7efbcddcde632fb1866396e765be2f591becb3d12aa7150301a8fbb76c807df",
+        "24907af93431737364b0cacd22b5183c781b16296b937319d86af67bd8339952",
+        "f1873dd3c1185d741d6e55a3501a727537bfdab77c4a63a337c386d5901ffdb2",
+        "0f312d34423b71f646c23f71c7985c85587c849b5944b902ee29dd706fafdacb",
+        "0ee62a4c8fb5a249f4c72fa3023e58424967113b3df9facb40de7b1f952af3e4",
+        "9cc1cb8b817a21b4f25078583fc004c32f719c1b8a49efeedc6f9a4675359912",
+        "80cfc470489adaae840e5e04a5732dcb13c3b896637595b7da27be78cfa635b9",
+        "9c750d432f6c156971a98a9c1365f74f764bd997ca246fbf14b993b52b06fa47",
+        "9e167aa73dbdad3996543f5be6c17ddba0e0ca1f0b72711588cebc9123e21af5",
+        "6e02b88b839b750afca4b27c5878344775c0c0331ca4ccf99378547bd8501c86",
+        "35515691c55da3ea1d878f65ae2054fad1454d6ea79c9094327ffa084eaeb335",
+        "5f6e7ba42d532dfc39d17b2e46dac301c244140df9684daeec1bc952718c020e",
+        "9b22773d527424cc3c8b2b63b1b2eda4e3755cc9b41784d054a5e5f2a6b63a7c",
+        "7198781480b6210ffaf751cc37bc66daadfc2b5bc5f13b1f91f9ed44de107e12",
+        "7bc33818cfa715543e17a85fd7ba9e869789f5486e697e9beabd5d8822841f56",
+        "d9c62fcbfe52adf5e8b47c1af843cb1b15dde32112e6f5e8363e3eb2f46abca9",
+        "678cf29c5494f84280b58969de933e64170f0d749eb66df62a8a14aa56296cf9",
+        "a565fa484d1077aba1def397f616a350a08f8a89853c36ba00949d0f13b4bd1a",
+        "7021175ed369fd79800dcc3a1af2965695f4d09da51224413ac5299c2ba78747",
+        "7c9f9dcd805cb621155821930cdf142b488bbc977ae3cc906b0df135a10a157b",
+        "eae1d559c404b1f0201ff0bba5ad1cdffcaca5710943924106668af14dcfb852",
+        "c672aac2e1506803a6a4525ae01ee5bd131a1191096f23c8c838aa842035cb2f",
+        "ffafe1d12e4ba430d04ffcfdee4b94d8d4cedb69cf52f458e585f9a2aa15de63",
+        "cdcd5df436518cdbfaac49459832c63fea1a587befe0f88703f2671340489936",
+        "503c84eba7e63c63c1e43e9b4174356a3ab5a4ae4804833df5896d5ec31af1f3",
+        "bd7b8a782d437bf432365c9f25fdd38a9c77050a393d153bb2f52c5633a8770f",
+        "dc4ad62c98b8f896300877948bef52eea52d42e60a108a577417f0b2988676ec",
+        "c60675d4c707e467412a4d71843eed93a51608deea81e307314f79c0352c7f2a",
+        "23797e58823721c5e50d95b4185d32362a62612349e565dd77e9f6d17824ac63",
+        "58ea8bade05c8093b2f4623a474406995c5e667a934c102a356212436df0069b",
+        "d37b6ab291c80e19c9e5d02f8cf533c6b9c144bbfa44c986934d84991cb62424",
+        "47ca632a4d8779181ec34def326a67fd47765d6cfe3fa4a93ba8ce92f4035a51",
+        "3659cd37354e8de78b62d74465ea78a74fc52754c81ac81d29d9c12d2c0036ff",
+        "a7f092b23e88ddb4733a679adf47642dcfdf104a6f8e96e6688b4fc4305de7d3",
+        "73a863463bfd56d81fcbc66857c897084990286c38bc377bff3b573a0a8b3b0c",
+        "4abae065db42e3164da6b6d07fb34ce46cab7995be0dd0d40a58829f139a2b05",
+        "4adab1e55679f2f4ad9a784eca2dc861beee6aef9ccae91cacd59bf76267f4ff",
+        "e1924d6cff5693f77fbbadded016df572ba1f4e73f1b0249af918b7c1f0316df",
+        "90cb8e48e250ab9e2451175a9de84350bee602e33c3b3a9d1903adc9b168a0ed",
+        "27405c3a8bac0ab88e70103d15e346edcdd5795854265f80341bd5f14a593f6b",
+        "69b1f8fb0ce99a6ce008ae0929c9da602dd61777886d4ee24c693cd993b5db32",
+        "d947680e55da145435afd5cdc8eb7cef4cd1e10f6f3ef4b87d3e95ce80ecbc74",
+        "7b9a19f1d3feede20905b5a9452f9a801086ecc80390dbb8a59dd81907ea8aee",
+        "16db66e186cd287edf2f690adfd75db25bb5f7f0bd40ee007950cb0fc0a6b9b2",
+        "f0d1e8ba6c203edef333546013e569a64070de594337a14547565ad4de5e2d4e",
+        "9280848046515ab14b7caba87929b6daa58efd13449830a3b12a6adee36febb5",
+        "da0121cc0d75e85851a6bf64c748cd8cf164a0289b13aa06e350f50a3e6cfc42",
+        "f3c487dcaed5e889204db01b59140cb6c6d97b721a96ec3e34e88f0f1fa64e32",
+        "0e3df3009c0fa12a5031bb7f458b23b4ae80846334a0bf026ee2e1f4ec0f6899",
+        "219849c374e078650d871cec416f8cbb61c5870959d911d87bca6ef17b4d3f1c",
+        "01d3bdecc2c86183603518f0401a8e488d1b1a4aeb664ac8961c0f4086d1b199",
+        "931741503b50b4c52aa2678de0fe21a30e5391b94667c459447e2ccb4ab32607",
+        "4122fab6224990e6acbead2e06dbf4241eb32ca088b5bf666f6e8472d35e348b",
+        "85a15bf549972111a6410af0fb5a3911913d8f39da2b005d1ea8ce4ea738fef7",
+        "137b28e954967c0c8c574ef5d3c7964cf05fcef770f701492180282373b6e0b4",
+        "66e055549f7961b84ffb7c9bd46ed166bbcffd91a6754137d56fae650915265a",
+        "916cdae87cebdf50ddde7e81abd0e07204904b50467d7d5f1d26e2f01e734dad",
+        "0708c0535395083c1b0eb6558ec476d56b6a9e355851d60560d4135e71329335",
+        "ccdb46094e47d512c0fa9225b7c5d6ab6e329fa057638ce1b9d393d0e865cc28",
+        "b0d6d8395ea8163028286309bbace0edb3be248885c57d6fd83a6304321fee57",
+        "3882fd77ad103c86e2c39d42d99e7a1437f7ed9ab5c6a8e64db81b8a160f205c",
+        "582c66f46b2403ba3aed75a4708440f035c22ab4a7599e36fe615b3d42a93212",
+        "f8d2b56d64691bbe76c454910f02a8e22de68784c17d06cfb84c8e87a90f6ae8",
+        "23affba7726a57725c78d6f2aa7131030f754c2b27157ce27870c0ad7b351005",
+        "e65f3d013cf4ceb38f6345db13934db3dab93b20fb6e6129d8e523f6461286a5",
+        "10e293a8e1300ef9c715f1ba9f403a40a1d621c286c727178ed1506dac4a516b",
+        "8cb80a327fb4a18a4d911feb031c589342c764f8f21b56cd362da0c5f1a9b572",
+        "637e6deb1d7929fc4be2597daff2751eff29a9f10735700e3e3aad914475ba7b",
+        "b06796040e7856c5b63d7745373cfa1f3c6a25f4e679665492c8c47f5557d750",
+        "975608e11451df1b5ce1d8aacdc5e3b9544078676dadd057183399e028034024",
+        "a10e995655e21732ef71907b4477b70f6f46898484ebadea8676f9c2912662f0",
+        "06963e4546405b87178bf08479cce63d6675f43c56eaddbbf8af7c4938be724d",
+        "0a7e93952d1d0829e2e3e53680463389acdf4aa64c89a5c0eb22cab1fe12e751",
+        "01c5d2384ce5f36d6e041cf7cafb0a541900ea3333d5ca3ee4ee2e3c8f5b457a",
+        "33effee7944cb2d66ef75cfc81adceb56925ce25eb5f139cdd569d90eaa2c070",
+        "c9027b71714ffaf70622c3e66aa070eb0170b73875bd8d90defa6009eca6e24b",
+        "453a5afe6aa0f682f2b5ca5d3803948f85d31af9989809863f079b09badb7b68",
+        "62ef6af8e6bf9c5e32d1f3c2c5bc5d7087a8b66fce6643e926762cc32aa4b900",
+        "e9016e9d828266c5d9b68fe0696db663c955b2e36bebcda04d735e6098856b29",
+        "795b2d1760a7ad95b745e086aadab231708c24307338a698bb53dc8774328a80",
+        "17f86d803eb0d0c86065cda9e1491ce0d8cc09aee883a33ee91a3b9805023feb",
+        "11e5ca00843f26660b19738245aa1a95222c3a598fb9e1d80853cd7909092d65",
+        "f8f2b7a7aeaa39fe764315f1f5cfd14013fb18c5457069acbaaa869011fcfcb8",
+        "5f1ac117ffcbeece2c179920759cb1c113e875828907661672cefc69c9fbdccc",
+        "078fbaf340f3e1b55dd3e943116989afe958743bc5d9d9da039caaae4a132278",
+        "0d4585645cb4ea90248a811504f1425f517b0a474d2d0508b4d1d04aade7c1a5",
+        "31dfd503f1e06de4a070832b3d2391c20b52ec145f44e27df0dc17e0c39ab672",
+        "49105417f1d171b7950289c01977d1838363542539288cbe646f09ecf22bbd89",
+        "50df0ccea69dabca71036f62981323a3b76f957fbfba168a71468032e7669268",
+        "2e752ad7ea71ac27d34ee54df527bcf7663409d4dfeb7925d79f1237a1444329",
+        "aeb9281aee3d0552bc8bb95fba9ddde0ce08138b7bd893d6cc39baeda52e2012",
+        "6b68323d5b95ab4fc3dfe0e6c36ff22d62650119c32829ee69f4e794a3cf1f02",
+        "b01664a770c336e2b3991b8852c305d84a416144248ce5fbe6ad3190d8a4f0d4",
+        "5c319265fcaf31f07d45bbf1ed0d1b890bcf685e38c50b2e8c5e059eb9460d70",
+        "a96218f234bac5d4326eefb78f27b67c0f16312b7b23046f20f984fc3326368a",
+        "c432f1cf91b40d0a545883f725472ff6c45d9c616a324edec29e508bfdeb5a8f",
+        "5f33a92b0a08936d92f80b815992771e362a607ddbe03f0e58a3a2d7df0c9a99",
+        "b53d74697fa11edb3933f555dd9c6e2dc13b0fd49ee9ab6aeca60e43e60c3a12",
+        "f29a570d14db603862410d1dc22b2540bd60e22ba539bae536c4758a56784a27",
+        "8be077dedc9afc6bbe1a9eba996ff5bb87c7cbfa21b1db6f66fd23e46241d633"
+      ]
+    },
+    "cpu_seconds": 163.325025,
+    "limitations": [
+      "synthetic 8-hour sample, not 2025/2026 market data",
+      "no strategy profitability claim",
+      "batch test harness amortizes imports; production isolates every job",
+      "not Contabo/8GB stress or complete blueprint acceptance",
+      "open positions at sample end are censored, not fabricated closes"
+    ],
+    "peak_worker_rss_bytes": 302632960,
+    "status": "SOFTWARE_CHECKS_PASSED",
+    "synthetic": true,
+    "versions": {
+      "nautilus_trader": "1.231.0",
+      "numpy": "2.3.4",
+      "pyarrow": "25.0.0"
+    },
+    "wall_seconds": 192.3340781379993
+  },
+  "tests": {
+    "command": "bash scripts/verify.sh",
+    "dashboard_typecheck_build": "PASS",
+    "errors": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "passed": 144,
+    "ruff": "PASS",
+    "skipped": 0,
+    "source_commit": "e75c0bafdac3d7815645437710895592464a7325",
+    "warnings": 152
+  }
+}

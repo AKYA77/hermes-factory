@@ -1,0 +1,1755 @@
+{
+  "acceptance": {
+    "all_original_release_gates_passed": false,
+    "backlog": "docs/completion-backlog.md",
+    "matrix": "docs/acceptance-matrix.md",
+    "milestones": {
+      "C0": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C1": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C2": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C3": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C4": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C5": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C6": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C7": {
+        "partial_implementation_exists": true,
+        "status": "NOT_TESTED"
+      },
+      "C8": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      },
+      "C9": {
+        "partial_implementation_exists": true,
+        "status": "BLOCKED"
+      }
+    },
+    "original_acceptance_full_scope": {
+      "T01": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T02": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T03": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T04": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T05": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T06": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T07": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T08": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T09": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T10": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T11": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T12": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T13": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T14": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T15": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T16": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T17": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T18": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T19": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T20": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T21": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T22": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T23": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T24": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T25": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T26": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T27": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T28": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T29": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      },
+      "T30": {
+        "note": "Scoped component evidence exists; full original product gate not claimed passed. See matrix.",
+        "status": "NOT_TESTED"
+      }
+    },
+    "scoped_new_tests": [
+      "T31",
+      "T32",
+      "T33",
+      "T34",
+      "T35",
+      "T36"
+    ]
+  },
+  "backup_restore": {
+    "files_verified": 24,
+    "manifest_sha256": "19d425652c9bd491af22fe122aab3f915d866cf27c57ad18ed41ca0cb1a85c40",
+    "restored_counts_equal": {
+      "experiments": 10,
+      "improvement_edges": 8,
+      "improvement_outcomes": 2,
+      "improvement_plans": 4,
+      "improvement_policies": 1,
+      "jobs": 10,
+      "search_outcomes": 8,
+      "search_trials": 8,
+      "strategy_specs": 16
+    },
+    "restored_paused": true,
+    "schema_versions": [
+      {
+        "version": 1
+      },
+      {
+        "version": 2
+      },
+      {
+        "version": 3
+      },
+      {
+        "version": 4
+      }
+    ],
+    "scope": "local fresh-state restore including migration004 and actual native training artifacts; not off-host/VPS recovery",
+    "source": {
+      "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+      "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+    },
+    "status": "PASS_ISOLATED_LOCAL_BACKUP_RESTORE"
+  },
+  "benchmarks": {
+    "feature_compilation": {
+      "cache_disk_bytes": 110306,
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "end_ns_exclusive": 1736154921132000001,
+      "operation": "six exact signal compilations only; NO native replay or financial validation",
+      "os_page_cache": "uncontrolled; no cold disk assertion",
+      "report_identity": "cd15eff0cd322513021ef24f1339f8c109e048b4495713971644fcd2e38a7154",
+      "results": {
+        "cache_build": {
+          "cache_stats_cumulative": {
+            "evictions": 0,
+            "hits": 9,
+            "misses": 3,
+            "quote_passes": 2
+          },
+          "cpu_seconds": 3.8975561789999986,
+          "process_peak_rss_bytes_cumulative": 179331072,
+          "signal_digests": [
+            {
+              "count": 1394,
+              "sha256": "aa64f682db50d027e9b681f75893a0f2ebbb5bc43655e69b2a8c3b5428a1d595"
+            },
+            {
+              "count": 987,
+              "sha256": "bffe49615430c92e5465370fee01f78139e4dd8df02cec8f075b915d65b3e1b2"
+            },
+            {
+              "count": 372,
+              "sha256": "60c090a28c75371a06e63773d541aa038390680540ad2cacaf90bf1cd2ea5f7b"
+            },
+            {
+              "count": 360,
+              "sha256": "6f5ec7ea792781146fb2c891f5fcb45b8fab0f6d87f3131efae14035125618b1"
+            },
+            {
+              "count": 144,
+              "sha256": "c627eafc9cb6fcd8afd1a65abe4a53b1df8fd9482a8eeb9c84c2fb6924c11b42"
+            },
+            {
+              "count": 68,
+              "sha256": "977e4870d6edeb72f824b6599ca023e7a777228549667032bdbcc22a6d7496bc"
+            }
+          ],
+          "wall_seconds": 3.8229397640025127
+        },
+        "cache_reuse": {
+          "cache_stats_cumulative": {
+            "evictions": 0,
+            "hits": 21,
+            "misses": 3,
+            "quote_passes": 2
+          },
+          "cpu_seconds": 0.3547014159999975,
+          "process_peak_rss_bytes_cumulative": 179331072,
+          "signal_digests": [
+            {
+              "count": 1394,
+              "sha256": "aa64f682db50d027e9b681f75893a0f2ebbb5bc43655e69b2a8c3b5428a1d595"
+            },
+            {
+              "count": 987,
+              "sha256": "bffe49615430c92e5465370fee01f78139e4dd8df02cec8f075b915d65b3e1b2"
+            },
+            {
+              "count": 372,
+              "sha256": "60c090a28c75371a06e63773d541aa038390680540ad2cacaf90bf1cd2ea5f7b"
+            },
+            {
+              "count": 360,
+              "sha256": "6f5ec7ea792781146fb2c891f5fcb45b8fab0f6d87f3131efae14035125618b1"
+            },
+            {
+              "count": 144,
+              "sha256": "c627eafc9cb6fcd8afd1a65abe4a53b1df8fd9482a8eeb9c84c2fb6924c11b42"
+            },
+            {
+              "count": 68,
+              "sha256": "977e4870d6edeb72f824b6599ca023e7a777228549667032bdbcc22a6d7496bc"
+            }
+          ],
+          "wall_seconds": 0.3470406450032897
+        },
+        "direct": {
+          "cache_stats_cumulative": {
+            "evictions": 0,
+            "hits": 0,
+            "misses": 0,
+            "quote_passes": 0
+          },
+          "cpu_seconds": 9.891512882,
+          "process_peak_rss_bytes_cumulative": 149913600,
+          "signal_digests": [
+            {
+              "count": 1394,
+              "sha256": "aa64f682db50d027e9b681f75893a0f2ebbb5bc43655e69b2a8c3b5428a1d595"
+            },
+            {
+              "count": 987,
+              "sha256": "bffe49615430c92e5465370fee01f78139e4dd8df02cec8f075b915d65b3e1b2"
+            },
+            {
+              "count": 372,
+              "sha256": "60c090a28c75371a06e63773d541aa038390680540ad2cacaf90bf1cd2ea5f7b"
+            },
+            {
+              "count": 360,
+              "sha256": "6f5ec7ea792781146fb2c891f5fcb45b8fab0f6d87f3131efae14035125618b1"
+            },
+            {
+              "count": 144,
+              "sha256": "c627eafc9cb6fcd8afd1a65abe4a53b1df8fd9482a8eeb9c84c2fb6924c11b42"
+            },
+            {
+              "count": 68,
+              "sha256": "977e4870d6edeb72f824b6599ca023e7a777228549667032bdbcc22a6d7496bc"
+            }
+          ],
+          "wall_seconds": 9.67543414699685
+        }
+      },
+      "rows": 200000,
+      "rss_scope": "cumulative process high-water mark, includes setup; not independent per-mode peaks",
+      "signal_digest_parity": true,
+      "source": {
+        "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+        "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+      },
+      "source_context_unchanged": true,
+      "specs": [
+        {
+          "confirmations": [
+            "H1"
+          ],
+          "direction": "both",
+          "instrument": "EURUSD",
+          "max_hold_seconds": 86400,
+          "schema_version": "strategy/v1",
+          "semantic_version": "1",
+          "signal": {
+            "lookback": 8,
+            "operator": "momentum",
+            "threshold": "1",
+            "version": "1"
+          },
+          "stop_ticks": 100,
+          "target_rr": "3",
+          "timeframe": "M1"
+        },
+        {
+          "confirmations": [
+            "H1"
+          ],
+          "direction": "both",
+          "instrument": "EURUSD",
+          "max_hold_seconds": 86400,
+          "schema_version": "strategy/v1",
+          "semantic_version": "1",
+          "signal": {
+            "lookback": 9,
+            "operator": "mean_reversion",
+            "threshold": "1",
+            "version": "1"
+          },
+          "stop_ticks": 100,
+          "target_rr": "3",
+          "timeframe": "M1"
+        },
+        {
+          "confirmations": [
+            "H1"
+          ],
+          "direction": "both",
+          "instrument": "EURUSD",
+          "max_hold_seconds": 86400,
+          "schema_version": "strategy/v1",
+          "semantic_version": "1",
+          "signal": {
+            "lookback": 10,
+            "operator": "breakout",
+            "threshold": "1",
+            "version": "1"
+          },
+          "stop_ticks": 100,
+          "target_rr": "3",
+          "timeframe": "M1"
+        },
+        {
+          "confirmations": [
+            "H1"
+          ],
+          "direction": "both",
+          "instrument": "EURUSD",
+          "max_hold_seconds": 86400,
+          "schema_version": "strategy/v1",
+          "semantic_version": "1",
+          "signal": {
+            "lookback": 11,
+            "operator": "momentum",
+            "threshold": "1",
+            "version": "1"
+          },
+          "stop_ticks": 100,
+          "target_rr": "3",
+          "timeframe": "M5"
+        },
+        {
+          "confirmations": [
+            "H1"
+          ],
+          "direction": "both",
+          "instrument": "EURUSD",
+          "max_hold_seconds": 86400,
+          "schema_version": "strategy/v1",
+          "semantic_version": "1",
+          "signal": {
+            "lookback": 12,
+            "operator": "mean_reversion",
+            "threshold": "1",
+            "version": "1"
+          },
+          "stop_ticks": 100,
+          "target_rr": "3",
+          "timeframe": "M5"
+        },
+        {
+          "confirmations": [
+            "H1"
+          ],
+          "direction": "both",
+          "instrument": "EURUSD",
+          "max_hold_seconds": 86400,
+          "schema_version": "strategy/v1",
+          "semantic_version": "1",
+          "signal": {
+            "lookback": 13,
+            "operator": "breakout",
+            "threshold": "1",
+            "version": "1"
+          },
+          "stop_ticks": 100,
+          "target_rr": "3",
+          "timeframe": "M5"
+        }
+      ],
+      "synthetic": false
+    },
+    "offline_improvement_workflow": {
+      "cpu_seconds_parent_plus_children": 15.309496000000001,
+      "cycles": 13,
+      "improvement": {
+        "children": 8,
+        "limitations": [
+          "single bounded round per parent/policy; no automatic recursive descent",
+          "no independent OOS/WFO promotion here",
+          "CPU limits checked between jobs; one job can overshoot",
+          "full regime/session cohort diagnostics still incomplete"
+        ],
+        "measured_worker_cpu_seconds": 3.032290000000001,
+        "outcomes": [
+          {
+            "count": 2,
+            "status": "INCONCLUSIVE"
+          }
+        ],
+        "paused": false,
+        "plans": 4,
+        "policies": [
+          {
+            "created_at": 1793738114.3798983,
+            "enabled": 1,
+            "policy_hash": "70df1dba108db9690a3a650955c06388fc06e7771547f0d97e882c8af30a7cd3",
+            "policy_json": "{\"cpu_budget_seconds\":300.0,\"max_children\":2,\"max_parent_plans\":4,\"max_trade_count_reduction\":\"0.5\",\"min_comparison_trades\":50,\"reserve_fraction_of_search_cpu\":\"0.25\",\"schema_version\":\"improvement/v1\",\"search_protocol_hash\":\"7d7196a0604f77bb626988ec5ce5dc2a3b3c6367fe34219593dadc0b2a4eab4c\"}",
+            "search_protocol_hash": "7d7196a0604f77bb626988ec5ce5dc2a3b3c6367fe34219593dadc0b2a4eab4c"
+          }
+        ],
+        "scope": "bounded registered-region training improvement; no independent validation"
+      },
+      "native_quote_events": 20000,
+      "native_replays": 10,
+      "operation_ready": false,
+      "parent_peak_rss_bytes": 137056256,
+      "paused_admission_verified": true,
+      "pending_edges_preserved": 6,
+      "pending_note": "soft CPU reservation can leave children pending; this is retained budget state, not discarded hypotheses",
+      "research": {
+        "cpu_scope": "worker CPU includes screening; replay_cpu field retained for API compatibility",
+        "distinct_referenced_simulations": 8,
+        "exact_duplicates_skipped": 0,
+        "independent_validations": 0,
+        "limitations": [
+          "not a multi-day soak",
+          "budgets checked between jobs; one job may overshoot a soft CPU budget",
+          "explicit registered regions only; no approved real monetary profiles",
+          "all blueprint families and automated improvement/selection unfinished",
+          "Tier 0 only prunes exact zero signals; approximate/staged reject auditing unfinished"
+        ],
+        "measured_generation_cpu_seconds": 0.024257905000000357,
+        "measured_replay_cpu_seconds": 10.645882999999998,
+        "measured_worker_cpu_seconds": 10.645882999999998,
+        "outcomes": [
+          {
+            "count": 7,
+            "outcome": "COMPLETE"
+          },
+          {
+            "count": 1,
+            "outcome": "PRUNED"
+          }
+        ],
+        "paused": false,
+        "protocols": 1,
+        "scope": "synthetic authorized training only; no independent validation",
+        "screening": {
+          "false_negative_failed_jobs": 0,
+          "native_rejection_audits_passed": 0,
+          "observed_false_negative_fraction": null,
+          "policy": "exact-zero-signals-audit/16/v1",
+          "pruned_completed_jobs": 0,
+          "scope": "persisted jobs only; hash-selected audit is not a profitability estimate"
+        },
+        "trials_considered": 8
+      },
+      "rows_per_native_replay": 2000,
+      "scope": "synthetic training and one controlled round; invalid network proxy; no target-host/market/soak claim",
+      "source": {
+        "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+        "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+      },
+      "source_context_unchanged": true,
+      "status": "PASS_BOUNDED_SYNTHETIC_WORKFLOW",
+      "wall_seconds": 15.82243747100074,
+      "worker_peak_rss_bytes": 295948288
+    },
+    "optimizer_reconstruction": {
+      "decision": "retain serialized registry reconstruction; this probe does not authorize a persistence change",
+      "peak_rss_bytes": 62259200,
+      "results": [
+        {
+          "deterministic": true,
+          "deterministic_proposal": {
+            "confirmation": "none",
+            "lookback": 39,
+            "stop_ticks": 140,
+            "threshold_tenths": 30
+          },
+          "history_rows": 0,
+          "repeats": [
+            {
+              "cpu_seconds": 0.005583400999999988,
+              "wall_seconds": 0.005582867997873109
+            },
+            {
+              "cpu_seconds": 0.0015454539999999461,
+              "wall_seconds": 0.0015442010007973295
+            },
+            {
+              "cpu_seconds": 0.0012614199999999576,
+              "wall_seconds": 0.0012603229988599196
+            },
+            {
+              "cpu_seconds": 0.0010280019999999723,
+              "wall_seconds": 0.0010270899983879644
+            },
+            {
+              "cpu_seconds": 0.0010067499999999452,
+              "wall_seconds": 0.001005787999019958
+            }
+          ]
+        },
+        {
+          "deterministic": true,
+          "deterministic_proposal": {
+            "confirmation": "none",
+            "lookback": 31,
+            "stop_ticks": 190,
+            "threshold_tenths": 26
+          },
+          "history_rows": 16,
+          "repeats": [
+            {
+              "cpu_seconds": 0.0064728569999999985,
+              "wall_seconds": 0.006472000997746363
+            },
+            {
+              "cpu_seconds": 0.0041829540000000165,
+              "wall_seconds": 0.004181612999673234
+            },
+            {
+              "cpu_seconds": 0.004091158000000039,
+              "wall_seconds": 0.004089954996743472
+            },
+            {
+              "cpu_seconds": 0.005052599999999963,
+              "wall_seconds": 0.0050509259999671485
+            },
+            {
+              "cpu_seconds": 0.005076815999999984,
+              "wall_seconds": 0.005075532000773819
+            }
+          ]
+        },
+        {
+          "deterministic": true,
+          "deterministic_proposal": {
+            "confirmation": "none",
+            "lookback": 13,
+            "stop_ticks": 20,
+            "threshold_tenths": 11
+          },
+          "history_rows": 64,
+          "repeats": [
+            {
+              "cpu_seconds": 0.007623161000000045,
+              "wall_seconds": 0.007622497996635502
+            },
+            {
+              "cpu_seconds": 0.007577904000000024,
+              "wall_seconds": 0.007576728999993065
+            },
+            {
+              "cpu_seconds": 0.008823601000000014,
+              "wall_seconds": 0.008821158000500873
+            },
+            {
+              "cpu_seconds": 0.007812342999999999,
+              "wall_seconds": 0.007810791998053901
+            },
+            {
+              "cpu_seconds": 0.008831071000000024,
+              "wall_seconds": 0.008829851001792122
+            }
+          ]
+        },
+        {
+          "deterministic": true,
+          "deterministic_proposal": {
+            "confirmation": "none",
+            "lookback": 13,
+            "stop_ticks": 120,
+            "threshold_tenths": 16
+          },
+          "history_rows": 256,
+          "repeats": [
+            {
+              "cpu_seconds": 0.018185713000000048,
+              "wall_seconds": 0.018184674001531675
+            },
+            {
+              "cpu_seconds": 0.017830673999999935,
+              "wall_seconds": 0.017829297998105176
+            },
+            {
+              "cpu_seconds": 0.03679297599999998,
+              "wall_seconds": 0.036790734997339314
+            },
+            {
+              "cpu_seconds": 0.019803815000000058,
+              "wall_seconds": 0.01977370399981737
+            },
+            {
+              "cpu_seconds": 0.020750566999999998,
+              "wall_seconds": 0.02096679399983259
+            }
+          ]
+        }
+      ],
+      "scope": "labeled synthetic histories, no replay or strategy result; bounded protocol max 256 trials",
+      "source": {
+        "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+        "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+      },
+      "source_context_unchanged": true
+    },
+    "synthetic_regression": {
+      "batch_size": 25,
+      "checks": {
+        "assertion_failures": [],
+        "completed_replays": 1000,
+        "coverage": [
+          {
+            "family": "breakout",
+            "instrument": "AUDUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "breakout",
+            "instrument": "AUDUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "AUDUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "AUDUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "momentum",
+            "instrument": "AUDUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "momentum",
+            "instrument": "AUDUSD",
+            "runs": 42,
+            "timeframe": "M5"
+          },
+          {
+            "family": "breakout",
+            "instrument": "EURUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "breakout",
+            "instrument": "EURUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "EURUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "EURUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "momentum",
+            "instrument": "EURUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "momentum",
+            "instrument": "EURUSD",
+            "runs": 42,
+            "timeframe": "M5"
+          },
+          {
+            "family": "breakout",
+            "instrument": "GBPUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "breakout",
+            "instrument": "GBPUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "GBPUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "GBPUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "momentum",
+            "instrument": "GBPUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "momentum",
+            "instrument": "GBPUSD",
+            "runs": 42,
+            "timeframe": "M5"
+          },
+          {
+            "family": "breakout",
+            "instrument": "NZDUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "breakout",
+            "instrument": "NZDUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "NZDUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "mean_reversion",
+            "instrument": "NZDUSD",
+            "runs": 41,
+            "timeframe": "M5"
+          },
+          {
+            "family": "momentum",
+            "instrument": "NZDUSD",
+            "runs": 42,
+            "timeframe": "M1"
+          },
+          {
+            "family": "momentum",
+            "instrument": "NZDUSD",
+            "runs": 42,
+            "timeframe": "M5"
+          }
+        ],
+        "job_states": [
+          {
+            "count": 1000,
+            "state": "COMPLETED"
+          }
+        ],
+        "totals": {
+          "completed_trades": 14620,
+          "open_at_sample_end": 568,
+          "quote_events_replayed": 480000,
+          "signals_screened": 261856,
+          "skipped_opportunities": 246164
+        },
+        "unique_specs": 1000,
+        "zero_trade_runs": [
+          "1465551ba1eeb72ab739de3d9ff03da8be72bb339933fd762dcf4eb9a8553c80",
+          "e2145d304a7898186f4210a995274af9473339edbb55526119df9013fd89ae01",
+          "b02fd69dfed68914e7b1ce09c4cefc1f5501a460fe613f0aacee80dd4a8c86f7",
+          "89d6f0824b192f1fbbf42841d7ec357c129e54f54603b2250d1184669ec1b3df",
+          "de16a352abfb872e3151a6ea9a26942424a0d6f7ed12efb464988fb919cccb55",
+          "4a890b610711446b15538ea24a649fe45fb6516bb2a981db0461ce8a3a392d14",
+          "cb7225a5593108e5db6c92fa85507f839ad617d815b504e15791a5776a393ea9",
+          "75a86f0957658ccf11123dd467739576cebb9cd02e5223e60dc2a0bf74365e24",
+          "b5305ca5ae4ab02fb77dbf71f3f1a521b740cb8923bfe08201cd13e09e6baa3b",
+          "ace7a91338bc584ca1b7f2ff4e144014732fb0e1ce9d6eaf3c479d71616977fe",
+          "29076c8d3dce0f85c75c0e70992a66e48b1e58b3106f4d6574e9841fa3d3d2dc",
+          "3d2c099a0d4e40a6c6e45dbb35157764066e0de64ddcf38fe1b8f6527e18da85",
+          "0a236154ff358762750a745f7b933d80756604bf4cf4d682e5397db7b338e185",
+          "405711becb0041141ccd825871d714057b98df6b33e1c45ff7750bbc9c9c52a0",
+          "e6f6433c03cbfe908daf2b68bf5cfe2681608ef2d1cbbbe6f7bd0b8381bacefb",
+          "0b86ac75c05b363fe637c8fcd722e81e5ca98be6d7eb2aa41c9939aa32cd4ad0",
+          "891afdf3e42377adf30fe0090ff2848d9fe76b698dca6ff795a4483977c781b8",
+          "1a6e49bd1e3ea8399aa77f0b2455b759a53a4d94043473421b306a52ab52c7f1",
+          "c39f01ed72bd487110ecb94caae1479ea8ccf3a24ecf9fbf0788180e81206a0d",
+          "e254628a0e6532530be3f9c8353d96d45e12885597400713a4323dfcfa09e739",
+          "3cd3b2856ab4b4317d7b63ecd144fedc1aef9fa4cd23bb402ca145efadf91f37",
+          "5a16c75c7eccd9bbc8fe793f6661e9904cc57b1aef2f7a47cfba7416bade35d6",
+          "d8e08fc4b632410af6c467385682761ef52a7b9a30839265a6b96fdd7d41427c",
+          "06a4b552b819c97899c6f2b170c48411290ce56cfc7a8045032717454d7a051e",
+          "48a98b4e0ed8a1c10aaa530bef7131dab7e51bf9b0fcbc2e09df5ffb3d3623b8",
+          "1dfc3b6c25e00507661e239e60bcad31fcacf6e3b592634d0f67d27e812fa4ee",
+          "09fd7e15b382d078475c44749ce2771a0a9ac0e1679839fad8d52456d2230141",
+          "93e398c3129dacb2ba3d6c963b47274533026179de0229cd398f10db5e6dbc93",
+          "340b49b9640a7057dcc8bc82f275adf37b147ade8fd80815994a3ede7ac67e08",
+          "0f44561aea72aa82b187501a5a4054be0a4c319258f57512cbb892fa7c0aa892",
+          "cd364d926925d1e7c4070eaaf8368a012a9159a3adbab3de6a96f41792ab1045",
+          "1829e3b1402063ad6c450feaddbae7d787ff1bc3cc8c6937c8ee43efe93c4fe5",
+          "cbe55269e13ba42f85c12ee93a29e64c87f5d40349aa3c6fc974225f6c71782f",
+          "80222f2f7c81845605bd8df2ad2e48b1a92ac29129f8ffa3741b86159e629181",
+          "ea4b0a84ba39009a2bea82fe67bb0c29e5c97b7a4c0a2fd0c8821285c1c1a2e9",
+          "9adb8f187496352811882d3ecbd382c8f3869d84228bdad3a10b71a4e4b8ad87",
+          "369fa9f609bc238d03523b189e66f0ad1ecf58388bbb398a527ee816361e0a74",
+          "633269c91c9893fae82ad92c54d2c2ccdccb4e3fbf2695254165f5a88698bff4",
+          "64d32e46f6a11ef42fb266027411fc0d1acf2bf093fc1aa7a3625fee13a636ee",
+          "b05b6e74a05282a0c3caa43e1c5983023f190b82a8ce523866757510e7ac3d3e",
+          "2ebcc70e40a005c3238f2c392af4b7d3d6bcb045c191b2258af2c473c3dd0ad4",
+          "b2cd0b91b6e9c616bfd0047c030211b70ace576b53dd99a99f1b31b25c36a366",
+          "d7333e4c25e75f7f531e6109ec74315c668404240f7b5f4c82fc05a9e96acdf7",
+          "617079cfc2935f89ecc6120a5ed4ec7d6097abac51e36cc2ae58aae6ea7b7160",
+          "f3e831bcd70ed4b2780c75c9697d0aecc6757d814fce67411d15ce75bc85ad77",
+          "4a0bc722d65e154ad442955f493e443d392d11c37a00b38432a7d6d89dc1ad24",
+          "f2b2b360fed1f529b3e70a64b4efb692a845400ffd73e9db568f5d07a1416f5c",
+          "1b32e7ed3f5e98a60fc22f3e4d57e48d608fd5147a7575fe46d33cbf5c9a8ffc",
+          "39e0449b56c7afbef178573b957937374d1600f2401ba718dbb7979856a9e8b1",
+          "f132cebfd7680bc2d17fea4d5b9ea0b4e608073051c5a598de256bb70ba32459",
+          "78df05c791c9625caba33d59471bad60183180515b2ab6820b7416a0e86f5618",
+          "f6f8466b9a59ee910748c6197192862b37eeab4767cfa6f4b5ea9777b8d5d045",
+          "6d4b9540f77d9a8fde4fe7a3d0e4bbbef709820b04234346b0cc735bb3d00cdd",
+          "cc0e87a54265224260887b81ea5cfad05ff050ce214604b252f46adafaa7a433",
+          "cd03f6c8288c5b5a4be73a33624d42ab47ec242fc4a76e0adc58586319318d6c",
+          "e7aee39702a29110fa0d7d292f0e195eddc661b6620606f896042132ebe0c301",
+          "da9664cb1fdc1d7f20da5dffa03dc79e0f885e71114b44c94b752bd931133ae9",
+          "60d41ef75963b969ece9561746abfe3013d391a41863763cac69bba28b12ae85",
+          "572c3ea8eba644651216e647f3679df45987f452d6a5fac0d8c5e4af96a3c9f2",
+          "17c04d03a5386c4c22c660708e47df25f7d77190c519d4b0c73d1eed32a465d0",
+          "0d73631d806547ddbedf0b6013fcd3af64a39cf1bf6ac531c603513b02a1fc67",
+          "f5bda19b362dea4667521de4c411899db06213d96334dc771a82f80f8ed4771f",
+          "71b3a25868ede2c2c0f7637e3e8285c9911e0bd2afed3f8406d3e48c9bf65c61",
+          "570c2a4915584f883142eb779039327a4a389ac1e4d9348e9e4ac6392de5aadb",
+          "ac1d9d654264729bbc3ffb73c455935289ca5773b96e70fa26a84122f4ead79b",
+          "e593e14392616134a447e95c9703c089bccebef957e9037cee96d6283a3449f6",
+          "8f74757bacb1a773c766ef27470f9a72da6022fb1244f4681ab5870a80548bdf",
+          "412fbf6e3c10b62099bfd8bb1fceb2ef5ef250df82a85aa3083a84b1f4fb83f8",
+          "155d28b5abbad86bb0498b473fbfd73f37437d5d3069ee358ed63a092a8dd955",
+          "9426cd0170b01f56623f617b9b7c78efbfd71938915be279abaafac421727fd8",
+          "7961bb135d5e29ccef4a12f97adb5c23d537673dafd568e096d2c2212e760d23",
+          "d1f385626c7614a81d23eb09e76fa8660d03ac1e8b9aa71a1919bdee12b1de67",
+          "f05b4c236ed6d00dc5d0494efa921b99a4c07e7a6e4f307d548d8baa8fc802ca",
+          "5ce263b477153ae2a6e054a2e6e069466680adf0ed32e79068eda0a04ec63ccf",
+          "ce7e3dc613e0e708c540d64812deb40d4763d7db55a88bfb5cfd23eac33a9b5b",
+          "e9eefa37832401818a47ff6a5e99f677d809c0605b897626d7f8be4b4e3ea51e",
+          "9dbb12fbfd699ad26796fb3c7405c3cb26ad91bdaef888acd73d03914bd8e147",
+          "a16bd11b632e5f2fcc16aef85d31aa92a3d4be62dd4c13c963d5f28949e4a90f",
+          "e5675c518ba449981f76e483e4422435b7f5d07905a843d3dd1de1d48bad4db7",
+          "5189dc1459fcbf09e29d63f02140608f270df233c67bba25cd4555451a0a8c2a",
+          "0b91aab30418caa6b94f3d40882f2ee710612b3f84e7f11e2989543231bc391b",
+          "f84e753ac90fd7391ae9d143c9ca3edb9dcadcf01501215e922dc158e90eb298",
+          "0bf7c87853d53e6c0cf277818e86533b800cff002297e21c4f6a5635b1d95f95",
+          "f4af31b232c390e41ef39a23eeec9fd506fb0184f850b2496cd9b7bc3bae5fa9",
+          "82641ba0d8e0626625bae96809bd048370c2a5fd0ab1e1f34f1e077c6dd519ff",
+          "999ee1d4eec2b15c82afd481f6b0e9006fe97ed3274692213517cc8543ff67e1",
+          "cc5b40604e64448676224d8276aca6b7a8542eddcaa8f9299ca470beb88a7cfd",
+          "30417a4237926bb56731149139f4679cdc8f1ce3ce2924b1c8e1dbc74bb4b59f",
+          "4f8a120283f961db58b18c72f4dd68b9b6f436181bed312edd020077c2ebf29b",
+          "c54a3ce401c0efb5cf629011414f9b18bbd84c6677efb3e03a3a8a17756c49d6",
+          "09f24d349b2c196a4019d6915f8cd45debbe390be8e0222061cd91dd63ad755a",
+          "91ab792d12c0ad768e42aa0284bc9987b04e44ca6066a34bb4eaca25b2792e2d",
+          "3020226d905479b6376ed25378cf403c48c99910ff50b30b9071c8b2b280c410",
+          "7d50c311d8ede988aab109ac018cfcc7eb95eac98199847918db99f89ce46b4e",
+          "80604fa4d31d21c46127196b007b1bffa581c6795d0c80d726f8e4a724930745",
+          "97c8871e841ea41c1b284a12a0b0f20720ae0562b02870062b9b06e48b10aa27",
+          "767d124c7e8344c2a98ba5087ff181cbf22e554c956d2023e390d2978096be39",
+          "56ca89988543264dc6ce8a260c979396e5852d9645c924507d1760722b636ad1",
+          "fd6742194f30a91d8d77e7f72562e97866f7d908a3b963f5ff063e2f87449fac",
+          "e950685cecd18a8303ec6d659ee2744a70e7fec5b318ebd2bf87287e4320745d",
+          "141248a2dac0dc864c40169fcc7e886c81ef54c50f7383ab109785b8ef580be5",
+          "77291b7a03ab26d4e208e4cab4f99055f4845478b8a4deaf3496d538836739dc",
+          "59daea05c6d2cf56789612661ed316e75d9e20cc6886cbad89fb460f505103a0",
+          "d0a6a08bcaf980ed4d2f26f8c89ea5664074b9bf36abdf16277d4060634dfb5c",
+          "98c9afb9a6aa4be856aa35eec1d4c398fd1fc300b22ef6dd54a0ff70ca4f35e1",
+          "84e6c200e47f3966dee95882db3a187a009d25119d26dc9261413d56e78407ef",
+          "162da981af6d26fc9a1817a49da8f90455050ae725803676bd474e33975b9589",
+          "d78549bc8fb56c62027ae8a289cc93cfb35f6f0bb2249de847e94271e14453f2",
+          "758951c7854c3519f2f38bb0d9a92d099566e0f31d4ec6d2c9e6f70c2b4661d6",
+          "62a3f61c47bace474a98bb17f803ea99c742dbe13a368527cc9811ca0f6c9c5a",
+          "6ec0a7da247fd17d856c6a6771555bbd56a5065115cf94c6ba06a4b50a9ca6d2",
+          "6228785f9fa1e3f6b5a0d577c89766e37787ab6fd12eb2b8aa47645aa1167824",
+          "65266a78f043ab12296beb2f312f4e9a82d1e4661490a65fc183b47ef6cef656",
+          "ca922b2bcf8057d4dd03008abc7126cf81845808cfd6564f53e228d7096060f8",
+          "39b8ccff47be8819523b42ac13c428d52fea8f91f173643c29f7cc47e35416fa",
+          "197b1984556408ae1140d76e4eb82de0d108583312ab101767d863be187fb583",
+          "e123cfcdb00cc5a6624feadedcb2b0ca251f1b1684804fbb9038e67a91d38fd4",
+          "8351c9caa331d6cb5f336be14eb59c8a8d7c7fc5277b2a18b3fb1c0ac507cc2b",
+          "3a5bb8327aa4198923bd3e2a25e3d8f3c6779602ac2813e79b29788afc202a8b",
+          "f7cb283b3d636b20298218c650cf37036620325ba998b3ec5bf828a31635f536",
+          "e28988f9b8534ee662566afa987d0ce5426c0d57e896553b3492095f189a24eb",
+          "8d58f4a08afd224444c60e03c67e4a8df2661a8589f1a8a216989cb9e42c525a",
+          "7ec82f1b6b6b6bb59d1fe305bbc25fa64e286ead1e4f553749622b679996ecae",
+          "5af0a86f6cf55e78401162ecd4ebd92cb2bfb9472df89f086e2b98fa84c97bc8",
+          "db2cb5b9677680d0591a1ee9222cb84b6700909791740c9b043fc9c02807b625",
+          "7547f7f52633c41e2576a8ecc8c2fc9977dda804c4afa84af8247d587c7fad33",
+          "ee331b0ded596c4a6d8af13636995c27e2982a24a36895ebc5797a83eaacbf0f",
+          "d3f3de2200f04d09642b3f9e480419bd2d85aff0c348b56aa6e4be2c351b0a8e",
+          "faef1f9e240408ad524963c06f102b717e7f86c5c1cd7cfb7bd559a6f1729864",
+          "02d7a521b47f270639c090914bd35268159511159df28c636e0f0e2ff81ab59d",
+          "8ed67d71eded5ab8526a13d18ffcaa7d9c279b424f346e22eb834c8a5347b4a5",
+          "1475f09e285450a0a0ad98e8fc1dc60bcf99403b764ef04958e8f876c3f8cf9a",
+          "2f771ebf3736177cb96f56d6b680a300be50a4a37b6b644af4e77038ed886758",
+          "f49bf9c0f605bbf6c0477558707f04c2e3e57faf597a72d78145950d1344c180",
+          "271710b390f43551d8c825fa379537a9962b207bd007be5e0e7cc51af8327129",
+          "403063bed1697676d8bf91e7bbe402bf8ccea2301ae6470460ff2cf5cf6b361a",
+          "75e5b0903f0c465e798a25a31f0ae05f59b4b9789fe47426b68b3276c3717676",
+          "21d85f1e01b2164c42efe5135bf38cf55367baaee9e4fdd01cf5cd583d22384f",
+          "fe0493040513036705b6574838bf97742c62ed7ab7a9fedb488a07a02ffaf9f4",
+          "3789bead5224e7ce398f886c3ec86dbfa89220c16574a70ffdd82be898a81a99",
+          "66e64f2a8cb748dff97779e6d926d137399640e8a578cac8478349a7d7bbf94e",
+          "d19bc8ef59a5130612f61c2a7b26feac21d5d9eaeafaea869dbead9d6a5ae19f",
+          "ae39cc004c74325a0d645f6e4c82b996395580d9072c1330ddadf075d1e968aa",
+          "7287d1d3ad3d0926ee3689cc7aefc172b70aa4b4a622300134d17edc921b968b",
+          "09aaa22aa56394a60e05f809addac5f7055ef85886dd4f97796d9bcf99eef5e8",
+          "176d7c2b40c799c8a3823a8c3c2b7933a2285bfaf1a871fb654f582c13603302",
+          "dfd84d184270aa74724e0c2329e71dd672d8a6b3809df2263aebfb8a45dd068e",
+          "63eec77ba7016234b60fd59ec388ea4afd5c27aae95a82693fb87b2b4ed9cb25",
+          "b811b3f2da0283207263b9b20ea1a79ff44b9b82f9a190abaab79231d66ef443",
+          "b13fefd1e1afccea2c7016e04c56f4f4ea3ae2362d191071ba1f1dc697cdf50a",
+          "fd935e63ece7a59eb599addc35a659a6fa418ed69609599321003ef9fda7856b",
+          "369fad2133bb91d78f993f0730309c131a4d8091058565d1e41a8e3537ddb4aa",
+          "764d803d52fa1fa28fbd3c0351afc61c3b875c6779c59d4af25a736586b8200c",
+          "2e019a8d1e8dacd2cac8f53a8247724aec39aafbd329de0f8170d072550d74b2",
+          "aa52bcb433b476ad3b5e4c3c4e2ce5d26d3eeae7ec376cd75e34e60d821ed2e2",
+          "e297d233768ccb4ac998336d8a32964344dc537de4d97e3cc6c490c2684443fa",
+          "9540695491fb58f674f1bf292ae0b5c275b6de9b82d176631e77b2452c12e8b2",
+          "91f44ab68b9233e31d868e1926e1bbe2c8f66cff394a6aadbe290d080c6cb6e7",
+          "30e2acf308e09d60ad26b5fac9ae4eaf34673d6dd42fedf1c2b45b22d573fe48",
+          "d054adfcc3b57b47ff3a2b0acb785ee3394bf70beeb3993c11544029a93fcce2",
+          "f8d92a47e134a4ba1b3f2d7d15f8eff63b8a363824490e7ca72c38ec8a31e6f2",
+          "a7a3f2fcc7bbe1b57d85296d64e3773a1af554d4c2d3da850e1af99beedcbedb",
+          "a6c7ae5b250e96e9956e072b73d6aaaf7ae1f493efc9f877dc704096dc13097d",
+          "1aa15f55832b7c82627754ff48cdfcf455394308409df33b6b23d9eec3f9dc0f",
+          "ea71597cc62640bd7b11e45a51419b4f6faf5fa5f5118950ab406f9e5c3909d0",
+          "21559e3502f00a937098249741ee99610eff1d6d4251be4f40040b97803fc120",
+          "e0eec5dcba304e5255b3638fe3448d0c6e5d1660d3fabdc4ccc8df773aed9488",
+          "aa23ce3818a47127e6cada5dade596f4fe66f913eea371d9b7449b182eefe037",
+          "e9f58839dd7ad2874430afce7f5fba5e9374e0a0a1fe13a26cbc57562e96919f",
+          "822c4730004678fbc94b83257b5d21470a32ed55a7842eee5eebae1c39b72a56",
+          "0ee26f388c5f6af06a12e2a125881ac4f46c55089a653a6e7ee67ac57a725f4d",
+          "86cdeaae1532613b7067ff0e86ddd72e247f10f7ed32ba7ec430bb496f017d6a",
+          "80834c60f077359fcb396d667fd997c3d8d84412c7a9514749c2633917b699de",
+          "7b5d2868a14b1a2a73b243bd4d47e5c9c52b56d2dfe941d23b1ce8f6f3f836c6",
+          "c308b7fc5af32fc3bd1a2662c4cfbddf81660c027275ea5eaa971917be027b62",
+          "bf282e6d04574612d10c580e27b6ab7927d0ae404ed1f53aca29d6fb40ff99a3",
+          "4ef76e4c904a3f11db1059659382c8e82497d32e3fd1db071bc52f97689431e1",
+          "ac313f892ca4bbeed2b7ae9a3d549a0424cfa316c52234899c83886535131c47",
+          "360d0e033afe8dd6e2f065659c5a151bf714112c8a3c3287c648dd603aa575f7",
+          "a7da64a86bf52e05dea2aea1802afad48279e5ddeb81f3857ae69d85d7e72e1b",
+          "c253f566ecfcdad249837371b159c8a47dade361e4958af9b5ac76119fcf12e8",
+          "65849993ba0839397954634bb8d62ee90809d208c2d04035b40704474e22d2ea",
+          "92e5e0ee1055b2b4db733e6101d58996a3bb8a25ef91117e441643bec58979b6",
+          "e3c0cb0edae7e8766283a085577ca9746be7666b457ad5b22aac98d97b46d9a2",
+          "a63d27a321994febeae0e23a2372c0864b1e307e750765e61f610620b738daa0",
+          "a3ba664e40efdd2853e286bbd8b61f1a1bbe0b9e3c5be9902b8af0de46fb056d",
+          "13313e3f92941659bfac3ece2cf01255ba5272d9d18295e64932b69b50fe78a3",
+          "df8f6f71c7b5701eabe65c07b440d0fba41567510cdb03ffaeec231d351f6d03",
+          "bfe8c88c4240ee0e56ed570febc08d2fec10416b6780701f56fb6b479bf36217",
+          "ef51677fe1348540cb12e5d07ed19d1b22f1b4cbcd462b1b481a5412ce5e28f6",
+          "61e43be310c1d943059a5a61507c078a7ce0cf0836b4908b62c0ad9df5e8a0ee",
+          "ae961034bca4a28db490984a8784186ee867ad3ba2c274dff305318797ea0f0c",
+          "4b46e8abd380e6a474758dafcbd71415252afdef73a7ec1a7a03a7bca4483ceb",
+          "2cbeada50ae1154105f601e10319847df97b4d2bd77992ac2de730c20113e49c",
+          "705e0aac6215e4ec2be9473b7fb994cefad98ea4270fa5d96cbadecc364d4d90",
+          "fda91a2cbaf7a96268169870e9f05068c6149fb51dca3c1508c3b35ada3f290b",
+          "d9d15d2336992d7b6f189d1c543cdf6caeb349987a4eef9ad06bc1f61bda9413",
+          "10d00b5bd5a635994697dc97e7b4e86fd9076268c818a8a5a38e6dab0a23cf88",
+          "300f2d6cdf480e52ef31df00a109cf7e8c689c2e7c9a9f57b66b4953300c345e",
+          "c8d37d3920a99967a4d485ad32f62b0fc1fd01aee2e600e0395accee406e373c",
+          "b3863f91b4b1abc37b47220f5f2fe8d416c1561062f9c8449ec4f20894819bc3",
+          "d566475b44554ddcfc6080ef68097b1061d2ed9eb6e0b5bcc7a6d5992a8206ba",
+          "d87d597f8e21c32a85c018022fa0adf59d9480828384fa9fc7301ee1fdd11183",
+          "4d4ee1b2c1096190b58dcd2dbbe5700e9749e831f6d2bfb3bb60aa9e56a0bf72",
+          "fb8722b1dead3a558747acc1f25a0ce652a841b54ffa38dd23b4d8b20e72d3a3",
+          "e54b4ba6a4c3af0bb0cae502e6b84ff5b046ec158a3ae9351d1833e73cc92197",
+          "b94a6d4df0d632fd05fa1c26019cac1af0358e6d268b1284855dca3336b78fe0",
+          "ece1ec05210c72f01b4dc3b1b9473d1ca0414ae789f3851b6a07f16707e81cf4",
+          "02d2aac0721ebb0970935b333872806dcfa81f550049d3e31fc08239d0de4f4a",
+          "a50180547001ded7f10ced1c02c218e769a535b1f5330d7b522e7a84f1f3c22d",
+          "593261e32a66487ac8ede15bc44d776e76d258719de41c6d04d94c1d7eee7a71",
+          "69760f76f92a657f5fa586c4099aa69684656b5ca1413dad944d362b0735ac08",
+          "21556381ba901de3ea4e41186c40ae66db0aaef42d8ad1cba18538959a32f727",
+          "dd1e2db4bdac9f6a215750f76b0747e77d42ea81475570bb75e5687bd190771f",
+          "b430ca16f06e5de056483347723f69c73347e91288d7255f5f89a60dfc1ecd4b",
+          "bd1ab3dc540a8b2dc6fe96bede551a45c23f05188dbb6d84511a4acf89c6fec3",
+          "c4f1b7b924bb2e563d93d1a90120227bbf75b5bd736fd89fb97d3bd3ae6cae42",
+          "293ae316a301f13bebbd3fbf1e48c7b68cf7012cdab5a2c99a1ef3ac6f4b3af1",
+          "146de787231383cdc22b8d657df1f23bbf6a55a70272f9fb50d8aba29fbf3c99",
+          "3f3e9ddc7691fa6bf47aa893b6477a22feb19fc65228f22e278ad74ef5fbeee5",
+          "23a97e87cb336999e115e4b70bb9ce183385b8670f1ba832e7d2ba583b056c65",
+          "dac92cf2db7f9d47d21f4a1ce48f65e3107de90d937108166e751d726dcb2d18",
+          "1085f2969fcf303f237ad548fabe2a6baf38a9ffb1c27c8cb7ad9c2710e8f893",
+          "a963f84b3699db32380e312448783e49e2f31fd72c95c72a23928e244955b7f3",
+          "cdf448f4a9d4b1e3d8561229b1ece46b4ba612d23bc088fe39cda5540c910fff",
+          "adb15ee308f82e2e87e26d26599a45efc84fbdefd35df520e044f7fc18095afc",
+          "83d0e70556f2ba7267fb37556c02151291e1ce202914800714ae7dd4cc43f598",
+          "461b7061cbee2f903be8699e98095e2ead8720333a48fbc68aa75159991e5317",
+          "06843d39d8b5d49bab7d62e40544edf619d6dacd159b8a8179b0593face31af1",
+          "9a0842b842a998c22bf40148c83cd9a9b42a15d61079eebd82ddda4701af349f",
+          "ef0ffd4c6537a5f0852cbe0a4e1e19a974207b2ce416760e9404886b3e08bdf7",
+          "5af2cd7ea69878e27d69859f90c0ce7f9d3547493e9d8478f6934d3abfe0ed36",
+          "f553f5d06f2930335166b35d7dd390e8d81a9667cd2d270567d04ea3dda5b976",
+          "e55840aba67420d307ac8a1cd466b9a2b6e776203272d6a094399e80a7791eec",
+          "c2ee6bd08d611a47fce90a8744de27d8f44c0e2a340215724d6913bfb5891cde",
+          "1acf8d817b2bbaaacbeba378c9dce4494f1c64d44e4404d5da4d91fd37675630",
+          "cd61ea56b24f339e55a76196b0002971e7c3c47c0c4a004cff49f79588206e3a",
+          "24d2f498516f348c240f38579ccc1281fc7578ea26d4354cf69368aa1cbb1084",
+          "40646ffedef1bf0c8e5c370626e6498d325b34a0a88cc06facad61014c21e78b",
+          "31f88da32a4898487d40753949f1ad4fb2c1174bbac3f0b799db18879f11d4d0",
+          "f6b651bd802c5398de6aaaa5e01ca2554277a654df4cf566bca3a0aa5b633566",
+          "ecd74d9284410f61c2cd722fd6b15f250e9cf0738eb3c95ff48ebe6d71faae95",
+          "00d0211c265066109cb333c86acaa350d0e23fd5030b69979279c6990a0b867c",
+          "16fc43fc0053cae135e46fac37162b9e0252ae90e854862c086cb4d25135987b",
+          "4c39feeb302f8fedbdc990dea3168b7b5fef8de8d4eee417127deb207e6c5ef4",
+          "d634009c0c7ba4696fa1fb977719152fdbe2cc64d680f80912fc015838fd9cee",
+          "0ac26bdeed1d76d8c1e45e6a674531e7c686069ab6fe95cfc91eeb7e7b0b8f27",
+          "634420ed3a3c41a5f69777d84642d231405b28c2093f2c061bcbc35aaa7f4e45",
+          "369ceee76a18cdbe4ba7eb8233503b24810a158029d20339e5e66a7a5f08dfe9",
+          "ead99d0699c1420aba219f52a75d20b8ce570d5a41e8fe7686e59e56caef9e1c",
+          "db4c77dab142808b71b097251f806c0d49b3c095bc2c8b0e16e97fe84e6b5d19",
+          "2f4e168520f1164593cd0e8bb0758738f51489bfc93bf2d402ef83121d43ce1e",
+          "b5ecee5a23d2c046cd12cfd213489a9ac63d2853f0b7b9c770ad7811101e8198",
+          "01e8839602389691356421381d336b057660cfd34f0a6f03b945070355c179f3",
+          "56e56a3b004c714cf824069afc5f2ac7e682ab1741f3ef0fdb7b1e8e8ec6acfa",
+          "85babad6d0c07a169c9c1f4019e1a98fe36fa474e58edb61900e1c1b2a6b875c",
+          "26dfb8aca9409add24a34def83ff47225b506501f92f3f0763a2eca05e039a06",
+          "ad07c2aa97b4a704bd882759ac6a31c0b4b78d9c113a845a9bd8cd5837e10159",
+          "6ecce0ecb99884ba4eb67dab031eb0a53ac715a4abf7a8875bfcd09d18f19ff0",
+          "30a23eb3a82dc7b5ba685414e4a500ce8b40fcbf737db93f8275ad6eff4e4d5f",
+          "c4f0a257b525b287c8f07f0d4ef1a7628dd72fb90f6c4a9cd65258b6c6b1eb34",
+          "a9f9c85b585fc56ecb1174d2825ca11e3f7dbf59904a2eacca4313f05d0125ac",
+          "a6c86f380b70eadb355b57934c1f8be787bb15604ad0edae3f35242042ae3816",
+          "34b2f6a4c840debc399be660299bbacf46c7220926dd35bc2c7cfca3d4ce39bd",
+          "b1dbd84835f9c78acf85103efd75c9a5df5ce8a611035cde6049717559888ffc",
+          "959c4112725b54e33b01d48025750df6e521039b3021faa63c89330dc7470803",
+          "96332edc213344c210310c106e1e445ff6b15383be088e234f8b7cc91901f847",
+          "e2db7df49199891ff865800a05d5a7fcd17c7ddb224c1df7b0eab148d1ade9ea",
+          "a9a29f1bb4384d2a5625a242fc9b97ddc966dfaf5b51225f2a5845c7827871e8",
+          "9aa0387390c88523d978b2f0609fa6d06c97ff6b0a6fdb6df816c130b9511bfd",
+          "851454487dc821bc5093b0e0dc899725f2f3dc1a5dd98cd50e07a00c2aa5afde",
+          "759c9d5ad41ab71157621b12922ee96bf36dfac390c07aa48db43989128b4d27",
+          "9f4cb5e681db7b71c33b8223ba14e0c5d12cb681dd6b27e8d57f69ea50ae6f12",
+          "28976c209bde46a43bf964aba783ba57117362103bdc91befd9753e9869f6bf9",
+          "3599498648c0bdbbc2841d716e97316e46c1b04a84682571e81a0e65df51f582",
+          "699315224489c865d911e84345b8af73ec10e4f61ea489ed142ca14f55b74fd5",
+          "4c56864952e8686c6ea71ee5fa2103079ced067ace3597ee9a65c7218a0454ab",
+          "1a4dc7685f51f408b37d7eada886748c164765125113289479400fa3dd176d2f",
+          "d3cd9485a589d8ab0bc3039e45326674404d0d0e46a6511880675a2422c7fc36",
+          "7bc0da27e0b866ab1524ef6255076106299b3d763e3792d2ad6db1e0a8a2bf33",
+          "5e7ea23dce799faf5c31a4698475bd0138d7bcb9bbb024a75c139c7ed7b78c61",
+          "582fc90d9945e81ba07848f6058c676de9d6d9b74ddccdc32d14aaef06ee12c5",
+          "02077bc416ed542be81a0d547d6f488cca541d9b491bc7505b6d61e52bda042e",
+          "73120b38e8629b4ca92d71f38aa8c4f556f74fc68bd67aafe2856e47231b2f70",
+          "b3e81e65b5377bbf7946c4698ce37764a85f6796362eed32981445d04b604e85",
+          "fc453daa57fa03e0684bc46abc99ef2b9689c69aa4e721e8b4eee0d394fbe207",
+          "ddc7b9a8ec947fd3d8187921d8f24c128132e8b696736fd0e02159416c23c883",
+          "21fab9f74402d311d59b451e27b68988dbb530d236244d71bd145545e8ea2a44",
+          "3c5275263f476726611959eda38c1880519c101457ea7b926fcc33f1ba2eed13",
+          "5e299f77f9946e8b927338eae78653a95403b4d46be49888bedb10acbb40f574",
+          "63b2afe70b61356cbbcc956be299dfa1c2457942a54870382b699bd5900c5c17",
+          "b6afb5deaf9af1992ec1f1f0ec911f0adafd485f76a65fb86e4f60de6ce040d7",
+          "4d358db4d5aaaba0add5fed19c1712ec8981073f52635f79d7425da0b19acdfe",
+          "c613c893fece1e1d51c4a223d48d214debc8c20a1b8898f9329512f8baceba06",
+          "7530440987e52eff31e0d293ec9ff383c1e6a0e9e6833cda13d9329778ccf536",
+          "e67bff384586fb66f3cdd500f8d5fb38c56348fe0ccbd93314e4db5669ef8dd7",
+          "0e111a11de77535184aa905082afca567ecd57a2a0cd8924de3b2da13bef1328",
+          "e9a438fd2aeb0302662787c10db653c4c545dee10bbf32877a450b705445e09f",
+          "9a4b6ff034aea1f8d1dc5018444d2e4bf35e2eb7c2e61790688691f944c38ce1",
+          "b8711b17667d9699d6339f1952653ac9afdb19c6e0ccb355a7fb43df7be82b0c",
+          "e589082d08c504aec35eb354d0e12e87f30ac25ffb4d6bf7295b87b2d3bcaa21",
+          "09bfa2ec2d96c2cf28001676576741925d809cabb8e5615e32ff91e81c8b6e57",
+          "d0fc094a9ddf5622b2828095247133bc9f0ca63ac204a169543f240419e82f5d",
+          "b139147a8975f8d6f6ec3491035db69debe3ba76a0b3a930d4da96508ca33354",
+          "8ddcd406f105421c97902c2cfa63eaec0617c03b3dc99f0a66f89feb5ef1f21d",
+          "3ef9310d938960444e0b4764f9ddac5cd6b6e66a4420f905091275050cdba199",
+          "0da925474ff8dcd7d821753b404bcab543a1bba094b1fad2793c8a2a2cd7a79b",
+          "5d799139d64a191d3fc3cbe53bbff8e67d86bc8d2ac8a05b98b2b3ec3f12ed3f",
+          "0194ba335dd4ef6bb8c749ddeabb5e70b7edf11afb0a48f633e4d8c4fd923e67",
+          "749ed426870140ae2d49ae935e2f582bfc87395098af9afee6e0825ca4dcadc3",
+          "87e95ec3e653eb941c4f4a8384dd4d98888d6ee2c89f86002df7ccfcc59daa7a",
+          "445af1f6543c113c030d916419790a85148657a3fb1e27e729a558854b6051e3",
+          "88c115c7864e9ee237b5084a101b3d5d96cc029eb7b79e0b4d6bfd19a8618982",
+          "9e1bc5bad61f51bb625ea019950efe4a61a1357089da5f154cbfd10158e8b108",
+          "50f8ee01a365302f8e1b3255e0cf22f23fd9fd060e8a5bb02fca566df17c3803",
+          "ee52910314b43158735bbe098262b2a8d17b771dcec4733f753162fa8541c150",
+          "28abe7e51ee904ac663d396ce503bef1033ff3d6b885fef27ab9461f296e40f8",
+          "778c079a3af4df72d50354f5fb91c7f42e756c7c425edd9117e283571a594895",
+          "1a860f65701952eb00d03f2fae7e1787b1b5525c76f2c83e3c815fcb1bd76e63",
+          "3ab36c67e23e6c7e3f17d6a66ac1acb4871e7734a805551208d92ed3cbcf8e2b",
+          "e8c033f47990ed88f14786e45cabc26489576d36c373bf29277cdb3d1c14e5f8",
+          "2fabfa4d60633abe619cf798b3462bee5979ad64ee890c7794bbfda25e1d940b",
+          "5ab400114ff416353d94be0cdfa0b99d210b6cd3be30da32341030406e89597c",
+          "1a692a733784efc0f26f38dfbcbb4d8522a107ef8c39ee465a290d294088a9de",
+          "92a94c0421c1df5ea31e5494ed1ab36aa99194bd57fa7c8592b6563b887a8fa9",
+          "11f9931445bc338b1f972d862392f5e64fe2c60e51c420126ba38e088b36777a",
+          "d57633929d3e2f563ceb573602d4f65c373eb60dff7c8147e499dc73c9be2cf2",
+          "f6d5339626308edf488ebf0069f450950098528a558885fb1cde7ea2e0138742",
+          "ebc7c3f4afda038f9a1b448e10b51b185d51e3b4d19082afcf11b5acd11a24fc",
+          "361c30c429fc877123a16672ed81fa313b43d709ddf846a2577b3fbca34f96e2",
+          "35b1f61e7c2ada2160ba957e2af1ee8f08d6730543f6f4afaece42ce29291b7a",
+          "6505c2addbf16d39360de950e7e3220c2ddb7b535c759d518e612b1deafc9a61",
+          "a555447c160b867fed25d4cd93e4a6dc20f77c8858726c3b5c1a526d52d4857f",
+          "b6956f64369e537643c16ec4261b51dd802e801a62a78b968c160b3eaa8df1d2",
+          "8bf0b9317cd88fef469a852d0189083be6e255e1c5880a153195acbd71d0f3a7",
+          "bee541595604cbfb120cb03e42b5346a00c0ff4fabe676304e05fb2e87387af0",
+          "eef90dc4635dc6167b1801d4d56ed72e76dbb77c070a4cac2e1a125e0bb56da7",
+          "832e2711364bd2f1c3bcd55c90cc1a89cbb465d9f26da02ff1b9791954490869",
+          "928b208da739b245d7a3a0a51a570caf63fc1ed8e53d0d7bfd556dee18d6cf3b",
+          "999859943ddc82f329f443b5c59f96977f75421cc0b6850fa372368fdb97e1f2",
+          "0865901aacc0dcb20c17ac94b2669542f820e0675cef05db14c21c7ad657c670",
+          "51a5ea62024a0a597d9fc7f3155200b303c15d942867a1f75e1344987e253050",
+          "2642dcf1e4f741272b3b22c3ad25e1c0c65f17b0b840c86f718c7cee7920b832",
+          "5a78f2aeacccd05d4fbdd35cace6f3c919022b4a08ca76b7ac00fcb794226f7e",
+          "bbdcc7d6b6f05e99ec3b593277a978da6a0a311e9b8890feec7442dc4ae045f2",
+          "8b7d98159a31cd735cbb4e6091e51d534e8d1eabcd03fe14ff280959b2bcdfb9",
+          "fbd418b489ea50d935a76853eef057ee464fb6a81955244bdb3c47be9db8b64d",
+          "238095e4dbfd299d3d28f83d4e4ca875f9d182772d20ee5c1e6a830255739212",
+          "4c164db4de73d293bb62a6323d7e0ee7a473bb29c632365caaff69c0cf16ae42",
+          "b95ddb7b36e2a142529fb74222d2154f5cf392223b4d80e64827b03b01f7c624",
+          "73301af14ab32efe04ed185a9533e16b3f0afc2b24960166e3ab4a9c4687e7d7",
+          "ff5901dd9c40cc3b4fffd895daa56b8a6fa6355f66d2a8fb34a22d957a4a2254",
+          "2e647234cbbc451dd8859d369ed1c54a66a13035a76988c4e2ace7214dfd4c9d",
+          "9c19bbab26e014ad81c2c3b688b9e3e840dd6ea5dc18fcfd473e9b3c91e406da",
+          "5c611a2c0fed6cd1d7e00063ef6f33512947a85a8b0263a7919c5ebd1b6ed39c",
+          "2cdc4317708cf6e072ac6a85e7181e12562a18f07555c30b8b540d55fcfb7cf1",
+          "737b018b55181ecccbc0d89779b6a5ae0e9f676c97adf1705f641fad843048bf",
+          "d0229472d3ebe2014f931444d20fc7dc9ce460a1126870c81af0f529b2280b51",
+          "94522f48621845186109e5ef3b6c5c4f4bc3ff3e7246cde59e7c50db791c55d8",
+          "866229a2330bd48eda83ca4b67bb8a684f2a4657b3ca26307d9ec4fc3886c730",
+          "e489d72956ae26160ae278b108b58dd43c1f14744592f3d297e8dc4e7dcdad0d",
+          "509e89eb17cb84bf6829a568c1b44ddb2a4e00a29b26d5e3b82550eae7c8b601",
+          "e6535b530c419aaf823809ee41ff7c5de4205e1335502044dcc46125ee88dbae",
+          "375bb5fc47b62ac8814b0970231fe0bb6f6ba96eba4448b99df5d6acbae19325",
+          "37eb4dfe2095a55c40409854be862e8674bfe186f87d8049d36d0ad1f00f6545",
+          "06dc055384eba04406f6d3bd44ddd13baed6680023bbde4653c3c7b9c7c823a8",
+          "58d0a68db8f2189eb289bd526b5b69d40d1cf7794b772f8f3e53eb6ec716c202",
+          "913551d066d1effb9ed1d20ed0b5d6a3ed2a344f18e9f3f7b0e29b2ab97becc2",
+          "597d772bd5a016c628e77cdf35c66379dc6cccde47464fedf29ab6bdbaf64518",
+          "aa0c8de34494359ed840ba29c5e7463dbf97ebc575086c3e1d8aecda7e62a093",
+          "8176624ce20f088cdf5f0e25941b5cb5f384d92f3434695bee100801db611034",
+          "497c39df6d7f5642a7e8f7de9815f5fa92bd6aa3e2de9ac8948e04fe4f3f665d",
+          "493c106f832e64d5a3340e5a26dc38ecd95d4719558660b6056ef3c2a97c582e",
+          "e1fedc6ebaed518104773e31a79cbd1c5e18bf22da26070b9065f387be32a3fd",
+          "e7097fd4a06a3ba60fdc3a314735caf8b2253f2d7a45fc2a8246859a668bbcf4",
+          "af6904f7b23e6c32444093507587b47e2fe02b10da967a650099ca3b336a3d4c",
+          "407f6d6055965995c12414b897da731defa609d0a0a9a32e9cc1cbb71baeab07",
+          "552a017a2467f4c23dc02c88b6fc4551d854966db5cd765d5b5751db061e34eb",
+          "5e69d79971e44dec80a99d65563760035e431835819a1e17d20798c014b328c0",
+          "0a2dc955132295f2d71985dd1cf92d59caf2271fb067ca19301b14daed729360",
+          "3d35cff1545439887a71b4b34537854561c9b69c9b7f07e135cab17e403b1790",
+          "3e58dd10747e091e24a5e8a393949a329ead9b32950f667fdbaa1c45001793d4",
+          "8ac204984ef50d5604343492fc1282eff260530207d394827a8e51bb17d76318",
+          "578aeb8ad6916ca1c4c68bd5e2ec741744bcff528b48ab00f964dbce3f6c85bd",
+          "87f5a24a205f55f52a0d68f220c897afe194e64c616065d8a703d3a5f7931281",
+          "c232ed348b700c6e8fc3b4c6a56e9125a58bad72fddeb186877bfa326814def8",
+          "ae9a01e2e2b721bb4e27275b469e6d747e98069fafe9624354f8a4543e62aa21",
+          "3eb1b8b8db7b141409f4a73e5b54f176686cb4709b2994b51ee88a68e2b6a533",
+          "25e2354f2b772cc000060e9d897b95fc1d99f9581cfe43953f618e90edc2648a",
+          "08364386ee4ed5c6b80330c5a6437b963e924d6f8a6af64427d76e3548bcffc2",
+          "b146d5251f05976fc4da955a0f5fc9bb4aea311612ef483f52090fa61cb8311f",
+          "44024780ead9d05d08bda87fe969bfb007fcce08d911187137d14779fb01c2e7",
+          "e81d03ae448eef8f42f645b573b515aae5c52d8d014d34bd22798ea02e87d02e",
+          "0a19ebc3ad659755e7d6a2b9d7cc3b787d238411e0e63bdef028c2abbc733232",
+          "2909c8c808ebdc974eeb5225caa3867c80be628018b122d435b8655c9da64b36",
+          "7832d612b4d1a6af748a93fabdc3e765f094abaceb720011620b62b15eb33151",
+          "c2610c54a4bfd27f44c1313f6a73d8bd6288dfb6e81e77cf5545b503af18eae4",
+          "05a44d1dd9e474fa681888fbc2e86d97e3a8588007c52446bdb44189e900c162",
+          "b43312e00d02a2c12416cd150d5a3d800b27bc985bbd15374e82fed136bd495a",
+          "68fb253ab58c6bea3b8cdc2f5b6ed8a1b18a83964f3264189a7cd61530d1cba8",
+          "992cb22eaa1a38fe8a4b83d766c241a0bff5a3cb3aae4930cecc55443f196fb7",
+          "bad1c49fbb759530faab2dd512437dda8e9b10753c44b4da2ab0ea1b6a363494",
+          "8d9ec5ff5b768cb3179be2a2af4930f044f64b32fce2234f0159860c161bf2bd",
+          "b61d236655beb0b698e45402d3f3bb8a7143dc6ea9c911cf73ef84840aba9b8a",
+          "9b6dcdacc1866d24414676625ea68e70ab3d4b80898b564fe88e950fda099e41",
+          "3d1af9fd361ffe6f802d644c095fa75f2afb49e81bc606cde61001a9ca79224a",
+          "1e162e45bc6e6954db3782370a6a7bbeb126daa737243281aaa9a457bf056193",
+          "5ec4c8e5ac3901757ac6cd1b608dc9e0fb8c5c1a0b68b5947db09b664b88a8af",
+          "6d292703e6f4890b1101015b7ccaadcb3e57da449d04fac58e55e9f14be88878",
+          "77386eb58ad881c27aa1fe83133cfa799a259899b3068c33211bb973e7eb9f52",
+          "b42d301ff761c7c336902f0863bc8406c3b5084531fe33916aa2aa0b120234a5",
+          "6749f54b1b485330f4e9d2c8e494f19c3819651a6932326b129ad9e8a2de2afd",
+          "988182f6932d12457730be878799c6f8f3fc19588827c75f618335afc3eec18e",
+          "0ad828f625a139c295328023c3d3e8db37cee429eda7f2d12a921146bbc776a5",
+          "e96b643f41a7d82f8fd3db8e2fc92bf4ecf63a5445bf4af04e9ee8ba7ca7ac13",
+          "367afba549fda14c7f4767a8582f3a61dadd4e354fbabf8752131e8c56dbc19f",
+          "980eb9c474b558759e6e5695ce0d616f6e850a6001d4f68595e0044a445c336c",
+          "96517c7b9ad10251c19b6c263019b388c665ff7dfd8efbe6f7ae891630d66870",
+          "8eee9accd3b5eccce2b767bdd7b216dfaba47370205584fa10a99c5392765992",
+          "24b2edad67a786840dfd6802bd812bba751073feb314ce8fcae44cafaebfaa8d",
+          "c44711a9595c4a5fba4ce7136837764d958f5428eeaff2e4e5833c48574060f9",
+          "4734063e3a7d3198b180fdb5fd568f812a0c398b85a0b1f4328cca6eb66fd076",
+          "88d69b0453627725473ecf3f05b75fa17954f862e5ac1433c6aec43e488598f3",
+          "eebcb89dc597074ef04062a13522ea94566c2ce967121a154d9b9c16b822ec9e"
+        ]
+      },
+      "cpu_seconds": 152.309554,
+      "experiment_receipts": "reports/checkpoints/amendment-857ece4-campaign-receipts.json",
+      "experiment_receipts_sha256": "cb268608cbae5c518bca5f661ffc50598cc72ad161a3ae0d5ae3f9a4fd9920d1",
+      "limitations": [
+        "synthetic 8-hour sample, not 2025/2026 market data",
+        "no strategy profitability claim",
+        "batch test harness amortizes imports; production isolates every job",
+        "not Contabo/8GB stress or complete blueprint acceptance",
+        "open positions at sample end are censored, not fabricated closes"
+      ],
+      "peak_worker_rss_bytes": 301154304,
+      "raw_receipt_sha256": "9ef12c9065114c2286937e09b5522be3f2c71a1f9fc80c98c2bbc70eab4d43b4",
+      "scope": "1000 distinct synthetic strategies, 480 quotes each; import-amortized batches, not production throughput",
+      "source_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+      "status": "SOFTWARE_CHECKS_PASSED",
+      "synthetic": true,
+      "wall_seconds": 179.60977943699982
+    }
+  },
+  "branch": "build/initial-factory",
+  "browser_rehearsal": {
+    "browser": "154.0.8037.57",
+    "checks": [
+      "authenticated overview",
+      "live research counts",
+      "register bounded improvement policy",
+      "pause preserved",
+      "disable policy",
+      "cancel queued job",
+      "no page exceptions"
+    ],
+    "mobile": {
+      "document": 390,
+      "viewport": 390
+    },
+    "scope": "real loopback API + Chromium, synthetic paused state; not full C7 acceptance",
+    "source": {
+      "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+      "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+    },
+    "status": "PASS"
+  },
+  "completed_increments": [
+    {
+      "change": "immutable multi-period inputs and source-row forensics, exact bounded bar reuse, independent readiness receipts",
+      "commit": "5fb761af80c116de1ed39444b4d97285a25e249c"
+    },
+    {
+      "change": "exact Tier 0, durable rejection receipts, native audit/quarantine and TPE PRUNED feedback",
+      "commit": "34d5f03"
+    },
+    {
+      "change": "bounded autonomous training improvement, persistent plans/lineage/negative comparisons, protocol/CPU ownership fixes and real dashboard controls",
+      "commit": "42488cc8a0f74b6a4729d8295eed0ff6aea4afe1"
+    },
+    {
+      "change": "worker checksum/integrity guards and immutable repeat-completion conflict rejection",
+      "commit": "857ece435e757c1482709a241a0e56f18555a1c4"
+    }
+  ],
+  "data_readiness_remaining": "176 planned provider-month partitions plus verified availability/calendars/revisions; bulk acquisition follows tested SOFTWARE_VERIFIED handoff",
+  "directive": "docs/source/Optimization_Handoff_Amendment_2026-11-03.md",
+  "directive_sha256": "52829cec1eeb01071085463b304a2f94212ad2ee679d713bcdfe6bedef5d5207",
+  "full_milestones_completed": [],
+  "github": {
+    "branch_rules": "BLOCKED: integration HTTP403",
+    "current_head_ci": "check draft PR; dependency-security gate remains failing",
+    "private_verified": true
+  },
+  "historical_strategy_validation": false,
+  "host": {
+    "cpu_quota": "400000 100000",
+    "memory_limit_bytes": 34359738368,
+    "note": "4 CPU quota, 32 GiB cgroup; not intended 8-GB VPS; page cache uncontrolled",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "python": "3.12.14",
+    "target_contabo_verified": false
+  },
+  "observed_at_utc": "2026-11-03T20:42:17.226881+00:00",
+  "peak_system_memory_bytes": null,
+  "previous_report": "reports/checkpoints/pre-amendment-d1641cd-milestone-report.json",
+  "production_ready": false,
+  "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
+  "raw_market_data_committed": false,
+  "readiness": {
+    "DATA_READY": false,
+    "OPERATION_READY": false,
+    "SOFTWARE_VERIFIED": false,
+    "data_missing": [
+      "full_2025_2026_coverage",
+      "source_calendar_revision_reconciliation",
+      "target_catalog_verified"
+    ],
+    "operation_missing": [
+      "target_install",
+      "target_8gb_stress",
+      "multi_day_soak",
+      "target_recovery",
+      "approved_historical_workflow"
+    ],
+    "schema": "readiness/v1",
+    "software_missing": [
+      "implementation_acceptance",
+      "representative_real_e2e",
+      "execution_reference",
+      "causality",
+      "offline_coordinator",
+      "diagnostics_improvement",
+      "independent_validation",
+      "dashboard_e2e",
+      "installer_operations",
+      "security_disposition",
+      "reproducibility",
+      "hermes_handoff"
+    ],
+    "status": "NOT_READY"
+  },
+  "real_quotes_structurally_verified": 21345746,
+  "release_tag": null,
+  "remaining": [
+    "Source calendar/gap classification, revisions, fully autonomous incremental imports and independent-source review.",
+    "Approved dated Forex/Gold/JPY monetary profiles, conversion, native rounding policy and full independent execution reference.",
+    "Full blueprint strategy families, automatic new-data/region expansion, indicator-transform reuse, lossless storage/projection/mapping candidate benchmarks and richer rejection strata.",
+    "Full cohort/session/regime diagnostics, recursive/diversity-aware improvement and independent confirmation of training children.",
+    "Complete chronological annual/pooled/OOS/three-month WFO refitting, untouched holdout-use ledger, robustness/stability/multiple-testing and comparable validated boards.",
+    "Full forensic dashboard/charts/exports, paper observation, production installer/restart/update/rollback and installed-distribution provenance.",
+    "Security dependency disposition, off-host backup policy, actual Ubuntu Contabo 4-vCPU/8-GB install/stress/recovery/multi-day soak and all original release gates."
+  ],
+  "repository": "https://github.com/AKYA77/hermes-factory",
+  "resolved_failed_attempts": [
+    "Browser exposed blank static dashboard: restrictive API CSP omitted Svelte bootstrap hashes; fixed exact-hash verification and reran actual browser controls.",
+    "Improvement restart exposed integer-vs-float CPU-budget identity drift; fixed versioned canonical identity and legacy ID restoration.",
+    "Static review and new tests found shared-job CPU double attribution and unchecked completion conflicts; added ownership, checksum and repeat-completion guards.",
+    "Initial new screen-audit test referenced a nonexistent result counter; corrected to quote_count; final suite passes."
+  ],
+  "retained_real_source_imports": [
+    {
+      "dataset_hash": "1520c4173abb5823a4e36b23f96f1b0e43b135a7c8d767ed25de4b4b8c294b6a",
+      "first_ns": 1735769041721000000,
+      "gap_count_over_60s": 285,
+      "import_measurement": {
+        "cpu_seconds": 41.871216223000005,
+        "peak_rss_bytes": 155176960,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 43.98653697999907
+      },
+      "instrument": "AUDUSD",
+      "latest_verified_ns": 1738360734122000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "28de1b4743649a4261cf9733f774736c46be0034dcadfccce4476194202cf880",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "1f20e14cd4b2bee8886b15abda7f7af59e50c65909c03d0ce00acfdcffc891fb",
+      "readback_exact": true,
+      "rows": 1668426,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "bcb94bfa9d2da041e2a4ba28f2c18efcf32cfad1e92a37dfe3c3abeac633b8d9",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/audusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "first_ns": 1735768814647000000,
+      "gap_count_over_60s": 201,
+      "import_measurement": {
+        "cpu_seconds": 54.982249047,
+        "peak_rss_bytes": null,
+        "prior_resource_receipt": "reports/checkpoints/accounting-data-2f1e505.json",
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": null,
+        "wall_seconds": 54.55692046799959
+      },
+      "instrument": "EURUSD",
+      "latest_verified_ns": 1738360797318000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "b6bb8425fb1a5966f408f42b018a08f767929979a0514184cd7e13e271d2a0ec",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "47db421efed0291f98f0e1afe1b8deb51ce5201be414a76f0b266f86f0148f9e",
+      "readback_exact": true,
+      "rows": 2283239,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "159f906f8055f6ee835d95806cf7fdf4023b6e3ef098aa308d2ab6ce53ac964a",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "eaf174f6780fb80e674438b7ea5c36fe98710ff05a009ddd547163cb00730119",
+      "first_ns": 1735768883324000000,
+      "gap_count_over_60s": 171,
+      "import_measurement": {
+        "cpu_seconds": 68.106131637,
+        "peak_rss_bytes": 171188224,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 70.55474513899753
+      },
+      "instrument": "GBPUSD",
+      "latest_verified_ns": 1738360796085000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "b1dc2f120f1baec36a835048435a558c16bb6a74dccbf8564183f587c9652be7",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "a4915ba2bcbc67b463505043c61d14cb6ef5d626c6ec7cda6f8d7392b84ab8a8",
+      "readback_exact": true,
+      "rows": 2660109,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "665455f96f31328ee663d1fe9088098c700fcbba8d85352cbc6fdb4f17cdaee1",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/gbpusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "cefa1d6d328dfc76f96288188628bade0a9317736bd6e88eee23264a42fe18e1",
+      "first_ns": 1735768878560000000,
+      "gap_count_over_60s": 352,
+      "import_measurement": {
+        "cpu_seconds": 32.476239639,
+        "peak_rss_bytes": 150536192,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 33.987195415000315
+      },
+      "instrument": "NZDUSD",
+      "latest_verified_ns": 1738360796189000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "09ef3520c8758bba4a749b5a21b55254afe62d318704292282d1b396f06bff02",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "b7d5438b7ae7741efa77c8819a31d02496d761e79013fc05b19c8cdaf7c819b8",
+      "readback_exact": true,
+      "rows": 1346505,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "f34788e0b34279f46ae508f86a219acd98c8d1fa7c40b25b516a658b5de86c1e",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/nzdusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "1fbb7f213c466db7540d04431534ac349ca68cc953d8b4d0288d7a45457021b9",
+      "first_ns": 1735769051542000000,
+      "gap_count_over_60s": 206,
+      "import_measurement": {
+        "cpu_seconds": 62.972041274,
+        "peak_rss_bytes": 168697856,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 65.18151523000051
+      },
+      "instrument": "USDCAD",
+      "latest_verified_ns": 1738360771940000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "1d540d9fd5e8cd9b00055abeb6c901ba3826f43ac31dd414d97b07c171d655a1",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "c3ecb3dade3562a411e0c8508d237fabc0440a6b9cca4b4d1f53730391af3e36",
+      "readback_exact": true,
+      "rows": 2494413,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "45ae9034b12d0fb5ff16aad8fde01118827d097903ce2491dd3050b666964dd8",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/usdcad/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "f7b5b7a95f585aa4f7936a311f2ad03d9727e9f5f71d993e4d26000164f67ee8",
+      "first_ns": 1735769041721000000,
+      "gap_count_over_60s": 285,
+      "import_measurement": {
+        "cpu_seconds": 40.273317270999996,
+        "peak_rss_bytes": 154554368,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 42.399681037000846
+      },
+      "instrument": "USDCHF",
+      "latest_verified_ns": 1738360797398000000,
+      "observed_price_quantum": "0.00001",
+      "parquet_sha256": "12c32824ada5acdb808b45751298bb86f69b0dedcd1b721070688429bad61355",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "7e92d80a5354e86e819278f582fdd0bcda19a5384469ce8dc0d4ac46cd5668bc",
+      "readback_exact": true,
+      "rows": 1627731,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "ac8cfb5e93ed40588198b2c80faf0dfaa4003d2e2f03cafc5e097b734d58fc79",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/usdchf/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "eb96f6feeec011eb2f45a1443ca8cdacc48618f49133a6d94c002b0ce0fd70b8",
+      "first_ns": 1735769041721000000,
+      "gap_count_over_60s": 193,
+      "import_measurement": {
+        "cpu_seconds": 83.51763665,
+        "peak_rss_bytes": 182874112,
+        "prior_resource_receipt": null,
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": {
+          "git_commit": "2279e142ce3f9d8d3fe70335d2c5c2dd22d319d0",
+          "source_sha256": "e69e5344d50e33e45f22c96f3533135d0a1274305285d6f2c6be9075fd547843"
+        },
+        "wall_seconds": 85.53618797600211
+      },
+      "instrument": "USDJPY",
+      "latest_verified_ns": 1738360798140000000,
+      "observed_price_quantum": "0.001",
+      "parquet_sha256": "e34ab70f65aba69dcd83ac726df67d3750fe8600e9d15e5ba44c79860a94a170",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "19cb5528afd50b63586a046845773fb39c502aaff97cb395008999703cd2a359",
+      "readback_exact": true,
+      "rows": 3467097,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "72834b8a2d3c553e76018a8a3724af64ac30de4ec7211875378887b73232a896",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/usdjpy/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    },
+    {
+      "dataset_hash": "ab3f273988dcb7b2aaff21168bc9d0f6afe624d8e18856b73b37a93b975ae755",
+      "first_ns": 1735772400455000000,
+      "gap_count_over_60s": 26,
+      "import_measurement": {
+        "cpu_seconds": 133.355523369,
+        "peak_rss_bytes": null,
+        "prior_resource_receipt": "reports/checkpoints/accounting-data-2f1e505.json",
+        "scope": "download plus structural import; pipeline CPU excludes module startup; RSS fresh-process high-water",
+        "source_context": null,
+        "wall_seconds": 132.22431828000026
+      },
+      "instrument": "XAUUSD",
+      "latest_verified_ns": 1738360796320000000,
+      "observed_price_quantum": "0.001",
+      "parquet_sha256": "e0dd55dd37c7651c65c1fbd0308ebc3d090f4100b4d915ced525a2639e3c23d0",
+      "price_scale": 1000000,
+      "provider_period": "2025-01 fixed EST",
+      "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+      "quote_stream_sha256": "885dd09fec86cc438fe894709ec884d1db8ebd2b3d14ffc738afd939049f47a0",
+      "readback_exact": true,
+      "rows": 5798226,
+      "source_cost": "free web download",
+      "source_precision": "millisecond",
+      "source_sha256": "8653c8c14951e5b84315090f7e813ff38325223b59e1ad8c702e4e4fb78af51d",
+      "source_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/xauusd/2025/1",
+      "synthetic": false,
+      "usage": "owner-authorized local research; redistribution not asserted"
+    }
+  ],
+  "schema": "amendment-checkpoint/v1",
+  "scientific_campaign_parity": {
+    "baseline_count": 1000,
+    "baseline_state": ".local/directive-cached-campaign",
+    "current_count": 1000,
+    "current_state": ".local/amendment-campaign-final",
+    "excluded_fields": [
+      "runtime_provenance"
+    ],
+    "matched_strategies": 1000,
+    "scientific_differences": [],
+    "scope": "all other native fills, trades, ledger, paths, signals and diagnostics compared exactly",
+    "source": {
+      "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+      "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+    }
+  },
+  "security": {
+    "checks_disabled": false,
+    "decision": "docs/decisions/0007-dependency-security-assessment.md",
+    "ignored_advisories": [],
+    "lock_hashes": {
+      "apps/dashboard/package-lock.json": "aae35647b6166efa92dfa3b53a2c1274a747b73376fd3e5f4d1d26d84ce1af27",
+      "uv.lock": "6b7bbd4a443032e112122d8bfb25763785f11961c57a472f448ca70baeadb1c9"
+    },
+    "npm_audit_exit_code": 1,
+    "npm_counts": {
+      "critical": 0,
+      "high": 0,
+      "info": 0,
+      "low": 4,
+      "moderate": 0,
+      "total": 4
+    },
+    "pip_audit_exit_code": 1,
+    "python_findings": [
+      {
+        "advisories": [
+          "PYSEC-2026-4217"
+        ],
+        "package": "fsspec",
+        "version": "2026.2.0"
+      }
+    ],
+    "raw_receipts": {
+      "reports/runtime/amendment-final-npm-audit.json": "1c7812dddf8e75be0ac8d93072180ccf32ccca5d7ebecbecfb4bf19a2e6a9450",
+      "reports/runtime/amendment-final-python-audit.json": "aa3be602597c748c9205bca839e0a745931575adcf42e4e6c5cc4c061ac72995"
+    },
+    "status": "FAIL_RELEASE_BLOCKED"
+  },
+  "source_context": {
+    "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+    "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+  },
+  "status": "NOT_READY",
+  "tests": {
+    "command": "bash scripts/verify.sh",
+    "dashboard_typecheck_build": "PASS",
+    "errors": 0,
+    "exit_code": 0,
+    "failed": 0,
+    "junit": "reports/checkpoints/amendment-857ece4-tests.xml",
+    "junit_sha256": "d52dfdb60cf7e35270fb255f2b5d15b8d7aa583343051e837fbb1e3c7f421a48",
+    "passed": 172,
+    "ruff": "PASS",
+    "skipped": 0,
+    "source_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+    "warnings": 162
+  },
+  "version": "0.1.0.dev0",
+  "wheel_package_check": {
+    "bundled_migrations": [
+      "factory/sql/001_initial.sql",
+      "factory/sql/002_search.sql",
+      "factory/sql/003_evidence.sql",
+      "factory/sql/004_improvement.sql"
+    ],
+    "fixed_SOURCE_DATE_EPOCH": 1793737538,
+    "scope": "two isolated wheel builds and archive/CRC/migration check; NOT installed-distribution or target verification",
+    "source": {
+      "git_commit": "857ece435e757c1482709a241a0e56f18555a1c4",
+      "source_sha256": "7099b0011ae1024e499a6537710b781c714b56a1bce8e94439a285c673f07d68"
+    },
+    "status": "PASS_REPRODUCIBLE_PACKAGE",
+    "two_builds_identical": true,
+    "wheel_sha256": "355400e449382a018d310be56b83deec1e25228bfba8869623f878b46ae0f6a8"
+  }
+}

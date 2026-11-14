@@ -1,0 +1,53 @@
+{
+ "schema_version": "sample-roundtrip-report/v1",
+ "forex_and_gold_samples": {
+  "forex": {
+   "instrument": "EURUSD",
+   "rows": 48,
+   "dataset_hash": "ab147a094d1db4b884ecf8e951840f73ba214a6e1362ff6b4a7a17f5d740a8a2",
+   "source_sha256": "2d08e7802392a1bdf39ee2f1917044dab7a363876e59f582adeb9b19c0f208f0",
+   "parquet_sha256": "7802a4b9ccfbdb9260733caaa75d0d8bfefa2aaa17cdaa73785f81519abc72dc",
+   "quote_stream_sha256": "cf40d702582c3ba96e6304ae5254ca18598f6a0d1bd965b606b0a974afc2963d",
+   "first_ns": 1735689600000000000,
+   "latest_verified_ns": 1735692420000000000,
+   "gap_count_over_60s": 0,
+   "parquet_row_groups": 6,
+   "price_scale": 100000,
+   "observed_price_quantum": "0.00001",
+   "readback_exact": true,
+   "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+   "checks": [
+    "raw source hash matches the published manifest",
+    "canonical parquet hash matches the published manifest",
+    "partition reads back byte-exactly to the input stream",
+    "row count, first and last timestamps and contiguity verified",
+    "re-importing identical bytes reproduces the same dataset identity"
+   ]
+  },
+  "gold": {
+   "instrument": "XAUUSD",
+   "rows": 48,
+   "dataset_hash": "71975f493b51fb8db9eb6463b721783b7512c186098738b5d4d85f9a19055c3c",
+   "source_sha256": "8fb7498e323d0a09b0acfd0c6b530b00994b57aa3eb100bac4f67748cd1fe234",
+   "parquet_sha256": "0c6933be2ea244bfa666ebabd14ee3544446d6e865c7f69641fdf736ad7391e4",
+   "quote_stream_sha256": "66727c0b113128cd367fbed9704aa23f14ef68c8196eda8e431d50deb5e65c9a",
+   "first_ns": 1735689600000000000,
+   "latest_verified_ns": 1735692420000000000,
+   "gap_count_over_60s": 0,
+   "parquet_row_groups": 6,
+   "price_scale": 100,
+   "observed_price_quantum": "0.01",
+   "readback_exact": true,
+   "quality_status": "STRUCTURAL_PASS_CALENDAR_REVIEW_REQUIRED",
+   "checks": [
+    "raw source hash matches the published manifest",
+    "canonical parquet hash matches the published manifest",
+    "partition reads back byte-exactly to the input stream",
+    "row count, first and last timestamps and contiguity verified",
+    "re-importing identical bytes reproduces the same dataset identity"
+   ]
+  }
+ },
+ "synthetic_only": true,
+ "note": "Generated fixtures exercising the streaming importer, canonical parquet, manifest hashing and read-back identity. Structural data pipeline verification only -- not market validation, not DATA_READY."
+}

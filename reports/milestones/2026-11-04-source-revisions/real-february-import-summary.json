@@ -1,0 +1,46 @@
+{
+  "status": "STRUCTURAL_IMPORT_PASS",
+  "historical_validation": false,
+  "wall_seconds": 65.26287403299648,
+  "cpu_seconds": 63.943652672000006,
+  "peak_rss_bytes": 195887104,
+  "source_context": {
+    "git_commit": "bd66a06df3acb688b17ee086de1826a4c6633b9f",
+    "source_sha256": "23db4fab2aee15dd4624fe0122ddfd9b18edb98a3e4ce1c01ba725176d6f7983"
+  },
+  "source_context_unchanged": true,
+  "source_observation_id": "ba9c038a68f9d8fffc4267ada5eaf1a88bbdfad6ab3fdd0385e22530379f97ea",
+  "source_slot": {
+    "schema_version": "source-slot/v1",
+    "source_id": "HistData.com",
+    "instrument": "EURUSD",
+    "start_ns": 1738386000000000000,
+    "end_ns": 1740805200000000000,
+    "synthetic": false
+  },
+  "selection_status": "OBSERVED_NOT_AUTOMATICALLY_SELECTED_OR_APPROVED",
+  "batch_rows": 8192,
+  "dataset": {
+    "dataset_hash": "3f8e18fbddb8ad30044e1a703a0bf36bae93e082bd802b10a1d14b3d062ca468",
+    "rows": 2053257,
+    "source_sha256": "63c3b2717c024f7aada8642b38e7a944646dbe2440303632918e5c594db2313e",
+    "quote_stream_sha256": "734bcd6b0b2989e2edef27b4c90a3ffd57060e6aa92ecbb80dfbc2dfb9e60a5e",
+    "parquet_sha256": "457ff2b8fc1d7f5ffadc24f7702947ffd181a411d9f34c871fec6abc91872c48",
+    "first_ns": 1738533607171000000,
+    "latest_verified_ns": 1740779998852000000,
+    "price_scale": 1000000,
+    "source_precision": "millisecond"
+  },
+  "source": {
+    "provider": "HistData.com",
+    "instrument": "EURUSD",
+    "year": 2025,
+    "month": 2,
+    "sha256": "63c3b2717c024f7aada8642b38e7a944646dbe2440303632918e5c594db2313e",
+    "bytes": 12807066,
+    "page_url": "https://www.histdata.com/download-free-forex-historical-data/?/ascii/tick-data-quotes/eurusd/2025/2",
+    "cost": "free web download",
+    "usage": "owner-authorized local research; redistribution not asserted"
+  },
+  "original_local_receipt_sha256": "fcd31bd86bc2a5d381d6644e7f145cb464fd73ba6979571ea8f857763672a556"
+}

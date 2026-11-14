@@ -1,0 +1,396 @@
+"""Durable local single-writer store, immutable results and fenced leases."""
+
+from contextlib import contextmanager, closing
+import json
+import math
+from pathlib import Path
+import sqlite3
+import time
+import uuid
+
+from factory.contracts import SYMBOLS, TIMEFRAMES, OPERATORS, serialize, fingerprint
+
+
+class Store:
+    def __init__(self, path):
+        self.path = Path(path)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        with closing(self.connect()) as db:
+            for migration in sorted(self._migration().parent.glob("[0-9][0-9][0-9]_*.sql")):
+                db.executescript(migration.read_text())
+            db.executemany(
+                "INSERT OR IGNORE INTO research_coverage(instrument,family,timeframe) VALUES(?,?,?)",
+                [(s, f, t) for s in SYMBOLS for f in OPERATORS for t in TIMEFRAMES],
+            )
+
+    @staticmethod
+    def _migration():
+        path = Path(__file__).parents[2] / "migrations/001_initial.sql"
+        return path if path.exists() else Path(__file__).parents[1] / "sql/001_initial.sql"
+
+    def connect(self):
+        db = sqlite3.connect(self.path, timeout=10, isolation_level=None)
+        db.row_factory = sqlite3.Row
+        db.execute("PRAGMA journal_mode=WAL")
+        db.execute("PRAGMA foreign_keys=ON")
+        db.execute("PRAGMA synchronous=FULL")
+        return db
+
+    @contextmanager
+    def transaction(self):
+        db = self.connect()
+        try:
+            db.execute("BEGIN IMMEDIATE")
+            yield db
+            db.commit()
+        except BaseException:
+            db.rollback()
+            raise
+        finally:
+            db.close()
+
+    def rows(self, sql, params=()):
+        with closing(self.connect()) as db:
+            return [dict(r) for r in db.execute(sql, params)]
+
+    def audit(self, actor, action, payload):
+        with self.transaction() as db:
+            self._audit(db, actor, action, payload)
+
+    @staticmethod
+    def _audit(db, actor, action, payload):
+        db.execute(
+            "INSERT INTO audit_events(actor,action,payload,created_at) VALUES(?,?,?,?)",
+            (actor, action, serialize(payload), time.time()),
+        )
+
+    def paused(self):
+        return self.rows("SELECT value FROM controls WHERE key='paused'")[0]["value"] == "true"
+
+    def pause(self, paused, actor):
+        with self.transaction() as db:
+            db.execute(
+                "UPDATE controls SET value=? WHERE key='paused'", ("true" if paused else "false",)
+            )
+            self._audit(db, actor, "pause" if paused else "resume", {})
+
+    def register_strategy(self, spec, parent=None, hypothesis=None):
+        changed = []
+        with self.transaction() as db:
+            if parent:
+                old = db.execute(
+                    "SELECT spec_json FROM strategy_specs WHERE strategy_id=?", (parent,)
+                ).fetchone()
+                if old is None:
+                    raise ValueError("unknown parent")
+                old = json.loads(old[0])
+                new = json.loads(serialize(spec))
+                changed = [k for k in new if new[k] != old[k]]
+                if not changed or not hypothesis:
+                    raise ValueError("child requires changed fields and hypothesis")
+            db.execute(
+                "INSERT OR IGNORE INTO strategy_specs VALUES(?,?,?,?,?,?)",
+                (
+                    spec.strategy_hash,
+                    serialize(spec),
+                    parent,
+                    hypothesis,
+                    serialize(changed),
+                    time.time(),
+                ),
+            )
+        return spec.strategy_hash
+
+    def enqueue(self, kind, payload, key, actor="coordinator", priority=50, max_attempts=3):
+        now = time.time()
+        with self.transaction() as db:
+            if kind == "research":
+                from factory.contracts import ExperimentContract, InstrumentSpec, StrategySpec
+                from factory.validation.access import training_use
+
+                contract = ExperimentContract.model_validate(payload["contract"])
+                profile = InstrumentSpec.model_validate(payload["profile"])
+                spec = StrategySpec.model_validate(payload["strategy"])
+                if (
+                    contract.strategy_hash != spec.strategy_hash
+                    or contract.instrument_hash != fingerprint(profile)
+                ):
+                    raise ValueError("research descriptor identity mismatch")
+                training_use(db, profile, contract, contract.experiment_hash, "training-enqueue")
+            db.execute(
+                "INSERT OR IGNORE INTO jobs(job_id,idempotency_key,kind,payload,priority,max_attempts,available_at,created_at,updated_at) VALUES(?,?,?,?,?,?,?,?,?)",
+                (
+                    str(uuid.uuid4()),
+                    key,
+                    kind,
+                    serialize(payload),
+                    priority,
+                    max_attempts,
+                    now,
+                    now,
+                    now,
+                ),
+            )
+            row = db.execute("SELECT job_id FROM jobs WHERE idempotency_key=?", (key,)).fetchone()
+            self._audit(db, actor, "enqueue", {"job_id": row[0], "kind": kind})
+            return row[0]
+
+    def claim(self, lease_seconds=120, now=None, *, respect_pause=False):
+        now = time.time() if now is None else now
+        with self.transaction() as db:
+            if (
+                respect_pause
+                and db.execute("SELECT value FROM controls WHERE key='paused'").fetchone()[0]
+                == "true"
+            ):
+                return None
+            expired = db.execute(
+                "SELECT job_id,lease_token,attempts,max_attempts FROM jobs WHERE state='RUNNING' AND lease_until<=?",
+                (now,),
+            ).fetchall()
+            for j in expired:
+                db.execute(
+                    "UPDATE attempts SET ended_at=?,outcome='LEASE_EXPIRED' WHERE token=? AND ended_at IS NULL",
+                    (now, j["lease_token"]),
+                )
+                db.execute(
+                    "UPDATE jobs SET state=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
+                    (
+                        "FAILED_FINAL" if j["attempts"] >= j["max_attempts"] else "QUEUED",
+                        now,
+                        j["job_id"],
+                    ),
+                )
+            j = db.execute(
+                "SELECT * FROM jobs WHERE state IN ('QUEUED','FAILED_RETRYABLE') AND available_at<=? ORDER BY priority,created_at,job_id LIMIT 1",
+                (now,),
+            ).fetchone()
+            if j is None:
+                return None
+            token = str(uuid.uuid4())
+            db.execute(
+                "UPDATE jobs SET state='RUNNING',attempts=attempts+1,lease_token=?,lease_until=?,updated_at=? WHERE job_id=?",
+                (token, now + lease_seconds, now, j["job_id"]),
+            )
+            db.execute(
+                "INSERT INTO attempts(job_id,token,started_at) VALUES(?,?,?)",
+                (j["job_id"], token, now),
+            )
+            return dict(db.execute("SELECT * FROM jobs WHERE job_id=?", (j["job_id"],)).fetchone())
+
+    def heartbeat(self, job_id, token, seconds=120):
+        now = time.time()
+        with self.transaction() as db:
+            n = db.execute(
+                "UPDATE jobs SET lease_until=?,updated_at=? WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",
+                (now + seconds, now, job_id, token, now),
+            ).rowcount
+            if not n:
+                raise ValueError("STALE_LEASE")
+
+    @staticmethod
+    def _resources(db, token, value):
+        if value is None:
+            return
+        if not all(
+            isinstance(value.get(k), (int, float)) and math.isfinite(value[k]) and value[k] >= 0
+            for k in ("cpu_seconds", "wall_seconds")
+        ):
+            raise ValueError("invalid measured resources")
+        db.execute(
+            "INSERT INTO attempt_resources VALUES(?,?,?)", (token, serialize(value), time.time())
+        )
+
+    def finish(self, job_id, token, result=None, error=None, retryable=False):
+        now = time.time()
+        with self.transaction() as db:
+            j = db.execute(
+                "SELECT * FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",
+                (job_id, token, now),
+            ).fetchone()
+            if j is None:
+                raise ValueError("STALE_LEASE")
+            self._resources(db, token, (result or {}).get("resources"))
+            state = (
+                "COMPLETED"
+                if error is None
+                else "FAILED_RETRYABLE"
+                if retryable and j["attempts"] < j["max_attempts"]
+                else "FAILED_FINAL"
+            )
+            db.execute(
+                "UPDATE jobs SET state=?,result=?,error=?,available_at=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
+                (state, serialize(result), error, now + min(3600, 2 ** j["attempts"]), now, job_id),
+            )
+            db.execute(
+                "UPDATE attempts SET ended_at=?,outcome=?,error=? WHERE token=?",
+                (now, state, error, token),
+            )
+
+    def cancel(self, job_id, actor):
+        now = time.time()
+        with self.transaction() as db:
+            row = db.execute("SELECT * FROM jobs WHERE job_id=?", (job_id,)).fetchone()
+            if row is None:
+                raise ValueError("unknown job")
+            if row["state"] in ("COMPLETED", "FAILED_FINAL", "CANCELLED"):
+                raise ValueError("job already terminal")
+            db.execute(
+                "UPDATE attempts SET ended_at=?,outcome='CANCELLED' WHERE token=? AND ended_at IS NULL",
+                (now, row["lease_token"]),
+            )
+            db.execute(
+                "UPDATE jobs SET state='CANCELLED',lease_token=NULL,lease_until=NULL,error='OPERATOR_CANCELLED',updated_at=? WHERE job_id=?",
+                (now, job_id),
+            )
+            self._audit(db, actor, "cancel_job", {"job_id": job_id})
+
+    def complete_experiment(
+        self, contract, spec, result, artifact_hash, job_id=None, token=None, resources=None
+    ):
+        # Internal deterministic worker interface. No public metric-write route.
+        if contract.strategy_hash != spec.strategy_hash:
+            raise ValueError("strategy mismatch")
+        self.register_strategy(spec)
+        if result.get("legacy_gtc_reference"):
+            raise ValueError("legacy GTC reference is not an official execution result")
+        if fingerprint(result) != artifact_hash:
+            raise ValueError("worker result checksum mismatch")
+        if result.get("integrity_errors"):
+            raise ValueError("execution integrity errors cannot complete an experiment")
+        with self.transaction() as db:
+            now = time.time()
+            if job_id is not None:
+                active = db.execute(
+                    "SELECT 1 FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",
+                    (job_id, token, now),
+                ).fetchone()
+                if active is None:
+                    raise ValueError("STALE_LEASE")
+            from factory.validation.access import record_use
+
+            if type(result.get("synthetic")) is not bool:
+                raise ValueError("explicit evidence source kind required")
+            from factory.data.admission import require_active_at_completion
+
+            require_active_at_completion(db, contract, result, self.path.parent / "catalog")
+            for window in contract.windows:
+                if window.role != "train_only":
+                    raise ValueError("evaluation evidence cannot enter training registry")
+                record_use(
+                    db,
+                    spec.instrument,
+                    "synthetic" if result["synthetic"] else "historical",
+                    contract.dataset_hash,
+                    window.start_ns,
+                    window.end_ns,
+                    "training-completion",
+                    contract.experiment_hash,
+                )
+            existing = db.execute(
+                "SELECT contract_json,result_json,artifact_hash FROM experiments WHERE experiment_hash=?",
+                (contract.experiment_hash,),
+            ).fetchone()
+            if existing and tuple(existing) != (
+                serialize(contract),
+                serialize(result),
+                artifact_hash,
+            ):
+                raise ValueError("immutable experiment completion conflict")
+            db.execute(
+                "INSERT OR IGNORE INTO experiments VALUES(?,?,?,?,?,?,?,?,?)",
+                (
+                    contract.experiment_hash,
+                    contract.experiment_hash,
+                    spec.strategy_hash,
+                    spec.instrument,
+                    serialize(contract),
+                    serialize(result),
+                    artifact_hash,
+                    "SIMULATED",
+                    time.time(),
+                ),
+            )
+            from factory.screening.labels import record_native_audit
+
+            record_native_audit(db, contract, spec, result, artifact_hash)
+            if job_id is not None:
+                self._resources(db, token, resources)
+                db.execute(
+                    "UPDATE jobs SET state='COMPLETED',result=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
+                    (
+                        serialize({"run_id": contract.experiment_hash, "resources": resources}),
+                        now,
+                        job_id,
+                    ),
+                )
+                db.execute(
+                    "UPDATE attempts SET ended_at=?,outcome='COMPLETED' WHERE token=?",
+                    (now, token),
+                )
+        return contract.experiment_hash
+
+    def complete_evaluation(self, contract, result, artifact_hash, job_id, token, resources):
+        from factory.data import sha256
+
+        if (
+            fingerprint(result) != artifact_hash
+            or result.get("contract_hash") != contract.experiment_hash
+        ):
+            raise ValueError("evaluation checksum/contract mismatch")
+        if any(w.get("replay", {}).get("integrity_errors") for w in result.get("windows", ())):
+            raise ValueError("invalid execution cannot complete evaluation")
+        artifact = (
+            self.path.parent / "artifacts" / "evaluations" / (contract.experiment_hash + ".json")
+        )
+        if sha256(artifact) != artifact_hash:
+            raise ValueError("evaluation artifact checksum mismatch")
+        holdout = result.get("managed_holdout", {}).get("holdout_id")
+        with self.transaction() as db:
+            from factory.data.admission import require_active_at_completion
+
+            require_active_at_completion(db, contract, result, self.path.parent / "catalog")
+            now = time.time()
+            active = db.execute(
+                "SELECT 1 FROM jobs WHERE job_id=? AND lease_token=? AND state='RUNNING' AND lease_until>?",
+                (job_id, token, now),
+            ).fetchone()
+            if not active:
+                raise ValueError("STALE_LEASE")
+            if holdout:
+                authorization = result["managed_holdout"].get("independent_observation_id")
+                if not db.execute(
+                    "SELECT 1 FROM holdout_consumptions WHERE holdout_id=? AND authorization_id=? AND contract_json=?",
+                    (holdout, authorization, serialize(contract)),
+                ).fetchone():
+                    raise ValueError("evaluation lacks frozen consumption receipt")
+            existing = db.execute(
+                "SELECT contract_json,result_json,artifact_hash,holdout_id FROM evaluation_results WHERE evaluation_id=?",
+                (contract.experiment_hash,),
+            ).fetchone()
+            expected = (serialize(contract), serialize(result), artifact_hash, holdout)
+            if existing and tuple(existing) != expected:
+                raise ValueError("immutable evaluation completion conflict")
+            db.execute(
+                "INSERT OR IGNORE INTO evaluation_results VALUES(?,?,?,?,?,?)",
+                (contract.experiment_hash, *expected, now),
+            )
+            self._resources(db, token, resources)
+            db.execute(
+                "UPDATE jobs SET state='COMPLETED',result=?,lease_token=NULL,lease_until=NULL,updated_at=? WHERE job_id=?",
+                (
+                    serialize({"evaluation_id": contract.experiment_hash, "resources": resources}),
+                    now,
+                    job_id,
+                ),
+            )
+            db.execute(
+                "UPDATE attempts SET ended_at=?,outcome='COMPLETED' WHERE token=?", (now, token)
+            )
+            self._audit(
+                db,
+                "validation",
+                "evaluation_completed",
+                {"evaluation_id": contract.experiment_hash, "holdout_id": holdout},
+            )
+        return contract.experiment_hash

@@ -1,0 +1,134 @@
+{
+  "status": "PASS_BOUNDED_GENUINE_NATIVE_REHEARSAL",
+  "source_context": {
+    "git_commit": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
+    "source_sha256": "3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b"
+  },
+  "source_context_unchanged": true,
+  "design": {
+    "training": [
+      1736337600000000000,
+      1736352000000000000
+    ],
+    "exploratory_oos": [
+      1738756800000000000,
+      1738771200000000000
+    ],
+    "family": "momentum",
+    "timeframe": "M1",
+    "seed": 42,
+    "max_trials": 1,
+    "source_revision": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262@source-sha256:3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b",
+    "profile_hash": "ed2d097f31052373be6282442c7ec22b3a5534746bd4942b48b38ecfffe0b5fb",
+    "admission_id": "fda915d569e2bed721460b14c5a3920860a2a7e9a4b750eb81231d6a57535036",
+    "independent_final_holdout": false,
+    "reasons": [
+      "all Jan/Feb quotes had prior technical use",
+      "one-unit generic research cap",
+      "source gaps and broker feasibility remain uncertified"
+    ]
+  },
+  "design_sha256": "9bd1439deacbb835575e2ed8eb52aac754f940760979e67e6cd191d7623c445e",
+  "dataset_hash": "75359494c8197cd42f9704ed1fc10f6afcc27283d283a0fd5de7cc549bac74a9",
+  "source_rows": 4336496,
+  "admission_id": "fda915d569e2bed721460b14c5a3920860a2a7e9a4b750eb81231d6a57535036",
+  "training_run_id": "73e1751dfb2fda2d55edd1d90be11b51ae84e74654db289df93cef9abb24125e",
+  "training_contract_hash": "73e1751dfb2fda2d55edd1d90be11b51ae84e74654db289df93cef9abb24125e",
+  "exploratory_contract_hash": "4731c81b2a1b30b597c0b11ef4b3f7df9266df9b023eb6176e5e5f7db22defca",
+  "evaluation_id": "4731c81b2a1b30b597c0b11ef4b3f7df9266df9b023eb6176e5e5f7db22defca",
+  "training_artifact_sha256": "44fe90c86fa4582815fdd354e378db002c75bcffc5b127647e894d402d0e0b70",
+  "evaluation_artifact_sha256": "a4da052afd0675968787b388b1933230fe27619eeac0c1c1980e35372ff581ae",
+  "results": [
+    {
+      "synthetic": false,
+      "fills": 9,
+      "closed_trades": 4,
+      "signals_screened": 115,
+      "ending_equity": "19.99239",
+      "reconciliation": {
+        "account_currency": "USD",
+        "currency_rounding_status": "EXPLAINED_NATIVE_MONEY_POLICY",
+        "factory_cash_flow": "1.02197",
+        "factory_exact_equity": "19.99239",
+        "factory_quote_currency_pnl": "-0.00761",
+        "factory_realized_pnl": "-0.00761",
+        "fees": "0",
+        "issues": [],
+        "native_balance": "20",
+        "native_fill_count": 9,
+        "native_minus_exact_equity": "0.00761",
+        "native_position_lifetimes": 5,
+        "native_position_minus_account_pnl": "0",
+        "native_realized_pnl": "0",
+        "native_reference_status": "VERIFIED",
+        "native_reference_version": "nautilus-money-reference/1.231.0-v2",
+        "native_signed_inventory": "-1.0",
+        "quote_currency": "USD",
+        "reference_account_pnl": "0.00",
+        "reference_position_pnl": "0.00",
+        "scope": "Zero-commission linear base units; dated executable FX when quote currency differs from USD; broker profile verification remains external",
+        "signed_inventory": "-1",
+        "signed_inventory_cost": "-1.02958",
+        "version": "cash-reconciliation/v2"
+      }
+    },
+    {
+      "synthetic": false,
+      "fills": 7,
+      "closed_trades": 3,
+      "signals_screened": null,
+      "ending_equity": "19.99425",
+      "reconciliation": {
+        "account_currency": "USD",
+        "currency_rounding_status": "EXPLAINED_NATIVE_MONEY_POLICY",
+        "factory_cash_flow": "-1.04835",
+        "factory_exact_equity": "19.99425",
+        "factory_quote_currency_pnl": "-0.00575",
+        "factory_realized_pnl": "-0.00575",
+        "fees": "0",
+        "issues": [],
+        "native_balance": "20",
+        "native_fill_count": 7,
+        "native_minus_exact_equity": "0.00575",
+        "native_position_lifetimes": 4,
+        "native_position_minus_account_pnl": "0",
+        "native_realized_pnl": "0",
+        "native_reference_status": "VERIFIED",
+        "native_reference_version": "nautilus-money-reference/1.231.0-v2",
+        "native_signed_inventory": "1.0",
+        "quote_currency": "USD",
+        "reference_account_pnl": "0.00",
+        "reference_position_pnl": "0.00",
+        "scope": "Zero-commission linear base units; dated executable FX when quote currency differs from USD; broker profile verification remains external",
+        "signed_inventory": "1",
+        "signed_inventory_cost": "1.0426",
+        "version": "cash-reconciliation/v2"
+      }
+    }
+  ],
+  "jobs": [
+    {
+      "job_id": "11b12e1a-ea9e-4cd8-b730-9f226a302ea3",
+      "state": "COMPLETED",
+      "error": null,
+      "result": "{\"resources\":{\"cpu_seconds\":28.788788999999998,\"memory_sample_seconds\":0.05,\"peak_rss_bytes\":341135360,\"peak_rss_bytes_sampled\":341315584,\"wall_seconds\":28.850483793999956},\"run_id\":\"73e1751dfb2fda2d55edd1d90be11b51ae84e74654db289df93cef9abb24125e\"}"
+    },
+    {
+      "job_id": "a32f9807-e182-44b3-8c38-6c2912e5e907",
+      "state": "COMPLETED",
+      "error": null,
+      "result": "{\"evaluation_id\":\"4731c81b2a1b30b597c0b11ef4b3f7df9266df9b023eb6176e5e5f7db22defca\",\"resources\":{\"cpu_seconds\":47.645965000000004,\"memory_sample_seconds\":0.05,\"peak_rss_bytes\":341266432,\"peak_rss_bytes_sampled\":341413888,\"wall_seconds\":47.70821353500014}}"
+    }
+  ],
+  "parent_wall_seconds": 78.57425270500062,
+  "parent_cpu_seconds": 2.704852895,
+  "parent_peak_rss_bytes": 223346688,
+  "children_cpu_seconds": 76.457602,
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "independent_market_validation": false,
+  "target_host_verified": false,
+  "SOFTWARE_VERIFIED": false,
+  "DATA_READY": false,
+  "OPERATION_READY": false
+}
