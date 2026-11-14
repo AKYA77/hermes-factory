@@ -18,6 +18,10 @@ jobs:
       - run: uv sync --frozen
       - run: uv run ruff check factory apps tests
       - run: uv run ruff format --check factory apps tests
+      # Every dashboard API call must resolve to a backend route. This caught the
+      # pause/resume path class of bug; --uncalled additionally reports routes with
+      # no UI caller, which is how the remaining C7 wiring work is tracked.
+      - run: uv run python scripts/check-dashboard-api-coverage.py
       - run: uv run pytest -q --junitxml=reports/runtime/test-results.xml
       - uses: actions/upload-artifact@v4
         if: always()
