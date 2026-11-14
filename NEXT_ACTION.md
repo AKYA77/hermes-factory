@@ -31,11 +31,15 @@ work, in order:
    historical/paper execution path through a stable versioned interface. Do not
    remove NautilusTrader until the replacement is integrated and independently
    verified.
-2. **Rust-vs-Nautilus benchmark** — identical datasets, signals and assumptions;
-   separate data-read, signal-compile, sequential-execution and end-to-end
-   timings plus CPU, wall, peak memory and disk I/O; cold and warm cache;
-   restart overhead; enforced 4-vCPU / 8-GiB envelope. No invented speedup
-   factors and no extrapolating synthetic results to historical throughput.
+2. **Rust-vs-Nautilus benchmark** — DONE at `6acad4a`:
+   `scripts/benchmark_raptor_vs_reference.py` plus committed report
+   `reports/raptor-vs-reference-benchmark.json` (96 cases, all eight instruments,
+   1372 quotes, seed 20261114), with an agreement gate, no computed speedup ratio,
+   and explicit labels that the envelope was NOT enforced and the workload is
+   synthetic only. Still outstanding under this heading: separate data-read /
+   signal-compile / sequential-execution breakdowns, cold-vs-warm cache runs and
+   restart overhead, and any measurement under a real 4-vCPU / 8-GiB quota
+   (impossible on this host — see the R11/T31/T35 envelope note below).
 3. **R10 native data pipeline**, then **R04 TickFirstHitIndex** (with sequential
    fallback), then **R08 native strategy generator**.
 4. Historical data readiness for the approved 24-month window; source acceptance,
@@ -43,7 +47,8 @@ work, in order:
 5. Dashboard/performance/supervisor panels and the resumable autonomous research
    workflow.
 6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
-   completion-ledger.json and development-state.json.
+   completion-ledger.json and development-state.json — DONE at `55f6ee8`, with the
+   verified envelope blocker recorded under R11/T31/T35.
 
 **Unfinished gate states must stay false.** SOFTWARE_VERIFIED, DATA_READY and
 OPERATION_READY are FALSE and must not be set true on scoped evidence.
