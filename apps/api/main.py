@@ -719,6 +719,55 @@ def create_app(root, dashboard=None):
 
         return SourceRegistry(root / "catalog").storage()
 
+    @app.get("/api/v1/performance", dependencies=read)
+    def performance():
+        """Recorded benchmark measurements, never live ones.
+
+        Returns exactly what the reproducible benchmark scripts wrote, each with its
+        own hash and declared limitations. A number shown here describes a PAST
+        measured run on the hardware that report names; it is not a current
+        measurement, and nothing here claims the 4 vCPU / 8 GiB target unless the
+        report itself does.
+        """
+        names = (
+            "benchmark-report.json",
+            "compression-cache-benchmark.json",
+            "raptor-vs-reference-benchmark.json",
+        )
+        reports_dir = Path(__file__).resolve().parents[2] / "reports"
+        reports = []
+        for name in names:
+            path = reports_dir / name
+            if not path.exists():
+                reports.append({"name": name, "present": False})
+                continue
+            raw = path.read_bytes()
+            try:
+                payload = json.loads(raw)
+            except ValueError as exc:
+                reports.append(
+                    {"name": name, "present": True, "parse_error": str(exc)}
+                )
+                continue
+            reports.append(
+                {
+                    "name": name,
+                    "present": True,
+                    "sha256": hashlib.sha256(raw).hexdigest(),
+                    "bytes": len(raw),
+                    "payload": payload,
+                }
+            )
+        return {
+            "recorded": True,
+            "scope": "Historical recorded benchmark runs; not live measurements.",
+            "envelope_caveat": (
+                "Each report states the host it ran on. None of them claims the "
+                "target envelope unless its own envelope section says so."
+            ),
+            "reports": reports,
+        }
+
     @app.post("/api/v1/refresh", dependencies=write)
     def refresh_sources():
         from factory.data.sources import SourceRegistry
