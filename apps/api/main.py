@@ -745,9 +745,7 @@ def create_app(root, dashboard=None):
             try:
                 payload = json.loads(raw)
             except ValueError as exc:
-                reports.append(
-                    {"name": name, "present": True, "parse_error": str(exc)}
-                )
+                reports.append({"name": name, "present": True, "parse_error": str(exc)})
                 continue
             reports.append(
                 {

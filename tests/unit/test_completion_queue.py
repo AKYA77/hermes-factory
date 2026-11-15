@@ -49,9 +49,9 @@ def test_scoped_discovery_checkpoint_selects_shared_features_without_claiming_pa
     # milestone gate has to remain unfinished. Pick one dynamically rather than
     # hardcoding an id -- a hardcoded id breaks the moment that gate legitimately
     # closes (C4 did exactly that).
-    assert any(
-        r["id"].startswith("C") for r in result["unfinished_requirements"]
-    ), result["unfinished_requirements"][:3]
+    assert any(r["id"].startswith("C") for r in result["unfinished_requirements"]), result[
+        "unfinished_requirements"
+    ][:3]
     assert not result["readiness"]["SOFTWARE_VERIFIED"]
 
 
