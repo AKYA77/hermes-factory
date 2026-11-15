@@ -1,0 +1,9 @@
+{
+  "source": {
+    "git_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
+    "source_sha256": "0849d91cadf936ef1e01228fb2b2c07b813b4626782b2e690ced9df59f1c6d59"
+  },
+  "all_12_migrations_exact": true,
+  "wheel_sha256": "10ebfdab01303c3f3b8ab6f242878c18200ac1cca93d686c360798fe9161421e",
+  "scope": "Development wheel only; installed provenance/dashboard/root resource packaging and lifecycle acceptance remain open"
+}

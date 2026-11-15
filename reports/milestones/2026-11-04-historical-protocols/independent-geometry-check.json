@@ -1,0 +1,11 @@
+{
+  "source_context": {
+    "git_commit": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
+    "source_sha256": "3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b"
+  },
+  "trade_lifetimes_checked": 9,
+  "exact_intended_three_R": "PASS",
+  "actual_risk_within_requested_budget": "PASS",
+  "comparison": "independent fractions over persisted native results; open positions included",
+  "unseen_final_holdout_consumptions": 0
+}

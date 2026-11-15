@@ -1,0 +1,16 @@
+...                                                                      [100%]
+=============================== warnings summary ===============================
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+3 passed, 6 warnings in 2.90s

@@ -1,0 +1,8 @@
+{
+  "cgroup_path": "0::/system.slice/run-r497514bfdd714c988d93b94073318210.scope",
+  "cgroup_root": "/sys/fs/cgroup/system.slice/run-r497514bfdd714c988d93b94073318210.scope",
+  "cpu_max": "400000 100000",
+  "memory_high": "max",
+  "memory_max": "8589934592",
+  "swap_max": "0"
+}

@@ -1,0 +1,7 @@
+{
+  "exit_code": 0,
+  "wall_seconds": 186.8629361639978,
+  "child_cpu_seconds": 181.787732,
+  "maximum_child_process_rss_bytes": 964423680,
+  "scope": "Process high-water mark, not aggregate RSS or target-host performance"
+}

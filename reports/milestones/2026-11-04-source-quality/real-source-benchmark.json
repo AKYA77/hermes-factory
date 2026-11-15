@@ -1,0 +1,285 @@
+{
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "cpu_seconds": 175.53692999999998,
+  "data_ready": false,
+  "disk_state_bytes": 1935328,
+  "operation_ready": false,
+  "process_peak_rss_bytes": 184852480,
+  "results": [
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 1668426,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 286,
+        "gap_UNKNOWN_CALENDAR": 285,
+        "gaps": 285,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 1668426,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "1520c4173abb5823a4e36b23f96f1b0e43b135a7c8d767ed25de4b4b8c294b6a",
+      "events_bytes": 138760,
+      "events_sha256": "e07020ea2f78e868395dfaebdc777027beb82bde9588ee238a5c9bcbcfe40479",
+      "instrument": "AUDUSD",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "2dd4bf19ab2901e02502a74934e7effc21ec7d65a8bcb5be06a6bbb9ef4724de",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 13.503595,
+        "process_peak_rss_bytes": 126697472,
+        "wall_seconds": 13.190918156004045
+      },
+      "rows": 1668426
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 2494413,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 207,
+        "gap_UNKNOWN_CALENDAR": 206,
+        "gaps": 206,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 2494413,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "1fbb7f213c466db7540d04431534ac349ca68cc953d8b4d0288d7a45457021b9",
+      "events_bytes": 100680,
+      "events_sha256": "fbe44abd60190df5c172db0ba007ebef433b1dba1cd4a75798699991f4749ff4",
+      "instrument": "USDCAD",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "7b4d0c06d1ab436bdfbeea6e20a5fb2d4b55724b479bbb7cce0e26a085d59862",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 20.510732000000004,
+        "process_peak_rss_bytes": 161714176,
+        "wall_seconds": 20.092358586000046
+      },
+      "rows": 2494413
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 2283239,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 202,
+        "gap_UNKNOWN_CALENDAR": 201,
+        "gaps": 201,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 2283239,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "673bab64c3caa5e11172979598bb33fa897758bb0da032507136cb7cf965f60a",
+      "events_bytes": 98200,
+      "events_sha256": "6e4b865cb6950183fdc85190d8eb5974dc0e1533876db42e4a5b6dcf2904c7f4",
+      "instrument": "EURUSD",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "46a0e2241a2e1fc6845ef360fbd7b4f50160b606c5c8dfcae9030db736cf37e6",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 18.258425999999993,
+        "process_peak_rss_bytes": 166281216,
+        "wall_seconds": 17.841167188002146
+      },
+      "rows": 2283239
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 5798226,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 27,
+        "gap_UNKNOWN_CALENDAR": 26,
+        "gaps": 26,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 5798226,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "ab3f273988dcb7b2aaff21168bc9d0f6afe624d8e18856b73b37a93b975ae755",
+      "events_bytes": 13129,
+      "events_sha256": "5983ab6a29408a11f806f3f73cdf6175aa4ac5e14c6dd866deb1b43585bc3401",
+      "instrument": "XAUUSD",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "1dab7fd84e8f3b0c3b5b7bd7b113c05087505d7a4f1bc11354147d0c90c4cc01",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 46.505016999999995,
+        "process_peak_rss_bytes": 172781568,
+        "wall_seconds": 45.47327011699963
+      },
+      "rows": 5798226
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 1346505,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 353,
+        "gap_UNKNOWN_CALENDAR": 352,
+        "gaps": 352,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 1346505,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "cefa1d6d328dfc76f96288188628bade0a9317736bd6e88eee23264a42fe18e1",
+      "events_bytes": 171125,
+      "events_sha256": "e0697f059150e53d9f6b97567a1af3fc07c9b2406531582dd094a888aeed7c8a",
+      "instrument": "NZDUSD",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "49c8a52d087d897145b49a9cc128fdcb626c56aeb58ec8aafd9d067e4411be5f",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 11.179513000000009,
+        "process_peak_rss_bytes": 172781568,
+        "wall_seconds": 10.959754969997448
+      },
+      "rows": 1346505
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 2660109,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 172,
+        "gap_UNKNOWN_CALENDAR": 171,
+        "gaps": 171,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 2660109,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "eaf174f6780fb80e674438b7ea5c36fe98710ff05a009ddd547163cb00730119",
+      "events_bytes": 83756,
+      "events_sha256": "c642325d7f3d5ad4920d12dde65166b94a2ae706ced8e1beadd56945d0648bc5",
+      "instrument": "GBPUSD",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "d4ce65a511871638fe27e56d77dd91c9a04e5ebcec0309757f7ddb67ee95e38c",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 22.508999999999986,
+        "process_peak_rss_bytes": 184852480,
+        "wall_seconds": 21.98202862800099
+      },
+      "rows": 2660109
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 3467097,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 194,
+        "gap_UNKNOWN_CALENDAR": 193,
+        "gaps": 193,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 3467097,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "eb96f6feeec011eb2f45a1443ca8cdacc48618f49133a6d94c002b0ce0fd70b8",
+      "events_bytes": 94487,
+      "events_sha256": "a1a2d961328a0eeb58ffd92b654e79476949c17e782c287ad7a64a49d7045dc9",
+      "instrument": "USDJPY",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "04cfe8bbd9971fe0cabc8ca959eba8976b640d7e915e09b121580f916338542b",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 28.43844000000002,
+        "process_peak_rss_bytes": 184852480,
+        "wall_seconds": 27.818775863001065
+      },
+      "rows": 3467097
+    },
+    {
+      "calendar_status": "UNKNOWN_CALENDAR",
+      "counts": {
+        "boundary_intervals": 0,
+        "calendar_rows_CLOSED": 0,
+        "calendar_rows_OPEN": 0,
+        "calendar_rows_UNKNOWN": 1627731,
+        "consecutive_exact_duplicates_retained": 0,
+        "events": 286,
+        "gap_UNKNOWN_CALENDAR": 285,
+        "gaps": 285,
+        "off_declared_tick_grid": 0,
+        "outside_requested_period_rows": 0,
+        "rows_scanned": 1627731,
+        "structural_issue_rows": 0,
+        "unchanged_runs": 0
+      },
+      "dataset_hash": "f7b5b7a95f585aa4f7936a311f2ad03d9727e9f5f71d993e4d26000164f67ee8",
+      "events_bytes": 138724,
+      "events_sha256": "6a42232bb0b87f6f467a2298a9e97a8f2265b95df00027eb8e83ad57259d66a7",
+      "instrument": "USDCHF",
+      "passed_technical_scan": true,
+      "profile_status": "UNKNOWN_SPEC",
+      "quality_run_id": "917f779b5620ab8b7868a0fd0fba3a83bc655e6171697c5bacd700361af6f313",
+      "requested_period_status": "UNDECLARED",
+      "resources": {
+        "cpu_seconds": 13.501774999999995,
+        "process_peak_rss_bytes": 184852480,
+        "wall_seconds": 13.211280545998306
+      },
+      "rows": 1627731
+    }
+  ],
+  "scope": "full-row real January canonical-source integrity/gap processing; not a historical strategy backtest or verified calendar/broker profile",
+  "script_sha256": "99c7da8dc3951aac847491634dd4048ee903eb995d0789f76e7e4d8790a4be4b",
+  "software_verified": false,
+  "source_context": {
+    "git_commit": "df70a9ebbaa4bf67fdf309b92eb0a7624e105942",
+    "source_sha256": "1fef66266caacaab83e71693401bb1f9cd364325afbde5bef6c920a6262c3395"
+  },
+  "source_unchanged": true,
+  "status": "PASS_STRUCTURAL_STREAM_QA_METADATA_BLOCKED",
+  "total_rows": 21345746,
+  "wall_seconds": 171.80964462200063,
+  "warnings": [
+    "Page cache uncontrolled",
+    "No forced-8GB or target-Contabo proof",
+    "Existing captures, not a fresh download/import benchmark",
+    "All gap/event artifacts retained locally; this summary omits provider quote values",
+    "Unknown broker/calendar facts do not become verified through scanning"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "status": "VERIFIED_DEVELOPMENT_INCREMENT_NOT_READY",
+  "source_context": {
+    "git_commit": "e9c30e49027d26ffc609240976dc5b2c9e9fccd3",
+    "source_sha256": "a7021654549e9d11a40c5279ff96b0a118de6dfffca4b7ccb4cc989c3e123f0b"
+  },
+  "baseline_remote_commit": "e9c30e49027d26ffc609240976dc5b2c9e9fccd3",
+  "tests": {
+    "tests": "376",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "165.689"
+  },
+  "scope": "Generated retained-archive recovery and exact decimal parser software proof; no new historical-data or strategy-performance claim",
+  "commands": [
+    {
+      "command": "bash scripts/verify.sh",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/pytest tests/integration/test_import_resume.py tests/integration/test_streaming_import.py tests/integration/test_backfill.py tests/integration/test_source_versions.py -q",
+      "exit_code": 0,
+      "passed": 52
+    },
+    {
+      "command": ".venv/bin/python scripts/benchmark-import-resume.py --output reports/runtime/completion/import-resume-benchmark-final.json",
+      "exit_code": 0
+    },
+    {
+      "command": "uvx --from pip-audit==2.9.0 pip-audit --path .venv/lib/python3.12/site-packages --format json --output reports/runtime/completion/python-audit.json",
+      "exit_code": 1
+    },
+    {
+      "command": "npm --prefix apps/dashboard audit --json",
+      "exit_code": 1
+    }
+  ],
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "files": {
+    "reports/milestones/2026-11-04-import-resume/full-verification.log": "5c2853e6c3b692369b423fafb897bce98fce02dc678006d9a449420feb1525b2",
+    "reports/milestones/2026-11-04-import-resume/generated-import-benchmark.json": "8f0ff7b27209ce94823e9bbf5159a2171e0cc987da74900eb29c26eb81652440",
+    "reports/milestones/2026-11-04-import-resume/initial-resume-verification.json": "a071c3e7f31b608a556a1be7da79df24610ef809bdd7b357105d5206464741c4",
+    "reports/milestones/2026-11-04-import-resume/initial-resume-verification.log": "f3abb672a832a046a4306205c6efb3b6783c6d4eea18df44d76e5198e616e166",
+    "reports/milestones/2026-11-04-import-resume/security-summary.json": "fbaf11a2c4e4336086fda23248b93fe7f9c059e4a46bfc4500dd310e54c525da",
+    "reports/milestones/2026-11-04-import-resume/test-results.xml": "fa67badb209400ab31c619d3c3b6338b9a5949fa9cbf37c47022609367919480",
+    "reports/milestones/2026-11-04-import-resume/verification-resources.json": "3c8894076082ce4592befe43452967e4e44ed1e45fae0519c5754d2fa7fd8177"
+  }
+}

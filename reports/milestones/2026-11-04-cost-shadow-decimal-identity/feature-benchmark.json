@@ -1,0 +1,70 @@
+{
+  "status": "PASS_FEATURE_LABEL_SIGNAL_PARITY",
+  "scope": "generated multi-quarter feature-only benchmark; NOT native strategy/tick throughput, market validation, compiled screening acceptance or Contabo verification",
+  "source_context": {
+    "git_commit": "242f45e7b88f50e6cd597ca1fd3ed6aa5586cbf0",
+    "source_sha256": "4d3351cf52cf9de588716aec1604f62b385d3ec6070aacc0bb05735e2ef344db"
+  },
+  "source_context_unchanged": true,
+  "results": [
+    {
+      "operator": "momentum",
+      "entry_bars": 200000,
+      "signals": 199485,
+      "feature_labels": 199480,
+      "max_pending_labels": 5,
+      "signal_sha256": "dbb12ab9c38123e3a979210f28deded685caa3d5e58f6f79ec1257327fa5092c",
+      "label_sha256": "40006d0f0cc0c74b1a297e7eb573c9c94cd3307949d6cc4449a284db1b376101",
+      "legacy_exact_screen": {
+        "wall_seconds": 2.0137570190127008,
+        "cpu_seconds": 2.012054298
+      },
+      "cost_labels": {
+        "wall_seconds": 6.24315783601196,
+        "cpu_seconds": 6.235968822
+      },
+      "wall_ratio_cost_to_legacy": 3.100253792819969
+    },
+    {
+      "operator": "mean_reversion",
+      "entry_bars": 200000,
+      "signals": 197988,
+      "feature_labels": 197983,
+      "max_pending_labels": 5,
+      "signal_sha256": "2fa1f70ace896a431ab121e7ff3b458d351224dd467df72a13315d600c52e836",
+      "label_sha256": "ccfda91612f954b45a2e8184c27dc9a1b3de322917208f5bcc487462b8bc1b22",
+      "legacy_exact_screen": {
+        "wall_seconds": 2.443129824998323,
+        "cpu_seconds": 2.440698673
+      },
+      "cost_labels": {
+        "wall_seconds": 7.407512446996407,
+        "cpu_seconds": 7.401658976
+      },
+      "wall_ratio_cost_to_legacy": 3.0319765946132198
+    },
+    {
+      "operator": "breakout",
+      "entry_bars": 200000,
+      "signals": 195992,
+      "feature_labels": 195987,
+      "max_pending_labels": 5,
+      "signal_sha256": "1f9827c25dc82dd0af3f5c1723c8c31c61c179cd0878731ffa182611db43ef16",
+      "label_sha256": "b076cfe5a4fafc63b2a2a1d400d97b3cf87144dc5492a369307ddef4387f32e2",
+      "legacy_exact_screen": {
+        "wall_seconds": 1.814245415996993,
+        "cpu_seconds": 1.812934202000001
+      },
+      "cost_labels": {
+        "wall_seconds": 5.9686823790107155,
+        "cpu_seconds": 5.964431921999999
+      },
+      "wall_ratio_cost_to_legacy": 3.2898980073931785
+    }
+  ],
+  "process_peak_rss_bytes": 51396608,
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "approximate_pruning_enabled": false,
+  "native_replays": 0
+}

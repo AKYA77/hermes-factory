@@ -1,0 +1,13 @@
+{
+  "status": "PASS_RETAINED_TYPED_VALUES_UNCHANGED",
+  "counts": {
+    "databases": 42,
+    "strategy_specs": 16177,
+    "experiment_contracts": 16247,
+    "instrument_profiles": 26
+  },
+  "changed_encoding_locations": [],
+  "unparsed_records": [],
+  "scope": "read-only persisted typed values under requested states; not proof of pre-normalization inputs, all Git history, or fields not enumerated",
+  "databases_modified": false
+}

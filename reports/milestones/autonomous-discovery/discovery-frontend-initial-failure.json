@@ -1,0 +1,7 @@
+{
+  "command": "npm --prefix apps/dashboard run check",
+  "exit_code": 1,
+  "errors": 6,
+  "cause": "Component variable named state shadowed the Svelte $state rune.",
+  "correction": "Renamed the local snapshot variable; type validation rerun without suppressing errors."
+}

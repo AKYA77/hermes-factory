@@ -1,0 +1,59 @@
+{
+  "source": {
+    "git_commit": "ae0b7de38f4902ebd89dc5e0ea45f2e143d64375",
+    "source_sha256": "0849d91cadf936ef1e01228fb2b2c07b813b4626782b2e690ced9df59f1c6d59"
+  },
+  "verification": {
+    "passed": 562,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 422,
+    "pytest_seconds": 186.19,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "command": "bash scripts/verify.sh",
+    "log": "reports/milestones/frozen-screen-cohorts/cohort-full-verification.log"
+  },
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "scope": "Generated v1 software/native/browser evidence, NOT_READY. Historical screening and complete scientific acceptance remain open.",
+  "files": {
+    "cohort-before-global-dedup-interrupted.log": "ce4ce869155f384124457484ae39e0aca3dfe15d110d7e34ba0fe2f58fc1da97",
+    "cohort-before-global-dedup-resources.json": "6a824742ff5ba39f42e16086ebf531adde089366b2296a0790a0a1db0b34b68e",
+    "cohort-boundaries.log": "bafbdb76da006c95ac6652cad4091d63e61a8ca7c1497d010b6569992b49e43a",
+    "cohort-browser-api.log": "0c153303952823f3097aef885075de11c70bd2c1fc4e104120972bb7bb6f3cfb",
+    "cohort-browser-coordinator.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cohort-browser-export.json": "283df7782ed0b89b1ec02b0136222d30db23385b73bb28b63a295e912915c6ab",
+    "cohort-browser-final-api.log": "247f9ba66297256fdad5552a4242697f92464c8e0c50b4fdfb6ed6eb9fd7e022",
+    "cohort-browser-final-coordinator.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cohort-browser-final-fixture.log": "42d0d1fa586280877b9bde909876d7fa1fb1a77fb563f3032830a5ac9ac275b6",
+    "cohort-browser-final.log": "c33f872e436f4fe689d514de777ba4301f19a9bdf63c9dee76a7d2945ad112b8",
+    "cohort-browser-fixture.log": "d80fef6772f0cf552f2e32c5ce246336c0dd23d79186a1349cdbce1b094a8002",
+    "cohort-browser.log": "c33f872e436f4fe689d514de777ba4301f19a9bdf63c9dee76a7d2945ad112b8",
+    "cohort-censored-fixture-failure.log": "c475b56b493fdc556a012787c05e24b2636d6e50fd11ca2d95e92bfc846cfd6d",
+    "cohort-cycle-state.json": "9b07e53e19175b7de5c48028e7122a99c43537486d1bc7f36fd1188f3ee62c5e",
+    "cohort-desktop.png": "ba1fe9e14fe26ff8ab26561d5bc9428feb7a1e1ece9d4a6bccfebfbbfa70b93d",
+    "cohort-final-focused.log": "3922a0e96242988853b8be4ba0f200e58f117500e53e39c6df2f8632e40bc07e",
+    "cohort-focused.log": "c475b56b493fdc556a012787c05e24b2636d6e50fd11ca2d95e92bfc846cfd6d",
+    "cohort-frontend-initial-failure.log": "04a1db0ac04996dcdded77419af0bb5449dedfbb8d3f3e338941b4b4248a940e",
+    "cohort-frontend.log": "8eabd7bb68c2d23cddadb8aa42a1f27331c21b54c997488af80ec3519a078c32",
+    "cohort-full-verification.log": "479a6ddcead6a5d599dfa48110650045b7c7df504efa58c988e74d8cb91c92c7",
+    "cohort-global-dedup-focused.log": "5ba209872caeef6d22d955fa353922aef6e10b8acdd75562c4e6715d1e20a718",
+    "cohort-initial-focused.log": "28e9787ae68aa95cc5aa1d5289ee5c11761b2a6f2f69f61db30963e956a5e2c4",
+    "cohort-initial-scope-failure.log": "28e9787ae68aa95cc5aa1d5289ee5c11761b2a6f2f69f61db30963e956a5e2c4",
+    "cohort-mobile.png": "494e660b78febfa49e1e5ebfa268d455402670249a23870605aa714636e55e51",
+    "cohort-native-focused.log": "cdced9df544782af0efc9bf330621ceef37947a314c8f5b293ef37ee19cdec05",
+    "cohort-next-cycle.json": "94579b01d7d7c523fbab70449a2fc43324f58ce9f6ecd9e3e80953565f5e29e9",
+    "cohort-packaging.json": "c42a34d8ccb5ad3f2d83ddff80d0bb0e0a3f9f9093e73031b77f552bcc8a9bae",
+    "cohort-verification-resources.json": "26df4652162f88c6afae109d6183ed8208bcda697c2845a05cbd407a1618d5e5",
+    "cohort-wheel-build.log": "19e748d48c177979916b62d9551defe39e080ceb7ef49f6653f756a49a4ddc51",
+    "cohort-wheel-final-build.log": "97482ece2af0f4b927f6a2386f755534187986cf2bd730147dc11965bba6ccad",
+    "prior-screen-fallback-publication.json": "3a680f45c566ccff1315fbf9e009bf915c50ed20451f928f1e28eac6abed4e36",
+    "test-results.xml": "790ff046fd727e133602daebf59a8176ec8d4c8754d8a17678f716513ad85580"
+  }
+}

@@ -1,0 +1,12 @@
+............................................................             [100%]
+=============================== warnings summary ===============================
+tests/integration/test_source_versions.py::test_quarantined_leaf_blocks_alias_execution_and_completion_after_worker
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_source_versions.py::test_quarantined_leaf_blocks_alias_execution_and_completion_after_worker
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+60 passed, 2 warnings in 2.99s

@@ -1,0 +1,24 @@
+{
+  "status": "IMPLEMENTING_NOT_READY",
+  "tested_source_context": {
+    "git_commit": "ea2e369b2a63117fc55a52f03c1c5282f07aa5db",
+    "source_sha256": "5d57bdbe47a9ae1c6db29d7c397a0a51bde3e75e5cdbbc4a7a0650da8022e60f",
+    "working_tree_scientific_edits": true
+  },
+  "verification": {
+    "passed": 302,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 348,
+    "pytest_seconds": 82.08,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS"
+  },
+  "files": {
+    "native-search-goldens.log": "0a2b4faf183afe8761c2c7b9e2c00501cca20717120d0ade982e99b87c277701",
+    "search-integration.log": "40a45f8e75684b47b9d3b5a59382985f84f8bd7e713f6860524468beb9e6dcc9",
+    "full-verification.log": "8821315a2750dcce8fec68dfc48f6b3a6686968635736afb2d74891bff219e43"
+  }
+}

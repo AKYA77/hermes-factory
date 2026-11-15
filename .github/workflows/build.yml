@@ -1,0 +1,37 @@
+name: dashboard
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  dashboard:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: apps/dashboard
+      - run: npm run check && npm run build
+        working-directory: apps/dashboard
+  # Every browser smoke runs here so the UI acceptance evidence is reproducible from a
+  # fresh checkout instead of only on a developer machine. Three are excluded by
+  # default because their fixtures need acquisition-host data (retained provider
+  # archives, the real observation database and partition receipts); they stay
+  # verified here against real acquired data. FACTORY_SMOKE_EXCLUDE overrides the list.
+  browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - uses: astral-sh/setup-uv@v6
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: apps/dashboard
+      # The install above skips lifecycle scripts, so fetch Chromium explicitly.
+      - run: npx playwright install chromium
+        working-directory: apps/dashboard
+      - run: uv sync --frozen
+      - name: Browser acceptance smokes
+        run: scripts/sweep-browser-smokes.sh /tmp

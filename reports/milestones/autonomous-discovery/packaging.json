@@ -1,0 +1,5 @@
+{
+  "wheel_sha256": "f838fe40a8e54e107c62292b5d6805528dbd3abe2e5c559a9dcbb6dcd4fadb85",
+  "all_11_migrations_exact": true,
+  "scope": "Development wheel only; installed provenance/dashboard packaging acceptance remains open"
+}

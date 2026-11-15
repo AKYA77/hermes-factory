@@ -1,0 +1,42 @@
+F............                                                            [100%]
+=================================== FAILURES ===================================
+__ test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-38/test_frozen_frame_random_audit0')
+
+    def test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback(tmp_path):
+        store, request = prepared(tmp_path)
+        service = Cohorts(store, tmp_path)
+        identity = service.freeze(request)
+        assert store.paused() and service.freeze(request) == identity
+        first = service.report(identity)
+        assert first["known_counterexamples"] == 1 and first["native_observed"] == 0
+        assert first["disposition"] == "ALL_NATIVE_FALLBACK_COUNTEREXAMPLE"
+        assert not first["approximate_pruning_authorized"]
+        assert len(first["frozen"]["frame"]) == 2 and len(first["frozen"]["selected"]) == 1
+        assert Cohorts(Store(store.path), tmp_path).report(identity) == first
+        store.pause(False, "test")
+        assert cycle(store, tmp_path) and cycle(store, tmp_path)
+        report = service.report(identity)
+        assert report["audit_complete"] and report["native_observed"] == 1
+>       assert report["prospective_rejections_audited"] == 1 and report["false_negatives"] == 1
+E       assert (1 == 1 and 0 == 1)
+
+tests/integration/test_screen_cohorts.py:90: AssertionError
+=============================== warnings summary ===============================
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+1 failed, 12 passed, 6 warnings in 11.30s

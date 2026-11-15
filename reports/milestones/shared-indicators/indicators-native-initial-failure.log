@@ -1,0 +1,113 @@
+.................................................................FF..... [ 93%]
+.....                                                                    [100%]
+=================================== FAILURES ===================================
+_ test_native_training_screen_and_evaluation_use_identical_cached_primitives[mean_reversion] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-26/test_native_training_screen_an0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fed065df560>
+operator = 'mean_reversion'
+
+    @pytest.mark.parametrize("operator", ("mean_reversion", "trend"))
+    def test_native_training_screen_and_evaluation_use_identical_cached_primitives(
+        tmp_path, monkeypatch, operator
+    ):
+        from apps.coordinator import worker
+        from factory.features import indicators
+        from factory.operations.fixtures import seed
+        from factory.screening import SCREEN_POLICY
+        from factory.contracts import StrategySpec
+        from factory.validation.evaluate import evaluate
+    
+        payload = seed(tmp_path, 240)
+        spec = StrategySpec.model_validate(payload["strategy"]).model_copy(
+            update={"signal": Signal(version="2", operator=operator, lookback=64, threshold=".5")}
+        )
+        payload["strategy"] = spec.model_dump(mode="json")
+        payload["contract"]["strategy_hash"] = spec.strategy_hash
+        payload["screening"] = SCREEN_POLICY
+        first = worker.run(payload, tmp_path)
+        assert first["result"]["fills"] and first["result"]["signals_screened"]
+        assert not first["result"]["integrity_errors"]
+        manifests = list((tmp_path / "cache" / "indicators").glob("*/manifest.json"))
+        assert manifests
+        cached_bytes = {p: p.read_bytes() for p in manifests}
+        monkeypatch.setattr(indicators, "use_indicator_cache", lambda spec: False)
+        assert worker.run(payload, tmp_path) == first
+        assert all(p.read_bytes() == content for p, content in cached_bytes.items())
+        # Frozen evaluation must be disjoint from consumed training. A separate
+        # independent state uses this generated fixture solely for its OOS role.
+        evaluation_root = tmp_path / "evaluation-state"
+        ep = seed(evaluation_root, 240)
+        ep["strategy"] = spec.model_dump(mode="json")
+        ep["contract"]["strategy_hash"] = spec.strategy_hash
+        ep["contract"]["windows"][0]["role"] = "oos"
+        ep["contract"]["evaluation_policy"] = "synthetic-evaluation/v1"
+        monkeypatch.undo()
+>       cached_result = evaluate(evaluation_root / "catalog", ep)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/integration/test_indicator_cache.py:184: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/tmp/pytest-of-agent/pytest-26/test_native_training_screen_an0/evaluation-state/catalog')
+payload = {'strategy': {'schema_version': 'strategy/v1', 'instrument': 'EURUSD', 'timeframe': 'M1', 'signal': {'operator': 'mean...cc7bee501f004859a709f4c3', 'instrument_hash': 'ea9b86840ba6f131e6c72b7cd2a0277fb7c588d40f29d40eefe9d81659f5c88e', ...}}
+
+    def evaluate(root, payload):
+>       contract = ExperimentContract.model_validate(payload["contract"])
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       pydantic_core._pydantic_core.ValidationError: 1 validation error for ExperimentContract
+E       windows.0.role
+E         Input should be 'train_only', 'selection_oos', 'final_holdout_unseen', 'paper_forward' or 'report_only' [type=literal_error, input_value='oos', input_type=str]
+E           For further information visit https://errors.pydantic.dev/2.12/v/literal_error
+
+factory/validation/evaluate.py:18: ValidationError
+_ test_native_training_screen_and_evaluation_use_identical_cached_primitives[trend] _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-26/test_native_training_screen_an1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7fed043e3e00>
+operator = 'trend'
+
+    @pytest.mark.parametrize("operator", ("mean_reversion", "trend"))
+    def test_native_training_screen_and_evaluation_use_identical_cached_primitives(
+        tmp_path, monkeypatch, operator
+    ):
+        from apps.coordinator import worker
+        from factory.features import indicators
+        from factory.operations.fixtures import seed
+        from factory.screening import SCREEN_POLICY
+        from factory.contracts import StrategySpec
+        from factory.validation.evaluate import evaluate
+    
+        payload = seed(tmp_path, 240)
+        spec = StrategySpec.model_validate(payload["strategy"]).model_copy(
+            update={"signal": Signal(version="2", operator=operator, lookback=64, threshold=".5")}
+        )
+        payload["strategy"] = spec.model_dump(mode="json")
+        payload["contract"]["strategy_hash"] = spec.strategy_hash
+        payload["screening"] = SCREEN_POLICY
+        first = worker.run(payload, tmp_path)
+>       assert first["result"]["fills"] and first["result"]["signals_screened"]
+               ^^^^^^^^^^^^^^^
+E       KeyError: 'result'
+
+tests/integration/test_indicator_cache.py:167: KeyError
+=============================== warnings summary ===============================
+tests/integration/test_indicator_cache.py::test_native_training_screen_and_evaluation_use_identical_cached_primitives[mean_reversion]
+tests/integration/test_indicator_cache.py::test_native_training_screen_and_evaluation_use_identical_cached_primitives[mean_reversion]
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_indicator_cache.py::test_native_training_screen_and_evaluation_use_identical_cached_primitives[mean_reversion]
+tests/integration/test_indicator_cache.py::test_native_training_screen_and_evaluation_use_identical_cached_primitives[mean_reversion]
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_indicator_cache.py::test_native_training_screen_and_evaluation_use_identical_cached_primitives[mean_reversion]
+FAILED tests/integration/test_indicator_cache.py::test_native_training_screen_and_evaluation_use_identical_cached_primitives[trend]
+2 failed, 75 passed, 8 warnings in 6.15s

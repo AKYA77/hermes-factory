@@ -1,0 +1,33 @@
+{
+  "schema": "readiness/v1",
+  "SOFTWARE_VERIFIED": false,
+  "DATA_READY": false,
+  "OPERATION_READY": false,
+  "status": "NOT_READY",
+  "software_missing": [
+    "implementation_acceptance",
+    "representative_real_e2e",
+    "execution_reference",
+    "causality",
+    "offline_coordinator",
+    "diagnostics_improvement",
+    "independent_validation",
+    "dashboard_e2e",
+    "installer_operations",
+    "security_disposition",
+    "reproducibility",
+    "hermes_handoff"
+  ],
+  "data_missing": [
+    "full_2025_2026_coverage",
+    "source_calendar_revision_reconciliation",
+    "target_catalog_verified"
+  ],
+  "operation_missing": [
+    "target_install",
+    "target_8gb_stress",
+    "multi_day_soak",
+    "target_recovery",
+    "approved_historical_workflow"
+  ]
+}

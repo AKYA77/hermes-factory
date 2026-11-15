@@ -1,0 +1,2 @@
+[I 2026-11-04 18:44:14,457] A new study created in memory with name: no-name-e72d6dcc-a86d-483b-ad3e-c4f80882473a
+{"status": "PASS_BOUNDED_GENUINE_NATIVE_REHEARSAL", "training_run_id": "73e1751dfb2fda2d55edd1d90be11b51ae84e74654db289df93cef9abb24125e", "evaluation_id": "4731c81b2a1b30b597c0b11ef4b3f7df9266df9b023eb6176e5e5f7db22defca", "parent_wall_seconds": 78.57425270500062, "children_cpu_seconds": 76.457602}

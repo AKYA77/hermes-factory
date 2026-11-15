@@ -1,0 +1,128 @@
+...F                                                                     [100%]
+=================================== FAILURES ===================================
+_ test_historical_validation_v3_refits_and_reports_without_synthetic_promotion _
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-2/test_historical_validation_v3_0')
+
+    def test_historical_validation_v3_refits_and_reports_without_synthetic_promotion(tmp_path):
+        from factory.data import Catalog
+        from factory.data.admission import (
+            AdmissionSpec,
+            ReferenceReview,
+            Citation,
+            InputRegistry,
+            PROFILE_FIELDS,
+            CALENDAR_FIELDS,
+        )
+        from factory.data.source_quality import SourceQuality, SourceQualityPolicy
+        from factory.instruments.calendar import CalendarSpec, SessionCalendar
+        from factory.validation.protocol import ValidationController
+        from test_scientific_protocol import protocol_fixture
+        from pathlib import Path
+        import hashlib
+    
+        original = protocol_fixture(tmp_path)
+        catalog = Catalog(tmp_path / "catalog")
+        old = catalog.verify(original.holdout.dataset_hash)
+        parts = []
+        for leaf in old["parts"]:
+            data = list(catalog.read(leaf["dataset_hash"]))
+            m = catalog.commit(
+                data,
+                ("TEST_ONLY:" + leaf["dataset_hash"]).encode(),
+                {
+                    "source": "TEST_ONLY generated authorization fixture, not actual market history",
+                    "license": "project test fixture",
+                    "synthetic": False,
+                },
+            )
+            parts.append(m["dataset_hash"])
+        view = catalog.compose(parts)
+        profile = original.holdout.profile.model_copy(
+            update={"synthetic": False, "source": "TEST_ONLY generated profile, not a broker reference"}
+        )
+        doc = b"TEST_ONLY generated quarterly admission evidence, never market facts"
+        sha = hashlib.sha256(doc).hexdigest()
+        tzif = Path("/usr/share/zoneinfo/UTC").read_bytes()
+        cal = CalendarSpec(
+            instrument="EURUSD",
+            version="TEST_ONLY/v1",
+            timezone="UTC",
+            tzif_sha256=hashlib.sha256(tzif).hexdigest(),
+            source_document_sha256=sha,
+            source_citation="TEST_ONLY generated quarterly observations",
+            effective_start_ns=original.start_ns,
+            effective_end_ns=original.holdout.window.end_ns,
+            weekly_sessions=({"start_second": 0, "end_second": 604800},),
+            closures=(),
+            ambiguous_boundary="reject",
+        )
+        registry = InputRegistry(tmp_path, catalog)
+        cite = Citation(
+            document_sha256=sha,
+            source="TEST_ONLY",
+            locator="generated fixture",
+            interpretation="authorization-branch software test only",
+            basis="explicit_research_assumption",
+        )
+        common = dict(
+            effective_start_ns=original.start_ns,
+            effective_end_ns=original.holdout.window.end_ns,
+            reviewer="TEST_ONLY",
+            reviewed_at_ns=1793750400 * 10**9,
+            attestation="I reviewed the captured references and their dated research scope",
+        )
+        pid = registry.register_reference(
+            ReferenceReview(profile=profile, citations={k: cite for k in PROFILE_FIELDS}, **common),
+            {sha: doc},
+        )
+        cid = registry.register_reference(
+            ReferenceReview(calendar=cal, citations={k: cite for k in CALENDAR_FIELDS}, **common),
+            {sha: doc},
+            tzif=tzif,
+        )
+        qa = SourceQuality(tmp_path, catalog).run(
+            view["dataset_hash"],
+            SourceQualityPolicy(
+                gap_threshold_ns=60 * 10**9,
+                unchanged_threshold_ns=600 * 10**9,
+                timestamp_quantum_ns=10**9,
+                max_examples=1,
+                max_events_bytes=1024**2,
+                expected_start_ns=original.start_ns,
+                expected_end_ns=original.holdout.window.end_ns,
+            ),
+            profile=profile,
+            calendar=SessionCalendar(cal, tzif),
+        )
+        aid = registry.register_admission(
+            AdmissionSpec(
+                quality_run_id=qa["run_id"],
+                profile_review_id=pid,
+                calendar_review_id=cid,
+                accepted_events_sha256=qa["events_sha256"],
+                window=Window(
+                    start_ns=original.start_ns, end_ns=original.holdout.window.end_ns, role="train_only"
+                ),
+                reviewer="TEST_ONLY",
+                reviewed_at_ns=common["reviewed_at_ns"],
+                source_acceptance_notes="All gaps are generated test boundaries; not real source acceptance",
+                attestation="I reviewed all source QA events and accept this research input scope",
+            )
+        )
+        raw = original.model_dump()
+        raw["schema_version"] = "scientific-validation/v3"
+        raw["holdout"].update(
+            schema_version="protected-holdout/v2",
+            admission_id=aid,
+            dataset_hash=view["dataset_hash"],
+            profile=profile.model_dump(),
+        )
+>       p = ValidationProtocol.model_validate(raw)
+            ^^^^^^^^^^^^^^^^^^
+E       NameError: name 'ValidationProtocol' is not defined
+
+tests/integration/test_historical_protocols.py:243: NameError
+=========================== short test summary info ============================
+FAILED tests/integration/test_historical_protocols.py::test_historical_validation_v3_refits_and_reports_without_synthetic_promotion
+1 failed, 3 passed in 4.58s

@@ -1,0 +1,23 @@
+........................................................................ [ 91%]
+.......                                                                  [100%]
+=============================== warnings summary ===============================
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[trend]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[reversal]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[range]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[volatility]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[session]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[confluence]
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[trend]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[reversal]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[range]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[volatility]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[session]
+tests/integration/test_family_pipeline.py::test_new_family_compiler_reaches_real_native_orders[confluence]
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+79 passed, 12 warnings in 3.31s

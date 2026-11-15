@@ -1,0 +1,5 @@
+{
+  "training": 37752,
+  "exploratory_oos": 31761,
+  "scope": "Unmodified retained quote rows in two frozen four-hour windows; full source QA scans both months. No whole-tick-backtest throughput extrapolation."
+}

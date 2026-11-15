@@ -1,0 +1,19 @@
+audit	Python vulnerability gate	﻿2026-11-04T17:42:19.7988981Z ##[group]Run mkdir -p reports/runtime
+audit	Python vulnerability gate	2026-11-04T17:42:19.7989640Z [36;1mmkdir -p reports/runtime[0m
+audit	Python vulnerability gate	2026-11-04T17:42:19.7990599Z [36;1muvx --from pip-audit==2.9.0 pip-audit --path .venv/lib/python3.12/site-packages --format json --output reports/runtime/python-audit.json[0m
+audit	Python vulnerability gate	2026-11-04T17:42:19.8005091Z shell: /usr/bin/bash -e {0}
+audit	Python vulnerability gate	2026-11-04T17:42:19.8005367Z env:
+audit	Python vulnerability gate	2026-11-04T17:42:19.8005643Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+audit	Python vulnerability gate	2026-11-04T17:42:19.8005954Z ##[endgroup]
+audit	Python vulnerability gate	2026-11-04T17:42:20.3338473Z Downloading pip (1.9MiB)
+audit	Python vulnerability gate	2026-11-04T17:42:20.4205812Z  Downloaded pip
+audit	Python vulnerability gate	2026-11-04T17:42:20.4322320Z Installed 27 packages in 11ms
+audit	Python vulnerability gate	2026-11-04T17:42:23.1685545Z Found 1 known vulnerability in 1 package
+audit	Python vulnerability gate	2026-11-04T17:42:23.2151360Z ##[error]Process completed with exit code 1.
+audit	JavaScript vulnerability gate	﻿2026-11-04T17:42:23.2201927Z ##[group]Run npm --prefix apps/dashboard audit --json > reports/runtime/npm-audit.json
+audit	JavaScript vulnerability gate	2026-11-04T17:42:23.2202527Z [36;1mnpm --prefix apps/dashboard audit --json > reports/runtime/npm-audit.json[0m
+audit	JavaScript vulnerability gate	2026-11-04T17:42:23.2216038Z shell: /usr/bin/bash -e {0}
+audit	JavaScript vulnerability gate	2026-11-04T17:42:23.2216313Z env:
+audit	JavaScript vulnerability gate	2026-11-04T17:42:23.2216606Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+audit	JavaScript vulnerability gate	2026-11-04T17:42:23.2216922Z ##[endgroup]
+audit	JavaScript vulnerability gate	2026-11-04T17:42:24.0538411Z ##[error]Process completed with exit code 1.

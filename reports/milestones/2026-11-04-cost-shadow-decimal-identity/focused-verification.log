@@ -1,0 +1,20 @@
+.............................................                            [100%]
+=============================== warnings summary ===============================
+tests/integration/test_cost_label_native_audit.py::test_native_positive_counterexample_is_preserved_and_not_approximately_pruned
+tests/integration/test_cost_label_native_audit.py::test_shadow_mode_keeps_native_exact_zero_false_negative_guard
+tests/integration/test_cost_label_native_audit.py::test_ordinary_training_keeps_original_cheap_screen_and_no_shadow_metadata
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_cost_label_native_audit.py::test_native_positive_counterexample_is_preserved_and_not_approximately_pruned
+tests/integration/test_cost_label_native_audit.py::test_shadow_mode_keeps_native_exact_zero_false_negative_guard
+tests/integration/test_cost_label_native_audit.py::test_ordinary_training_keeps_original_cheap_screen_and_no_shadow_metadata
+tests/integration/test_screening.py::test_selected_rejection_runs_authoritative_native_audit
+tests/integration/test_screening.py::test_false_negative_is_quarantined_never_promoted
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+45 passed, 10 warnings in 17.48s

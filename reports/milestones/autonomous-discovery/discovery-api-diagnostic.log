@@ -1,0 +1,10 @@
+============================= test session starts ==============================
+platform linux -- Python 3.12.14, pytest-9.2.0, pluggy-1.7.0 -- /workspace/hermes-factory/.venv/bin/python
+cachedir: .pytest_cache
+hypothesis profile 'default'
+rootdir: /workspace/hermes-factory
+configfile: pyproject.toml
+plugins: anyio-4.16.0, hypothesis-6.142.4
+collecting ... collected 1 item
+
+tests/integration/test_discovery.py::test_discovery_api_authorization_pause_and_pagination 

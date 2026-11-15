@@ -1,0 +1,53 @@
+{
+ "schema_version": "compression-cache-benchmark/v1",
+ "generated_utc": "2026-11-14T12:28:54Z",
+ "rows": 200000,
+ "raw_row_bytes": 8000000,
+ "compression": [
+  {
+   "zstd_level": 1,
+   "encoded_bytes": 1756154,
+   "raw_bytes": 8000000,
+   "ratio": 4.5554,
+   "encode_wall_seconds": 0.032884
+  },
+  {
+   "zstd_level": 3,
+   "encoded_bytes": 1473090,
+   "raw_bytes": 8000000,
+   "ratio": 5.4308,
+   "encode_wall_seconds": 0.034545
+  },
+  {
+   "zstd_level": 6,
+   "encoded_bytes": 1434567,
+   "raw_bytes": 8000000,
+   "ratio": 5.5766,
+   "encode_wall_seconds": 0.061143
+  },
+  {
+   "zstd_level": 9,
+   "encoded_bytes": 1370201,
+   "raw_bytes": 8000000,
+   "ratio": 5.8386,
+   "encode_wall_seconds": 0.098817
+  }
+ ],
+ "cache": {
+  "rows": 200000,
+  "first_read_wall_seconds": 0.014487,
+  "second_read_wall_seconds": 0.005278,
+  "third_read_wall_seconds": 0.005153,
+  "interpretation": "the first read follows a fresh write (no guaranteed cold page cache); a genuine cold measurement needs /proc/sys/vm/drop_caches access, which containers usually deny"
+ },
+ "envelope": {
+  "target": "4 vCPU / 8 GiB",
+  "enforced": false,
+  "reason": "cgroup v2 controllers are not delegated on this host"
+ },
+ "synthetic_only": true,
+ "notes": [
+  "Generated quote rows, not acquired history.",
+  "Compression ratios are Arrow/ZSTD artifacts of this schema, not a data-reduction guarantee."
+ ]
+}

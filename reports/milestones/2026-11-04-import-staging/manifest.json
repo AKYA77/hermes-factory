@@ -1,0 +1,65 @@
+{
+  "status": "VERIFIED_DEVELOPMENT_INCREMENT_NOT_READY",
+  "source_context": {
+    "git_commit": "66fa06c18984dc7b77825b7f3528fa3ac66fbb4d",
+    "source_sha256": "aa1f3edafea885b7c88bcc310ad9d870a342dd50766ed13d5b2cd1c6b7117aa3"
+  },
+  "baseline_remote_commit": "66fa06c18984dc7b77825b7f3528fa3ac66fbb4d",
+  "tests": {
+    "tests": "384",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "161.097"
+  },
+  "commands": [
+    {
+      "command": "bash scripts/verify.sh",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/pytest tests/integration/test_import_resume.py tests/integration/test_streaming_import.py tests/integration/test_backfill.py tests/integration/test_source_versions.py -q",
+      "exit_code": 0,
+      "passed": 60
+    },
+    {
+      "command": ".venv/bin/python scripts/benchmark-import-resume.py --output reports/runtime/completion/staging-benchmark.json",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.import_staging --catalog GENERATED_CATALOG --checkpoint-id b3fa5a913b05cc744df41d333802eeb39cca88b6bbf201d9f7646665698f7602",
+      "exit_code": 0
+    }
+  ],
+  "scope": "Generated staging payload admission, reclamation, canonical-byte preservation and interrupted recovery proof; not historical data or target-host acceptance",
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "network_blockers": {
+    "confirmed_denied": [
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ],
+    "draft_additions_saved": [
+      "histdata.com",
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ],
+    "applied_or_published": false
+  },
+  "files": {
+    "reports/milestones/2026-11-04-import-staging/focused-verification.log": "1962defb3d2ba6fbd0eb6da630606de5ef98c772d32952d8ac605f76e8fbcb0f",
+    "reports/milestones/2026-11-04-import-staging/full-verification.log": "67be93649086b8ddecef3f484de3b954e17fc30dfd12172674472451ff4dcaf0",
+    "reports/milestones/2026-11-04-import-staging/generated-import-benchmark.json": "e10e8b87bc97e272fa5316436b2dd2d4c792d0d54d4971d74c095f2ed90cc93b",
+    "reports/milestones/2026-11-04-import-staging/generated-reclamation.json": "64dca39cfc05f5f7073510b1b6570a058fd214f24f042804f86e787c7362df23",
+    "reports/milestones/2026-11-04-import-staging/prior-66fa06c-ci-observations.json": "14dbac6256cb43d7b7ae041ae5e5f7de5195e59fef4f69a1d594cc7f21d2102b",
+    "reports/milestones/2026-11-04-import-staging/test-results.xml": "162f4dea232012cb08f3a0f2c210bb2a6795a26af48ab9600e6177d749d5686c",
+    "reports/milestones/2026-11-04-import-staging/verification-resources.json": "99d1fae9ca004f853273c9f90ae10458750563d025b8c81b121fc1b4858f1018"
+  }
+}

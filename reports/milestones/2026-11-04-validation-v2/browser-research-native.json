@@ -1,0 +1,26 @@
+{
+  "artifact_hash": "6929f7c94a9f162c7ef7f4701516c38e628805d0b64aee50eac6680cb8d9d9ce",
+  "children_cpu_seconds": 8.041173,
+  "cycles": 7,
+  "evaluations": 2,
+  "experiments": 4,
+  "holdout_consumptions": 0,
+  "independently_validated": false,
+  "jobs": [
+    {
+      "count": 6,
+      "state": "COMPLETED"
+    }
+  ],
+  "protocol_id": "e7901fa136114b1b45860a9de3aafd6a8ceeeae936b4dab7a4d6507af82cfcf1",
+  "protocol_purpose": "research_qualification",
+  "scope": "Actual supervised native synthetic software workflow; not historical/VPS/soak evidence",
+  "source": {
+    "git_commit": "a530de566b56cf9c3fd97d1d815aba2cdf6e84a6",
+    "source_sha256": "531c57f37d0990c6feaaa87128dab5b84f4eb082d524b18f3c29766cb1b36ed2"
+  },
+  "source_unchanged": true,
+  "state_directory": "validation-v2-browser",
+  "status": "INSUFFICIENT_EVIDENCE",
+  "wall_seconds": 9.941924438004207
+}

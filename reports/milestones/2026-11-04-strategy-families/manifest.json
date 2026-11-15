@@ -1,0 +1,52 @@
+{
+  "status": "VERIFIED_DEVELOPMENT_INCREMENT_NOT_READY",
+  "source_context": {
+    "git_commit": "b31f6cd111c5ae1852c1db303242cd29b29ff6e3",
+    "source_sha256": "76e12da7ccfafe27dcd78bf1ec2d1f01b84e349a16cbaec5e9a183e4e1629c36"
+  },
+  "baseline_remote_commit": "b31f6cd111c5ae1852c1db303242cd29b29ff6e3",
+  "tests": {
+    "tests": "463",
+    "failures": "0",
+    "errors": "0",
+    "skipped": "0",
+    "time": "165.545"
+  },
+  "commands": [
+    {
+      "command": "bash scripts/verify.sh",
+      "exit_code": 0
+    },
+    {
+      "command": ".venv/bin/pytest tests/unit/test_strategy_families.py tests/integration/test_family_pipeline.py -q",
+      "exit_code": 0,
+      "passed": 79
+    },
+    {
+      "command": ".venv/bin/pytest tests/unit/test_contracts.py tests/unit/test_streaming_features.py tests/integration/test_search.py tests/integration/test_historical_protocols.py -q",
+      "exit_code": 0,
+      "passed": 47
+    },
+    {
+      "command": ".venv/bin/python -m factory.operations.http_smoke",
+      "exit_code": 0,
+      "scope": "Real loopback HTTP; dashboard HTML, anonymous rejection and authenticated paused overview; not browser rendering"
+    }
+  ],
+  "scope": "Generated new-family hand arithmetic, causal seven-timeframe/MTF, actual native fills, durable proposal/restart, no-network supervised worker feedback and prior-only v4 refit; not historical profitability or full autonomous discovery",
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "files": {
+    "reports/milestones/2026-11-04-strategy-families/first-fixture-failure.json": "2e0f82b14332c30b1835b4fddc667aaa9612132e0abe23c06b07283ce5b51520",
+    "reports/milestones/2026-11-04-strategy-families/full-verification.log": "5223f3ee941dbaa7c61eb6da8912e4b0a44173151e07e96244c332e439002d93",
+    "reports/milestones/2026-11-04-strategy-families/host.json": "6e7293adf3a8825b9ce27e769725739b6eeb8ba2da6e961715407a9b848c66be",
+    "reports/milestones/2026-11-04-strategy-families/legacy-focused.log": "2c558f1c4cab73821216f8d07fbb5f62e2ffc8609fc55414b1cf72281d312925",
+    "reports/milestones/2026-11-04-strategy-families/new-family-focused.log": "d89b41e34a823e7e0ba627ac82a045a5ff9688e3f092c1991943173af096c8df",
+    "reports/milestones/2026-11-04-strategy-families/prior-b31f6cd-ci-observations.json": "58a4a7620355ccdf046f7581f5127ecd17514dbbd2a027a9fe6537db2e4285da",
+    "reports/milestones/2026-11-04-strategy-families/test-results.xml": "819b400918581b2c3ee0bcd6b63cd5cf548c4612ff4bc8f076f242cb1e8fab23",
+    "reports/milestones/2026-11-04-strategy-families/verification-resources.json": "a29078da6c22c3e1517dcbebef638ac6733e621d66e9feefc1eda85dd9b41f20"
+  }
+}

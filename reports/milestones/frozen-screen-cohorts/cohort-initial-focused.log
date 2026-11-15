@@ -1,0 +1,405 @@
+FFF..........                                                            [100%]
+=================================== FAILURES ===================================
+__ test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback __
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-37/test_frozen_frame_random_audit0')
+
+    def test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback(tmp_path):
+        store, request = prepared(tmp_path)
+        service = Cohorts(store, tmp_path)
+>       identity = service.freeze(request)
+                   ^^^^^^^^^^^^^^^^^^^^^^^
+
+tests/integration/test_screen_cohorts.py:78: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <factory.screening.cohorts.Cohorts object at 0x7faf8b1b17c0>
+request = CohortRequest(schema_version='frozen-screen-cohort/v1', calibration_experiments=('56a594cfbcb0c16fb5e28ae0ac33b58d538f...estation='Freeze this training-only screening cohort before native audit outcomes; no validation or pruning authority')
+
+    def freeze(self, request):
+        request = CohortRequest.model_validate(request)
+        revision = execution_revision()
+        policy_hash = fingerprint(request.policy)
+        with self.store.transaction() as db:
+            prior = db.execute(
+                "SELECT cohort_id FROM screen_cohorts WHERE json_extract(body_json,'$.request_hash')=?",
+                (fingerprint(request),),
+            ).fetchone()
+            if prior:
+                return prior[0]
+            calibration = []
+            for experiment in sorted(request.calibration_experiments):
+                row = db.execute(
+                    "SELECT body_json FROM cost_label_audits WHERE experiment_hash=?", (experiment,)
+                ).fetchone()
+                if row is None:
+                    raise ValueError("calibration requires retained native audit")
+                body = json.loads(row[0])
+                if body["code_revision"] != revision or body["policy_hash"] != policy_hash:
+                    raise ValueError("stale or incompatible calibration")
+                if (
+                    sha256(self.root / "artifacts" / f"{experiment}.json")
+                    != body["native_artifact_hash"]
+                ):
+                    raise ValueError("calibration native artifact integrity")
+                calibration.append(body)
+            comparison = subject(calibration[0])
+            if any(subject(c) != comparison for c in calibration):
+                raise ValueError("calibration subjects differ")
+            latest = max(int(w["end_ns"]) for c in calibration for w in c["windows"])
+            frame = []
+            seen = set(request.calibration_experiments)
+            effective = set()
+            for identity in sorted(request.prospective_job_ids):
+                row = db.execute("SELECT * FROM jobs WHERE job_id=?", (identity,)).fetchone()
+                if (
+                    row is None
+                    or row["kind"] != "research"
+                    or row["state"] not in ("QUEUED", "FAILED_RETRYABLE")
+                    or row["attempts"]
+                ):
+                    raise ValueError("audit membership must be frozen before any native attempt")
+                payload = json.loads(row["payload"])
+                contract = ExperimentContract.model_validate(payload["contract"])
+                spec = StrategySpec.model_validate(payload["strategy"])
+                profile = InstrumentSpec.model_validate(payload["profile"])
+                if (
+                    not profile.synthetic
+                    or contract.evaluation_policy != "synthetic-cost-shadow-training/v1"
+                ):
+                    raise ValueError(
+                        "v1 cohorts require explicit synthetic cost-shadow training; historical calibration is not implemented"
+                    )
+                if len(contract.windows) != 1 or contract.windows[0].role != "train_only":
+                    raise ValueError("screen calibration is training-only")
+                if (
+                    contract.code_revision != revision
+                    or spec.strategy_hash != contract.strategy_hash
+                    or fingerprint(profile) != contract.instrument_hash
+                ):
+                    raise ValueError("cohort contract identity mismatch")
+                context = {
+                    "instrument_hash": contract.instrument_hash,
+                    "operator": spec.signal.operator,
+                    "timeframe": spec.timeframe,
+                    "confirmations": list(spec.confirmations),
+                    "scenario": contract.scenario,
+                    "code_revision": revision,
+                    "policy_hash": policy_hash,
+                }
+                if context != comparison:
+                    raise ValueError("prospective and calibration subjects differ")
+                if contract.windows[0].start_ns < latest + 86400 * 10**9:
+                    raise ValueError(
+                        "prospective audit requires separate later training with 24h label embargo"
+                    )
+                experiment = contract.experiment_hash
+                if (
+                    experiment in seen
+                    or db.execute(
+                        "SELECT 1 FROM experiments WHERE experiment_hash=?", (experiment,)
+                    ).fetchone()
+                    or db.execute(
+                        "SELECT 1 FROM screen_cohort_members WHERE experiment_hash=? AND role='prospective'",
+                        (experiment,),
+                    ).fetchone()
+                ):
+                    raise ValueError("cohort outcome already seen or member already frozen")
+                # Seed changes alone are not independent candidate evidence.
+                key = fingerprint(
+                    {k: v for k, v in contract.model_dump(mode="json").items() if k != "seed"}
+                )
+                if key in effective:
+                    raise ValueError("duplicate effective experiment in sampling frame")
+                seen.add(experiment)
+                effective.add(key)
+                catalog = Catalog(self.root / "catalog")
+                manifest = catalog.verify(contract.dataset_hash, deep=True)
+                if (
+                    manifest["instrument"] != profile.instrument
+                    or manifest["provenance"].get("synthetic") is not True
+                ):
+                    raise ValueError("cohort source/profile mismatch")
+                from factory.data.versions import reject_quarantined
+                from factory.exploration.discovery import require_training_scope
+    
+                reject_quarantined(db, manifest)
+>               require_training_scope(db, profile, contract.windows[0])
+E               TypeError: require_training_scope() takes 2 positional arguments but 3 were given
+
+factory/screening/cohorts.py:189: TypeError
+_______ test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected _______
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-37/test_outcome_peeking_duplicate0')
+
+    def test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected(tmp_path):
+        store, request = prepared(tmp_path)
+        # Start an attempt before freezing: no retrospective independent audit claim.
+        job = store.claim()
+        with pytest.raises(ValueError, match="before any native attempt"):
+>           Cohorts(store, tmp_path).freeze(request)
+
+tests/integration/test_screen_cohorts.py:112: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <factory.screening.cohorts.Cohorts object at 0x7faf781b20f0>
+request = CohortRequest(schema_version='frozen-screen-cohort/v1', calibration_experiments=('56a594cfbcb0c16fb5e28ae0ac33b58d538f...estation='Freeze this training-only screening cohort before native audit outcomes; no validation or pruning authority')
+
+    def freeze(self, request):
+        request = CohortRequest.model_validate(request)
+        revision = execution_revision()
+        policy_hash = fingerprint(request.policy)
+        with self.store.transaction() as db:
+            prior = db.execute(
+                "SELECT cohort_id FROM screen_cohorts WHERE json_extract(body_json,'$.request_hash')=?",
+                (fingerprint(request),),
+            ).fetchone()
+            if prior:
+                return prior[0]
+            calibration = []
+            for experiment in sorted(request.calibration_experiments):
+                row = db.execute(
+                    "SELECT body_json FROM cost_label_audits WHERE experiment_hash=?", (experiment,)
+                ).fetchone()
+                if row is None:
+                    raise ValueError("calibration requires retained native audit")
+                body = json.loads(row[0])
+                if body["code_revision"] != revision or body["policy_hash"] != policy_hash:
+                    raise ValueError("stale or incompatible calibration")
+                if (
+                    sha256(self.root / "artifacts" / f"{experiment}.json")
+                    != body["native_artifact_hash"]
+                ):
+                    raise ValueError("calibration native artifact integrity")
+                calibration.append(body)
+            comparison = subject(calibration[0])
+            if any(subject(c) != comparison for c in calibration):
+                raise ValueError("calibration subjects differ")
+            latest = max(int(w["end_ns"]) for c in calibration for w in c["windows"])
+            frame = []
+            seen = set(request.calibration_experiments)
+            effective = set()
+            for identity in sorted(request.prospective_job_ids):
+                row = db.execute("SELECT * FROM jobs WHERE job_id=?", (identity,)).fetchone()
+                if (
+                    row is None
+                    or row["kind"] != "research"
+                    or row["state"] not in ("QUEUED", "FAILED_RETRYABLE")
+                    or row["attempts"]
+                ):
+                    raise ValueError("audit membership must be frozen before any native attempt")
+                payload = json.loads(row["payload"])
+                contract = ExperimentContract.model_validate(payload["contract"])
+                spec = StrategySpec.model_validate(payload["strategy"])
+                profile = InstrumentSpec.model_validate(payload["profile"])
+                if (
+                    not profile.synthetic
+                    or contract.evaluation_policy != "synthetic-cost-shadow-training/v1"
+                ):
+                    raise ValueError(
+                        "v1 cohorts require explicit synthetic cost-shadow training; historical calibration is not implemented"
+                    )
+                if len(contract.windows) != 1 or contract.windows[0].role != "train_only":
+                    raise ValueError("screen calibration is training-only")
+                if (
+                    contract.code_revision != revision
+                    or spec.strategy_hash != contract.strategy_hash
+                    or fingerprint(profile) != contract.instrument_hash
+                ):
+                    raise ValueError("cohort contract identity mismatch")
+                context = {
+                    "instrument_hash": contract.instrument_hash,
+                    "operator": spec.signal.operator,
+                    "timeframe": spec.timeframe,
+                    "confirmations": list(spec.confirmations),
+                    "scenario": contract.scenario,
+                    "code_revision": revision,
+                    "policy_hash": policy_hash,
+                }
+                if context != comparison:
+                    raise ValueError("prospective and calibration subjects differ")
+                if contract.windows[0].start_ns < latest + 86400 * 10**9:
+                    raise ValueError(
+                        "prospective audit requires separate later training with 24h label embargo"
+                    )
+                experiment = contract.experiment_hash
+                if (
+                    experiment in seen
+                    or db.execute(
+                        "SELECT 1 FROM experiments WHERE experiment_hash=?", (experiment,)
+                    ).fetchone()
+                    or db.execute(
+                        "SELECT 1 FROM screen_cohort_members WHERE experiment_hash=? AND role='prospective'",
+                        (experiment,),
+                    ).fetchone()
+                ):
+                    raise ValueError("cohort outcome already seen or member already frozen")
+                # Seed changes alone are not independent candidate evidence.
+                key = fingerprint(
+                    {k: v for k, v in contract.model_dump(mode="json").items() if k != "seed"}
+                )
+                if key in effective:
+                    raise ValueError("duplicate effective experiment in sampling frame")
+                seen.add(experiment)
+                effective.add(key)
+                catalog = Catalog(self.root / "catalog")
+                manifest = catalog.verify(contract.dataset_hash, deep=True)
+                if (
+                    manifest["instrument"] != profile.instrument
+                    or manifest["provenance"].get("synthetic") is not True
+                ):
+                    raise ValueError("cohort source/profile mismatch")
+                from factory.data.versions import reject_quarantined
+                from factory.exploration.discovery import require_training_scope
+    
+                reject_quarantined(db, manifest)
+>               require_training_scope(db, profile, contract.windows[0])
+E               TypeError: require_training_scope() takes 2 positional arguments but 3 were given
+
+factory/screening/cohorts.py:189: TypeError
+___________ test_different_seed_cannot_reuse_prospective_membership ____________
+
+tmp_path = PosixPath('/tmp/pytest-of-agent/pytest-37/test_different_seed_cannot_reu0')
+
+    def test_different_seed_cannot_reuse_prospective_membership(tmp_path):
+        store, request = prepared(tmp_path)
+        service = Cohorts(store, tmp_path)
+>       service.freeze(request)
+
+tests/integration/test_screen_cohorts.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <factory.screening.cohorts.Cohorts object at 0x7faf7b640fb0>
+request = CohortRequest(schema_version='frozen-screen-cohort/v1', calibration_experiments=('56a594cfbcb0c16fb5e28ae0ac33b58d538f...estation='Freeze this training-only screening cohort before native audit outcomes; no validation or pruning authority')
+
+    def freeze(self, request):
+        request = CohortRequest.model_validate(request)
+        revision = execution_revision()
+        policy_hash = fingerprint(request.policy)
+        with self.store.transaction() as db:
+            prior = db.execute(
+                "SELECT cohort_id FROM screen_cohorts WHERE json_extract(body_json,'$.request_hash')=?",
+                (fingerprint(request),),
+            ).fetchone()
+            if prior:
+                return prior[0]
+            calibration = []
+            for experiment in sorted(request.calibration_experiments):
+                row = db.execute(
+                    "SELECT body_json FROM cost_label_audits WHERE experiment_hash=?", (experiment,)
+                ).fetchone()
+                if row is None:
+                    raise ValueError("calibration requires retained native audit")
+                body = json.loads(row[0])
+                if body["code_revision"] != revision or body["policy_hash"] != policy_hash:
+                    raise ValueError("stale or incompatible calibration")
+                if (
+                    sha256(self.root / "artifacts" / f"{experiment}.json")
+                    != body["native_artifact_hash"]
+                ):
+                    raise ValueError("calibration native artifact integrity")
+                calibration.append(body)
+            comparison = subject(calibration[0])
+            if any(subject(c) != comparison for c in calibration):
+                raise ValueError("calibration subjects differ")
+            latest = max(int(w["end_ns"]) for c in calibration for w in c["windows"])
+            frame = []
+            seen = set(request.calibration_experiments)
+            effective = set()
+            for identity in sorted(request.prospective_job_ids):
+                row = db.execute("SELECT * FROM jobs WHERE job_id=?", (identity,)).fetchone()
+                if (
+                    row is None
+                    or row["kind"] != "research"
+                    or row["state"] not in ("QUEUED", "FAILED_RETRYABLE")
+                    or row["attempts"]
+                ):
+                    raise ValueError("audit membership must be frozen before any native attempt")
+                payload = json.loads(row["payload"])
+                contract = ExperimentContract.model_validate(payload["contract"])
+                spec = StrategySpec.model_validate(payload["strategy"])
+                profile = InstrumentSpec.model_validate(payload["profile"])
+                if (
+                    not profile.synthetic
+                    or contract.evaluation_policy != "synthetic-cost-shadow-training/v1"
+                ):
+                    raise ValueError(
+                        "v1 cohorts require explicit synthetic cost-shadow training; historical calibration is not implemented"
+                    )
+                if len(contract.windows) != 1 or contract.windows[0].role != "train_only":
+                    raise ValueError("screen calibration is training-only")
+                if (
+                    contract.code_revision != revision
+                    or spec.strategy_hash != contract.strategy_hash
+                    or fingerprint(profile) != contract.instrument_hash
+                ):
+                    raise ValueError("cohort contract identity mismatch")
+                context = {
+                    "instrument_hash": contract.instrument_hash,
+                    "operator": spec.signal.operator,
+                    "timeframe": spec.timeframe,
+                    "confirmations": list(spec.confirmations),
+                    "scenario": contract.scenario,
+                    "code_revision": revision,
+                    "policy_hash": policy_hash,
+                }
+                if context != comparison:
+                    raise ValueError("prospective and calibration subjects differ")
+                if contract.windows[0].start_ns < latest + 86400 * 10**9:
+                    raise ValueError(
+                        "prospective audit requires separate later training with 24h label embargo"
+                    )
+                experiment = contract.experiment_hash
+                if (
+                    experiment in seen
+                    or db.execute(
+                        "SELECT 1 FROM experiments WHERE experiment_hash=?", (experiment,)
+                    ).fetchone()
+                    or db.execute(
+                        "SELECT 1 FROM screen_cohort_members WHERE experiment_hash=? AND role='prospective'",
+                        (experiment,),
+                    ).fetchone()
+                ):
+                    raise ValueError("cohort outcome already seen or member already frozen")
+                # Seed changes alone are not independent candidate evidence.
+                key = fingerprint(
+                    {k: v for k, v in contract.model_dump(mode="json").items() if k != "seed"}
+                )
+                if key in effective:
+                    raise ValueError("duplicate effective experiment in sampling frame")
+                seen.add(experiment)
+                effective.add(key)
+                catalog = Catalog(self.root / "catalog")
+                manifest = catalog.verify(contract.dataset_hash, deep=True)
+                if (
+                    manifest["instrument"] != profile.instrument
+                    or manifest["provenance"].get("synthetic") is not True
+                ):
+                    raise ValueError("cohort source/profile mismatch")
+                from factory.data.versions import reject_quarantined
+                from factory.exploration.discovery import require_training_scope
+    
+                reject_quarantined(db, manifest)
+>               require_training_scope(db, profile, contract.windows[0])
+E               TypeError: require_training_scope() takes 2 positional arguments but 3 were given
+
+factory/screening/cohorts.py:189: TypeError
+=============================== warnings summary ===============================
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+  /workspace/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+  /workspace/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/integration/test_screen_cohorts.py::test_frozen_frame_random_audit_native_feedback_and_counterexample_fallback
+FAILED tests/integration/test_screen_cohorts.py::test_outcome_peeking_duplicate_sampling_and_embargo_are_rejected
+FAILED tests/integration/test_screen_cohorts.py::test_different_seed_cannot_reuse_prospective_membership
+3 failed, 10 passed, 6 warnings in 10.21s

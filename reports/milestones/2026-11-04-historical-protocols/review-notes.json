@@ -1,0 +1,14 @@
+{
+  "events_sha256": "6fa8f3bc2f646e7618aa91656b04629dd09b61c5441cfde9c2671cb28d079ba1",
+  "event_counts": {
+    "LEADING_UNQUOTED_INTERVAL": 1,
+    "GAP": 406,
+    "DECLARED_SESSION_RUN": 1,
+    "TRAILING_UNQUOTED_INTERVAL": 1
+  },
+  "reviewed_at_ns": 1793817852917219513,
+  "reviewer": "authorized initial builder",
+  "acceptance_scope": "GENERIC_RESEARCH_REHEARSAL_ONLY_NOT_SOURCE_COMPLETENESS",
+  "unresolved_provider_gap_fidelity": true,
+  "review": "Enumerated all 409 records: 406 gaps, one leading interval, one OPEN session run, one trailing interval. 398 open interarrivals are >60 and <=600 seconds; retain as unproven source gaps, never fabricate quotes. Eight weekend gaps each include exactly 172800 closed seconds under the declared generic envelope plus observed open margins. Jan1 leading 61214.647seconds includes an unverified holiday; do not assert provider closure. Trailing25201.148seconds includes 25200closed seconds plus1.148open. Full scan: no CLOSED/UNKNOWN observed rows, structural/grid/precision failures, or rows outside period. No stale-price run reported. The calendar is only a research envelope; the OANDA current 17:05/16:59 maintenance schedule is NOT asserted as HistData historical schedule. Accept lossless observed provider paths for bounded generic-unit integration only. Completeness, executable quotes, provider holiday/maintenance provenance and broker feasibility are NOT certified. Jan/Feb prior feature use prevents a final-unseen claim."
+}

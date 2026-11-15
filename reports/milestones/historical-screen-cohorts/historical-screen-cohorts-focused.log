@@ -1,0 +1,18 @@
+....                                                                     [100%]
+=============================== warnings summary ===============================
+tests/integration/test_historical_cohorts.py::test_historical_cohort_freezes_before_outcomes_and_preserves_v1
+tests/integration/test_historical_cohorts.py::test_historical_cohort_rejects_embargo_admission_and_duplicate
+tests/integration/test_historical_cohorts.py::test_fenced_completion_produces_the_historical_diagnostic
+tests/integration/test_historical_cohorts.py::test_historical_cohort_requires_reviewed_admission_at_freeze
+  /opt/hermes-factory/factory/simulation/runner.py:527: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.run(start=spool.first_ns, end=spool.last_ns, streaming=True)
+
+tests/integration/test_historical_cohorts.py::test_historical_cohort_freezes_before_outcomes_and_preserves_v1
+tests/integration/test_historical_cohorts.py::test_historical_cohort_rejects_embargo_admission_and_duplicate
+tests/integration/test_historical_cohorts.py::test_fenced_completion_produces_the_historical_diagnostic
+tests/integration/test_historical_cohorts.py::test_historical_cohort_requires_reviewed_admission_at_freeze
+  /opt/hermes-factory/factory/simulation/runner.py:528: Pandas4Warning: Timestamp.utcnow is deprecated and will be removed in a future version. Use Timestamp.now('UTC') instead.
+    engine.end()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+4 passed, 8 warnings in 15.95s

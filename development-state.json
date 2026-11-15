@@ -1,0 +1,236 @@
+{
+  "benchmarks": {
+    "all_eight_synthetic_100k": {
+      "closed_trades": 2664,
+      "cpu_seconds": 100.692555,
+      "max_sampled_worker_rss_bytes": 330657792,
+      "native_quote_events": 1100000,
+      "reported_peak_rss_bytes": 390066176,
+      "wall_seconds": 100.01175545599835
+    },
+    "bounded_genuine_native_rehearsal": {
+      "cgroup_cpu_max": "400000 100000",
+      "cgroup_memory_max": "34359738368",
+      "children_cpu_seconds": 76.457602,
+      "parent_cpu_seconds": 2.704852895,
+      "parent_peak_rss_bytes": 223346688,
+      "parent_wall_seconds": 78.57425270500062,
+      "source_rows": 4336496,
+      "window_quotes": {
+        "exploratory_oos": 31761,
+        "scope": "Unmodified retained quote rows in two frozen four-hour windows; full source QA scans both months. No whole-tick-backtest throughput extrapolation.",
+        "training": 37752
+      }
+    },
+    "real_february_import": {
+      "cpu_seconds": 63.943652672000006,
+      "peak_rss_bytes": 195887104,
+      "wall_seconds": 65.26287403299648
+    },
+    "real_multiperiod_source_probe": {
+      "cache_reuse_metrics": {
+        "cpu_seconds": 1.0105696029999933,
+        "wall_seconds": 0.981662101999973
+      },
+      "cache_stats": {
+        "evictions": 0,
+        "hits": 2,
+        "misses": 2,
+        "quote_passes": 1
+      },
+      "cpu_seconds": 81.252809225,
+      "first_build_metrics": {
+        "cpu_seconds": 47.41920925,
+        "wall_seconds": 46.534765943011735
+      },
+      "process_peak_rss_bytes": 236957696,
+      "state_disk_bytes": 1902917,
+      "total_quotes": 4336496,
+      "wall_seconds": 79.36937545800174
+    },
+    "real_source_qa": {
+      "cpu_seconds": 175.53692999999998,
+      "disk_state_bytes": 1935328,
+      "process_peak_rss_bytes": 184852480,
+      "wall_seconds": 171.80964462200063
+    },
+    "source_commit": "4ea36e40d781c9dec555d42a1e919e027792a818",
+    "synthetic_1000": {
+      "all_jobs_completed": true,
+      "assertion_failures": 0,
+      "batch_children_cpu_seconds": 166.89963499999993,
+      "peak_worker_rss_bytes": 302280704,
+      "wall_seconds": 197.4601130059964
+    },
+    "target_host_verified": false
+  },
+  "completed_local_increments": [
+    "migration005 protected input/holdout ledgers and supervised fixed-window native evaluation",
+    "migration006 chronological refitting/neighborhood/confirmation/annual/pooled/reference-cost stage machine",
+    "exact USD marked valuation and bounded display curves",
+    "canonical profile representation and actual mixed-stop-role diagnostics",
+    "execution v3 IOC remainder policy with native long/short partial-entry and stop cancellation goldens",
+    "independent native Money/position/account reference with all-eight synthetic quote-PnL goldens; cross-currency context adapter still pending",
+    "execution v4 dated native FX context, all-eight synthetic base-unit/Gold lot math, rational risk and PnL receipts, marked equity and protected JPY worker confirmation",
+    "Connected structured Validation Lab and exact-byte evidence exports with actual Chromium/API/native report and prior control regression",
+    "scientific-validation/v2 forward/training/neighborhood qualification, mandatory marked/native evidence guards and explicit uncertifiable synthetic rehearsal; legacy IDs retained read-only",
+    "clean a530de5 Chromium/coordinator proof: v2 weak forward protocol ends with zero holdout use; exact export/mobile/stop and separate explicit rehearsal registration pass",
+    "captured TZif/dated calendar rules, bounded all-event source quality with immutable migration007 receipts/captured inputs/failure retention, CLI and authenticated streaming/API/data panel",
+    "clean df70 real-source QA: 21,345,746 rows / eight instruments, measured CPU/RSS and actual authenticated browser/exact export/mobile proof",
+    "source QA SIGKILL identity retention and actual killed-child full retry regression",
+    "search/v3 exact declared pip-based stop bounds, legacy v1/v2 identities/ranges preserved, native .001-tick/.1-pip Gold endpoint BUY/SELL risk/RR goldens",
+    "migration008 immutable reviewed profile/calendar/source admission and permanent revocations; real-input native worker/evaluator eligibility with exact experiment-policy binding and completion-lock checks; genuine reference choice and historical rehearsal remain pending",
+    "migration009 source observation/selection/snapshot lineage, exact bounded positional comparisons, immutable quarantine/restoration episodes and alias/completion guards; separate retained free recaptures and automatic import observation",
+    "exact context-independent/bounded Decimal fingerprint encoding; read-only 42-state/32,450-retained-typed-value compatibility proof",
+    "versioned opt-in cost-horizon feature labels and immutable native shadow audits; native positive counterexample preserves candidate and disables approximate pruning authority; ordinary cheap path retained",
+    "ADR0026 admission-bound search/v4, protected-holdout/v2 and scientific-validation/v3; exact nanosecond windows; 346-test full verification; complete generated positive chronological reference; genuine EURUSD reviewed generic-unit supervised training and frozen exploratory evaluation (not independent historical validation)",
+    "ADR0027 bounded retained-archive chunk checkpoints, SIGKILL/restart and exact original data/v2 parity; parser/v2 exact context-independent source scaling rejects formerly rounded off-grid values; source hash bound before final publication",
+    "ADR0028 shared catalog staging payload quota and explicit verified duplicate-chunk reclamation; atomic request/marker/results and interrupted-unlink recovery preserve canonical source and failure/orphan evidence",
+    "ADR0029 explicit Signal2 trend/reversal/range/volatility/session/confluence in shared causal compiler; Search5 and scientific-validation4 propagation, legacy JSON/hash preservation, nine-category additive coverage, actual native/offline-worker proof and seven-timeframe lookahead regressions",
+    "ADR0030 bounded authorized automatic discovery, immutable planned-region SIGKILL recovery, source arrival continuation, historical scope guards and authenticated desktop/mobile control/export; 476-test full verification",
+    "ADR0031 exact shared indicator primitives/L2 with context/source identity, bounded storage and SIGKILL recovery, nine-family/seven-timeframe parity and identical native training/OOS output; conservative measured adoption",
+    "ADR0032 actual native false-negative circuit breaker, persistent fail-closed pruning disablement, pause/64job/300CPU bounded idempotent native rechecks preserving original negative evidence, actual browser and550-test verification",
+    "ADR0033 migration012 immutable generated-only frozen screen calibration/prospective audit cohorts, global effective-experiment dedup, forced native exact-zero audits, prospective false-negative/descriptive Wilson feedback, role-separated API/CLI/guided dashboard and actual Chromium native/exact-export proof;562-test full verification",
+    "ADR0035 historical prospective calibration policy/cohort v2, deterministic pre-outcome selection, CLI/API and fenced-completion historical diagnostics; bounded checkpointed acquisition driver; 570-test full verification",
+    "ADR0035 authenticated dashboard workflow for historical cohort v2 and Chromium desktop/mobile acceptance; 571-test full verification",
+    "ADR0036 frozen screening comparability and selection-bias reporting with content-addressed immutable reports, CLI/API and dashboard panel; 572-test full verification",
+    "ADR0037 descriptive diagnostic cohort aggregation with content-addressed immutable reports, CLI/API; 576-test full verification",
+    "ADR0038 parameter sensitivity reporting with content-addressed immutable reports, CLI/API; 581-test full verification",
+    "ADR0071 owner Lean RaptorBT directive 2026-11-12: versioned amendment, measured VPS/repository inventory, twelve new acceptance gates R01-R12 (79 total, 6 PASS / 73 NOT_TESTED), queue task raptorbt_execution, architecture/handoff updates. No gate claimed passed; readiness states unchanged.",
+    "RaptorBT-derived Rust execution engine (rust/raptor-engine/) with exact rational arithmetic and sequential bracket replay; parity harness scripts/parity_raptor_engine.py reproduces the Python reference exactly on 100/100 EURUSD, 240/240 and 800/800 all-instrument generated fixtures. R01-R03 gain scoped evidence and remain NOT_TESTED; NautilusTrader not removed.",
+    "Phase 1 Rust engine: 30/30 genuine acquired catalog partitions exact parity; full suite 709 passed / 0 failed in 1375 s. Pinned rust-toolchain.toml (1.100.0) and a CI rust job building with --locked, running cargo test and the parity harness.",
+    "Phase 1 pushed and CI-verified at 62182c21bf58901deb3de1b22536a02fed98dd3a: audit, dashboard, python and the new rust context all pass; the rust job ran cargo test (2 passed) and scripts/parity_raptor_engine.py (200/200).",
+    "R02 migration parity report: NautilusTrader 1.231.0 goldens frozen over a fixed 240-case corpus and reproduced exactly by the Rust engine (240/240); docs/milestone-raptor-migration-parity-2026-11-12.md records the discrepancy report and the remaining migration-gate gaps.",
+    "Frozen-golden migration evidence pushed and CI-verified at 4b119feb0a2490ea35f4fd98ee1469b9f7319561: audit, dashboard, python and rust all pass.",
+    "Rust engine order-state machine: ENTRY/STOP_LOSS/TAKE_PROFIT/TIMEOUT registration and terminal transitions, verified by the parity harness (240/240, 800/800, 30/30 genuine partitions) and the refrozen goldens (240/240).",
+    "Rust engine partial fills against a finite eligible book: size-increment rounding before and after the book cap (Python round(binary64, precision) semantics), partial-entry bracket cancellation with safety close, repeated timeout re-submission, cancelled protection no longer triggering, quantity-weighted multi-fill exit price. Verified exact 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240.",
+    "Phase 1c pushed and CI-verified at 97d99a1fc520e6516773905de02f9dc338b2dfab: order states and partial fills reproduced; 240/240 finite-book fixtures, 800/800 unbounded fixtures, 30/30 genuine partitions, goldens refrozen and verified 240/240.",
+    "Resumable Rust replay: Replayer state serializes to JSON and restores exactly; --batch-size/--dump-state/--resume-from added. Restart/batch parity verified exact 240/240 (batch sizes 1/2/3/7/64 and cross-process restart at a quote boundary), each result also matching the Python reference. Closes migration-gate item 7.",
+    "Phase 1d pushed and CI-verified at 1d5219a55c3f75c7f15be59dcde42aaf4bff668c: resumable Replayer with --batch-size/--dump-state/--resume-from; restart/batch parity 240/240 plus 120/120 on a fresh seed; migration-gate item 7 closed.",
+    "Phase 1e pushed and CI-verified at bffb90eb56fa92164b3155fe70941785aa9a8bf9: Nautilus-free case generation in scripts/raptor_cases.py; the golden verifier no longer imports NautilusTrader and passes 240/240 with all nautilus_trader imports blocked."
+  ],
+  "completion_ledger": "completion-ledger.json",
+  "continuation": {
+    "controller": "scripts/completion-queue.py",
+    "current_task": "raptorbt_execution",
+    "publication_identity": "Resolve git HEAD and verify the authorized remote branch; last_remote_commit records the last independently observed remote before this checkpoint was committed.",
+    "runtime": "6 vCPU / 11 GiB development host, not the 4 vCPU / 8 GiB target Contabo envelope. Target-envelope evidence must be measured under enforced limits.",
+    "services": "Hermes WebUI on port 8787 left running and untouched. No acquisition supervisor is running; the catalog is complete for 2025-01 through 2026-10. Rust toolchain 1.100.0 and gcc installed 2026-11-12.",
+    "state": "IMPLEMENTING",
+    "uncommitted_work_at_checkpoint": "None after the commit containing this state; inspect git status on resume."
+  },
+  "goal_source": "docs/source/Owner_Hermes_Factory_Full_Completion_Directive_2026-11-14.md",
+  "implementation_queue": "implementation-queue.json",
+  "last_remote_commit": "7301c7d89077347c692a4a67903a30a268653ab8",
+  "last_verification": {
+    "failed": 0,
+    "format": "PASS",
+    "frontend_build": "PASS",
+    "frontend_check": "PASS",
+    "lint": "PASS",
+    "log": "pytest -q (full suite, 2026-11-12)",
+    "passed": 709,
+    "pytest_seconds": 1375.37,
+    "skipped": 0,
+    "warnings": 482
+  },
+  "latest_evidence_manifest": "reports/raptor-migration-goldens.json",
+  "latest_milestone": "docs/milestone-raptor-migration-parity-2026-11-12.md",
+  "latest_scientific_code_commit": "7301c7d89077347c692a4a67903a30a268653ab8",
+  "latest_verification": {
+    "failed": 0,
+    "format": "PASS",
+    "frontend_build": "PASS",
+    "frontend_check": "PASS",
+    "lint": "PASS",
+    "log": "reports/milestones/historical-shadow/historical-shadow-full.log",
+    "passed": 566,
+    "pytest_seconds": 188.3,
+    "skipped": 0,
+    "warnings": 430
+  },
+  "network_requirements": {
+    "applied_or_published": false,
+    "confirmed_denied": [
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ],
+    "draft_additions_saved": [
+      "histdata.com",
+      "www.histdata.com",
+      "www.oanda.com",
+      "www.six-group.com",
+      "api.github.com"
+    ]
+  },
+  "next_unfinished": "Rust execution migration per the 2026-11-14 directive: exact equity/drawdown and open-position mark-to-market accounting in the Rust engine; verified instrument/broker profiles; an independent non-Nautilus reference oracle validated against the frozen goldens; a stable versioned integration so the factory's primary historical/paper execution path uses the Rust executor rather than test scripts; then a Rust-vs-Nautilus benchmark under a 4-vCPU/8-GiB envelope, then R10 (native data pipeline), R04 (TickFirstHitIndex with sequential fallback) and R08 (native strategy generator).",
+  "observed_at_utc": "2026-11-14T10:09:17+00:00",
+  "publication": {
+    "authorization": "Owner directive 2026-11-12 authorizes each tested milestone push; no merge, visibility change or production deployment.",
+    "branch": "build/initial-factory",
+    "latest_verified_development_commit": "bffb90eb56fa92164b3155fe70941785aa9a8bf9",
+    "observed_at_utc": "2026-11-13T00:55:59.753600+00:00",
+    "pull_request": "https://github.com/AKYA77/hermes-factory/pull/1",
+    "remote": "https://github.com/AKYA77/hermes-factory.git",
+    "status": "COMPLETED_SOURCE_PUSHED_AND_CI_VERIFIED",
+    "verification": "git ls-remote matches local HEAD; CI contexts dashboard, dependency-review and tests all pass, as do the push-triggered dashboard/tests pair. The rust job ran cargo build/test --release --locked, parity_raptor_engine.py --cases 200 (200/200), verify_raptor_goldens.py (240/240), parity_raptor_restart.py --cases 120 (120/120) and the new verify_goldens_without_nautilus.py (240/240 with every nautilus_trader import blocked)."
+  },
+  "readiness": {
+    "DATA_READY": false,
+    "OPERATION_READY": false,
+    "SOFTWARE_VERIFIED": false
+  },
+  "remaining_mandate_sections": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11
+  ],
+  "resume_instructions": "NEXT_ACTION.md",
+  "security": {
+    "auditing_disabled": false,
+    "deepmerge": {
+      "advisory": "GHSA-gcqx-w48m-w2h4",
+      "ecosystem": "npm",
+      "evidence": "build-time dev dependency only; absent from the built dashboard bundle",
+      "installed": "4.3.1 (latest, inside the affected range)",
+      "path": "@sveltejs/vite-plugin-svelte -> @sveltejs/kit -> @sveltejs/adapter-static",
+      "reachable": false,
+      "residual_review": "re-run npm audit on every dashboard dependency update"
+    },
+    "disposition_document": "docs/security-advisories-2026-11-07.md",
+    "fsspec": {
+      "advisory": "GHSA-27vj-qcqg-25rc",
+      "compatible_fix": "none without overriding the upstream pin",
+      "constraint": "nautilus_trader==1.231.0 exact pin fsspec==2026.2.0",
+      "evidence": "nautilus_trader never imports fsspec.implementations.reference; not loaded at runtime",
+      "installed": "2026.2.0",
+      "reachable": false,
+      "residual_review": "re-run the reachability test on every Nautilus upgrade"
+    },
+    "regression_tests": "tests/security/test_dependency_advisories.py",
+    "status": "DISPOSITION_DOCUMENTED_RESIDUAL_LOW",
+    "updated_utc": "2026-11-07"
+  },
+  "state": "IMPLEMENTING_NOT_READY",
+  "task": "Lean RaptorBT strategy research factory - owner final directive 2026-11-12",
+  "verified_source_tree": {
+    "git_commit": "7301c7d89077347c692a4a67903a30a268653ab8",
+    "source_sha256": "f394e482d40258f158bae48973667a88a69b04f8c50932bc83a82ab909abf12c"
+  },
+  "visibility": {
+    "current": "PUBLIC",
+    "new_pushes_held": false,
+    "observed_at_utc": "2026-11-04T02:36:17.332002+00:00",
+    "owner_decision_pending": true,
+    "private_claim_superseded": true,
+    "push_authorization": "Latest owner directive explicitly authorizes each tested milestone push; no merge, visibility change or production deployment."
+  }
+}

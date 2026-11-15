@@ -1,0 +1,192 @@
+{
+  "cgroup_cpu_max": "400000 100000",
+  "cgroup_memory_max": "34359738368",
+  "data_ready": false,
+  "datasets_and_experiments": [
+    {
+      "dataset_hash": "d6ef7bb6b337aaf7f56471cb580fa1a7d074b47d58c733dbd2cab1c0e2e74297",
+      "experiment_hash": "fc8d73d096c4b9338a94e7b3a93eb0bedb3dd5f066995c572dcdb32a9d1d858f",
+      "instrument": "EURUSD"
+    },
+    {
+      "dataset_hash": "ec79e39dcee03e3bb1bb2ff15844e252a87d9366c8ee4428c705a47c8118d5b2",
+      "experiment_hash": "1a27f94abe5da151b469c81ee9d54944fe420ab73bbc2224e3a3abebe0db1894",
+      "instrument": "GBPUSD"
+    },
+    {
+      "dataset_hash": "83bd35879de72da1b4a959bd18ef641195bf05f6175b542d722a3d9cef302801",
+      "experiment_hash": "f5715b51d6eb90f9d8d9fe5b0fa2e766f69f8138640f4fb36f437d67f5351609",
+      "instrument": "USDJPY"
+    },
+    {
+      "dataset_hash": "53316c17fa57747763a6604acdb861b3936b1ebba7e8e32b3e15bb5aa6459667",
+      "experiment_hash": "36fa218b033ca78fd07097c8a9b17f36fdbfc457eafb8ddd21986472c1aca744",
+      "instrument": "USDCHF"
+    },
+    {
+      "dataset_hash": "ed96c70d05b207c851b7b500d4ce2cf0d2b26b507ec5f9fd22b2f97713dcec59",
+      "experiment_hash": "b88e315c0f18365c7f51208b293215d3324d310c44c2d8c1f9ab0bca43bf65a7",
+      "instrument": "USDCAD"
+    },
+    {
+      "dataset_hash": "d1105f8e6dd1cf04bd2040aa1ddd740ef063987d477f30a72132f2940a816db7",
+      "experiment_hash": "ee00e4988ee5ce4242064365eefebd2d503e0fda950623a91527b30507a9d484",
+      "instrument": "AUDUSD"
+    },
+    {
+      "dataset_hash": "4e52b60f54c0d2dafa5fb1f969a646d25e13be1d3062e5d334de2276dde1595b",
+      "experiment_hash": "a30306aa82a88d1622748f7c395fbde49881a521021ef7feebe76dd294192c69",
+      "instrument": "NZDUSD"
+    },
+    {
+      "dataset_hash": "e615aeba62ba22020306421c4396c8bda17948aa2a2b910cf4e32362d8d7672d",
+      "experiment_hash": "3d6de8fcdfffdcd929274e629b59809caf12f1dedb80a398be9fbd219049d706",
+      "instrument": "XAUUSD"
+    }
+  ],
+  "disk_state_bytes": 42448857,
+  "engine": "nautilus_trader/1.231.0",
+  "execution_version": "adverse-fill/v4",
+  "jobs": [
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    },
+    {
+      "error": null,
+      "state": "COMPLETED"
+    }
+  ],
+  "max_worker_peak_rss_bytes": 390066176,
+  "max_worker_sampled_rss_bytes": 330657792,
+  "measured_worker_cpu_seconds": 68.189799,
+  "operation_ready": false,
+  "parent_peak_rss_bytes": 390066176,
+  "parent_plus_children_cpu_seconds": 100.692555,
+  "preparation_wall_seconds": 29.640353860995674,
+  "results": [
+    {
+      "closed_trades": 333,
+      "ending_equity": "24672.6881624",
+      "instrument": "EURUSD",
+      "integrity_errors": [],
+      "native_quote_events": 100000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "24672.6881624",
+      "instrument": "GBPUSD",
+      "integrity_errors": [],
+      "native_quote_events": 100000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "16862.21437409169774397160817",
+      "instrument": "USDJPY",
+      "integrity_errors": [],
+      "native_quote_events": 200000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "22559.99878160519579141052715",
+      "instrument": "USDCHF",
+      "integrity_errors": [],
+      "native_quote_events": 200000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "22559.99878160519579141052715",
+      "instrument": "USDCAD",
+      "integrity_errors": [],
+      "native_quote_events": 200000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "24672.6881624",
+      "instrument": "AUDUSD",
+      "integrity_errors": [],
+      "native_quote_events": 100000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "24672.6881624",
+      "instrument": "NZDUSD",
+      "integrity_errors": [],
+      "native_quote_events": 100000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    },
+    {
+      "closed_trades": 333,
+      "ending_equity": "14117472.5612",
+      "instrument": "XAUUSD",
+      "integrity_errors": [],
+      "native_quote_events": 100000,
+      "native_reference_status": "VERIFIED",
+      "open_inventory": true,
+      "source_quotes": 100000
+    }
+  ],
+  "rows_per_instrument": 100000,
+  "scope": "8 isolated native synthetic training jobs; no historical validation, target-VPS throughput or soak claim",
+  "script_sha256": "db3afe147cdc110bf9fd8273f77e3396c73c82770365febe43e9858a13e77bfe",
+  "software_verified": false,
+  "source_context": {
+    "git_commit": "6ea90a76d5ab9d4f314e782abdfc552dbe64e744",
+    "source_sha256": "459870a2b663551360b9e625ed1d2038c5e15d944b0f87d3e3defd6379801922"
+  },
+  "source_unchanged": true,
+  "status": "PASS_BOUNDED_SYNTHETIC_MONETARY",
+  "supervised_workers_wall_seconds": 70.37140137400274,
+  "total_wall_seconds": 100.01175545599835,
+  "warnings": [
+    "Synthetic broker conventions only",
+    "OS cache uncontrolled",
+    "CPU excludes process imports before main",
+    "Memory is per-process RSS, not summed simultaneous memory or a forced 8-GB proof",
+    "The three non-USD quote feeds have explicit additional conversion-context events"
+  ]
+}

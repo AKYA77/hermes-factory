@@ -1,0 +1,6 @@
+{
+  "sandboxed_api_test": "stalled at TestClient; terminated after diagnostic",
+  "completed_before_stall": 6,
+  "isolated_outside_sandbox": "PASS",
+  "diagnosis": "Command sandbox prevents TestClient event-loop/thread communication; same unmodified API test passes outside sandbox. No application assertion was disabled."
+}

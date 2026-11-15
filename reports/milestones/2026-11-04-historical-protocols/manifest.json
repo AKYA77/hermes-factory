@@ -1,0 +1,44 @@
+{
+  "status": "NOT_READY",
+  "tested_source_context": {
+    "git_commit": "e6a2a6c070c3ee9c9f8743ad4a709af2c8078262",
+    "source_sha256": "3236d275192e4b947ae2d174f83d3180b0372a55804ccea592d0fc7b1a8b6b9b",
+    "working_tree_scientific_edits": true
+  },
+  "verification": {
+    "passed": 346,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 362,
+    "pytest_seconds": 209.55,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS"
+  },
+  "genuine_rehearsal": "PASS_BOUNDED_GENERIC_UNIT_INTEGRATION_ONLY",
+  "generated_positive_reference": "PASS_SYNTHETIC_SOFTWARE_ONLY",
+  "historical_validated_promotion": false,
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "security": "UNRESOLVED_BLOCKING: prior exact-SHA run41879640872 failed; new commit CI must be observed separately",
+  "files": {
+    "first-attempt-missing-test-import.log": "baaec5c6f4b84e6a9bf24d71ba4daf97ecf2c35c6bc7a495883fc593a14cb34e",
+    "full-verification.log": "556b69f4b27b0d297101c4a7f1401b48896babb8af9a1c15d59fe07faca8083a",
+    "genuine-native.log": "2d643e8747a9808486772c5f887b5f352e8495eb89e595fbc1e6691c6c7d8727",
+    "genuine-source-qa.log": "c8f178aff2c744a3b5f109e889cdfa9722c16d3297d252f8a48b7685ace09359",
+    "historical-positive-focused.log": "77b2fbb64182513d813adef41fcff0bd27160ace4cf24d1fafc65916070d74ef",
+    "independent-geometry-check.json": "8e71d697277b33c89e68389744d08dc738b4956b195b747aeae72d1c65be1bf9",
+    "native-report.json": "26e67ae94b03669add7537fe95b5fd1863a2d660641ec32363713ee3eb2c4e49",
+    "native-window-counts.json": "c60f8ba7b01eb1a9c94b68680193c8930965e1a7c853c6909d096a64b110caeb",
+    "prior-exact-sha-dependency-failure.log": "bef2cb3d34f2051b1b79dadc412b54e60cf2fc3fefab841270ae3bab94182208",
+    "prior-exact-sha-npm-audit.json": "1c7812dddf8e75be0ac8d93072180ccf32ccca5d7ebecbecfb4bf19a2e6a9450",
+    "prior-exact-sha-python-audit.json": "aa3be602597c748c9205bca839e0a745931575adcf42e4e6c5cc4c061ac72995",
+    "rehearsal-design.json": "be6e5c142a0af615adf7c7d8584e5d94067b2b852a68e080054d4a46c9deddf8",
+    "review-notes.json": "4ecca32585cf14c4ba75c44207fbe8ab644d2982f62d7dbc811918b4ba898da9",
+    "source-qa.json": "179e5b8260cd5f14e9ecba897f57d454e7b9481726dbd7029315d7a2b41f1122"
+  }
+}

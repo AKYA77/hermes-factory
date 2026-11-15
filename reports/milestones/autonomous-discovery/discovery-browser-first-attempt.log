@@ -1,0 +1,17 @@
+locator.fill: Error: Malformed value
+Call log:
+[2m  - waiting for getByLabel('Training starts (UTC)')[22m
+[2m    - locator resolved to <input step="1" required="" type="datetime-local" class="svelte-1cplvin"/>[22m
+[2m    - fill("2025-01-01T00:00:00")[22m
+[2m  - attempting fill action[22m
+[2m    - waiting for element to be visible, enabled and editable[22m
+
+    at /workspace/hermes-factory/scripts/discovery-browser-smoke.cjs:20:50 {
+  log: [
+    "  - waiting for getByLabel('Training starts (UTC)')",
+    '    - locator resolved to <input step="1" required="" type="datetime-local" class="svelte-1cplvin"/>',
+    '    - fill("2025-01-01T00:00:00")',
+    '  - attempting fill action',
+    '    - waiting for element to be visible, enabled and editable'
+  ]
+}

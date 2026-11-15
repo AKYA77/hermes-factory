@@ -1,0 +1,26 @@
+{
+  "source": {
+    "git_commit": "fabf4828893d59ea0f32a9c0d00dd07af3d967e1",
+    "source_sha256": "115fe5e58823ac6ca6e3dca02b291efbde91d113b077554e834c8896c045aba9"
+  },
+  "verification": {
+    "passed": 566,
+    "warnings": 430,
+    "pytest_seconds": 188.3,
+    "failed": 0,
+    "skipped": 0,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "log": "reports/milestones/historical-shadow/historical-shadow-full.log"
+  },
+  "scope": "TEST_ONLY authorization fixtures, posthoc diagnostic foundation only; NOT_READY",
+  "files": {
+    "historical-shadow-full.log": "0583ea20540e9b59e2364ce1b363ba2e6ac457f11b2b086fee96f9ac02ca4f1b",
+    "test-results.xml": "ac0b13f6fa07d39e37de1eadd963bd4547929adb9aa6f97011297b7e35eb6f19",
+    "historical-shadow-focused.log": "f503f58e7616bcb98b33e40de04e75c11f80354adb6b6d196cb7fbb87a7c0c6e",
+    "historical-shadow-source.json": "0b74b97845e6ee831e95981bf117558e8d924e873b48bb0bb9a307bd0390418e",
+    "historical-shadow-queue.json": "19c170d5e4a5247cb6b0c1709e376d5c119406dce2c2f0f068087bc3af282575"
+  }
+}

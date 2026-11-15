@@ -1,0 +1,51 @@
+{
+  "scope": "Scoped generated software verification, NOT_READY",
+  "source": {
+    "git_commit": "f45fda1ba038c91cd090d482d5e23daea078c1ca",
+    "source_sha256": "2e5706105a702231badf5f6a4be0e4633da40fb9de41b1b83519f0269aae33b6"
+  },
+  "verification": {
+    "passed": 476,
+    "failed": 0,
+    "skipped": 0,
+    "warnings": 374,
+    "pytest_seconds": 171.1,
+    "lint": "PASS",
+    "format": "PASS",
+    "frontend_check": "PASS",
+    "frontend_build": "PASS",
+    "command": "bash scripts/verify.sh",
+    "log": "reports/milestones/autonomous-discovery/discovery-full-verification.log"
+  },
+  "browser": "discovery-browser-final.log",
+  "readiness": {
+    "SOFTWARE_VERIFIED": false,
+    "DATA_READY": false,
+    "OPERATION_READY": false
+  },
+  "files": {
+    "discovery-api-diagnostic.log": "c9fccc346420331922c661062eca0a351fd4720937ba11f7dd3d5a587b3bfc85",
+    "discovery-browser-final.log": "9226b4527e3bfc2dece46d43ce0457c22f623d23f6eb226eabb7f661a181ba7e",
+    "discovery-browser-first-attempt.log": "1c50df1bf51b675856434545f165d5111c0d84c644c0bc2a5886c718ba0de1ef",
+    "discovery-browser-second-attempt.log": "a0547ee1e81bce2c4bf91627fea87feea07b42d0fcbee9edb1c20c72a90bbee8",
+    "discovery-browser.log": "9226b4527e3bfc2dece46d43ce0457c22f623d23f6eb226eabb7f661a181ba7e",
+    "discovery-cycle-state.json": "5b8acac6685256e56d26c4c2fded31583c9343e848a42c9b487188e0f61d11fd",
+    "discovery-cycle-state.log": "13fbddf555ea36ca6712f407bcdb5e001c13d9ddaa888c19530f2536b729ef32",
+    "discovery-desktop.png": "521d6047f23a2df0668980346061b1185f620c5936f7d5339697063d3e80159a",
+    "discovery-export.json": "cf5c4f8f296a692d9415ba88ca4a5c2d18be7450e6b3787082f31a4f6571857b",
+    "discovery-focused-unsandboxed.log": "b0b735db8b49cb28893f28f800f2787b3c742e0657c113a3d198972bd268c956",
+    "discovery-focused.log": "895361ffbf88d5a8c40d47f8dd3d03df2042ca9360d08738bcbb4faa39495404",
+    "discovery-frontend-build.log": "923067e6b5a019e3af90237915b6124f5259b2700af628f63835e4e5c85b7aae",
+    "discovery-frontend-initial-failure.json": "81cf1f38e0cf8dbaea1a660bcb630773b4cfb2007339757d7a643cef2a2acb48",
+    "discovery-full-verification.log": "c3d317ec8bf6c22c6f9c5b040cbb1ce051f72f2435a5d7c542b49c6504b074f6",
+    "discovery-historical-focused.log": "50def7f1d07cbaf3c6ab8ebe7c6725347a15a86a202799dcc0066797c4b5ec71",
+    "discovery-initial-legacy.log": "e147b772b8b792f20d4b22b0d722bcc9d4e8ba2cb71eb3435055955cadd0d762",
+    "discovery-interrupted-verification.log": "44c450603c6cda39e849f5b25c7d46371ca1ef8b10f62ed07db5fa461bf5acfb",
+    "discovery-mobile.png": "df51b801975db39429e0e860856cac6dde63e3603a52309a7c64f21640f31df7",
+    "discovery-queue-final.log": "b6c51b401d65a9c69435f8b86cecab752d65ded7188228aab3de3eb010990b60",
+    "discovery-sandbox-diagnostic.json": "66288a1f4ffb733ed930c6588fb86a66f0cc9a6f646465885e58a64296597f4d",
+    "discovery-wheel-build.log": "d8df5d8b6752d4ca607e162e693a7f9be9c97169cc4b1583b213002c5aa05a8b",
+    "packaging.json": "36155e63d2f7118542aa0552e357f7683f23615a123eac7ff21eed82c32539e9",
+    "test-results.xml": "f6cde475115f73fd7dbfcf26507ed94fd7b5a6919702f0a54628d64d47a8d358"
+  }
+}

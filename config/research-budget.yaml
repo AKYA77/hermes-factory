@@ -1,0 +1,8 @@
+heavy_workers: 1
+worker_timeout_seconds: 300
+proposal_budget_per_round: 8
+max_children_per_parent_per_round: 4
+max_attempts: 3
+blas_threads: 1
+# These are intended limits; systemd resource enforcement is not VPS verified.
+worker_memory_max_bytes: 3758096384

@@ -1,0 +1,142 @@
+{
+  "$defs": {
+    "Window": {
+      "additionalProperties": false,
+      "properties": {
+        "start_ns": {
+          "minimum": 0,
+          "title": "Start Ns",
+          "type": "integer"
+        },
+        "end_ns": {
+          "exclusiveMinimum": 0,
+          "title": "End Ns",
+          "type": "integer"
+        },
+        "role": {
+          "enum": [
+            "train_only",
+            "selection_oos",
+            "final_holdout_unseen",
+            "paper_forward"
+          ],
+          "title": "Role",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_ns",
+        "end_ns",
+        "role"
+      ],
+      "title": "Window",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "experiment/v1",
+      "default": "experiment/v1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "strategy_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Strategy Hash",
+      "type": "string"
+    },
+    "dataset_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Dataset Hash",
+      "type": "string"
+    },
+    "instrument_hash": {
+      "pattern": "^[a-f0-9]{64}$",
+      "title": "Instrument Hash",
+      "type": "string"
+    },
+    "engine_version": {
+      "title": "Engine Version",
+      "type": "string"
+    },
+    "code_revision": {
+      "title": "Code Revision",
+      "type": "string"
+    },
+    "fill_version": {
+      "title": "Fill Version",
+      "type": "string"
+    },
+    "evaluation_policy": {
+      "title": "Evaluation Policy",
+      "type": "string"
+    },
+    "scenario": {
+      "enum": [
+        "historical-reference/v1",
+        "historical-pessimistic/v1"
+      ],
+      "title": "Scenario",
+      "type": "string"
+    },
+    "windows": {
+      "items": {
+        "$ref": "#/$defs/Window"
+      },
+      "title": "Windows",
+      "type": "array"
+    },
+    "seed": {
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    },
+    "initial_equity": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "20",
+      "title": "Initial Equity"
+    },
+    "risk_fraction": {
+      "anyOf": [
+        {
+          "type": "number"
+        },
+        {
+          "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$",
+          "type": "string"
+        }
+      ],
+      "default": "0.10",
+      "title": "Risk Fraction"
+    },
+    "overlap_policy": {
+      "const": "one-position",
+      "default": "one-position",
+      "title": "Overlap Policy",
+      "type": "string"
+    }
+  },
+  "required": [
+    "strategy_hash",
+    "dataset_hash",
+    "instrument_hash",
+    "engine_version",
+    "code_revision",
+    "fill_version",
+    "evaluation_policy",
+    "scenario",
+    "windows",
+    "seed"
+  ],
+  "title": "ExperimentContract",
+  "type": "object"
+}

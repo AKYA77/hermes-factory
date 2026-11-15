@@ -1,0 +1,49 @@
+{
+  "fixture": "50000 generated millisecond EURUSD rows, not historical market data",
+  "results": {
+    "uninterrupted": {
+      "wall_seconds": 0.7926898239984439,
+      "cpu_seconds": 0.7958271520000001,
+      "process_peak_rss_bytes": 192217088,
+      "dataset_hash": "fc5ab67bfc477547a5a8053e06dbc2cbb4d7b725553a1dc33a47080743c2fcfe"
+    },
+    "checkpointed_first": {
+      "wall_seconds": 0.9735273559999769,
+      "cpu_seconds": 0.972679458,
+      "process_peak_rss_bytes": 205918208,
+      "dataset_hash": "fc5ab67bfc477547a5a8053e06dbc2cbb4d7b725553a1dc33a47080743c2fcfe",
+      "resume": {
+        "checkpoint_id": "1de75befedbf1df9f592dead27fd1739ada15f5c069549494db711d6d0970f78",
+        "rows_reused": 0,
+        "rows_decoded": 50000,
+        "chunks": 7,
+        "raw_prefix_rechecked": true,
+        "http_range_resume": false
+      }
+    },
+    "verified_prefix_reuse": {
+      "wall_seconds": 0.7584037750002608,
+      "cpu_seconds": 0.772183601,
+      "process_peak_rss_bytes": 215900160,
+      "dataset_hash": "fc5ab67bfc477547a5a8053e06dbc2cbb4d7b725553a1dc33a47080743c2fcfe",
+      "resume": {
+        "checkpoint_id": "1de75befedbf1df9f592dead27fd1739ada15f5c069549494db711d6d0970f78",
+        "rows_reused": 50000,
+        "rows_decoded": 0,
+        "chunks": 7,
+        "raw_prefix_rechecked": true,
+        "http_range_resume": false
+      }
+    }
+  },
+  "disk_bytes": 1434870,
+  "source_context": {
+    "git_commit": "e9c30e49027d26ffc609240976dc5b2c9e9fccd3",
+    "source_sha256": "a7021654549e9d11a40c5279ff96b0a118de6dfffca4b7ccb4cc989c3e123f0b"
+  },
+  "limitations": [
+    "Uncontrolled OS page cache; no cold-cache or target-host claim.",
+    "Prefix reuse still decompresses and verifies raw prefix and full canonical stream.",
+    "RSS is process high-water mark, not an isolated per-stage peak."
+  ]
+}

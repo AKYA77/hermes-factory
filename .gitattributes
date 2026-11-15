@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.pdf binary
+docs/source/Optimization_Handoff_Amendment_2026-11-03.md -text
+docs/source/End_to_End_Completion_Mandate_2026-11-03.md -text
+docs/source/Persistent_Software_Completion_Goal_2026-11-04.md -text
+
+docs/source/Final_Software_Handoff_Directive_2026-11-04.md -text
