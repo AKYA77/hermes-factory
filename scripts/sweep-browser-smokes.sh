@@ -13,10 +13,12 @@
 # Usage: scripts/sweep-browser-smokes.sh [state-parent-dir]
 #
 # FACTORY_SMOKE_EXCLUDE is an extended regex matched against the smoke name; matches
-# are reported SKIPPED, not run. It defaults to source-registry-browser because that
-# fixture imports eight retained provider archives from the production archive
-# directory, which does not exist on a fresh checkout -- running it there would fail
-# for a reason that has nothing to do with the dashboard.
+# are reported SKIPPED, not run. It defaults to the three smokes whose fixtures need
+# data that exists only on the acquisition host -- source-registry imports eight
+# retained provider archives, and source-coverage/source-quality read the real
+# observation database, catalog and partition receipts. Running them on a fresh
+# checkout would fail for reasons unrelated to the dashboard, which is exactly how
+# CI stops being trusted. Those three stay verified here against real acquired data.
 set -uo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -27,7 +29,7 @@ overall=0
 pass=0
 fail=0
 skip=0
-exclude="${FACTORY_SMOKE_EXCLUDE-source-registry-browser}"
+exclude="${FACTORY_SMOKE_EXCLUDE-source-registry-browser|source-coverage-browser|source-quality-browser}"
 
 for smoke in scripts/*-browser-smoke.cjs; do
   base="$(basename "${smoke%-smoke.cjs}")"
@@ -52,12 +54,17 @@ for smoke in scripts/*-browser-smoke.cjs; do
   if [ "$rc" -eq 0 ]; then
     printf '%-34s PASS  %s %s\n' "$base" "${overflow:-}" "${errors:-}"
     pass=$((pass + 1))
+    rm -f "$log"
   else
-    printf '%-34s FAIL  rc=%s\n' "$base" "$rc"
+    # Keep the log and show its tail: a bare "FAIL rc=1" with nothing else is what
+    # makes a red CI job useless.
+    echo "--- $base output tail ---" >&2
+    tail -15 "$log" >&2
+    echo "--- end $base (full log: $log) ---" >&2
+    printf '%-34s FAIL  rc=%s  log: %s\n' "$base" "$rc" "$log"
     fail=$((fail + 1))
     overall=1
   fi
-  rm -f "$log"
 done
 
 printf '\n%d passed, %d failed, %d skipped\n' "$pass" "$fail" "$skip"

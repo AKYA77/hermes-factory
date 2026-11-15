@@ -39,10 +39,19 @@ const token = fs.readFileSync(path.join(state, 'operator-1.token'), 'utf8').trim
     const body = await section.innerText();
 
     if (!/recorded measurements/i.test(body)) throw Error('Recorded-performance framing missing');
-    if (!body.includes('logical CPUs')) throw Error('Measured hardware not rendered');
-    if (!/limitations/i.test(body)) throw Error('Declared limitations not rendered');
-    // A hash prefix must accompany each artifact so numbers can be tied to bytes.
-    if (!/[0-9a-f]{16}/.test(body)) throw Error('Artifact hash not rendered');
+    // Benchmark reports are generated artifacts and are gitignored, so a fresh
+    // checkout legitimately has none. When artifacts ARE present, verify the measured
+    // facts; when they are not, require the panel to say so per artifact instead of
+    // rendering an empty panel.
+    if (/logical CPUs/.test(body)) {
+      if (!/limitations/i.test(body)) throw Error('Declared limitations not rendered');
+      if (!/[0-9a-f]{16}/.test(body)) throw Error('Artifact hash not rendered');
+      var measured = 'measured hardware, limitations and hashes rendered';
+    } else if (/not recorded/.test(body)) {
+      var measured = 'absence of recorded artifacts stated explicitly';
+    } else {
+      throw Error('Panel shows neither measurements nor an explicit absence');
+    }
     // A recorded number must never be presented as a current run.
     if (!/recorded measurements from past runs/i.test(body)) {
       throw Error('Panel does not state these are past measurements');
@@ -78,9 +87,7 @@ const token = fs.readFileSync(path.join(state, 'operator-1.token'), 'utf8').trim
       checks: [
         'authenticated render',
         'recorded-not-live framing explicit',
-        'measured hardware rendered',
-        'declared limitations rendered',
-        'artifact hash rendered',
+        measured,
         'mobile no document overflow',
         'no page errors',
       ],
