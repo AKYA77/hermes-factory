@@ -39,6 +39,13 @@ API = ROOT / "apps/api/main.py"
 # dashboard prefixes with 'research/', so it is handled separately below.
 CALL_RE = re.compile(r"\b(?:request|download|stop)\(\s*(?:'([^']+)'|`([^`]+)`)\s*(\+)?")
 CONTROL_RE = re.compile(r"\bcontrol\(\s*'([^']+)'\s*\)")
+# A two-segment concatenation such as request('jobs/' + id + '/cancel') addresses a
+# specific deeper route. The plain CALL_RE only sees the first literal, so without
+# this the pair is either over-counted as covering everything beneath the prefix or
+# under-counted as covering nothing beyond it.
+CONCAT_TWO_RE = re.compile(
+    r"\b(?:request|download|stop)\(\s*'([^']*)'\s*\+\s*[^+]+?\+\s*'([^']*)'"
+)
 # The view switcher dispatches through a name -> route map, e.g.
 # {Overview:'overview', Leaderboards:'leaderboards/'}; those values are real calls.
 ROUTES_MAP_RE = re.compile(r"const\s+routes[^=]*=\s*\{(.*?)\}", re.S)
@@ -65,8 +72,18 @@ def route_satisfies(route: str, prefix: str, suffix: str, concatenated: bool) ->
         return False
     if suffix:
         return route.endswith(suffix)
-    # A concatenated call ('strategies/' + id) legitimately prefixes many routes.
-    return True if concatenated else route in (target, target + "/")
+    # A concatenated call ('strategies/' + id) appends ONE path segment -- the id --
+    # so it legitimately prefixes routes with exactly one further segment, not any
+    # deeper route. Treating the prefix as covering everything beneath it hid
+    # /api/v1/experiments/{run_id}/diagnostics behind a plain experiments/{id} call.
+    if concatenated:
+        remainder = route[len(target):]
+        return remainder in ("", "/") or (
+            remainder.startswith("/")
+            and not remainder.endswith("/")
+            and remainder.count("/") == 1
+        )
+    return route in (target, target + "/")
 
 
 def call_pattern(raw: str) -> "re.Pattern[str] | None":
@@ -130,7 +147,15 @@ def main() -> int:
     parsed = []
     for panel in sorted(DASHBOARD.rglob("*.svelte")):
         text = panel.read_text()
+        two_segment_spans = []
+        for match in CONCAT_TWO_RE.finditer(text):
+            prefix = match.group(1).rstrip("/")
+            suffix = match.group(2)
+            two_segment_spans.append((match.start(), match.end()))
+            parsed.append((f"{match.group(1)} + … + {match.group(2)}", (prefix, suffix), False))
         for match in CALL_RE.finditer(text):
+            if any(start <= match.start() < end for start, end in two_segment_spans):
+                continue
             raw = match.group(1) or match.group(2)
             parsed.append((raw, split_call(raw), bool(match.group(3))))
         # Routes-map entries are calls too; a trailing slash means the view appends

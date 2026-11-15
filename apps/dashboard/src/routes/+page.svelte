@@ -94,7 +94,16 @@
   try{await request('improvement/policies','POST',{search_protocol_hash:selectedProtocol,max_parent_plans:maxParents,max_children:maxChildren,cpu_budget_seconds:cpuBudget});await load('Improvements');}
   catch(e){error=String(e);}finally{pending=false;}
  }
- async function inspect(run:string){pending=true;error='';try{data=await request('experiments/'+run);evidencePath='experiments/'+run;}catch(e){error=String(e);}finally{pending=false;}}
+ async function inspect(run:string){pending=true;error='';try{
+   const base=await request('experiments/'+run);
+   data=base;evidencePath='experiments/'+run;
+   // Diagnostics and trades are supplementary evidence: attach what the backend has
+   // and record an explicit "unavailable" marker otherwise, never a silent omission.
+   try{data={...data,_diagnostics:await request('experiments/'+run+'/diagnostics')};}catch(e){data={...data,_diagnostics:{unavailable:String(e)}};}
+   try{data={...data,_trades:await request('experiments/'+run+'/trades')};}catch(e){data={...data,_trades:{unavailable:String(e)}};}
+  }catch(e){error=String(e);}finally{pending=false;}}
+ let jobView=$state<Record<string,unknown>|null>(null);
+ async function showJob(id:string){jobView=null;pending=true;error='';try{jobView=await request('jobs/'+id) as Record<string,unknown>;}catch(e){error=String(e);}finally{pending=false;}}
  async function refreshSources(){pending=true;error='';sourceMessage='';
   try{const r=await request('refresh','POST');
    const verified=r.verified??r.datasets??r.partitions??'catalog verified';
@@ -147,9 +156,13 @@
   {/if}
   {#if view==='Market data' && data!==null}<section class="panel" aria-label="Source operations"><h2>Source operations</h2><p>Re-read the canonical catalog and verify every published partition against its manifest. This refreshes coverage facts only; it does not acquire new data and admits no profile.</p><button onclick={refreshSources} disabled={pending}>Refresh source data</button>{#if sourceMessage}<p role="status">{sourceMessage}</p>{/if}</section><SourceCoveragePanel {request}/><InstrumentStatusPanel {request}/><InstrumentProfilesPanel {request}/><SourceRegistryPanel {request}/><SourceQualityPanel {request} {download}/><InputReviews {request} {download}/>{/if}
   {#if view==='Validation' && data!==null}<ValidationLab {request} {download}/>{/if}
-  {#if view==='Queue' && Array.isArray(data)}<section class="panel"><h2>Jobs</h2>{#if data.length===0}<p>No queued jobs.</p>{/if}{#each data as job}<div class="row"><span>{job.job_id.slice(0,12)} · {job.state}</span>{#if ['QUEUED','RUNNING','FAILED_RETRYABLE'].includes(job.state)}<button disabled={pending} onclick={()=>stop('jobs/'+job.job_id+'/cancel')}>Cancel job</button>{/if}</div>{/each}</section>{/if}
+  {#if view==='Queue' && Array.isArray(data)}<section class="panel"><h2>Jobs</h2>{#if data.length===0}<p>No queued jobs.</p>{/if}{#each data as job}<div class="row"><span>{job.job_id.slice(0,12)} · {job.state}</span><span>{#if ['QUEUED','RUNNING','FAILED_RETRYABLE'].includes(job.state)}<button disabled={pending} onclick={()=>stop('jobs/'+job.job_id+'/cancel')}>Cancel job</button>{/if}<button disabled={pending} onclick={()=>showJob(job.job_id)}>Inspect job</button></span></div>{/each}{#if jobView}<article aria-label="Job detail"><h3>Job {String(jobView.job_id??'').slice(0,12)}</h3><pre>{JSON.stringify(jobView,null,2)}</pre></article>{/if}</section>{/if}
   {#if view==='Performance' && data!==null}<section class="panel" aria-label="Recorded performance evidence"><h2>Recorded performance</h2><p>These are <strong>recorded measurements from past runs</strong>, not live benchmarking. Each artifact is shown with its hash and the limitations its own author declared. Nothing here claims the target 4 vCPU / 8 GiB envelope unless the report says so.</p>{#if data.reports}{#each data.reports as report}<article><h3>{report.name}{#if report.present} · <small>{report.sha256?.slice(0,16)}</small>{:else} · not recorded{/if}</h3>{#if report.present && report.payload}{#if report.payload.hardware}<p>{report.payload.hardware.logical_cpus} logical CPUs · {(report.payload.hardware.host_ram_bytes/1073741824).toFixed(1)} GiB host RAM · {report.payload.hardware.machine}</p>{/if}{#if report.payload.rows}<p>{report.payload.rows.toLocaleString()} rows measured</p>{/if}{#if Array.isArray(report.payload.limitations)}<details><summary>Declared limitations ({report.payload.limitations.length})</summary><ul>{#each report.payload.limitations as limit}<li>{limit}</li>{/each}</ul></details>{/if}{#if report.payload.code_revision}<p class="hash"><code>{report.payload.code_revision}</code></p>{/if}{/if}</article>{/each}{/if}<p role="status">{data.envelope_caveat}</p></section>{/if}
   {#if view==='Experiments' && Array.isArray(data)}<ul>{#each data as run}<li><button onclick={()=>inspect(run.run_id)}>{run.instrument} · {run.status} · {run.run_id.slice(0,12)}</button></li>{/each}</ul>{/if}
+  {#if view==='Experiments' && data!=null && !Array.isArray(data)}<section class="panel" aria-label="Experiment evidence"><h2>Experiment {String(data.run_id??'').slice(0,12)}</h2><p>Supplementary diagnostics and trades are fetched from their own endpoints for the selected run.</p>
+   <h3>Diagnostics</h3>{#if data._diagnostics && !data._diagnostics.unavailable}<pre>{JSON.stringify(data._diagnostics,null,2)}</pre>{:else if data._diagnostics}<p role="status">Diagnostics unavailable: {data._diagnostics.unavailable}</p>{:else}<p>No diagnostics requested yet. Select a run.</p>{/if}
+   <h3>Trades</h3>{#if data._trades && !data._trades.unavailable}<pre>{JSON.stringify(data._trades,null,2)}</pre>{:else if data._trades}<p role="status">Trades unavailable: {data._trades.unavailable}</p>{:else}<p>No trades requested yet. Select a run.</p>{/if}
+  </section>{/if}
   {#if data!==null}<section class="panel"><button disabled={pending||!evidencePath} onclick={()=>download(evidencePath,'hermes-'+view.toLowerCase().replaceAll(' ','-')+'.json')}>Download exact API response</button><details><summary>Application evidence</summary><p>Display only: browser numbers may round nanosecond timestamps. The download preserves exact API response bytes.</p><pre>{JSON.stringify(data,null,2)}</pre></details></section>{:else}<section class="panel"><h2>Connect to inspect state</h2><p>No strategy metrics are displayed until deterministic jobs produce them.</p></section>{/if}
   <footer>2025 / 2026 research · no brokerage execution · independent evidence required for validation</footer>
  </main>
