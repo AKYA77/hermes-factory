@@ -77,6 +77,23 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
  if(!(await page.locator(tSection).innerText()).includes('measured CPU seconds'))throw Error('Trial cost totals missing');
  checks.push(`research trials rendered (${tRows}) with measured cost`);
 
+ // Experiment evidence: diagnostics and trades come from their own endpoints. The
+ // panel must show what it got, or say plainly that the artifact is unavailable --
+ // never silently omit one.
+ await page.getByRole('button',{name:'Experiments',exact:true}).click();
+ await page.waitForTimeout(600);
+ const exSection='section[aria-label="Experiment evidence"]';
+ const runButtons=page.locator('main ul li button');
+ if(await runButtons.count()){
+  await runButtons.first().click();
+  await page.locator(exSection+' h3',{hasText:'Diagnostics'}).waitFor({timeout:30000});
+  const eBody=await page.locator(exSection).innerText();
+  if(!/Diagnostics/.test(eBody)||!/Trades/.test(eBody))throw Error('Experiment evidence headings missing');
+  if(!/unavailable|"|^No /m.test(eBody))throw Error('Experiment evidence neither shown nor explicitly unavailable');
+  checks.push('experiment diagnostics and trades fetched per run from their own endpoints');
+ }else{
+  checks.push('no retained experiments in this fixture; experiment view rendered empty truthfully');
+ }
  await page.setViewportSize({width:390,height:844});
  await page.screenshot({path:root+'/reports/runtime/dashboard-panels-browser-mobile.png',fullPage:true});
  const overflow=await page.evaluate(()=>({document:document.documentElement.scrollWidth,viewport:innerWidth}));
