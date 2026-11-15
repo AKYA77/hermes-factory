@@ -76,11 +76,15 @@ independent-ranking (declaration-gated, descriptive-only), statistical-safeguard
 (selection funnel plus multiple-testing over a supplied family) and research-actions
 (all report actions actor-gated, lineage/sensitivity/plans rendered).
 
-Only `source-registry` remains guarded: it requires seeded PROVIDER-SOURCED
-partitions (HistData.com provenance, SOURCE_BID_ASK fidelity, >=8 datasets), not
-just a clean registry, so its fixture must import or regenerate real archive data
-rather than synthetic rows. Until then its `NOT RUNNABLE` guard keeps it from being
-mistaken for acceptance evidence.
+`source-registry` was the last: its fixture imports eight genuine HistData.com
+partitions from the retained production archive directory into an isolated catalog
+and adds three non-provider datasets (explicit synthetic, TEST ONLY authorization,
+and one with no provider declared) so the panel's labelling is exercised rather than
+assumed. Verified PASS in Chromium with 11 datasets rendered, provider and parser
+version shown, the Gold UNKNOWN_SPEC limitation carried into the panel, synthetic
+labelling present, mobile no overflow and no page errors.
+
+**All sixteen browser smokes are now runnable, and every one passes.**
 6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
    completion-ledger.json and development-state.json — DONE; the verified
    envelope blocker is recorded under R11/T31/T35 and `docs/runbooks/hermes-handoff.md`

@@ -34,6 +34,7 @@ state = args.state
 if state.exists() and any(state.iterdir()):
     raise SystemExit("Use a new isolated state; never overwrite earlier browser evidence")
 
+from factory.data import Catalog, Quote, histdata  # noqa: E402
 from factory.data.resume import import_archive  # noqa: E402
 
 # import_archive takes the catalog root path and wraps it itself.
@@ -49,9 +50,17 @@ for path in sorted(args.archives.glob("*-202601-ticks.manifest.json")):
         {**manifest, "archive": str(archive)},
         {
             "provider": manifest["provider"],
-            "source": f"{manifest['provider']} ASCII tick data, {manifest['instrument']} "
-            f"{manifest['year']}-{manifest['month']:02d}",
-            "license": "provider terms; historical research only, not broker metadata",
+            "source": manifest["page_url"],
+            "license": "owner-authorized local research; redistribution not asserted",
+            "parser_version": histdata.PARSER_VERSION,
+            "source_timezone": manifest.get("source_timezone"),
+            "provider_faq": "https://www.histdata.com/f-a-q/",
+            "raw_zip_contains_provider_notices": True,
+            "limitations": [
+                "calendar gaps classified descriptively; no quote is invented to fill them",
+                "provider-specific quotes, not brokerage fills",
+                "Gold pip/contract/margin metadata remains UNKNOWN_SPEC",
+            ],
         },
     )
     imported.append(stored["dataset_hash"])
@@ -59,31 +68,52 @@ for path in sorted(args.archives.glob("*-202601-ticks.manifest.json")):
 if len(imported) < 8:
     raise SystemExit(f"expected eight provider partitions, imported {len(imported)}")
 
-# One unattributed rehearsal dataset: the panel must label datasets that carry no
-# provider rather than silently counting them as provider-sourced.
-from factory.data import Quote
 
-rehearsal = [
-    Quote(
-        "EURUSD",
-        1735689600 * 10**9 + i * 60 * 10**9,
-        110000 + ((i * 37) % 113),
-        110002 + ((i * 37) % 113),
-        100000,
+# Three non-provider datasets so the panel's labelling is exercised, not just its
+# provider rows: an explicit synthetic fixture, a TEST ONLY authorization fixture,
+# and an extract with no provider declared at all. None of these may be counted as
+# provider-sourced.
+def _rows(source_id: str):
+    return [
+        Quote(
+            "EURUSD",
+            1735689600 * 10**9 + i * 60 * 10**9,
+            110000 + ((i * 37) % 113),
+            110002 + ((i * 37) % 113),
+            100000,
+            source_id,
+            "browser-fixture",
+            i,
+        )
+        for i in range(24)
+    ]
+
+
+catalog_root = state / "catalog"
+for source_id, provenance in (
+    (
+        "synthetic-fixture",
+        {
+            "synthetic": True,
+            "provider": "HistData.com",
+            "source": "Synthetic EURUSD fixture, not provider data",
+            "license": "project test fixture",
+        },
+    ),
+    (
+        "test-only-authorization",
+        {"source": "TEST ONLY authorization fixture", "license": "project test fixture"},
+    ),
+    (
         "undeclared-rehearsal-extract",
-        "rehearsal",
-        i,
-    )
-    for i in range(24)
-]
-Catalog(state / "catalog").commit(
-    rehearsal,
-    repr(rehearsal).encode(),
-    {
-        "source": "Undeclared rehearsal extract; provider unknown",
-        "license": "unknown provenance; not market evidence",
-    },
-)
+        {
+            "source": "Undeclared rehearsal extract; provider unknown",
+            "license": "unknown provenance; not market evidence",
+        },
+    ),
+):
+    rows = _rows(source_id)
+    Catalog(catalog_root).commit(rows, repr(rows).encode(), provenance)
 
 subprocess.run(
     [sys.executable, "-m", "factory.cli", "--state", str(state), "create-admin"],
