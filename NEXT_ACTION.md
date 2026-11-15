@@ -84,7 +84,7 @@ assumed. Verified PASS in Chromium with 11 datasets rendered, provider and parse
 version shown, the Gold UNKNOWN_SPEC limitation carried into the panel, synthetic
 labelling present, mobile no overflow and no page errors.
 
-**All sixteen browser smokes are now runnable, and every one passes.**
+**All eighteen browser smokes are runnable and pass**, including the two added this round: performance-browser (recorded benchmark artifacts, recorded-not-live framing, hardware, limitations, hash) and supervisor-browser (queue inspect/cancel, operations readiness, audit, export present on each view).
 6. Repair and keep synchronised NEXT_ACTION.md, implementation-queue.json,
    completion-ledger.json and development-state.json — DONE; the verified
    envelope blocker is recorded under R11/T31/T35 and `docs/runbooks/hermes-handoff.md`
