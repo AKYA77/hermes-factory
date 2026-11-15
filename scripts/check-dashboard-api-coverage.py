@@ -69,6 +69,52 @@ def route_satisfies(route: str, prefix: str, suffix: str, concatenated: bool) ->
     return True if concatenated else route in (target, target + "/")
 
 
+def call_pattern(raw: str) -> "re.Pattern[str] | None":
+    """Regex over the full `/api/v1/...` path a templated call addresses.
+
+    A `${...}` interpolation occupies exactly one path segment, so
+    `profiles/${id}` satisfies `/api/v1/profiles/{symbol}`. The prefix/suffix split
+    below cannot express that -- it drops everything after the interpolation -- which
+    made parameterized routes look permanently uncalled even though the dashboard
+    calls them. Returns None for literal calls, which use the simpler rule.
+    """
+    path = raw.split("?")[0]
+    if "${" not in path:
+        return None
+    segments = ["^/api/v1"]
+    index = 0
+    while index < len(path):
+        start = path.find("${", index)
+        if start == -1:
+            tail = path[index:]
+            if tail:
+                segments.append("/" + re.escape(tail.lstrip("/")))
+            break
+        head = path[index:start].rstrip("/")
+        if head:
+            segments.append("/" + re.escape(head))
+        segments.append(r"/[^/]+")
+        end = path.find("}", start)
+        index = len(path) if end == -1 else end + 1
+    return re.compile("".join(segments) + "$")
+
+
+def route_covered(
+    route: str,
+    parsed: list[tuple[str, tuple[str, str], bool]],
+) -> bool:
+    """True when any dashboard call addresses this backend route."""
+    for raw, (prefix, suffix), concatenated in parsed:
+        pattern = call_pattern(raw)
+        if pattern is not None:
+            if pattern.match(route):
+                return True
+            continue
+        if route_satisfies(route, prefix, suffix, concatenated):
+            return True
+    return False
+
+
 def main() -> int:
     if not API.exists():
         print(f"API module not found: {API}", file=sys.stderr)
@@ -105,19 +151,17 @@ def main() -> int:
 
     missing = []
     for raw, (prefix, suffix), concatenated in sorted(parsed):
-        if not any(route_satisfies(r, prefix, suffix, concatenated) for r in routes):
+        if not any(
+            call_pattern(raw).match(route)
+            if call_pattern(raw) is not None
+            else route_satisfies(route, prefix, suffix, concatenated)
+            for route in routes
+        ):
             missing.append(raw)
 
     print(f"dashboard calls: {len(calls)} | backend routes: {len(routes)}")
 
-    uncalled = sorted(
-        route
-        for route in routes
-        if not any(
-            route_satisfies(route, prefix, suffix, concatenated)
-            for _, (prefix, suffix), concatenated in parsed
-        )
-    )
+    uncalled = [route for route in routes if not route_covered(route, parsed)]
     if "--uncalled" in sys.argv:
         print(f"\nBACKEND ROUTES WITH NO DASHBOARD CALLER ({len(uncalled)}):")
         for route in uncalled:

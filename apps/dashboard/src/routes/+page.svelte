@@ -49,6 +49,21 @@
  async function download(path:string,name:string){
   try{const response=await fetch('/api/v1/'+path,{headers:{Authorization:'Bearer '+token}});if(!response.ok)throw Error('Evidence download failed: '+response.status);const url=URL.createObjectURL(await response.blob());const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}catch(e){error=String(e);}
  }
+ // Liveness is reported from the real /api/v1/health/live probe rather than assumed
+ // from the app having loaded: an API that answers the pages but fails its own
+ // health check is not operational, and the badge must say so. It needs the same
+ // read credential as every other call, so no token means "not authenticated"
+ // rather than a false healthy or unhealthy verdict.
+ let liveStatus=$state('checking');
+ let liveDetail=$state('');
+ async function checkLive(){
+  if(!token){liveStatus='unauthenticated';liveDetail='';return;}
+  try{
+   const r=await request('health/live');
+   liveStatus=r&&r.status==='live'?'live':'degraded';
+   liveDetail=`release ${r&&r.release?r.release:'unknown'}`;
+  }catch(e){liveStatus='unreachable';liveDetail=String(e);}
+ }
  async function load(name=view){
   view=name;pending=true;error='';
   try {
@@ -83,6 +98,8 @@
    const mismatched=Array.isArray(r.mismatched)?r.mismatched.length:(r.mismatched??0);
    sourceMessage=`Refreshed source registry: ${verified} dataset(s) verified, ${missing} missing, ${mismatched} mismatched.`;}
   catch(e){error=String(e);}finally{pending=false;}}
+ // Probe liveness on connect and whenever the operator refreshes a view.
+ $effect(()=>{void token;checkLive();});
 </script>
 <svelte:head><title>Hermes Factory · Research</title><meta name="description" content="Historical and paper research control plane"/></svelte:head>
 <div class="shell">
@@ -91,7 +108,7 @@
   <div class="notice">Development checkpoint<br/><strong>NOT_READY</strong><br/>No verified release</div>
  </aside>
  <main>
-  <header><div><small>RESEARCH CONTROL PLANE</small><h1>{view}</h1></div><span class="badge">Historical / paper only</span></header>
+  <header><div><small>RESEARCH CONTROL PLANE</small><h1>{view}</h1></div><span class="badge">Historical / paper only</span><span class="badge" data-live={liveStatus} title={liveDetail}>API {liveStatus}{liveDetail?` (${liveDetail})`:''}</span></header>
   <section class="auth"><label>Access token <input type="password" bind:value={token} autocomplete="off" placeholder="Local operator or viewer token"/></label><button onclick={()=>load()} disabled={pending}>Connect / refresh</button><p>Token stays in memory. Use a secure tunnel. No default credentials.</p></section>
   {#if error}<p class="error" role="alert">{error}</p>{/if}
   {#if pending}<p role="status">Loading application state…</p>{/if}
@@ -133,5 +150,5 @@
  </main>
 </div>
 <style>
- .metrics,.fields{display:flex;flex-wrap:wrap;gap:20px}.metrics strong{display:block;font-size:26px;color:#65d9bf}.fields label{display:grid;gap:8px;margin:20px 0}.fields input{width:180px}.row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #293447}article{padding:12px 0;border-top:1px solid #293447}details{margin-top:16px}summary{cursor:pointer}form>label{display:grid;gap:10px}form select{max-width:100%;min-width:0;margin-left:0} :global(body){margin:0;background:#10151e;color:#e3e8f0;font:15px system-ui,sans-serif} :global(*){box-sizing:border-box}.shell{display:flex;min-height:100vh}aside{width:230px;padding:32px 22px;background:#151d29;border-right:1px solid #293447}.brand{font-weight:800;letter-spacing:2px}.brand span{color:#65d9bf}aside p,small,footer{color:#9eacbf;font-size:12px}nav{display:grid;gap:7px;margin-top:35px}button,select,input{font:inherit;border:1px solid #3a4b61;border-radius:7px;padding:10px 14px;background:#1c293b;color:#e3e8f0}button{cursor:pointer}button:hover,button.active{background:#244c4a;border-color:#65d9bf}button:disabled{opacity:.5}nav button{text-align:left}.notice{margin-top:35px;font-size:12px;line-height:1.8;color:#e5c37c}main{padding:32px 5%;width:calc(100% - 230px)}header{display:flex;justify-content:space-between;align-items:center}h1{font-size:32px;margin:10px 0 25px}h2{font-size:17px}.badge{font-size:12px;color:#65d9bf}.auth,.panel{background:#151d29;border:1px solid #293447;border-radius:12px;padding:22px;margin-bottom:22px}.auth label{display:inline-flex;gap:12px;align-items:center;margin-right:12px}.auth input{width:320px}.auth p{font-size:12px;color:#9eacbf}.controls{display:flex;gap:12px;margin-bottom:24px}pre{font-size:12px;overflow:auto;max-height:65vh;line-height:1.6}.error{color:#ffa69e}footer{margin-top:30px}label select{margin-left:10px}li{margin:10px 0}@media(max-width:760px){.shell{display:block}aside{width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;margin-top:15px}.notice{margin-top:12px}main{width:100%;padding:22px}header{align-items:start}.auth input{width:100%}.auth label{display:block;margin-bottom:10px}.controls{flex-wrap:wrap}}
+ .metrics,.fields{display:flex;flex-wrap:wrap;gap:20px}.metrics strong{display:block;font-size:26px;color:#65d9bf}.fields label{display:grid;gap:8px;margin:20px 0}.fields input{width:180px}.row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid #293447}article{padding:12px 0;border-top:1px solid #293447}details{margin-top:16px}summary{cursor:pointer}form>label{display:grid;gap:10px}form select{max-width:100%;min-width:0;margin-left:0} :global(body){margin:0;background:#10151e;color:#e3e8f0;font:15px system-ui,sans-serif} :global(*){box-sizing:border-box}.shell{display:flex;min-height:100vh}aside{width:230px;padding:32px 22px;background:#151d29;border-right:1px solid #293447}.brand{font-weight:800;letter-spacing:2px}.brand span{color:#65d9bf}aside p,small,footer{color:#9eacbf;font-size:12px}nav{display:grid;gap:7px;margin-top:35px}button,select,input{font:inherit;border:1px solid #3a4b61;border-radius:7px;padding:10px 14px;background:#1c293b;color:#e3e8f0}button{cursor:pointer}button:hover,button.active{background:#244c4a;border-color:#65d9bf}button:disabled{opacity:.5}nav button{text-align:left}.notice{margin-top:35px;font-size:12px;line-height:1.8;color:#e5c37c}main{padding:32px 5%;width:calc(100% - 230px)}header{display:flex;justify-content:space-between;align-items:center}h1{font-size:32px;margin:10px 0 25px}h2{font-size:17px}.badge{font-size:12px;color:#65d9bf}.auth,.panel{background:#151d29;border:1px solid #293447;border-radius:12px;padding:22px;margin-bottom:22px}.auth label{display:inline-flex;gap:12px;align-items:center;margin-right:12px}.auth input{width:320px}.auth p{font-size:12px;color:#9eacbf}.controls{display:flex;gap:12px;margin-bottom:24px}pre{font-size:12px;overflow:auto;max-height:65vh;line-height:1.6}.error{color:#ffa69e}.badge[data-live="live"]{color:#65d9bf;border:1px solid #2c7a4b;padding:3px 8px;border-radius:999px}.badge[data-live="degraded"],.badge[data-live="unreachable"]{color:#ffa69e;border:1px solid #7a2c2c;padding:3px 8px;border-radius:999px}.badge[data-live="checking"],.badge[data-live="unauthenticated"]{color:#9eacbf;border:1px solid #3a4b61;padding:3px 8px;border-radius:999px}footer{margin-top:30px}label select{margin-left:10px}li{margin:10px 0}@media(max-width:760px){.shell{display:block}aside{width:100%;padding:20px}nav{display:flex;flex-wrap:wrap;margin-top:15px}.notice{margin-top:12px}main{width:100%;padding:22px}header{align-items:start}.auth input{width:100%}.auth label{display:block;margin-bottom:10px}.controls{flex-wrap:wrap}}
 </style>

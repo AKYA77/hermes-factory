@@ -10,6 +10,12 @@
    profiles=listing.profiles;integrity=check;}
   catch(e){error=String(e);}finally{busy=false;}}
  onMount(refresh);
+ // Declared geometry is fetched per instrument rather than inferred from the listing,
+ // so what the operator sees is exactly what the backend declares.
+ let detailFor=$state('');
+ let detail=$state<Profile|null>(null);
+ async function showDetail(instrument:string){detailFor=instrument;detail=null;
+  try{detail=await request(`profiles/${instrument}`);}catch(e){error=String(e);}}
 </script>
 <section class="profiles" aria-label="Instrument profiles">
  <header><h2>Instrument profiles</h2><button onclick={refresh} disabled={busy}>Refresh profiles</button></header>
@@ -34,9 +40,11 @@
    <td>{p.base_currency}</td><td>{p.quote_currency}</td>
    <td>{p.contract_multiplier}</td><td>{p.min_stop_ticks}</td></tr>
  {/each}</tbody></table>
- <table><thead><tr><th>Instrument</th><th>Profile hash</th></tr></thead>
+ <p>Full declared geometry is fetched per instrument from its own profile endpoint; the tables above are only the summary.</p>
+ <table><thead><tr><th>Instrument</th><th>Profile hash</th><th aria-label="declared geometry">Declared geometry</th></tr></thead>
  <tbody>{#each profiles as p}
-  <tr><td>{p.instrument}</td><td><small>{p.profile_hash}</small></td></tr>
+  <tr><td>{p.instrument}</td><td><small>{p.profile_hash}</small></td>
+   <td>{#if detailFor===p.instrument && detail}<small>{JSON.stringify(detail)}</small>{:else if detailFor===p.instrument}<small>loading…</small>{:else}<button onclick={()=>showDetail(p.instrument)}>Show declared geometry</button>{/if}</td></tr>
  {/each}</tbody></table>
  {/if}
 </section>

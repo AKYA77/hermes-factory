@@ -14,6 +14,9 @@
  let {request,download}:{request:Request;download:(path:string,name:string)=>Promise<void>}=$props();
  let protocols=$state<Protocol[]>([]), holdouts=$state<Holdout[]>([]), regions=$state<Region[]>([]);
  let detail=$state<Detail|null>(null), selected=$state(''), region=$state(''), busy=$state(false), error=$state(''), notice=$state('');
+ // Freezing a protected window names the training run that is allowed to consume
+ // it; the operator supplies that identity rather than the panel inventing one.
+ let runId=$state('');
  let trainingStart=$state(''), finalStart=$state(''), finalEnd=$state('');
  let purpose=$state('research_qualification'),maxCensored=$state(.05),maxMarkedDD=$state(.5),minNeighborTrades=$state(50),minNeighborFraction=$state(.5);
  let trials=$state(8), cpu=$state(600), seed=$state(42), purge=$state(86400), embargo=$state(0);
@@ -36,6 +39,10 @@
  }
  async function inspect(id:string){selected=id;chartIndex=0;busy=true;error='';try{detail=await request('validation/protocols/'+id) as Detail;}catch(e){error=String(e);}finally{busy=false;}}
  async function disable(id:string){busy=true;error='';try{await request('validation/protocols/'+id+'/disable','POST');await refresh();notice='New protocol stages disabled. An active worker may finish.';}catch(e){error=String(e);}finally{busy=false;}}
+ // Both actions are write-gated server-side; a refused freeze or evaluation is
+ // reported as an error, never as a silent success.
+ async function freeze(id:string){busy=true;error='';notice='';try{const r=await request(`validation/holdouts/${id}/freeze`,'POST',{training_run_id:runId});notice=`Frozen final window ${id.slice(0,8)}: ${JSON.stringify(r).slice(0,160)}`;}catch(e){error=String(e);}finally{busy=false;}}
+ async function evaluate(id:string){busy=true;error='';notice='';try{const r=await request(`validation/holdouts/${id}/evaluate`,'POST');notice=`Queued final evaluation for ${id.slice(0,8)}: ${JSON.stringify(r).slice(0,160)}`;}catch(e){error=String(e);}finally{busy=false;}}
  async function register(event:SubmitEvent){
   event.preventDefault();busy=true;error='';notice='';
   try{
@@ -85,7 +92,7 @@
   <details><summary>Declared decision criteria</summary><dl>{#each Object.entries(detail.protocol.evidence_policy??{}) as [name,value]}<dt>{name.replaceAll('_',' ')}</dt><dd>{String(value)}</dd>{/each}{#each Object.entries(detail.protocol.criteria) as [name,value]}<dt>{name.replaceAll('_',' ')}</dt><dd>{String(value)}</dd>{/each}</dl></details>
  </section>
  {/if}
- <section><h3>Protected final windows</h3><p>A consumed window stays consumed after failures and retries. Recorded managed use cannot prove that nobody inspected data outside Factory.</p>{#if !holdouts.length}<p>No protected final windows.</p>{/if}{#each holdouts as held}<article><div><strong>{JSON.parse(held.spec_json).profile.instrument} · {held.status}</strong><p class="hash"><code>{held.holdout_id}</code></p></div></article>{/each}</section>
+ <section><h3>Protected final windows</h3><p>A consumed window stays consumed after failures and retries. Recorded managed use cannot prove that nobody inspected data outside Factory.</p>{#if !holdouts.length}<p>No protected final windows.</p>{/if}{#each holdouts as held}<article><div><strong>{JSON.parse(held.spec_json).profile.instrument} · {held.status}</strong><p class="hash"><code>{held.holdout_id}</code></p><label>Training run <input bind:value={runId} placeholder="training_run_id"/></label></div><div class="actions"><button disabled={busy||!runId} onclick={()=>freeze(held.holdout_id)}>Freeze final window</button><button disabled={busy} onclick={()=>evaluate(held.holdout_id)}>Evaluate final window</button></div></article>{/each}</section>
  <section><details><summary>Register prospective validation</summary><p>Choose an existing research source. Boundaries below are UTC with millisecond input precision. The backend verifies source bounds, training influence, chronology and protected-window independence. This does not reserve data retroactively.</p>
   <form onsubmit={register}>
    <label>Validation research source <select aria-label="Validation research source" bind:value={region} onchange={()=>{confirmation='none';}} required><option value="">Select a registered source and family</option>{#each regions as row}<option value={row.protocol_hash}>{params(row).profile.instrument} · {params(row).family} · {params(row).timeframe} · {row.protocol_hash.slice(0,8)}</option>{/each}</select></label>

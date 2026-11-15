@@ -21,6 +21,12 @@
   try{sources=(await request('sources')).sources;}
   catch(e){error=String(e);}finally{busy=false;}}
  onMount(refresh);
+ // Provenance for one dataset is fetched by identity from the backend rather than
+ // trusted from the listing, so the disclosure shows exactly what was declared.
+ let detailFor=$state('');
+ let detail=$state<Source|null>(null);
+ async function showDetail(identity:string){detailFor=identity;detail=null;
+  try{detail=await request(`sources/${identity}`);}catch(e){error=String(e);}}
 </script>
 <section class="sources" aria-label="Source registry">
  <header><h2>Source registry</h2><button onclick={refresh} disabled={busy}>Refresh sources</button></header>
@@ -32,11 +38,12 @@
   {#each Object.entries(counts()) as [k,n]}<p><strong>{n}</strong> {k}</p>{/each}
   <p><strong>{new Set(sources.map(s=>s.provenance.provider).filter(Boolean)).size}</strong> providers</p>
  </div>
- <table><thead><tr><th>Instrument</th><th>Kind</th><th>Rows</th><th>First</th><th>Last</th><th>Fidelity</th><th>Provider</th><th>Parser</th></tr></thead>
+ <table><thead><tr><th>Instrument</th><th>Kind</th><th>Rows</th><th>First</th><th>Last</th><th>Fidelity</th><th>Provider</th><th>Parser</th><th aria-label="declared provenance">Declared provenance</th></tr></thead>
  <tbody>{#each sources as s}
   <tr><td>{s.instrument}</td><td>{kind(s)}</td><td>{s.rows.toLocaleString()}</td>
    <td>{fmt(s.first_ns)}</td><td>{fmt(s.latest_verified_ns)}</td>
-   <td>{s.fidelity}</td><td>{s.provenance.provider}</td><td>{s.provenance.parser_version}</td></tr>
+   <td>{s.fidelity}</td><td>{s.provenance.provider}</td><td>{s.provenance.parser_version}</td>
+   <td>{#if detailFor===s.identity && detail}<small>{JSON.stringify(detail.provenance)}</small>{:else if detailFor===s.identity}<small>loading…</small>{:else}<button onclick={()=>showDetail(String(s.identity))}>Show declared provenance</button>{/if}</td></tr>
  {/each}</tbody></table>
  <details>
   <summary>Declared limitations and licence</summary>

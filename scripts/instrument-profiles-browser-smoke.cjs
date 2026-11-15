@@ -43,6 +43,17 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
  await page.screenshot({path:root+'/reports/runtime/instrument-profiles-browser-desktop.png',fullPage:true});
  if(overflow.document>overflow.viewport)throw Error('Mobile horizontal overflow');
  if(errors.length)throw Error('Browser page errors: '+errors.join(';'));
+ // Declared geometry must be fetched per instrument from its own endpoint, not
+ // inferred from the listing: the action is present and returns real fields.
+ const detailAction=page.locator('section[aria-label="Instrument profiles"] button',{hasText:'Show declared geometry'});
+ await detailAction.first().waitFor();
+ await detailAction.first().click();
+ await page.waitForTimeout(800);
+ const afterDetail=await page.locator('section[aria-label="Instrument profiles"]').innerText();
+ if(!afterDetail.includes('tick_size'))throw Error('Declared geometry was not fetched per profile');
+ // Liveness must come from the real health probe, and be visibly reported.
+ const liveBadge=await page.locator('header [data-live]').innerText();
+ if(!/\blive\b/.test(liveBadge))throw Error(`API liveness badge is not live: ${liveBadge}`);
  const report={
   status:'PASS',
   scope:'declared instrument geometry and profile hashes in authenticated loopback Chromium; synthetic fixtures only, not broker metadata and not verified Gold units',
@@ -58,6 +69,8 @@ const {chromium}=require('playwright'),fs=require('fs'),path=require('path');
    'synthetic versus verified distinction explicit',
    'Gold caveat present',
    'profile hash rendered',
+   'declared geometry fetched per profile from its own endpoint',
+   'API liveness reported from the real health probe',
    'mobile no document overflow',
    'no page errors',
   ],
