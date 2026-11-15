@@ -22,7 +22,22 @@ unset PYTHONPATH
 fixture="${1:?fixture script required}"
 smoke="${2:?smoke script required}"
 state="${3:-/var/lib/browser-smoke-state}"
-port="${FACTORY_BROWSER_PORT:-8102}"
+
+# Allocate a free loopback port per run. A fixed default meant back-to-back
+# smokes raced each other for the same port: the previous server had been sent
+# SIGTERM but had not finished exiting, so the next bind failed and whole runs
+# were reported as failures even though they pass in isolation.
+pick_port() {
+  env -u PYTHONPATH .venv/bin/python - <<'PY'
+import socket
+
+probe = socket.socket()
+probe.bind(("127.0.0.1", 0))
+print(probe.getsockname()[1])
+probe.close()
+PY
+}
+port="${FACTORY_BROWSER_PORT:-$(pick_port)}"
 
 if [ -d "$state" ] && [ -n "$(ls -A "$state" 2>/dev/null)" ]; then
   echo "refusing non-empty state: $state" >&2
@@ -35,6 +50,13 @@ fi
 cleanup() {
   [ -n "${coordinator_pid:-}" ] && kill "$coordinator_pid" 2>/dev/null || true
   [ -n "${server_pid:-}" ] && kill "$server_pid" 2>/dev/null || true
+  # `kill` is asynchronous: wait until this run's port is actually released so the
+  # next smoke does not inherit a still-closing socket.
+  for _ in $(seq 1 40); do
+    if ! (exec 3<>"/dev/tcp/127.0.0.1/$port") 2>/dev/null; then break; fi
+    exec 3>&- 2>/dev/null || true
+    sleep 0.25
+  done
 }
 trap cleanup EXIT
 
