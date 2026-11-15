@@ -45,7 +45,13 @@ def test_scoped_discovery_checkpoint_selects_shared_features_without_claiming_pa
     path.write_text(json.dumps(queue))
     result = inspect(tmp_path)
     assert result["next_task"]["id"] == "shared_indicators"
-    assert any(r["id"] == "C4" for r in result["unfinished_requirements"])
+    # A scoped checkpoint must not imply its parent gates pass, so at least one
+    # milestone gate has to remain unfinished. Pick one dynamically rather than
+    # hardcoding an id -- a hardcoded id breaks the moment that gate legitimately
+    # closes (C4 did exactly that).
+    assert any(
+        r["id"].startswith("C") for r in result["unfinished_requirements"]
+    ), result["unfinished_requirements"][:3]
     assert not result["readiness"]["SOFTWARE_VERIFIED"]
 
 
