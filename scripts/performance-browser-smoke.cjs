@@ -28,11 +28,16 @@ const token = fs.readFileSync(path.join(state, 'operator-1.token'), 'utf8').trim
 
     const section = page.locator('section[aria-label="Recorded performance evidence"]');
     await section.waitFor({ timeout: 30000 });
-    // The view clears its evidence before fetching, so the hardware line is the
-    // signal that THIS view's payload has arrived rather than a stale frame.
+    // Wait for THIS view's payload: either a measured artifact rendered, or the
+    // panel stating that none are recorded. Waiting only for measurements would hang
+    // forever on a fresh checkout, where benchmark reports legitimately do not exist.
     await page.waitForFunction(
-      () => (document.querySelector('section[aria-label="Recorded performance evidence"]')
-        ?.textContent ?? '').includes('logical CPUs'),
+      () => {
+        const text = document.querySelector(
+          'section[aria-label="Recorded performance evidence"]',
+        )?.textContent ?? '';
+        return text.includes('logical CPUs') || text.includes('not recorded');
+      },
       null,
       { timeout: 30000 },
     );

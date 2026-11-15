@@ -35,5 +35,3 @@ jobs:
       - run: uv sync --frozen
       - name: Browser acceptance smokes
         run: scripts/sweep-browser-smokes.sh /tmp
-        env:
-          FACTORY_SMOKE_EXCLUDE: source-registry-browser
