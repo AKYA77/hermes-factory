@@ -11,6 +11,12 @@
 # server, and concurrent runs contend for CPU, memory and sockets.
 #
 # Usage: scripts/sweep-browser-smokes.sh [state-parent-dir]
+#
+# FACTORY_SMOKE_EXCLUDE is an extended regex matched against the smoke name; matches
+# are reported SKIPPED, not run. It defaults to source-registry-browser because that
+# fixture imports eight retained provider archives from the production archive
+# directory, which does not exist on a fresh checkout -- running it there would fail
+# for a reason that has nothing to do with the dashboard.
 set -uo pipefail
 
 root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -20,10 +26,17 @@ parent="${1:-/var/lib}"
 overall=0
 pass=0
 fail=0
+skip=0
+exclude="${FACTORY_SMOKE_EXCLUDE-source-registry-browser}"
 
 for smoke in scripts/*-browser-smoke.cjs; do
   base="$(basename "${smoke%-smoke.cjs}")"
   fixture="scripts/${base}-fixture.py"
+  if [[ "$base" =~ $exclude ]]; then
+    printf '%-34s SKIP  excluded by FACTORY_SMOKE_EXCLUDE\n' "$base"
+    skip=$((skip + 1))
+    continue
+  fi
   if [ ! -f "$fixture" ]; then
     printf '%-34s NO_FIXTURE\n' "$base"
     overall=1
@@ -47,5 +60,5 @@ for smoke in scripts/*-browser-smoke.cjs; do
   rm -f "$log"
 done
 
-printf '\n%d passed, %d failed\n' "$pass" "$fail"
+printf '\n%d passed, %d failed, %d skipped\n' "$pass" "$fail" "$skip"
 exit "$overall"

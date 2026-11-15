@@ -10,14 +10,15 @@
   },
   "dependencies": {
     "@sveltejs/kit": "3.1.1",
-    "svelte": "5.57.3",
-    "lightweight-charts": "5.0.9"
+    "lightweight-charts": "5.0.9",
+    "svelte": "5.57.3"
   },
   "devDependencies": {
     "@sveltejs/adapter-static": "4.0.1",
     "@sveltejs/vite-plugin-svelte": "7.3.1",
-    "vite": "8.3.5",
+    "playwright": "^1.65.1",
+    "svelte-check": "4.7.8",
     "typescript": "6.0.3",
-    "svelte-check": "4.7.8"
+    "vite": "8.3.5"
   }
 }

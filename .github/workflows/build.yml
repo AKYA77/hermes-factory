@@ -14,3 +14,25 @@ jobs:
         working-directory: apps/dashboard
       - run: npm run check && npm run build
         working-directory: apps/dashboard
+  # Every browser smoke runs here so the UI acceptance evidence is reproducible from a
+  # fresh checkout instead of only on a developer machine. source-registry-browser is
+  # excluded by default because its fixture imports eight retained provider archives
+  # that exist only on the acquisition host; FACTORY_SMOKE_EXCLUDE overrides the list.
+  browser:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24.19.0'
+      - uses: astral-sh/setup-uv@v6
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+        working-directory: apps/dashboard
+      # The install above skips lifecycle scripts, so fetch Chromium explicitly.
+      - run: npx playwright install chromium
+        working-directory: apps/dashboard
+      - run: uv sync --frozen
+      - name: Browser acceptance smokes
+        run: scripts/sweep-browser-smokes.sh /tmp
+        env:
+          FACTORY_SMOKE_EXCLUDE: source-registry-browser
