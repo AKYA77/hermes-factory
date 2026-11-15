@@ -2623,14 +2623,7 @@
     {
       "acceptance_criteria": "Data, diagnostics, optimization, performance and supervisor panels with exports; end-to-end action/response and authenticated UX checks.",
       "authority": "docs/source/Factory.pdf \u00a717.1; entire milestone, not a scoped test",
-      "evidence": [
-        "development-state.json",
-        "release-manifest.json",
-        "reports/milestones/autonomous-discovery/manifest.json",
-        "reports/milestones/screen-fallback/manifest.json",
-        "reports/milestones/frozen-screen-cohorts/manifest.json",
-        "docs/milestone-raptor-engine-parity-2026-11-12.md"
-      ],
+      "evidence": "Route coverage closed: all 71 backend routes now have a dashboard caller (57 distinct calls), verified by scripts/check-dashboard-api-coverage.py --uncalled reporting zero. The five previously unreachable routes are wired with real smoke assertions: health/live drives a header liveness badge; profiles/{symbol} and sources/{identity} fetch per-entity detail from their own endpoints; validation/holdouts/{identity}/freeze and /evaluate act on protected final windows. Instrument-profiles and validation browser smokes pass in Chromium with those assertions.",
       "implementation_files": [
         "apps/api/__init__.py",
         "apps/api/limits.py",
@@ -2721,7 +2714,7 @@
         "scripts/validation-browser-smoke.cjs",
         "scripts/verify.sh"
       ],
-      "next_required_action": "Five backend routes still have no dashboard caller, identified mechanically by scripts/check-dashboard-api-coverage.py --uncalled (CI-gated for the reverse direction): /api/v1/health/live, /api/v1/profiles/{symbol}, /api/v1/sources/{identity} and the two holdout actions /freeze and /evaluate. /refresh was wired this cycle as an operator action in the Market data view and is now asserted in real Chromium by the dashboard-panels smoke. Health/live is a liveness probe for orchestrators and /profiles/{symbol} duplicates the /profiles listing that already carries every field -- both may stay unwired deliberately, but say so in the panel rather than leaving it implicit. The performance and supervisor panels the criterion names still have no backend endpoints.",
+      "next_required_action": "C7 also requires supervisor, diagnostics, performance and optimization panels. None exist in the dashboard or in apps/api/main.py, so this is outstanding feature work, not a verification gap: build those panels and their backing routes, then assert them in Chromium. C7 stays NOT_TESTED until they exist and are exercised end to end.",
       "requirement_id": "C7",
       "status": "NOT_TESTED",
       "supporting_evidence_scope": "Nine browser smokes now pass. A new SourceCoveragePanel reports observed/selected/quarantined counts, first and last period and a per-instrument gap count for all eight instruments, plus canonical partitions, rows and GiB, over the genuine observation ledger and real catalog: 8 instruments, 22 periods each, 0 gaps, 0 selected, 182 partitions, 437,056,502 rows, 4.97 GiB. The panel reports coverage for review and never implies selection or admission. Two harness defects were found on the way: the dashboard smoke had never run (hardcoded Chromium path) and run-browser-smoke.sh never rebuilt the dashboard, so every smoke silently tested the previous build. The wrapper now builds first. 42 of 76 API routes still had no dashboard caller before this work; source-coverage and storage are now wired. Remaining: the other seven smokes still run on generated fixtures, and full C7 blueprint coverage (charts, actions, exports) is incomplete.",
